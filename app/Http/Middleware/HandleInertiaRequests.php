@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Account\AccountDeletion;
+use App\Services\Account\GoogleAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
@@ -42,7 +44,13 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'appName' => config('app.name'),
             'auth' => [
-                'user' => $request->user()?->only(['id', 'name', 'email', 'locale', 'role']),
+                'user' => ($user = $request->user()) ? [
+                    ...$user->only(['id', 'name', 'email', 'locale', 'role']),
+                    // the grace banner (Account → Privacy) shows on every page while a deletion is pending
+                    'deletion_scheduled_for' => AccountDeletion::scheduledFor($user)?->toIso8601String(),
+                ] : null,
+                // sign-in buttons: Google only when GOOGLE_CLIENT_ID is configured
+                'providers' => ['google' => GoogleAuth::enabled()],
             ],
             'locale' => $locale,
             'dir' => SetLocale::direction($locale),

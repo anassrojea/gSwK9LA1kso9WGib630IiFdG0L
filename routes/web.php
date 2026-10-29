@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\PrivacyController;
+use App\Http\Controllers\Account\SecurityController;
+use App\Http\Controllers\Auth\EmailCodeController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EventDashboardController;
 use App\Http\Controllers\Dashboard\GuestCsvController;
@@ -105,4 +110,34 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::patch('/households/{household}', [DashboardHouseholdController::class, 'update'])->name('households.update');
     Route::delete('/households/{household}', [DashboardHouseholdController::class, 'destroy'])->name('households.destroy');
     Route::post('/households/{household}/checkin', [DashboardHouseholdController::class, 'checkIn'])->name('households.checkin');
+});
+
+// Account area and sign-in methods (phase 5A): Google, email login codes, "My account".
+Route::middleware('guest')->group(function () {
+    Route::post('/login/code', [EmailCodeController::class, 'send'])->middleware('throttle:20,1')->name('login.code.send');
+    Route::post('/login/code/verify', [EmailCodeController::class, 'verify'])->middleware('throttle:30,1')->name('login.code.verify');
+    Route::post('/login/code/reset', [EmailCodeController::class, 'reset'])->name('login.code.reset');
+});
+// Google: signs in a guest, or links Google to the signed-in account (Security tab)
+Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])->middleware('throttle:20,1')->name('auth.google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->middleware('throttle:20,1')->name('auth.google.callback');
+
+Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
+    Route::get('/', [AccountController::class, 'profile'])->name('profile');
+    Route::get('/security', [AccountController::class, 'security'])->name('security');
+    Route::get('/billing', [AccountController::class, 'billing'])->name('billing');
+    Route::get('/privacy', [AccountController::class, 'privacy'])->name('privacy');
+
+    Route::put('/profile', [AccountController::class, 'updateProfile'])->middleware('throttle:20,1')->name('profile.update');
+    Route::post('/email-code', [AccountController::class, 'sendEmailCode'])->middleware('throttle:10,1')->name('email-code');
+
+    Route::put('/password', [SecurityController::class, 'password'])->middleware('throttle:10,1')->name('password');
+    Route::delete('/google', [SecurityController::class, 'unlinkGoogle'])->name('google.unlink');
+    Route::delete('/sessions', [SecurityController::class, 'signOutOthers'])->name('sessions.destroy');
+    Route::delete('/sessions/{key}', [SecurityController::class, 'signOut'])->where('key', '[0-9a-f]{32}')->name('sessions.destroy-one');
+
+    Route::get('/export', [PrivacyController::class, 'export'])->middleware('throttle:5,10')->name('export');
+    Route::post('/deletion/code', [PrivacyController::class, 'sendCode'])->middleware('throttle:5,10')->name('deletion.code');
+    Route::post('/deletion', [PrivacyController::class, 'request'])->middleware('throttle:6,1')->name('deletion.request');
+    Route::delete('/deletion', [PrivacyController::class, 'cancel'])->name('deletion.cancel');
 });

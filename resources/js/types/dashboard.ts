@@ -1,3 +1,4 @@
+import type { UpgradeHint } from '@/types/account';
 import type { OpenLinkSettings } from '@/types/wizard';
 import type { GuestRow, Stats } from '@/lib/dashboard/guests';
 
@@ -34,6 +35,8 @@ export interface DashboardProps {
     };
     limits: { seats: number; name: number; tags: number; message: number };
     openLink: OpenLinkSettings | null;
+    /** Free or under-covered events: what upgrading unlocks (phase 5A) */
+    upgradeHint?: UpgradeHint | null;
 }
 
 export interface CsvPreviewRow {

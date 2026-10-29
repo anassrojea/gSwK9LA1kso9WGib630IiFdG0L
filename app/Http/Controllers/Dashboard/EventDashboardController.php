@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Order;
+use App\Services\Account\UpgradeHints;
 use App\Services\Dashboard\GuestBoard;
 use App\Services\Dashboard\GuestCsv;
 use App\Services\Dashboard\WhatsApp;
@@ -77,6 +78,8 @@ class EventDashboardController extends Controller
                 'remind' => $this->gate->canRemind($event),
             ],
             'plan' => $this->gate->currentPlan($event),
+            // the "what upgrading unlocks" banner: Free events, or published ones the plan no longer covers
+            'upgradeHint' => $canUpdate ? $this->upgradeHint($event) : null,
             'pendingOrder' => $canUpdate ? Order::query()->where('event_id', $event->getKey())->pending()->latest()->first(['code', 'status'])?->only('code', 'status') : null,
             'urls' => [
                 'edit' => route('create.step', [$event, 'details'], false),
@@ -98,6 +101,29 @@ class EventDashboardController extends Controller
                 'message' => WhatsApp::MAX_TEMPLATE,
             ],
         ]);
+    }
+
+    /**
+     * @return array{plan: string, next: ?string, unlocks: list<string>, missing: list<string>, next_guests: ?int}|null
+     */
+    private function upgradeHint(Event $event): ?array
+    {
+        if ($event->isArchived()) {
+            return null;
+        }
+
+        $hint = app(UpgradeHints::class)->for($event, withMissing: true);
+        if ($hint['plan'] !== 'free' && $hint['missing'] === []) {
+            return null;
+        }
+
+        return [
+            'plan' => $hint['plan'],
+            'next' => $hint['next'],
+            'unlocks' => array_slice($hint['unlocks'], 0, 4),
+            'missing' => $hint['missing'],
+            'next_guests' => $hint['next_guests'],
+        ];
     }
 
     /**

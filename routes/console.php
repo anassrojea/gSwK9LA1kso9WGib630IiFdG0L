@@ -12,6 +12,9 @@ Schedule::command('horizon:snapshot')->everyFiveMinutes();
 // Transfer orders without a receipt expire 48 hours after checkout (plan section 12.2)
 Schedule::command('orders:expire')->everyFifteenMinutes()->withoutOverlapping();
 
+// Account deletions run once their grace period is over (plan section 20, config/account.php)
+Schedule::command('account:purge-deleted')->dailyAt('03:17')->withoutOverlapping();
+
 Artisan::command('daawa:make-admin {email} {--name=}', function (string $email) {
     $user = User::query()->firstOrNew(['email' => $email]);
     $password = null;
