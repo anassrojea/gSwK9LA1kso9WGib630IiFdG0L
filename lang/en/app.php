@@ -851,4 +851,6 @@ return [
             'waiting_hint' => 'Receipts to check against the bank',
         ],
     ],
+
+    'publish_gate' => ['edit_needs_upgrade' => 'This change needs the :plan plan. Upgrade the event from its dashboard, then try again.'],
 ];
