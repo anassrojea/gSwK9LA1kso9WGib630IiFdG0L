@@ -1,3 +1,4 @@
+import type { OpenLinkSettings } from '@/types/wizard';
 import type { GuestRow, Stats } from '@/lib/dashboard/guests';
 
 export interface DashboardEvent {
@@ -28,6 +29,7 @@ export interface DashboardProps {
         messages: string;
     };
     limits: { seats: number; name: number; tags: number; message: number };
+    openLink: OpenLinkSettings | null;
 }
 
 export interface CsvPreviewRow {

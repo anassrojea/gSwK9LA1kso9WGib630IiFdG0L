@@ -121,3 +121,18 @@ it('saves the host\'s own WhatsApp wording and uses it in the links', function (
     $row = collect(app(GuestBoard::class)->rows($event->fresh()))->firstWhere('id', $h['opened']->id);
     expect(urldecode($row['whatsapp_url']))->toContain('يا عائلة فتحت تعالوا إلى '.$event->title);
 });
+
+it('gives hosts the open link settings on the event dashboard, and hides them from door staff', function () {
+    $event = \App\Models\Event::factory()->create(['status' => 'active']);
+    \App\Models\Invitation::factory()->for($event)->create();
+
+    $this->actingAs($event->owner)->get("/dashboard/events/{$event->id}")
+        ->assertInertia(fn ($page) => $page->where('openLink.endpoint', fn ($url) => str_contains($url, "/events/{$event->id}/open-link")));
+
+    $org = \App\Models\Organization::factory()->create();
+    $event->update(['org_id' => $org->id]);
+    $door = \App\Models\User::factory()->create();
+    \App\Models\OrgMember::factory()->create(['org_id' => $org->id, 'user_id' => $door->id, 'role' => 'door']);
+
+    $this->actingAs($door)->get("/dashboard/events/{$event->id}")->assertInertia(fn ($page) => $page->where('openLink', null));
+});

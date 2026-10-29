@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Services\Dashboard\GuestBoard;
 use App\Services\Dashboard\GuestCsv;
 use App\Services\Dashboard\WhatsApp;
+use App\Services\OpenLinks;
 use App\Services\Wizard\GuestListParser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -79,6 +80,8 @@ class EventDashboardController extends Controller
                 'reminders' => route('dashboard.events.reminders.store', $event, false),
                 'messages' => route('dashboard.events.messages', $event, false),
             ],
+            // the open link panel (phase 3B) talks to GET/PUT /events/{event}/open-link itself
+            'openLink' => $canUpdate ? app(OpenLinks::class)->payload($event) : null,
             'limits' => [
                 'seats' => GuestListParser::MAX_SEATS,
                 'name' => GuestListParser::MAX_NAME,
