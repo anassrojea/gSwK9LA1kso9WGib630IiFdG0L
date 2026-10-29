@@ -18,7 +18,9 @@ export interface DashboardProps {
     guests: GuestRow[];
     tags: string[];
     messages: { invite: string; reminder: string; defaults: { invite: string; reminder: string } };
-    can: { update: boolean; check_in: boolean };
+    can: { update: boolean; check_in: boolean; send: boolean; remind: boolean };
+    plan: string;
+    pendingOrder: { code: string; status: string } | null;
     urls: {
         edit: string;
         export: string;
@@ -27,6 +29,8 @@ export interface DashboardProps {
         csv_import: string;
         reminders: string;
         messages: string;
+        upgrade: string;
+        orders: string;
     };
     limits: { seats: number; name: number; tags: number; message: number };
     openLink: OpenLinkSettings | null;

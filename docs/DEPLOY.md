@@ -5,7 +5,8 @@ Forge's UI changes from time to time; the menu names below describe what to set,
 
 Contents: [1. Server](#1-provision-the-server) · [2. Sites](#2-create-the-sites) · [3. Environment](#3-environment) ·
 [4. Deploy script](#4-deploy-script) · [5. Daemons](#5-daemons-horizon-and-reverb) · [6. Scheduler](#6-scheduler) ·
-[7. Backups](#7-database-backups) · [8. Cloudflare](#8-cloudflare) · [9. First deploy](#9-first-deploy-checklist) · [10. Later](#10-scaling-later)
+[7. Backups](#7-database-backups) · [8. Cloudflare](#8-cloudflare) · [9. First deploy](#9-first-deploy-checklist) ·
+[10. Payments](#10-payments) · [11. Later](#11-scaling-later)
 
 ---
 
@@ -139,6 +140,21 @@ OG_CHROME_PATH=            # empty: /usr/bin/chromium, /usr/bin/google-chrome-st
 OG_CHROME_NO_SANDBOX=false
 OG_TIMEOUT=30              # seconds per render in the queue
 OG_SYNC_TIMEOUT=8          # seconds og.png waits for a missing image before redirecting to /og-fallback.png
+
+# Payments (config/payments.php, section 10 below). A card gateway is off while any of its keys is empty.
+PAYMENTS_WHATSAPP_NUMBER=9665XXXXXXXX     # receives transfer receipts; digits only
+PAYMENTS_BANK_SAR_ACCOUNT_NAME=...        # one account per currency: SYP, SAR, USD
+PAYMENTS_BANK_SAR_BANK=...
+PAYMENTS_BANK_SAR_IBAN=SA...
+PAYMENTS_BANK_SYP_ACCOUNT_NUMBER=...
+PAYMENTS_BANK_SYP_NOTE=...                # e.g. the local transfer company accepted in Syria
+STRIPE_KEY=pk_live_...
+STRIPE_SECRET=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+LEMON_SQUEEZY_API_KEY=...
+LEMON_SQUEEZY_STORE=12345
+LEMON_SQUEEZY_SIGNING_SECRET=...
+LEMON_SQUEEZY_VARIANT_ID=67890
 ```
 
 The `VITE_*` variables in `.env.example` are read at build time by `npm run build`, so they must be
@@ -217,8 +233,9 @@ Cloudflare passes WebSockets through on all plans (Network → WebSockets: on).
 ## 6. Scheduler
 
 Forge → Server → Scheduler: enable the Laravel scheduler for the site (`php8.4 /home/forge/daawa.app/current/artisan schedule:run`
-every minute). Scheduled today: `horizon:snapshot` every five minutes (`routes/console.php`). Reminders,
-expiring transfer orders after 48 h and storage cleanup (plan section 15.1) will be added there.
+every minute). Scheduled today (`routes/console.php`): `horizon:snapshot` every five minutes, and `orders:expire`
+every fifteen minutes (transfer orders with no receipt 48 h after checkout become `expired`, and the customer is
+emailed). Reminders and storage cleanup (plan section 15.1) will be added there.
 
 ## 7. Database backups
 
@@ -286,7 +303,7 @@ is switched on. They are stored on the media disk under `og/{event_id}/{househol
 version is deleted when a new one is written. A request for a missing image renders it on the spot (one render per
 image at a time, at most `OG_SYNC_TIMEOUT` seconds), otherwise it redirects to the static `public/og-fallback.png`.
 
-Everything else (dashboard, `/admin`, `/horizon`, `/login`, `/livewire*`, `/broadcasting/auth`) stays
+Everything else (dashboard, `/admin`, `/horizon`, `/login`, `/livewire*`, `/broadcasting/auth`, `/webhooks/*`) stays
 uncached, which is Cloudflare's default for HTML with cookies; do not add "cache everything" rules for them.
 
 Open tracking keeps working with the edge cache: the page calls `/state?open=1` on every load, which is
@@ -304,6 +321,13 @@ the 5-minute edge TTL bounds staleness.
 - Security → WAF → Rate limiting rule: `starts_with(http.request.uri.path, "/i/") and http.request.method eq "POST"`,
   e.g. 20 requests per 10 seconds per IP → Block for 10 s. The app has its own per-token limits
   (`AppServiceProvider::configureRateLimiting`); this stops floods before they reach PHP.
+- **Payment webhooks must reach the app untouched.** Add a WAF custom rule *before* the others:
+  `starts_with(http.request.uri.path, "/webhooks/")` → **Skip** (all remaining custom rules, rate limiting rules,
+  managed rules, Super Bot Fight Mode / Bot Fight Mode, Browser Integrity Check and Security Level), and a cache rule
+  `starts_with(http.request.uri.path, "/webhooks/")` → **Bypass cache**. Stripe and Lemon Squeezy cannot solve a
+  challenge, so a challenged webhook is simply lost until they retry. The app verifies every signature itself and
+  throttles `/webhooks/*` at 300 a minute per IP. Bot Fight Mode (free plan) cannot be skipped per path: if it is on,
+  watch the webhook delivery logs in Stripe and Lemon Squeezy, and turn it off if deliveries get 403s.
 - Managed rules / Bot Fight Mode: on, but check that WhatsApp's link preview fetcher (`WhatsApp/2.x` user agent)
   can still read `/i/*` pages and `/i/*/og.png`; add a skip rule for it if previews break. Facebook's Sharing
   Debugger (or sending the link to yourself on WhatsApp) shows the card as WhatsApp will.
@@ -321,7 +345,55 @@ the 5-minute edge TTL bounds staleness.
 6. Uptime monitoring: Forge server monitoring + an external check on `/up` and on one test invitation link.
    Add Sentry (`sentry/sentry-laravel`) and Laravel Pulse when the first real customers arrive (plan section 22).
 
-## 10. Scaling later
+## 10. Payments
+
+Plan section 12. Three methods behind `App\Services\Payments\PaymentGateway`, listed in `config/payments.php`:
+bank transfer with the receipt on WhatsApp (approved by an admin in `/admin` → Orders → *Transfers waiting*), Stripe
+through Laravel Cashier, and Lemon Squeezy. Each card gateway is switched off until all its keys are set, and the
+checkout only shows the methods that are on. Card data never reaches the server.
+
+**Bank transfer.** Set `PAYMENTS_WHATSAPP_NUMBER` and, for each currency you accept, `PAYMENTS_BANK_{SYP|SAR|USD}_*`
+(`ACCOUNT_NAME`, `BANK`, `IBAN` or `ACCOUNT_NUMBER`, optional `SWIFT` and `NOTE`). A currency without an IBAN or
+account number is not offered for transfers. Approve **only after seeing the money in the bank account**: the
+approval asks for the bank reference, which can approve one order only, and every decision is in the audit log.
+
+**Stripe** (Dashboard → Developers):
+
+1. API keys → `STRIPE_KEY` (publishable) and `STRIPE_SECRET` (secret; a restricted key needs write access to
+   Customers and Checkout Sessions).
+2. Webhooks → Add endpoint `https://daawa.app/webhooks/stripe`, events `checkout.session.completed` and
+   `checkout.session.async_payment_succeeded`. Copy its signing secret into `STRIPE_WEBHOOK_SECRET`.
+3. Stripe charges SAR and USD; SYP orders are charged the USD price (Stripe does not serve Syria) and the
+   checkout says so.
+
+**Lemon Squeezy** (Settings):
+
+1. API → new key → `LEMON_SQUEEZY_API_KEY`; Stores → the store id (the number after `#`) → `LEMON_SQUEEZY_STORE`.
+2. Products → one product "Daawa order" with a single-payment variant (any price: every checkout sets its own
+   `custom_price`). Its variant id → `LEMON_SQUEEZY_VARIANT_ID`. The store currency must be USD (`LEMON_SQUEEZY_CURRENCY`).
+3. Webhooks → URL `https://daawa.app/webhooks/lemon-squeezy`, events `order_created` and `order_refunded`, a signing
+   secret of your choice → `LEMON_SQUEEZY_SIGNING_SECRET`. The order code travels in `checkout_data.custom.order_code`.
+
+**Prices.** `PlanSeeder` writes USD prices from the plans and **placeholder** SAR and SYP prices, shown as
+"Placeholder" in `/admin` → Prices until an admin saves them. Set the real ones there before launch (SYP is typed in
+whole pounds, SAR and USD may have two decimals). Re-seeding never overwrites a price saved in the admin.
+
+**Test-mode checklist** (staging, with test keys; nothing here needs real money):
+
+1. Stripe test keys in the staging `.env`, and a test-mode webhook endpoint pointing at staging. Locally:
+   `stripe listen --forward-to http://127.0.0.1:8015/webhooks/stripe` and use the secret it prints.
+2. Create an event, pick Premium, pay by card with `4242 4242 4242 4242`: the success page shows "Confirming your
+   payment…" until the webhook arrives, then the order is `paid`, the plan is set and publishing unlocks.
+3. Resend the same event from the Stripe dashboard: nothing changes (one `payments` row).
+4. Choose SYP and Stripe: the checkout shows the USD price, the order has `currency=USD, requested_currency=SYP`.
+5. Lemon Squeezy test mode: same flow with its test card; resend the webhook from Settings → Webhooks.
+6. Bank transfer: create an order, tap *Send receipt on WhatsApp* (check the number, code and amount in the
+   message), then *I sent the receipt*; approve it in `/admin` with a bank reference; try the same reference on another
+   order (refused); reject one with a reason; check the emails in the log (`MAIL_MAILER=log`) or the mail provider.
+7. Leave an order without a receipt, run `php artisan orders:expire` after moving the clock (or wait 48 h): it expires.
+8. Check that `/webhooks/*` returns 403 (bad signature), not a Cloudflare challenge page: `curl -i -X POST https://staging.daawa.app/webhooks/stripe`.
+
+## 11. Scaling later
 
 - More throughput: Laravel Octane (FrankenPHP or Swoole) on the same server.
 - Separate database server, then a second app server behind a Hetzner load balancer (sessions, cache and

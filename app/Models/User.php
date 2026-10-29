@@ -5,24 +5,26 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Cashier\Billable;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasLocalePreference
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasUuids, Notifiable;
+    use Billable, HasFactory, HasUuids, Notifiable;
 
     public const ROLE_USER = 'user';
 
     public const ROLE_ADMIN = 'admin';
 
     // role is deliberately not fillable: admins are promoted explicitly, never through a form
-    protected $fillable = ['name', 'email', 'phone', 'password', 'google_id', 'locale'];
+    protected $fillable = ['name', 'email', 'phone', 'password', 'google_id', 'locale', 'country', 'currency'];
 
     protected $hidden = ['password', 'remember_token'];
 
@@ -33,7 +35,16 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'trial_ends_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Mail (order approved, rejected, expired) goes out in the host's language.
+     */
+    public function preferredLocale(): string
+    {
+        return $this->locale ?: config('app.locale');
     }
 
     public function isAdmin(): bool

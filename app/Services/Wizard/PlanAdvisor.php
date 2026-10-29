@@ -4,16 +4,31 @@ namespace App\Services\Wizard;
 
 use App\Models\Event;
 use App\Models\Opening;
+use App\Models\OpenLink;
 use App\Models\Plan;
 use App\Models\Theme;
 
 /**
  * The plan an invitation needs, shown before the last step so the price is
- * never a surprise (plan section 3). Checkout itself comes with payments.
+ * never a surprise (plan section 3), and checked again when publishing
+ * (App\Services\PublishGate). Free (plan section 13.1): free openings and
+ * themes, up to 50 guests, the open link only; personal links, a cover video
+ * or Premium designs need Premium.
  */
 class PlanAdvisor
 {
     public const TIERS = ['free' => 0, 'premium' => 1, 'signature' => 2];
+
+    /** Plans outside the per-event ladder, ranked by what they include. */
+    public const PLAN_TIERS = ['venue_pro' => 2];
+
+    /**
+     * Rank of a plan or design tier (no plan: free).
+     */
+    public static function tier(?string $id): int
+    {
+        return self::TIERS[$id ?? 'free'] ?? self::PLAN_TIERS[$id] ?? 0;
+    }
 
     /**
      * @return array{plan: ?Plan, tier: string, reasons: list<string>}
@@ -36,6 +51,11 @@ class PlanAdvisor
 
         if (($config['media']['cover']['type'] ?? null) === 'video') {
             $raise('premium', 'cover_video');
+        }
+
+        // families invited by name get personal links (Premium); the open link is on every plan
+        if ($event->households()->whereRaw('not (? = any(tags))', [OpenLink::TAG])->exists()) {
+            $raise('premium', 'personal_links');
         }
 
         $seats = (int) $event->households()->sum('seats_allowed');

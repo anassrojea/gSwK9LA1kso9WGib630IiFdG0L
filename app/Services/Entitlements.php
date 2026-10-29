@@ -19,10 +19,10 @@ class Entitlements
     public const PREMIUM_TEMPLATES = 'premium_templates';
 
     /**
-     * One personal link per household (plan section 5: Premium). Not enforced yet:
-     * when payments land, gate GuestController (wizard) and the dashboard's guest
-     * writes with hasFeature($event, PERSONAL_LINKS), and send free events to the
-     * open link instead (see docs/GUEST_LINKS.md).
+     * One personal link per household (plan section 5: Premium). Households can
+     * be listed on any plan, but publishing with them, showing their links and
+     * WhatsApp buttons, and reminders need this (App\Services\PublishGate);
+     * free events send the open link instead (see docs/GUEST_LINKS.md).
      */
     public const PERSONAL_LINKS = 'personal_links';
 

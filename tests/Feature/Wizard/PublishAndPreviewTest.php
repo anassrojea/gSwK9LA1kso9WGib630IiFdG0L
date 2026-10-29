@@ -3,7 +3,9 @@
 use App\Http\Controllers\Wizard\PreviewController;
 use App\Models\Event;
 use App\Models\LinkOpen;
+use App\Models\Order;
 use App\Models\User;
+use App\Services\Payments\OrderFulfillment;
 use Database\Factories\InvitationFactory;
 use Database\Seeders\CatalogSeeder;
 use Database\Seeders\PlanSeeder;
@@ -20,7 +22,7 @@ it('needs an account to publish', function () {
         ->and($event->fresh()->status)->toBe('draft');
 });
 
-it('publishes once the guest has signed up, then lists every personal link', function () {
+it('publishes once the guest has signed up and paid, then lists every personal link', function () {
     $event = wizardDraft();
     $this->post("/events/{$event->id}/guests/import", ['text' => "أم فيصل - 3\nKhaled Ali, 2"]);
 
@@ -28,6 +30,14 @@ it('publishes once the guest has signed up, then lists every personal link', fun
         ->assertInertia(fn ($page) => $page->component('create/Review')->where('plan.id', 'premium')->missing('households.0.link'));
 
     $this->post('/register', ['name' => 'Lina', 'email' => 'lina@example.test', 'password' => 'a-long-password-1', 'password_confirmation' => 'a-long-password-1']);
+
+    // personal links and a Premium design: publishing waits for the payment (phase 4)
+    $this->post("/create/{$event->id}/publish")->assertSessionHasErrors('publish');
+    expect($event->invitation->fresh()->published_at)->toBeNull();
+
+    $order = Order::factory()->create(['user_id' => $event->fresh()->owner_id, 'event_id' => $event->id]);
+    app(OrderFulfillment::class)->approveTransfer($order, User::factory()->admin()->create(), 'BANK-REF-1');
+
     $this->post("/create/{$event->id}/publish")->assertRedirect("/create/{$event->id}/review");
 
     $event->refresh();

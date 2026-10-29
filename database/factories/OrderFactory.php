@@ -15,12 +15,18 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'items' => [['type' => 'plan', 'id' => 'premium', 'price_cents' => 2900]],
+            'items' => [['type' => 'plan', 'id' => 'premium', 'name' => 'Premium', 'quantity' => 1, 'unit_amount' => 2900, 'amount' => 2900]],
             'total_cents' => 2900,
             'currency' => 'USD',
             'method' => 'transfer',
+            'gateway' => 'transfer',
             'status' => 'awaiting_payment',
             'expires_at' => now()->addHours(48),
         ];
+    }
+
+    public function card(string $gateway = 'stripe'): static
+    {
+        return $this->state(['method' => 'card', 'gateway' => $gateway, 'expires_at' => null]);
     }
 }

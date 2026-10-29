@@ -2,21 +2,27 @@
 
 namespace App\Providers;
 
+use App\Models\Addon;
 use App\Models\Household;
 use App\Models\Invitation;
 use App\Models\OpenLink;
+use App\Models\Plan;
 use App\Observers\OgImageWarmer;
 use App\Services\DraftAccess;
 use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfigValidator;
+use App\Services\Payments\PaymentGateways;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
+use LemonSqueezy\Laravel\LemonSqueezy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +30,13 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(InvitationConfigValidator::class);
         $this->app->singleton(Entitlements::class);
+        $this->app->singleton(PaymentGateways::class);
+
+        // Payments: our own webhook routes (routes/webhooks.php) and UUID-safe
+        // tables (2026_11_01_000200/000300) replace the packages' defaults.
+        Cashier::ignoreRoutes();
+        LemonSqueezy::ignoreRoutes();
+        LemonSqueezy::ignoreMigrations();
     }
 
     public function boot(): void
@@ -31,6 +44,9 @@ class AppServiceProvider extends ServiceProvider
         Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 
         $this->configureRateLimiting();
+
+        // prices.priceable_type stores short names, not class names
+        Relation::morphMap(['plan' => Plan::class, 'addon' => Addon::class]);
 
         // Link preview images are rendered ahead of time when what they show changes.
         Household::observe(OgImageWarmer::class);
@@ -89,6 +105,9 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('autosave', fn (Request $request) => Limit::perMinute(120)
             ->by(($request->user()?->getKey() ?? $request->ip()).'|'.$request->path()));
+
+        // payment providers retry on failure; this only stops floods
+        RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(300)->by($request->ip()));
 
         RateLimiter::for('uploads', fn (Request $request) => Limit::perMinute(30)
             ->by($request->user()?->getKey() ?? $request->ip()));

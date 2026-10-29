@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Order;
 use App\Services\Dashboard\GuestBoard;
 use App\Services\Dashboard\GuestCsv;
 use App\Services\Dashboard\WhatsApp;
 use App\Services\OpenLinks;
+use App\Services\PublishGate;
 use App\Services\Wizard\GuestListParser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,7 +25,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 class EventDashboardController extends Controller
 {
-    public function __construct(private GuestBoard $board) {}
+    public function __construct(private GuestBoard $board, private PublishGate $gate) {}
 
     /**
      * GET /dashboard/events/{event}
@@ -70,7 +72,12 @@ class EventDashboardController extends Controller
             'can' => [
                 'update' => $canUpdate,
                 'check_in' => $user->can('checkIn', $event),
+                // personal links, their WhatsApp buttons and reminders are Premium (PublishGate)
+                'send' => $this->gate->canSendPersonalLinks($event),
+                'remind' => $this->gate->canRemind($event),
             ],
+            'plan' => $this->gate->currentPlan($event),
+            'pendingOrder' => $canUpdate ? Order::query()->where('event_id', $event->getKey())->pending()->latest()->first(['code', 'status'])?->only('code', 'status') : null,
             'urls' => [
                 'edit' => route('create.step', [$event, 'details'], false),
                 'export' => route('dashboard.events.guests.export', $event, false),
@@ -79,6 +86,8 @@ class EventDashboardController extends Controller
                 'csv_import' => route('dashboard.events.guests.csv.import', $event, false),
                 'reminders' => route('dashboard.events.reminders.store', $event, false),
                 'messages' => route('dashboard.events.messages', $event, false),
+                'upgrade' => route('dashboard.events.upgrade', $event, false),
+                'orders' => route('dashboard.orders.index', absolute: false),
             ],
             // the open link panel (phase 3B) talks to GET/PUT /events/{event}/open-link itself
             'openLink' => $canUpdate ? app(OpenLinks::class)->payload($event) : null,

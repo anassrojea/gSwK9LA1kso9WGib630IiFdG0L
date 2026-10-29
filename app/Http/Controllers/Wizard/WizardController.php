@@ -8,11 +8,17 @@ use App\Models\Household;
 use App\Models\Media;
 use App\Models\Opening;
 use App\Models\OpenLink;
+use App\Models\Order;
 use App\Models\Plan;
 use App\Models\Template;
 use App\Models\Theme;
 use App\Services\Entitlements;
 use App\Services\OpenLinks;
+use App\Services\Payments\CheckoutService;
+use App\Services\Payments\Currencies;
+use App\Services\Payments\OrderPresenter;
+use App\Services\Payments\PriceList;
+use App\Services\PublishGate;
 use App\Services\Wizard\DraftCreator;
 use App\Services\Wizard\PlanAdvisor;
 use Illuminate\Http\RedirectResponse;
@@ -108,8 +114,11 @@ class WizardController extends Controller
     /**
      * POST /create/{event}/publish (account required): sets published_at and
      * status=active, then the review step shows each guest's personal link.
+     * The event's plan must cover what the invitation uses (PublishGate): a
+     * Free invitation publishes at once, anything else after its order is
+     * paid (card) or approved (transfer).
      */
-    public function publish(Event $event): RedirectResponse
+    public function publish(Event $event, PublishGate $gate): RedirectResponse
     {
         $invitation = $event->invitation;
         abort_unless($invitation, 404);
@@ -119,6 +128,13 @@ class WizardController extends Controller
             return back()->withErrors(['publish' => trans('app.wizard.review.need_guests_or_link')]);
         }
 
+        $check = $gate->check($event, $invitation->config);
+        if (! $check['allowed']) {
+            return back()->withErrors(['publish' => $check['pending_order']
+                ? trans('app.checkout.waiting_publish', ['code' => $check['pending_order']])
+                : trans('app.checkout.payment_needed')]);
+        }
+
         $invitation->published_at ??= now();
         $invitation->save();
 
@@ -126,8 +142,6 @@ class WizardController extends Controller
             $event->status = 'active';
             $event->save();
         }
-
-        // TODO(payments): checkout (plan section 12) goes here before publishing paid plans
 
         return redirect()->route('create.step', [$event, 'review'])->with('status', trans('app.wizard.review.published'));
     }
@@ -188,10 +202,23 @@ class WizardController extends Controller
 
         $advice = $plans->advise($event, $config);
         $locale = $config['locale'];
+        $gate = app(PublishGate::class);
+        $check = $gate->check($event, $config);
+        $canSend = $gate->canSendPersonalLinks($event);
+        $presenter = app(OrderPresenter::class);
+
+        // the order to show: the one just back from a card checkout (?order=), else the event's pending one
+        $order = null;
+        if ($request->user()) {
+            $orders = Order::query()->where('event_id', $event->getKey())->where('user_id', $request->user()->getKey())->with('latestReceipt');
+            $order = ($request->filled('order') ? (clone $orders)->where('code', $request->string('order')->toString())->first() : null)
+                ?? (clone $orders)->pending()->latest()->first();
+        }
 
         return [
-            // families invited by name; replies through the open link have no link to send
-            'households' => $this->households($event, withLinks: $event->invitation->published_at !== null, locale: $locale, personalOnly: true),
+            // families invited by name; replies through the open link have no link to send.
+            // Their links (and WhatsApp buttons) need Premium: none are handed out on Free.
+            'households' => $this->households($event, withLinks: $event->invitation->published_at !== null && $canSend, locale: $locale, personalOnly: true),
             'seats' => (int) $event->households()->whereRaw('not (? = any(tags))', [OpenLink::TAG])->sum('seats_allowed'),
             'limit' => $entitlements->limit($event, 'guests'),
             'plan' => $advice['plan'] ? [
@@ -205,6 +232,16 @@ class WizardController extends Controller
             'plans' => Plan::query()->where('active', true)->whereNull('interval')->orderBy('price_cents')->get()
                 ->map(fn (Plan $p) => ['id' => $p->id, 'name' => $p->name, 'price_cents' => $p->price_cents, 'currency' => $p->currency, 'guests' => $p->limits['guests'] ?? null])
                 ->values(),
+            // what the plan must cover before publishing (PublishGate) and the checkout to get there
+            'gate' => ['allowed' => $check['allowed'], 'missing' => $check['missing'], 'current' => $check['current'], 'required' => $check['required']],
+            'canSendPersonal' => $canSend,
+            'checkout' => $request->user() && ! $check['allowed'] ? app(CheckoutService::class)->options($event, $request->user()) : null,
+            'order' => $order ? $presenter->present($order) : null,
+            'checkoutOutcome' => $request->query('checkout'),
+            // the advised plans' prices in the host's (or the event's country's) currency, before any sign-up
+            'priceCurrency' => $currency = ($request->user()?->currency ?? Currencies::forCountry(Currencies::countryForTimezone($event->timezone))),
+            'localPrices' => Plan::query()->with('prices')->where('active', true)->whereNull('interval')->get()
+                ->mapWithKeys(fn (Plan $p) => [$p->id => app(PriceList::class)->amount($p, $currency)]),
             'publishUrl' => route('create.publish', $event, false),
             // only for the signed-in host: the endpoints sit behind auth + can:update,event
             'openLink' => $request->user() ? app(OpenLinks::class)->payload($event) : null,

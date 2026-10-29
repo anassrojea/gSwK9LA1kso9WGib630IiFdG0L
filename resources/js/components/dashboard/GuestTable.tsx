@@ -34,7 +34,8 @@ export interface RowHandlers {
 }
 
 interface Ctx {
-    can: { update: boolean; check_in: boolean };
+    /** send: personal links and their WhatsApp buttons (Premium) */
+    can: { update: boolean; check_in: boolean; send?: boolean };
     timezone: string;
     handlers: RowHandlers;
     now: number;
@@ -48,7 +49,7 @@ function RowActions({ guest, ctx, layout }: { guest: GuestRow; ctx: Ctx; layout:
 
     return (
         <div className={cn('flex items-center gap-1', card && 'flex-wrap gap-2')}>
-            {can.update && (
+            {can.update && can.send !== false && (
                 <Button
                     asChild
                     variant={card ? 'default' : 'ghost'}
@@ -61,7 +62,7 @@ function RowActions({ guest, ctx, layout }: { guest: GuestRow; ctx: Ctx; layout:
                     </a>
                 </Button>
             )}
-            {can.update && (
+            {can.update && can.send !== false && (
                 <Button
                     variant={card ? 'outline' : 'ghost'}
                     size={card ? 'default' : 'icon'}

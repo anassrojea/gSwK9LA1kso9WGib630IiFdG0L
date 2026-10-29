@@ -1,16 +1,20 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { CalendarDays, Check, Copy, CreditCard, LayoutDashboard, LogIn, MapPin, Send, UserPlus, Users } from 'lucide-react';
-import { useState } from 'react';
+import { CalendarDays, Check, Copy, Gem, LayoutDashboard, LogIn, MapPin, Send, Sparkles, UserPlus, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+import { CheckoutPanel } from '@/components/checkout/CheckoutPanel';
+import { OrderPanel } from '@/components/checkout/OrderPanel';
 import { Button } from '@/components/ui/button';
 import { OpenLinkPanel } from '@/components/wizard/OpenLinkPanel';
 import { TierBadge } from '@/components/wizard/TierBadge';
 import WizardLayout from '@/components/wizard/WizardLayout';
 import { copyText } from '@/lib/clipboard';
 import { useT } from '@/lib/i18n';
+import { formatMoney } from '@/lib/money';
 import { cn } from '@/lib/utils';
 import type { SharedProps } from '@/types';
+import type { CheckoutOptions, OrderView } from '@/types/payments';
 import type { GuestRow, OpenLinkSettings, PlanSummary, WizardProps } from '@/types/wizard';
 
 interface Props extends WizardProps {
@@ -22,13 +26,20 @@ interface Props extends WizardProps {
     plans: PlanSummary[];
     publishUrl: string;
     openLink: OpenLinkSettings | null;
+    /** PublishGate::check: what the plan must still cover before publishing */
+    gate: { allowed: boolean; missing: string[]; current: string; required: string };
+    canSendPersonal: boolean;
+    checkout: CheckoutOptions | null;
+    order: OrderView | null;
+    checkoutOutcome: string | null;
+    priceCurrency: string;
+    localPrices: Record<string, number | null>;
     errors?: Record<string, string>;
 }
 
 function usePrice() {
     const { locale } = useT();
-    return (cents: number, currency: string) =>
-        new Intl.NumberFormat(locale === 'ar' ? 'ar-u-nu-arab' : 'en', { style: 'currency', currency, maximumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100);
+    return (minor: number, currency: string) => formatMoney(minor, currency, locale);
 }
 
 function LinkRow({ guest }: { guest: GuestRow }) {
@@ -69,8 +80,9 @@ function LinkRow({ guest }: { guest: GuestRow }) {
 }
 
 /**
- * Step 5: summary, the plan price (payments come later), sign-up for guests,
- * then Publish and every family's personal link with WhatsApp sharing.
+ * Step 5: summary, the plan price, sign-up for guests, then either Publish
+ * (Free invitations, or once the plan is paid) or the checkout, then every
+ * family's personal link with WhatsApp sharing (Premium).
  */
 export default function Review(props: Props) {
     const { t, tc, sep, locale } = useT();
@@ -80,7 +92,19 @@ export default function Review(props: Props) {
     const [publishing, setPublishing] = useState(false);
     const [openLinkOn, setOpenLinkOn] = useState(!!props.openLink?.enabled);
     const canPublish = props.households.length > 0 || openLinkOn;
-    const { config, event } = props;
+    const { config, event, gate, order } = props;
+    const { flash } = usePage<SharedProps>().props;
+    const pending = order && (order.status === 'awaiting_payment' || order.status === 'receipt_received');
+    const showOrder = order && (pending || props.checkoutOutcome);
+    const localPrice = (plan: PlanSummary) => {
+        if (plan.price_cents === 0) return t('wizard.review.free');
+        const amount = props.localPrices[plan.id];
+        return amount === null || amount === undefined ? price(plan.price_cents, plan.currency) : price(amount, props.priceCurrency);
+    };
+
+    useEffect(() => {
+        if (flash?.warning) toast.error(flash.warning);
+    }, [flash?.warning]);
     const date = config.sections.find((s) => s.type === 'date');
     const place = config.sections.find((s) => s.type === 'place');
     const when =
@@ -140,7 +164,9 @@ export default function Review(props: Props) {
                                     <TierBadge tier={props.plan.id} className="px-2.5 py-1 text-sm" />
                                 </span>
                             </div>
-                            <span className="text-primary text-2xl font-bold">{props.plan.price_cents === 0 ? t('wizard.review.free') : price(props.plan.price_cents, props.plan.currency)}</span>
+                            <span className="text-primary text-2xl font-bold" data-plan-price>
+                                {localPrice(props.plan)}
+                            </span>
                         </div>
                         {props.planReasons.length > 0 && (
                             <p className="text-muted-foreground text-sm">
@@ -151,14 +177,21 @@ export default function Review(props: Props) {
                             {props.plans.map((p) => (
                                 <div key={p.id} className={cn('rounded-lg border p-2', p.id === props.plan?.id && 'border-primary bg-primary/5')}>
                                     <div className="font-semibold">{planName(p)}</div>
-                                    <div>{p.price_cents === 0 ? t('wizard.review.free') : price(p.price_cents, p.currency)}</div>
+                                    <div>{localPrice(p)}</div>
                                     {p.guests && <div className="text-muted-foreground">{t('wizard.review.up_to', { guests: p.guests })}</div>}
                                 </div>
                             ))}
                         </div>
-                        <p className="flex items-start gap-2 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">
-                            <CreditCard className="mt-0.5 size-4 shrink-0" /> {t('wizard.review.payments_soon')}
-                        </p>
+                        {gate.allowed ? (
+                            <p className="flex items-start gap-2 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-900" data-gate="allowed">
+                                <Sparkles className="mt-0.5 size-4 shrink-0" /> {gate.current === 'free' ? t('checkout.free_ready') : t('checkout.current_plan', { plan: t(`wizard.tiers.${gate.current}`) })}
+                            </p>
+                        ) : (
+                            <p className="flex items-start gap-2 rounded-lg bg-amber-50 p-3 text-sm text-amber-900" data-gate="payment">
+                                <Gem className="mt-0.5 size-4 shrink-0" />
+                                {t('checkout.missing', { reasons: gate.missing.map((r) => t(`wizard.review.reasons.${r}`)).join(locale === 'ar' ? '، ' : ', ') })}
+                            </p>
+                        )}
                     </section>
                 )}
 
@@ -183,7 +216,19 @@ export default function Review(props: Props) {
 
                 {props.openLink && <OpenLinkPanel initial={props.openLink} title={event.title} onChange={(link) => setOpenLinkOn(link.enabled)} />}
 
-                {!event.published && auth.user && (
+                {!event.published && auth.user && showOrder && order && <OrderPanel order={order} outcome={props.checkoutOutcome} from="wizard" />}
+
+                {!event.published && auth.user && !gate.allowed && props.checkout && order?.status !== 'receipt_received' &&
+                    (order?.status === 'awaiting_payment' ? (
+                        <details className="group" data-change-checkout>
+                            <summary className="text-primary flex min-h-11 cursor-pointer items-center text-sm font-semibold">{t('checkout.change')}</summary>
+                            <CheckoutPanel options={props.checkout} from="wizard" errors={props.errors} />
+                        </details>
+                    ) : (
+                        <CheckoutPanel options={props.checkout} from="wizard" errors={props.errors} />
+                    ))}
+
+                {!event.published && auth.user && gate.allowed && (
                     <section className="grid gap-2">
                         {props.errors?.publish && (
                             <p className="text-destructive text-sm" role="alert">
@@ -197,19 +242,30 @@ export default function Review(props: Props) {
                     </section>
                 )}
 
+                {event.published && !props.canSendPersonal && props.households.length > 0 && (
+                    <section className="grid gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-950" data-send-locked>
+                        <h2 className="font-bold">{t('checkout.send_locked_title')}</h2>
+                        <p className="text-sm">{t('checkout.send_locked')}</p>
+                    </section>
+                )}
+
                 {event.published && (
                     <section className="grid gap-3">
-                        <div className="flex items-center justify-between gap-2">
-                            <h2 className="font-semibold">{t('wizard.review.links')}</h2>
-                            <Button variant="outline" onClick={copyAll} className="h-10">
-                                <Copy /> {t('wizard.review.copy_all')}
-                            </Button>
-                        </div>
-                        <ul className="grid gap-2">
-                            {props.households.map((guest) => (
-                                <LinkRow key={guest.id} guest={guest} />
-                            ))}
-                        </ul>
+                        {props.canSendPersonal && props.households.length > 0 && (
+                            <>
+                                <div className="flex items-center justify-between gap-2">
+                                    <h2 className="font-semibold">{t('wizard.review.links')}</h2>
+                                    <Button variant="outline" onClick={copyAll} className="h-10">
+                                        <Copy /> {t('wizard.review.copy_all')}
+                                    </Button>
+                                </div>
+                                <ul className="grid gap-2">
+                                    {props.households.map((guest) => (
+                                        <LinkRow key={guest.id} guest={guest} />
+                                    ))}
+                                </ul>
+                            </>
+                        )}
                         <Button asChild className="h-12 text-base">
                             <Link href="/dashboard">
                                 <LayoutDashboard /> {t('wizard.review.to_dashboard')}

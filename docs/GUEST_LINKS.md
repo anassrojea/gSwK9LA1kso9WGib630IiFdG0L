@@ -94,15 +94,17 @@ signed in), and publishing is allowed with no households when the open link is o
 migration `2026_10_31_200200_add_open_link_feature_to_plans` adds it to plans already in the database). It is checked
 when the host switches the link on (`App\Services\OpenLinks::available`).
 
-Personal links stay Premium in the plan (section 5) but are **not enforced yet**. When payments land, a later phase should:
+Personal links are Premium (plan section 5), enforced since phase 4 by `App\Services\PublishGate`:
 
-1. Gate the writes that create personal households: `GuestController::import/store` (wizard) and the dashboard's guest
-   import and add, with `$entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS)`, or let them through and
-   gate publishing instead (`WizardController::publish`) with a checkout step.
-2. Offer the open link as the free way to send an invitation (the review step already lets a host publish with only
-   the open link).
-3. Keep open-link replies working on every plan: they create households, but must not be blocked by the personal-link check.
-4. Optionally gate the personal preview image (plan section 5 lists "Personal WhatsApp preview" as Premium): in
+1. Households can be listed on any plan (a draft guest list), but `PlanAdvisor` counts households invited by name
+   (not tagged `open-link`) as needing Premium, so `WizardController::publish` refuses to publish until the event has
+   `Entitlements::PERSONAL_LINKS` (the review step shows the checkout instead of Publish).
+2. The open link is the free way to send an invitation: a Free invitation with only the open link publishes at once.
+3. Open-link replies keep working on every plan: they create households tagged `open-link`, which never count.
+4. After publishing, the review step lists personal links (and their WhatsApp buttons) only with `PERSONAL_LINKS`;
+   the event dashboard hides the per-guest WhatsApp and copy actions (`can.send`) and refuses reminders
+   (`POST /dashboard/events/{event}/reminders` → 403 without `Entitlements::REMINDERS`).
+5. Not gated yet: the personal preview image (plan section 5 lists "Personal WhatsApp preview" as Premium). In
    `InvitationController::show`, pass `$og->hash($invitation, $config)` without the household for free events, so
    they share the generic card.
 

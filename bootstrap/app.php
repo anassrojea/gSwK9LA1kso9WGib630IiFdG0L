@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
             // Guest invitations: no session, cookies or CSRF, so pages stay edge-cacheable;
             // guests are identified by the household token and every route is rate-limited.
             Route::middleware('invite')->group(base_path('routes/invite.php'));
+
+            // Payment webhooks: signature-verified by each gateway, no session or CSRF.
+            Route::middleware(SubstituteBindings::class)->group(base_path('routes/webhooks.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

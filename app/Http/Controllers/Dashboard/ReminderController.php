@@ -8,6 +8,7 @@ use App\Models\Household;
 use App\Models\Reminder;
 use App\Services\Dashboard\GuestBoard;
 use App\Services\Dashboard\WhatsApp;
+use App\Services\PublishGate;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,9 +27,14 @@ class ReminderController extends Controller
     /**
      * POST /dashboard/events/{event}/reminders {audience: never|opened|both}
      */
-    public function store(Request $request, Event $event): JsonResponse
+    public function store(Request $request, Event $event, PublishGate $gate): JsonResponse
     {
         Gate::authorize('update', $event);
+
+        // reminders go out on personal links: a Premium feature
+        if (! $gate->canRemind($event)) {
+            return response()->json(['message' => trans('app.checkout.reminders_premium')], 403);
+        }
 
         $audience = $request->validate(['audience' => ['required', Rule::in(GuestBoard::AUDIENCES)]])['audience'];
 
