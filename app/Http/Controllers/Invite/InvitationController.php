@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Http\Controllers\Invite;
+
+use App\Http\Controllers\Controller;
+use App\Models\Household;
+use App\Models\Invitation;
+use App\Services\Entitlements;
+use App\Services\InvitationConfig\InvitationConfig;
+use App\Services\InvitationConfig\ThemeStyles;
+use App\Services\OpenTracker;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
+class InvitationController extends Controller
+{
+    use ResolvesHousehold;
+
+    /**
+     * GET /i/{token}: the invitation, rendered on the server from its config.
+     * Per-guest parts (name, seats, RSVP state) come from /state, so this HTML
+     * holds nothing personal and can be cached at the edge.
+     */
+    public function show(Request $request, string $token, OpenTracker $opens, Entitlements $entitlements): Response
+    {
+        [$household, $invitation, $config] = $this->resolve($token);
+
+        $opens->record($household, $request->userAgent());
+
+        $event = $household->event;
+
+        return response()
+            ->view('invite.show', [
+                'config' => $config,
+                'sections' => InvitationConfig::visibleSections($config),
+                'event' => $event,
+                'invitation' => $invitation,
+                'themeVars' => ThemeStyles::cssVariables($config['theme']),
+                'fontsUrl' => ThemeStyles::fontsUrl($config['theme']),
+                'showBadge' => ! $entitlements->hasFeature($event, Entitlements::NO_BADGE),
+                'boot' => [
+                    'locale' => $config['locale'],
+                    'opening' => ['id' => $config['opening']['id'], 'options' => (object) ($config['opening']['options'] ?? [])],
+                    'effects' => (object) ($config['effects'] ?? []),
+                    'urls' => [
+                        'state' => route('invite.state', $token, false),
+                        'rsvp' => route('invite.rsvp', $token, false),
+                        'rose' => route('invite.rose', $invitation->slug, false),
+                    ],
+                ],
+            ])
+            ->header('Cache-Control', 'public, max-age=0, s-maxage=300');
+    }
+
+    /**
+     * GET /i/{token}/state: household name, seats, RSVP state (JSON, never cached).
+     * The page calls it with ?open=1 once per load to record the open.
+     */
+    public function state(Request $request, string $token, OpenTracker $opens, Entitlements $entitlements): JsonResponse
+    {
+        [$household, $invitation, $config] = $this->resolve($token);
+
+        if ($request->boolean('open')) {
+            $opens->record($household, $request->userAgent());
+        }
+
+        return response()->json(static::statePayload($household, $invitation, $config, $entitlements));
+    }
+
+    public static function statePayload(Household $household, Invitation $invitation, array $config, Entitlements $entitlements): array
+    {
+        $event = $household->event;
+        $rsvp = $household->rsvp;
+        $rsvpSection = InvitationConfig::section($config, 'rsvp');
+
+        // "You are at table 7" is part of the seating feature (plan section 5)
+        $table = $rsvp?->attending && $entitlements->hasFeature($event, Entitlements::SEATING)
+            ? $household->seatAssignments()->value('table_id')
+            : null;
+
+        return [
+            'household' => [
+                'name' => $household->display_name,
+                'seats_allowed' => $household->seats_allowed,
+            ],
+            'rsvp' => $rsvp ? [
+                'attending' => $rsvp->attending,
+                'people_count' => $rsvp->people_count,
+                'kids_count' => $rsvp->kids_count,
+                'message' => $rsvp->message,
+                'responded_at' => $rsvp->responded_at?->toIso8601String(),
+            ] : null,
+            'rsvp_open' => RsvpController::isOpen($rsvpSection),
+            'table' => $table,
+            'roses' => InvitationConfig::section($config, 'send_rose') ? (int) ($event->rose?->count ?? 0) : null,
+        ];
+    }
+}

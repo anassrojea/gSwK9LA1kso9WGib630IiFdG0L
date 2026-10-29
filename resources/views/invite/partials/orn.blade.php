@@ -1,0 +1,1 @@
+<svg class="orn {{ $class ?? 'rv' }}" viewBox="0 0 140 18" aria-hidden="true"><path d="M0 9h56M84 9h56" stroke="currentColor" stroke-width="1"/><path d="M70 1l8 8-8 8-8-8z" fill="none" stroke="currentColor"/><circle cx="70" cy="9" r="2" fill="currentColor"/></svg>
