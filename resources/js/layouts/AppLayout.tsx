@@ -19,6 +19,13 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                     </Link>
                     <div className="flex items-center gap-2">
                         <span className="hidden text-sm text-muted-foreground sm:inline">{auth.user?.name}</span>
+                        {auth.user && (
+                            <Button variant="ghost" size="sm" asChild>
+                                <Link href="/dashboard/orders" data-nav-orders>
+                                    {t('orders.menu')}
+                                </Link>
+                            </Button>
+                        )}
                         <LocaleSwitch />
                         {auth.user?.role === 'admin' && (
                             <Button variant="outline" size="sm" asChild>

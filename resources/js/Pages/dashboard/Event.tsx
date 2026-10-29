@@ -1,5 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { ArrowLeft, Armchair, BellRing, CalendarDays, Download, Images, MapPin, MessageSquareText, Pencil, PartyPopper, QrCode, RefreshCw, Search, UserPlus, X } from 'lucide-react';
+import { ArrowLeft, Armchair, BellRing, CalendarDays, Download, Gem, Hourglass, Images, MapPin, MessageSquareText, Pencil, PartyPopper, QrCode, RefreshCw, Search, UserPlus, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 
@@ -10,6 +10,7 @@ import { MessagesDialog } from '@/components/dashboard/MessagesDialog';
 import { Funnel, StatCards } from '@/components/dashboard/Overview';
 import { ReminderDialog } from '@/components/dashboard/ReminderDialog';
 import { OpenLinkPanel } from '@/components/wizard/OpenLinkPanel';
+import { TierBadge } from '@/components/wizard/TierBadge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { NativeSelect } from '@/components/ui/native-select';
@@ -245,6 +246,7 @@ export default function EventDashboard(props: DashboardProps) {
                                     </span>
                                 )}
                                 {stats.is_event_day && <span className="bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-semibold">{t('dashboard.event_day')}</span>}
+                                <TierBadge tier={props.plan} />
                             </p>
                         </div>
                         <LiveBadge state={liveState} onRefresh={refresh} />
@@ -253,10 +255,33 @@ export default function EventDashboard(props: DashboardProps) {
 
                 {stats.is_event_day && <LiveDay stats={stats} />}
 
+                {props.pendingOrder && (
+                    <Link href={`${urls.orders}/${props.pendingOrder.code}`} className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950" data-pending-order>
+                        <Hourglass className="size-4 shrink-0" />
+                        <span>
+                            {t(`payments.status.${props.pendingOrder.status}`)} · <bdi dir="ltr">{props.pendingOrder.code}</bdi>
+                        </span>
+                    </Link>
+                )}
+
+                {can.update && !can.send && guests.some((g) => g.link) && (
+                    <section className="grid gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-950 sm:grid-cols-[1fr_auto] sm:items-center" data-send-locked>
+                        <div className="grid gap-1">
+                            <h2 className="font-bold">{t('checkout.send_locked_title')}</h2>
+                            <p className="text-sm">{t('checkout.send_locked')}</p>
+                        </div>
+                        <Button asChild className="h-11">
+                            <Link href={urls.upgrade}>
+                                <Gem /> {t('checkout.upgrade')}
+                            </Link>
+                        </Button>
+                    </section>
+                )}
+
                 <StatCards stats={stats} />
 
                 <div className="grid grid-cols-2 gap-2 lg:grid-cols-4" data-big-buttons>
-                    {can.update && (
+                    {can.update && can.remind && (
                         <BigButton name="remind" primary icon={<BellRing />} onClick={() => openReminders('both')} note={tc('wizard.guests.families', stats.opened_not_replied + stats.never_opened)}>
                             {t('dashboard.big.remind')}
                         </BigButton>
@@ -276,6 +301,11 @@ export default function EventDashboard(props: DashboardProps) {
                             {t('dashboard.big.messages')}
                         </BigButton>
                     )}
+                    {can.update && (
+                        <BigButton name="upgrade" primary={!can.send} icon={<Gem />} href={urls.upgrade}>
+                            {t('checkout.upgrade')}
+                        </BigButton>
+                    )}
                     <BigButton name="seat" icon={<Armchair />} disabled note={t('dashboard.big.soon')}>
                         {t('dashboard.big.seat')}
                     </BigButton>
@@ -289,7 +319,7 @@ export default function EventDashboard(props: DashboardProps) {
 
                 {props.openLink && <OpenLinkPanel initial={props.openLink} title={event.title} />}
 
-                <Funnel stats={stats} onRemind={can.update ? () => openReminders(stats.opened_not_replied > 0 ? 'opened' : 'both') : undefined} />
+                <Funnel stats={stats} onRemind={can.update && can.remind ? () => openReminders(stats.opened_not_replied > 0 ? 'opened' : 'both') : undefined} />
 
                 <section className="grid gap-3" aria-labelledby="guests-title">
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
