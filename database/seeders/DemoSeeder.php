@@ -27,6 +27,20 @@ class DemoSeeder extends Seeder
     public const TOKENS = [
         'layali-envelope' => 'LayaliDemo01',
         'warda-rose' => 'WardaDemo001',
+        'khutuba-ringbox' => 'KhutubaDemo1',
+        'henna-doors' => 'HennaDemo001',
+        'birthday-gift' => 'BirthdayDemo',
+        'graduation-diploma' => 'GradDemo0001',
+    ];
+
+    /** The household each demo link belongs to (shown as "To …" on the opening). */
+    private const GUESTS = [
+        'layali-envelope' => 'عائلة الأستاذ خالد العلي',
+        'warda-rose' => 'عائلة الأستاذة هالة يوسف',
+        'khutuba-ringbox' => 'عائلة الأستاذ سامر النجار',
+        'henna-doors' => 'الغالية أم فيصل وبناتها',
+        'birthday-gift' => 'يوسف وعائلته',
+        'graduation-diploma' => 'الأستاذ وليد منصور وعائلته',
     ];
 
     public function run(HallGenerator $halls): void
@@ -64,8 +78,11 @@ class DemoSeeder extends Seeder
         $place = collect($config['sections'])->firstWhere('type', 'place');
         $names = collect($config['sections'])->firstWhere('type', 'names');
 
+        $kind = ['wedding' => 'زفاف', 'engagement' => 'خطوبة', 'henna' => 'حنّاء', 'birthday' => 'عيد ميلاد', 'graduation' => 'تخرّج'][$config['occasion']] ?? 'دعوة';
+        $title = "{$kind} {$names['first']}".(isset($names['second']) ? " و{$names['second']}" : '');
+
         $event = Event::query()->updateOrCreate(
-            ['owner_id' => $host->id, 'title' => "زفاف {$names['first']} و{$names['second']}"],
+            ['owner_id' => $host->id, 'title' => $title],
             [
                 'occasion' => $config['occasion'],
                 'starts_at' => CarbonImmutable::parse($date['start']),
@@ -87,7 +104,7 @@ class DemoSeeder extends Seeder
 
         $main = Household::query()->updateOrCreate(['token' => $token], [
             'event_id' => $event->id,
-            'display_name' => $template->id === 'warda-rose' ? 'عائلة الأستاذة هالة يوسف' : 'عائلة الأستاذ خالد العلي',
+            'display_name' => self::GUESTS[$template->id] ?? 'عائلة الأستاذ خالد العلي',
             'seats_allowed' => 2,
             'section' => 'women',
             'tags' => ['أصدقاء'],

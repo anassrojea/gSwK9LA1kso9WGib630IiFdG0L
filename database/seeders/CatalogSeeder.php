@@ -21,10 +21,10 @@ class CatalogSeeder extends Seeder
             // id => [name_ar, name_en, tier, ported to resources/js/openings/]
             'envelope' => ['الظرف', 'Envelope', 'premium', true],
             'rose' => ['الوردة', 'Rose', 'premium', true],
-            'ringbox' => ['علبة الخاتم', 'Ring box', 'premium', false],
-            'doors' => ['الأبواب المقوّسة', 'Arched doors', 'premium', false],
-            'gift' => ['صندوق الهدية', 'Gift box', 'premium', false],
-            'diploma' => ['الشهادة', 'Diploma', 'premium', false],
+            'ringbox' => ['علبة الخاتم', 'Ring box', 'premium', true],
+            'doors' => ['الأبواب المقوّسة', 'Arched doors', 'premium', true],
+            'gift' => ['صندوق الهدية', 'Gift box', 'premium', true],
+            'diploma' => ['الشهادة', 'Diploma', 'premium', true],
         ];
 
         foreach ($openings as $id => [$ar, $en, $tier, $active]) {
