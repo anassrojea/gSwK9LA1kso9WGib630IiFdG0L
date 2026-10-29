@@ -65,17 +65,24 @@ export function missingTypes(config: InvitationConfig): SectionType[] {
 }
 
 /** A short summary for the section list ("ريم و عمر", "٤ فصول"…). */
-export function sectionSummary(section: InvitationSection, t: Translate, n: (v: string | number) => string): string {
+export function sectionSummary(section: InvitationSection, t: Translate, n: (v: string | number) => string, locale = 'ar', sep = '، '): string {
     switch (section.type) {
         case 'intro_line':
         case 'closing':
             return section.text;
         case 'names':
-            return [section.first, section.second].filter(Boolean).join(' · ');
+            return [section.first, section.second].filter(Boolean).join(sep);
         case 'hosts':
             return section.lines[0] ?? '';
         case 'date':
-            return n(section.start.slice(0, 16).replace('T', ' '));
+            try {
+                // the wall-clock time printed on the invitation, whatever the host's own zone
+                return new Intl.DateTimeFormat(locale === 'ar' ? 'ar-u-nu-arab' : 'en-GB', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }).format(
+                    new Date(section.start.slice(0, 19) + 'Z'),
+                );
+            } catch {
+                return n(section.start.slice(0, 10));
+            }
         case 'place':
             return section.name;
         case 'story':

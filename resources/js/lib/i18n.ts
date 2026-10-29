@@ -39,5 +39,8 @@ export function useT() {
     /** Digits in the UI's script (Arabic-Indic in Arabic). */
     const n = (value: string | number) => toLocalDigits(value, locale);
 
-    return { t, tc, n, locale, dir };
+    /** Separator between short facts. In Arabic a middle dot reads like the digit zero (٠), so use a comma. */
+    const sep = locale === 'ar' ? '، ' : ' · ';
+
+    return { t, tc, n, sep, locale, dir };
 }

@@ -145,7 +145,7 @@ export default function Guests(props: Props) {
                             <ul className="flex flex-wrap gap-1.5">
                                 {parsed.slice(0, 12).map((g, i) => (
                                     <li key={i} className="bg-background rounded-full border px-2.5 py-1 text-xs">
-                                        {g.name} · {n(g.seats)}
+                                        {g.name} <b className="text-primary ms-1">{n(g.seats)}</b>
                                     </li>
                                 ))}
                                 {parsed.length > 12 && <li className="text-muted-foreground px-1 text-xs">+{n(parsed.length - 12)}</li>}

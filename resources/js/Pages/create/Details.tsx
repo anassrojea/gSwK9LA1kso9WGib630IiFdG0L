@@ -43,7 +43,7 @@ function SortableRow({ id, children }: { id: string; children: (handle: React.HT
  * screen; the list reorders by dragging, and each section can be hidden.
  */
 export default function Details(props: Props) {
-    const { t, n, dir } = useT();
+    const { t, n, sep, dir, locale } = useT();
     const autosave = useAutosave(props.urls.config, props.config);
     const { config, update } = autosave;
     const [media, setMedia] = useState<MediaMap>(props.media);
@@ -173,7 +173,8 @@ export default function Details(props: Props) {
                     <span className="grid flex-1">
                         <span className="font-semibold">{t('wizard.details.cover_music')}</span>
                         <span className="text-muted-foreground flex items-center gap-1 text-xs">
-                            {config.media?.cover ? t(`wizard.details.cover_${config.media.cover.type}`) : t('wizard.details.no_cover')} ·{' '}
+                            {config.media?.cover ? t(`wizard.details.cover_${config.media.cover.type}`) : t('wizard.details.no_cover')}
+                            {sep}
                             <Music className="size-3" /> {config.effects?.music ? t('wizard.common.on') : t('wizard.common.off')}
                         </span>
                     </span>
@@ -212,7 +213,7 @@ export default function Details(props: Props) {
                                                     {typeName(section.type)}
                                                     {hasErrorsUnder(autosave.errors, `/sections/${i}`) && <AlertCircle className="text-destructive size-4" aria-label={t('wizard.save.invalid')} />}
                                                 </span>
-                                                <span className="text-muted-foreground truncate text-xs">{section.hidden ? t('wizard.details.hidden') : sectionSummary(section, t, n)}</span>
+                                                <span className="text-muted-foreground truncate text-xs">{section.hidden ? t('wizard.details.hidden') : sectionSummary(section, t, n, locale, sep)}</span>
                                             </button>
                                             <div className="hidden items-center sm:flex">
                                                 <Button variant="ghost" size="icon" className="size-10" disabled={i === 0} onClick={() => move(i, -1)} aria-label={t('wizard.common.move_up')}>

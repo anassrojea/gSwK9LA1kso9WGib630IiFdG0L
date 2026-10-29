@@ -44,7 +44,7 @@ async function copy(text: string) {
 }
 
 function LinkRow({ guest }: { guest: GuestRow }) {
-    const { t, n } = useT();
+    const { t, tc } = useT();
     const [copied, setCopied] = useState(false);
     const whatsapp = `https://wa.me/?text=${encodeURIComponent(guest.message ?? guest.link ?? '')}`;
 
@@ -52,7 +52,7 @@ function LinkRow({ guest }: { guest: GuestRow }) {
         <li className="bg-card grid gap-2 rounded-xl border p-3" data-guest-link>
             <div className="flex items-center justify-between gap-2">
                 <span className="font-semibold">{guest.name}</span>
-                <span className="text-muted-foreground text-xs">{t('wizard.review.seats', { seats: n(guest.seats) })}</span>
+                <span className="text-muted-foreground text-xs">{tc('wizard.guests.seat_count', guest.seats)}</span>
             </div>
             <code className="bg-muted truncate rounded px-2 py-1.5 text-xs" dir="ltr">
                 {guest.link}
@@ -85,9 +85,10 @@ function LinkRow({ guest }: { guest: GuestRow }) {
  * then Publish and every family's personal link with WhatsApp sharing.
  */
 export default function Review(props: Props) {
-    const { t, tc, locale } = useT();
+    const { t, tc, sep, locale } = useT();
     const { auth } = usePage<SharedProps>().props;
     const price = usePrice();
+    const planName = (plan: PlanSummary) => (['free', 'premium', 'signature'].includes(plan.id) ? t(`wizard.tiers.${plan.id}`) : plan.name);
     const [publishing, setPublishing] = useState(false);
     const { config, event } = props;
     const date = config.sections.find((s) => s.type === 'date');
@@ -133,7 +134,9 @@ export default function Review(props: Props) {
                             </li>
                         )}
                         <li className="flex items-center gap-2">
-                            <Users className="size-4 shrink-0" /> {tc('wizard.guests.families', props.households.length)} · {tc('wizard.guests.seat_count', props.seats)}
+                            <Users className="size-4 shrink-0" /> {tc('wizard.guests.families', props.households.length)}
+                            {sep}
+                            {tc('wizard.guests.seat_count', props.seats)}
                         </li>
                     </ul>
                 </section>
@@ -144,7 +147,7 @@ export default function Review(props: Props) {
                             <div className="grid gap-1">
                                 <span className="text-muted-foreground text-xs font-semibold">{t('wizard.review.your_plan')}</span>
                                 <span className="flex items-center gap-2 text-lg font-bold">
-                                    {props.plan.name} <TierBadge tier={props.plan.id} />
+                                    <TierBadge tier={props.plan.id} className="px-2.5 py-1 text-sm" />
                                 </span>
                             </div>
                             <span className="text-primary text-2xl font-bold">{props.plan.price_cents === 0 ? t('wizard.review.free') : price(props.plan.price_cents, props.plan.currency)}</span>
@@ -157,7 +160,7 @@ export default function Review(props: Props) {
                         <div className="grid grid-cols-3 gap-2 text-center text-xs">
                             {props.plans.map((p) => (
                                 <div key={p.id} className={cn('rounded-lg border p-2', p.id === props.plan?.id && 'border-primary bg-primary/5')}>
-                                    <div className="font-semibold">{p.name}</div>
+                                    <div className="font-semibold">{planName(p)}</div>
                                     <div>{p.price_cents === 0 ? t('wizard.review.free') : price(p.price_cents, p.currency)}</div>
                                     {p.guests && <div className="text-muted-foreground">{t('wizard.review.up_to', { guests: p.guests })}</div>}
                                 </div>

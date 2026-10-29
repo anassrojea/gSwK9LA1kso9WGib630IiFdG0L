@@ -97,11 +97,11 @@ function Pick({ selected, onClick, children, label }: { selected: boolean; onCli
  * their own (plan 6.1). Sections and the host's text are never touched.
  */
 export default function Design(props: Props) {
-    const { t, dir } = useT();
+    const { t, sep, dir } = useT();
     const autosave = useAutosave(props.urls.config, props.config);
     const { config } = autosave;
     const names = config.sections.find((s) => s.type === 'names');
-    const sample = names && names.type === 'names' ? [names.first, names.second].filter(Boolean).join(' · ') : t(`wizard.occasions.${config.occasion}`);
+    const sample = names && names.type === 'names' ? [names.first, names.second].filter(Boolean).join(sep) : t(`wizard.occasions.${config.occasion}`);
 
     const forOccasion = props.templates.filter((tpl) => tpl.occasion === config.occasion);
     const others = props.templates.filter((tpl) => tpl.occasion !== config.occasion);

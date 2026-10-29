@@ -54,6 +54,14 @@ export default function WizardLayout({ step, eventId, title, subtitle, children,
         if (flash?.status) toast.success(flash.status);
     }, [flash?.status]);
 
+    // sonner's store is global: don't carry a step's toasts onto the next page
+    useEffect(
+        () => () => {
+            toast.dismiss();
+        },
+        [],
+    );
+
     const go = async (target: Step) => {
         if (!eventId) return;
         await beforeLeave?.();

@@ -357,7 +357,6 @@ return [
             'need_guests' => 'Add at least one family before publishing.',
             'published' => 'Published! Your guests can open their links now.',
             'links' => 'Personal links',
-            'seats' => ':seats seats',
             'copy' => 'Copy link',
             'copied' => 'Copied',
             'copy_all' => 'Copy all',
