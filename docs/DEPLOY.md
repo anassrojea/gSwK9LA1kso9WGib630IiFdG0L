@@ -337,6 +337,10 @@ the 5-minute edge TTL bounds staleness.
 1. Deploy once manually from Forge; watch the deploy log.
 2. `php artisan migrate --force` ran (the deploy script does it). Seed the catalog only:
    `php artisan db:seed --class=PlanSeeder --force` and `php artisan db:seed --class=CatalogSeeder --force`.
+   `CatalogSeeder` is safe to run on every deploy: it inserts openings, themes and templates missing from the
+   database and updates the ones nobody edited in the admin; a row saved in Filament (`admin_edited_at` set) is
+   kept and listed as "Kept admin edits". To take a file's version again, use "Reset to templates/" on that row
+   (or "Import from templates/" with "Also overwrite admin edits") in the admin.
 3. Create your admin: `php artisan daawa:make-admin you@example.com` (prints a temporary password), log in at `/admin`.
 4. Check `/up` (health), `/horizon` (admins only), and the browser console on a dashboard page for a working
    Reverb connection.

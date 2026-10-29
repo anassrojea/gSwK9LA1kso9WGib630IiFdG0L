@@ -95,7 +95,17 @@ Zod schema and the TypeScript hall generator agree with their PHP counterparts o
 | `app/Services/HallGenerator.php`, `resources/js/lib/hall-generator.ts` | Hall layout generator (plan section 7), identical output in PHP and TS |
 | `app/Policies/` | `EventPolicy`, `HouseholdPolicy`, `OrganizationPolicy` |
 | `app/Http/Middleware/SetLocale.php` | Locale (Arabic by default, English on request) and `dir="rtl"` |
-| `app/Filament/` | Admin resources: users, events, orders, plans |
+| `app/Filament/` | Admin (Arabic by default, English from the user menu; strings in `lang/*/admin.php`): Today, orders and transfers, prices, discount codes, customers and their events (read-only), templates, themes, openings, plans, add-ons, audit log |
+| `app/Services/Catalog/` | `CatalogSync` (templates/ JSON → database, used by `CatalogSeeder` and the admin's import) and `CatalogValidator` (admin edits checked against the config schema) |
+| `app/Services/Payments/Discounts.php` | Discount code rules (twin: `resources/js/lib/discount.ts`) |
+
+### Catalog: files vs admin edits
+
+`templates/` is the source of the catalog and `CatalogSeeder` syncs it into the database, but the admin can
+edit openings, themes and templates too. The rule: the seeder inserts missing rows and updates rows nobody saved
+in the admin; a row saved in Filament gets `admin_edited_at` and is never overwritten by re-seeding. "Reset to
+templates/" on a row (or "Import from templates/" with "Also overwrite admin edits") takes the file's version
+again. Tiers live in these tables, so a tier changed in the admin applies to `PlanAdvisor` and `PublishGate` at once.
 
 ### Adding an opening
 

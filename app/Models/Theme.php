@@ -19,7 +19,7 @@ class Theme extends Model
 
     protected function casts(): array
     {
-        return ['tokens' => 'array', 'fonts' => 'array', 'active' => 'boolean'];
+        return ['tokens' => 'array', 'fonts' => 'array', 'active' => 'boolean', 'admin_edited_at' => 'immutable_datetime'];
     }
 
     public function designer(): BelongsTo
