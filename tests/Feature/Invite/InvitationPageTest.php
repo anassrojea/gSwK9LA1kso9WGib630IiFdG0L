@@ -50,7 +50,51 @@ it('renders the invitation from its config', function (string $template, string 
 })->with([
     'envelope' => ['layali-envelope', 'envelope'],
     'rose' => ['warda-rose', 'rose'],
+    'ringbox' => ['khutuba-ringbox', 'ringbox'],
+    'doors' => ['henna-doors', 'doors'],
+    'gift' => ['birthday-gift', 'gift'],
+    'diploma' => ['graduation-diploma', 'diploma'],
 ]);
+
+/** The text a guest reads: no scripts, styles, tags or attributes. */
+function visibleText(string $html): string
+{
+    $html = preg_replace('#<(script|style)\b[^>]*>.*?</\1>#s', ' ', $html);
+
+    return html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5);
+}
+
+it('renders an English invitation left to right with Western digits', function () {
+    $event = Event::factory()->create();
+    Invitation::factory()->for($event)->opening('evergreen-ringbox')->create();
+    $household = Household::factory()->for($event)->create();
+
+    $response = $this->get("/i/{$household->token}")
+        ->assertOk()
+        ->assertSee('<html lang="en" dir="ltr">', false)
+        ->assertSee('op-ringbox', false)
+        ->assertSee('Saturday')
+        ->assertSee('June 2027')
+        ->assertSee('4:30 PM')
+        ->assertSee('12 . 6 . 2027')
+        ->assertSee('Scroll down to open the box');
+
+    expect(visibleText($response->getContent()))->not->toMatch('/[٠-٩]/u');
+});
+
+it('uses Arabic-Indic digits everywhere in an Arabic invitation', function (string $template) {
+    $event = Event::factory()->create();
+    Invitation::factory()->for($event)->opening($template)->create();
+    $household = Household::factory()->for($event)->create();
+
+    $response = $this->get("/i/{$household->token}")->assertOk()->assertSee('<html lang="ar" dir="rtl">', false);
+
+    expect(visibleText($response->getContent()))->toMatch('/[٠-٩]/u')->not->toMatch('/[0-9]/');
+})->with(fn () => collect(glob(__DIR__.'/../../../templates/invitations/*.json'))
+    ->map(fn ($file) => json_decode(file_get_contents($file), true))
+    ->filter(fn ($t) => $t['default_config']['locale'] === 'ar')
+    ->mapWithKeys(fn ($t) => [$t['id'] => [$t['id']]])
+    ->all());
 
 it('renders every visible section and skips hidden ones', function () {
     $config = InvitationFactory::sampleConfig();
