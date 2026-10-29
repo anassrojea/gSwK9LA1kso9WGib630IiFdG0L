@@ -13,6 +13,7 @@ use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Resources\Users\Schemas\UserInfolist;
 use App\Filament\Resources\Users\Tables\UsersTable;
 use App\Models\User;
+use App\Services\Account\LoginCodes;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -62,13 +63,19 @@ class UserResource extends Resource
     }
 
     /**
-     * One source of truth with the account area: password, google, email_code.
+     * What is linked to the account (password, google, email_code). Unlike
+     * User::signInMethods(), Google is listed even while Google sign-in is
+     * switched off, because admins need to see what the customer linked.
      *
      * @return list<string>
      */
     public static function signInMethods(User $user): array
     {
-        return $user->signInMethods();
+        return array_values(array_filter([
+            $user->hasPassword() ? 'password' : null,
+            $user->google_id ? 'google' : null,
+            filled($user->email) && LoginCodes::enabled() ? 'email_code' : null,
+        ]));
     }
 
     public static function form(Schema $schema): Schema
