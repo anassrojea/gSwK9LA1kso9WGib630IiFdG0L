@@ -1,0 +1,25 @@
+{
+  "id": "midnight-navy",
+  "name_ar": "كحلي ليلي",
+  "name_en": "Midnight navy",
+  "tier": "free",
+  "tokens": {
+    "colors": {
+      "bg": "#F7F5EF",
+      "ink": "#1B2333",
+      "accent": "#1F2E4D",
+      "soft": "#6B7385",
+      "gold": "#C2A15A",
+      "goldLight": "#E6D5A8",
+      "surface": "#ECE8DD",
+      "backdrop": "#0E1626",
+      "label": "#B08F48"
+    },
+    "radius": 8
+  },
+  "fonts": {
+    "display": "Reem Kufi",
+    "body": "Amiri",
+    "label": "Almarai"
+  }
+}

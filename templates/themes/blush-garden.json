@@ -1,0 +1,25 @@
+{
+  "id": "blush-garden",
+  "name_ar": "حديقة وردية",
+  "name_en": "Blush garden",
+  "tier": "premium",
+  "tokens": {
+    "colors": {
+      "bg": "#FFF6F8",
+      "ink": "#3B2330",
+      "accent": "#A8325A",
+      "soft": "#8E6B78",
+      "gold": "#C9A35C",
+      "goldLight": "#F9D3DD",
+      "surface": "#FCE6EC",
+      "backdrop": "#F3D9E0",
+      "label": "#E8839F"
+    },
+    "radius": 20
+  },
+  "fonts": {
+    "display": "Katibeh",
+    "body": "Amiri",
+    "label": "Almarai"
+  }
+}

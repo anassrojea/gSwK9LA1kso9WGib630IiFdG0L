@@ -1,0 +1,25 @@
+{
+  "id": "wine-gold",
+  "name_ar": "خمري وذهبي",
+  "name_en": "Wine & gold",
+  "tier": "premium",
+  "tokens": {
+    "colors": {
+      "bg": "#FBF6F2",
+      "ink": "#3A1420",
+      "accent": "#5A1A2C",
+      "soft": "#86636C",
+      "gold": "#C8A45D",
+      "goldLight": "#E8D29C",
+      "surface": "#F3E4E2",
+      "backdrop": "#2A0B14",
+      "label": "#C8A45D"
+    },
+    "radius": 4
+  },
+  "fonts": {
+    "display": "Aref Ruqaa",
+    "body": "Amiri",
+    "label": "Reem Kufi"
+  }
+}

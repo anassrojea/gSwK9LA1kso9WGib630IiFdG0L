@@ -1,0 +1,156 @@
+{
+  "id": "warda-rose",
+  "occasion": "wedding",
+  "name_ar": "وردة",
+  "name_en": "Warda",
+  "tier": "premium",
+  "opening_id": "rose",
+  "theme_id": "blush-garden",
+  "sort": 20,
+  "default_config": {
+    "version": 1,
+    "occasion": "wedding",
+    "locale": "ar",
+    "opening": {
+      "id": "rose",
+      "options": {
+        "petalColor": "#F4A6BB",
+        "kicker": "وردةٌ لكم",
+        "headline": "وردةٌ لكم… انتظروها تتفتّح"
+      }
+    },
+    "theme": {
+      "id": "blush-garden",
+      "colors": {
+        "bg": "#FFF6F8",
+        "ink": "#3B2330",
+        "accent": "#A8325A",
+        "soft": "#8E6B78",
+        "gold": "#C9A35C",
+        "goldLight": "#F9D3DD",
+        "surface": "#FCE6EC",
+        "backdrop": "#F3D9E0",
+        "label": "#E8839F"
+      },
+      "fonts": {
+        "display": "Katibeh",
+        "body": "Amiri",
+        "label": "Almarai"
+      },
+      "radius": 20
+    },
+    "effects": {
+      "fallingPetals": true,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "كما تتفتّح الوردةُ على مهل… تفتّحت حكايتنا"
+      },
+      {
+        "type": "hosts",
+        "label": "بقلوبٍ مليئة بالفرح",
+        "lines": [
+          "يتشرف السيد ماجد الزين وحرمه",
+          "والسيد نبيل القاسم وحرمه"
+        ],
+        "outro": "بدعوتكم لحضور حفل زفاف"
+      },
+      {
+        "type": "names",
+        "first": "ريم",
+        "second": "عمر"
+      },
+      {
+        "type": "date",
+        "start": "2026-12-17T20:30:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "story",
+        "style": "stem",
+        "label": "حكايتنا",
+        "title": "بدأت بوردة",
+        "chapters": [
+          {
+            "year": "2021",
+            "title": "آخر وردة في المحل",
+            "text": "كان يشتري ورداً لأمه، وكانت تريد الوردة الوردية الأخيرة. تركها لها… وبقيت الابتسامة."
+          },
+          {
+            "year": "2022",
+            "title": "وردة كل خميس",
+            "text": "صار يرسل لها وردة واحدة كل خميس، بلا كلام. كانت الوردة تقول كل شيء."
+          },
+          {
+            "year": "2025",
+            "title": "باقة الخطوبة",
+            "text": "في يوم الخطوبة جاء بباقة من مئة وردة… وفي وسطها الخاتم."
+          },
+          {
+            "year": "2026",
+            "title": "والآن… تتفتّح",
+            "text": "تكتمل الحكاية في ليلةٍ نريدكم أن تكونوا فيها معنا."
+          }
+        ]
+      },
+      {
+        "type": "program",
+        "label": "برنامج الحفل",
+        "title": "ليلة الورد",
+        "items": [
+          {
+            "time": "20:30",
+            "label": "استقبال الضيوف"
+          },
+          {
+            "time": "21:15",
+            "label": "زفّة العروسين بين الورود"
+          },
+          {
+            "time": "21:45",
+            "label": "الرقصة الأولى"
+          },
+          {
+            "time": "22:30",
+            "label": "العشاء"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "قاعة الورود الملكية",
+        "address": "شارع الحدائق، مقابل البوابة الشمالية",
+        "lat": 31.95,
+        "lng": 35.91
+      },
+      {
+        "type": "dress_code",
+        "colors": [
+          "#F9D3DD",
+          "#E8839F",
+          "#86B184",
+          "#FFFFFF"
+        ],
+        "note": "الوردي الفاتح، الوردي، الأخضر الهادئ والأبيض"
+      },
+      {
+        "type": "send_rose"
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستكونون معنا؟",
+        "askMessage": true,
+        "askAllergies": false
+      },
+      {
+        "type": "album_teaser",
+        "title": "بحضوركم تكتمل الوردة",
+        "text": "بعد الحفل، شاركونا صوركم في ألبوم العروسين."
+      }
+    ]
+  }
+}

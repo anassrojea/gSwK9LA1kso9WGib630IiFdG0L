@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "occasion": "wedding",
+  "locale": "ar",
+  "opening": {
+    "id": "rose",
+    "options": {
+      "petalColor": "#F4A6BB"
+    }
+  },
+  "theme": {
+    "id": "blush-garden",
+    "colors": {
+      "bg": "#FFF6F8",
+      "ink": "#3B2330",
+      "accent": "#A8325A",
+      "soft": "#8E6B78",
+      "gold": "#C9A35C"
+    },
+    "fonts": {
+      "display": "Katibeh",
+      "body": "Amiri",
+      "label": "Almarai"
+    }
+  },
+  "effects": {
+    "fallingPetals": true,
+    "sparkles": true,
+    "music": false
+  },
+  "sections": [
+    {
+      "type": "intro_line",
+      "text": "كما تتفتّح الوردةُ على مهل… تفتّحت حكايتنا"
+    },
+    {
+      "type": "hosts",
+      "lines": [
+        "يتشرف السيد ماجد الزين وحرمه",
+        "والسيد نبيل القاسم وحرمه"
+      ]
+    },
+    {
+      "type": "names",
+      "first": "ريم",
+      "second": "عمر"
+    },
+    {
+      "type": "date",
+      "start": "2026-12-17T20:30:00+03:00",
+      "showHijri": true,
+      "countdown": true
+    },
+    {
+      "type": "story",
+      "style": "stem",
+      "chapters": [
+        {
+          "year": "2021",
+          "title": "آخر وردة في المحل",
+          "text": "…"
+        }
+      ]
+    },
+    {
+      "type": "program",
+      "items": [
+        {
+          "time": "20:30",
+          "label": "استقبال الضيوف"
+        }
+      ]
+    },
+    {
+      "type": "place",
+      "name": "قاعة الورود الملكية",
+      "address": "…",
+      "lat": 31.95,
+      "lng": 35.91
+    },
+    {
+      "type": "dress_code",
+      "colors": [
+        "#F9D3DD",
+        "#E8839F",
+        "#86B184"
+      ]
+    },
+    {
+      "type": "send_rose"
+    },
+    {
+      "type": "rsvp",
+      "askMessage": true,
+      "askAllergies": false
+    },
+    {
+      "type": "album_teaser"
+    }
+  ]
+}

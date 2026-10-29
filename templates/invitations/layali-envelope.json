@@ -1,0 +1,148 @@
+{
+  "id": "layali-envelope",
+  "occasion": "wedding",
+  "name_ar": "ليالي",
+  "name_en": "Layali",
+  "tier": "premium",
+  "opening_id": "envelope",
+  "theme_id": "wine-gold",
+  "sort": 10,
+  "default_config": {
+    "version": 1,
+    "occasion": "wedding",
+    "locale": "ar",
+    "opening": {
+      "id": "envelope",
+      "options": {
+        "sealText": "ل ي",
+        "kicker": "دعوة خاصة",
+        "headline": "يسعدنا أن تكونوا معنا"
+      }
+    },
+    "theme": {
+      "id": "wine-gold",
+      "colors": {
+        "bg": "#FBF6F2",
+        "ink": "#3A1420",
+        "accent": "#5A1A2C",
+        "soft": "#86636C",
+        "gold": "#C8A45D",
+        "goldLight": "#E8D29C",
+        "surface": "#F3E4E2",
+        "backdrop": "#2A0B14",
+        "label": "#C8A45D"
+      },
+      "fonts": {
+        "display": "Aref Ruqaa",
+        "body": "Amiri",
+        "label": "Reem Kufi"
+      },
+      "radius": 4
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "style": "verse",
+        "text": "﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾",
+        "caption": "سورة الروم ٢١"
+      },
+      {
+        "type": "hosts",
+        "label": "بكل الحب والسرور",
+        "lines": [
+          "يتشرف السيد محمد الحسن وحرمه",
+          "والسيد عبد الله الأحمد وحرمه"
+        ],
+        "outro": "بدعوتكم لحضور حفل زفاف نجليهما"
+      },
+      {
+        "type": "names",
+        "first": "ليان",
+        "second": "يوسف",
+        "note": "وذلك بمشيئة الله، ليكتمل فرحنا بحضوركم وتشريفكم"
+      },
+      {
+        "type": "date",
+        "label": "موعد الفرح",
+        "start": "2026-12-10T20:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "story",
+        "style": "timeline",
+        "label": "حكايتنا",
+        "title": "كيف بدأت القصة",
+        "chapters": [
+          {
+            "year": "2019",
+            "title": "كتابٌ سقط في المكتبة",
+            "text": "في مكتبة الجامعة سقط كتابٌ من يدها، فالتقطه هو قبلها. تبادلا ابتسامة صغيرة، ولم يعرف أحدهما أنها بداية الحكاية."
+          },
+          {
+            "year": "2020",
+            "title": "حديثٌ لم ينتهِ",
+            "text": "فنجانا قهوة وحديث طويل عن الأحلام والكتب. بردت القهوة، ولم ينتبه أحدهما للوقت."
+          },
+          {
+            "year": "2025",
+            "title": "سؤالٌ واحد",
+            "text": "سألها: هل تكملين الحكاية معي؟ فقالت: نعم. وفرحت العائلتان كما فرحا."
+          },
+          {
+            "year": "2026",
+            "title": "الفصل الأجمل",
+            "text": "واليوم نكتب الفصل الأجمل من حكايتنا، ولن يكتمل إلا بحضوركم."
+          }
+        ],
+        "quote": "«وكأنّ القلب كان يعرفك قبل أن تلتقي العيون»"
+      },
+      {
+        "type": "program",
+        "label": "برنامج الحفل",
+        "title": "ليلة العمر",
+        "items": [
+          {
+            "time": "20:00",
+            "label": "استقبال الضيوف"
+          },
+          {
+            "time": "21:00",
+            "label": "زفّة العروسين"
+          },
+          {
+            "time": "21:30",
+            "label": "قطع الكيك والتهاني"
+          },
+          {
+            "time": "22:30",
+            "label": "مأدبة العشاء"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "قاعة النور الكبرى",
+        "address": "شارع الأميرات، بجانب فندق الياسمين",
+        "lat": 31.9539,
+        "lng": 35.9106
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستشاركوننا الفرح؟",
+        "askMessage": true,
+        "askAllergies": false
+      },
+      {
+        "type": "album_teaser",
+        "title": "شاركونا صوركم",
+        "text": "التقطتم لحظة جميلة؟ ارفعوها هنا لتبقى ذكرى في ألبوم العروسين."
+      }
+    ]
+  }
+}
