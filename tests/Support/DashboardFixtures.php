@@ -7,8 +7,10 @@ use App\Models\Household;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\OrgMember;
+use App\Models\Plan;
 use App\Models\Rsvp;
 use App\Models\User;
+use Database\Seeders\PlanSeeder;
 
 /**
  * A published event with one family in each dashboard state:
@@ -18,6 +20,8 @@ use App\Models\User;
  *   attending   4 seats, opened, 3 people coming (1 child)
  *   declined    2 seats, opened, declined
  *   replied     2 seats, never logged an open, 2 people coming (a reply counts as an open)
+ *
+ * On the Premium plan by default: personal links and reminders are Premium (phase 4).
  */
 class DashboardFixtures
 {
@@ -26,7 +30,11 @@ class DashboardFixtures
      */
     public static function event(array $attributes = []): array
     {
-        $event = Event::factory()->create($attributes + ['guest_limit' => 20]);
+        if (! Plan::query()->exists()) {
+            app(PlanSeeder::class)->run();
+        }
+
+        $event = Event::factory()->create($attributes + ['guest_limit' => 20, 'plan_id' => 'premium']);
         Invitation::factory()->for($event)->create();
 
         $opened = now()->subHours(3);
