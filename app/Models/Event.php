@@ -19,7 +19,7 @@ class Event extends Model
 
     protected $fillable = [
         'owner_id', 'org_id', 'anon_session_id', 'occasion', 'title', 'starts_at', 'timezone', 'venue_name',
-        'address', 'lat', 'lng', 'hall_layout_id', 'status', 'plan_id', 'guest_limit', 'storage_until',
+        'address', 'lat', 'lng', 'hall_layout_id', 'status', 'plan_id', 'guest_limit', 'storage_until', 'messages',
     ];
 
     protected $attributes = ['status' => 'draft'];
@@ -32,6 +32,7 @@ class Event extends Model
             'lat' => 'float',
             'lng' => 'float',
             'guest_limit' => 'integer',
+            'messages' => 'array',
         ];
     }
 
@@ -83,6 +84,11 @@ class Event extends Model
     public function entitlements(): HasMany
     {
         return $this->hasMany(Entitlement::class);
+    }
+
+    public function reminders(): HasMany
+    {
+        return $this->hasMany(Reminder::class);
     }
 
     public function rose(): HasOne

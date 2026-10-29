@@ -2,9 +2,10 @@
 
 namespace App\Events;
 
+use App\Events\Concerns\BroadcastsGuestRow;
+use App\Models\Household;
 use App\Models\Rsvp;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -14,13 +15,13 @@ use Illuminate\Queue\SerializesModels;
  */
 class RsvpSubmitted implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use BroadcastsGuestRow, Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(public Rsvp $rsvp) {}
 
-    public function broadcastOn(): array
+    protected function household(): Household
     {
-        return [new PrivateChannel('event.'.$this->rsvp->household->event_id)];
+        return $this->rsvp->household;
     }
 
     public function broadcastAs(): string
@@ -35,6 +36,7 @@ class RsvpSubmitted implements ShouldBroadcast
             'attending' => $this->rsvp->attending,
             'people_count' => $this->rsvp->people_count,
             'responded_at' => $this->rsvp->responded_at?->toIso8601String(),
+            ...$this->dashboardPayload(),
         ];
     }
 }
