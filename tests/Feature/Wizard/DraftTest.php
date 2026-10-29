@@ -53,8 +53,15 @@ it('starts from the chosen template and redirects to the design step', function 
         ->and($event->invitation->config['opening']['id'])->toBe('envelope');
 });
 
-it('adapts a template made for another occasion', function () {
+it('starts from the occasion\'s own template when there is one', function () {
     $event = draftFrom(createDraft('birthday'));
+
+    expect($event->invitation->template_id)->toBe('birthday-gift')
+        ->and($event->invitation->config['occasion'])->toBe('birthday');
+});
+
+it('adapts a template made for another occasion', function () {
+    $event = draftFrom(createDraft('birthday', ['template_id' => 'warda-rose']));
     $config = $event->invitation->config;
     $names = collect($config['sections'])->firstWhere('type', 'names');
 

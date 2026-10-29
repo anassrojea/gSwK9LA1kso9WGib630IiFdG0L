@@ -85,7 +85,7 @@ class DemoSeeder extends Seeder
             ['owner_id' => $host->id, 'title' => $title],
             [
                 'occasion' => $config['occasion'],
-                'starts_at' => CarbonImmutable::parse($date['start']),
+                'starts_at' => CarbonImmutable::parse($date['start'])->utc(),
                 'timezone' => 'Asia/Amman',
                 'venue_name' => $place['name'],
                 'address' => $place['address'] ?? null,
