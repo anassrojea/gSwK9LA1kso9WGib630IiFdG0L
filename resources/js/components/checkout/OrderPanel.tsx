@@ -226,6 +226,12 @@ export function OrderPanel({ order, outcome, from = 'dashboard', compact }: { or
                             <dd className="font-medium">{item.amount_formatted}</dd>
                         </div>
                     ))}
+                    {order.discount && (
+                        <div className="flex justify-between gap-3 text-emerald-700" data-order-discount>
+                            <dt>{t('checkout.discount.line', { code: order.discount.code })}</dt>
+                            <dd className="font-medium">−{order.discount.amount_formatted}</dd>
+                        </div>
+                    )}
                     <div className="text-muted-foreground flex justify-between gap-3 text-xs">
                         <dt>{t('payments.created')}</dt>
                         <dd>{date(order.created_at)}</dd>

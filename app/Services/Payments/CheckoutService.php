@@ -16,9 +16,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 /**
- * POST /checkout: turns the host's choice (plan, add-ons, currency, method)
- * into an Order with every line priced and snapshotted, in the currency the
- * method charges (PaymentGateways::chargeCurrency). Also builds what the
+ * POST /checkout: turns the host's choice (plan, add-ons, currency, method,
+ * discount code) into an Order with every line priced and snapshotted, in the
+ * currency the method charges (PaymentGateways::chargeCurrency), less the
+ * code's discount (Discounts). Also builds what the
  * checkout UI needs (options), so the page and the server agree on prices.
  */
 class CheckoutService
@@ -28,12 +29,13 @@ class CheckoutService
         private PriceList $prices,
         private Entitlements $entitlements,
         private PublishGate $gate,
+        private Discounts $discounts,
     ) {}
 
     /**
      * @param  list<array{id: string, quantity?: int}>  $addons
      */
-    public function place(User $user, Event $event, ?string $planId, array $addons, string $currency, string $gatewayId, ?string $country = null): Order
+    public function place(User $user, Event $event, ?string $planId, array $addons, string $currency, string $gatewayId, ?string $country = null, ?string $discountCode = null): Order
     {
         $gateway = $this->gateways->find($gatewayId);
         if (! $gateway || ! $gateway->enabled()) {
@@ -50,7 +52,11 @@ class CheckoutService
 
         $lines = $this->lines($event, $planId, $addons, $charge);
 
-        return DB::transaction(function () use ($user, $event, $gateway, $lines, $charge, $currency, $country) {
+        // a code is priced in the currency actually charged (after the USD fallback)
+        $code = filled($discountCode) ? $this->discounts->usable($discountCode, $user) : null;
+        $discount = $code ? $this->discounts->amount($code, $lines, $charge) : 0;
+
+        return DB::transaction(function () use ($user, $event, $gateway, $lines, $charge, $currency, $country, $code, $discount) {
             // one order at a time per event: a receipt already sent waits for the admin
             $pending = Order::query()->where('event_id', $event->getKey())->pending()->lockForUpdate()->get();
             if ($pending->contains('status', 'receipt_received')) {
@@ -67,7 +73,11 @@ class CheckoutService
                 'event_id' => $event->getKey(),
                 'org_id' => $event->org_id,
                 'items' => $lines,
-                'total_cents' => array_sum(array_column($lines, 'amount')),
+                // never negative: Discounts::amount caps the discount at the lines it applies to
+                'total_cents' => max(0, array_sum(array_column($lines, 'amount')) - $discount),
+                'discount_code_id' => $code?->getKey(),
+                'discount_code' => $code?->code,
+                'discount_cents' => $discount,
                 'currency' => $charge,
                 'requested_currency' => $charge === $currency ? null : $currency,
                 'method' => $gateway->method(),
@@ -79,7 +89,13 @@ class CheckoutService
             ]);
 
             $user->forceFill(array_filter(['currency' => $currency, 'country' => $country]))->save();
-            AuditLog::record('order.created', $order, ['gateway' => $order->gateway, 'total' => $order->total_cents, 'currency' => $order->currency], $user);
+            AuditLog::record('order.created', $order, array_filter([
+                'gateway' => $order->gateway,
+                'total' => $order->total_cents,
+                'currency' => $order->currency,
+                'discount_code' => $order->discount_code,
+                'discount' => $order->discount_cents ?: null,
+            ], fn ($v) => $v !== null), $user);
 
             return $order;
         });
@@ -159,6 +175,7 @@ class CheckoutService
 
         return [
             'endpoint' => route('checkout.store', absolute: false),
+            'discount_endpoint' => route('checkout.discount', absolute: false),
             'event_id' => $event->getKey(),
             'currencies' => collect(Currencies::all())->map(fn (string $c) => ['code' => $c, 'exponent' => Currencies::exponent($c)])->values()->all(),
             'countries' => [

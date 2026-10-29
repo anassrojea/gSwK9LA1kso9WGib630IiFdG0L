@@ -29,6 +29,12 @@ class OrderPresenter
             'requested_currency' => $order->requested_currency,
             'total' => $order->total_cents,
             'total_formatted' => Currencies::format($order->total_cents, $order->currency, $locale),
+            'discount' => $order->discount_code ? [
+                'code' => $order->discount_code,
+                'amount' => (int) $order->discount_cents,
+                'amount_formatted' => Currencies::format((int) $order->discount_cents, $order->currency, $locale),
+                'subtotal_formatted' => Currencies::format($order->subtotal(), $order->currency, $locale),
+            ] : null,
             'summary' => TransferGateway::itemsLabel($order, $locale),
             'created_at' => $order->created_at?->toIso8601String(),
             'expires_at' => $order->expires_at?->toIso8601String(),

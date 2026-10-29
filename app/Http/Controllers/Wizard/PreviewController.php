@@ -25,6 +25,15 @@ class PreviewController extends Controller
      */
     public function show(Event $event, Entitlements $entitlements): Response
     {
+        return static::render($event, $entitlements);
+    }
+
+    /**
+     * The preview page, shared with the admin's read-only "open as customer"
+     * (App\Http\Controllers\Admin\PreviewController). Nothing here writes.
+     */
+    public static function render(Event $event, Entitlements $entitlements, ?string $ribbon = null): Response
+    {
         $invitation = $event->invitation;
         abort_unless($invitation, 404);
 
@@ -45,7 +54,15 @@ class PreviewController extends Controller
             'rose' => null,
         ]))->render();
 
-        return response(static::withRibbon($html, trans('app.wizard.preview.ribbon', [], $config['locale'])))
+        return static::privateResponse(static::withRibbon($html, $ribbon ?? trans('app.wizard.preview.ribbon', [], $config['locale'])));
+    }
+
+    /**
+     * Preview HTML: never cached, indexed or leaking the URL as a referrer.
+     */
+    public static function privateResponse(string $html): Response
+    {
+        return response($html)
             ->header('Cache-Control', 'no-store, private')
             ->header('X-Robots-Tag', 'noindex, nofollow')
             ->header('Referrer-Policy', 'no-referrer');
@@ -98,7 +115,7 @@ class PreviewController extends Controller
     /**
      * A small "Preview" ribbon, added around the shared view rather than inside it.
      */
-    private static function withRibbon(string $html, string $label): string
+    public static function withRibbon(string $html, string $label): string
     {
         $ribbon = '<div data-preview-ribbon style="position:fixed;inset-block-start:10px;inset-inline-start:10px;z-index:2147483647;'
             .'pointer-events:none;padding:4px 10px;border-radius:999px;background:rgba(20,10,15,.72);color:#fff;'

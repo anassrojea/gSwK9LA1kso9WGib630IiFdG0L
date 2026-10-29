@@ -22,7 +22,7 @@ class Template extends Model
 
     protected function casts(): array
     {
-        return ['default_config' => 'array', 'active' => 'boolean', 'sort' => 'integer'];
+        return ['default_config' => 'array', 'active' => 'boolean', 'sort' => 'integer', 'admin_edited_at' => 'immutable_datetime'];
     }
 
     public function opening(): BelongsTo

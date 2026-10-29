@@ -13,8 +13,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * items: the priced lines snapshotted at checkout, never re-read from the price list:
  *   [{type: plan|addon, id, name, quantity, unit_amount, amount}]
- * total_cents: the sum, in minor units of `currency` (App\Services\Payments\Currencies;
- * SYP has no subunit). `currency` is what the gateway charges; `requested_currency`
+ * total_cents: the sum less discount_cents, in minor units of `currency` (App\Services\Payments\Currencies;
+ * SYP has no subunit). discount_code / discount_cents: the code used at checkout and what
+ * it took off, snapshotted like the lines (App\Services\Payments\Discounts). `currency` is what the gateway charges; `requested_currency`
  * is the host's choice when a card method had to fall back to USD.
  * State changes go through App\Services\Payments\OrderFulfillment.
  */
@@ -36,6 +37,7 @@ class Order extends Model
     protected $fillable = [
         'code', 'user_id', 'event_id', 'org_id', 'items', 'total_cents', 'currency', 'requested_currency', 'method', 'gateway',
         'gateway_ref', 'status', 'expires_at', 'paid_at', 'rejection_reason', 'refunded_at',
+        'discount_code_id', 'discount_code', 'discount_cents',
     ];
 
     protected $attributes = ['status' => 'awaiting_payment', 'gateway' => 'transfer'];
@@ -45,6 +47,7 @@ class Order extends Model
         return [
             'items' => 'array',
             'total_cents' => 'integer',
+            'discount_cents' => 'integer',
             'expires_at' => 'immutable_datetime',
             'paid_at' => 'immutable_datetime',
             'refunded_at' => 'immutable_datetime',
@@ -88,6 +91,19 @@ class Order extends Model
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'org_id');
+    }
+
+    public function discountCode(): BelongsTo
+    {
+        return $this->belongsTo(DiscountCode::class);
+    }
+
+    /**
+     * The lines before the discount.
+     */
+    public function subtotal(): int
+    {
+        return $this->total_cents + (int) $this->discount_cents;
     }
 
     public function payments(): HasMany

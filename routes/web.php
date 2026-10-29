@@ -141,3 +141,15 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
     Route::post('/deletion', [PrivacyController::class, 'request'])->middleware('throttle:6,1')->name('deletion.request');
     Route::delete('/deletion', [PrivacyController::class, 'cancel'])->name('deletion.cancel');
 });
+
+// Discount codes at checkout, and the admin's signed previews (admins only, read-only).
+Route::middleware('auth')->group(function () {
+    Route::post('/checkout/discount', [CheckoutController::class, 'discount'])->middleware('throttle:30,1')->name('checkout.discount');
+
+    Route::middleware('signed')->prefix('admin-preview')->name('admin.preview.')->group(function () {
+        Route::get('/events/{event}', [App\Http\Controllers\Admin\PreviewController::class, 'event'])->name('event');
+        Route::get('/templates/{template}', [App\Http\Controllers\Admin\PreviewController::class, 'template'])
+            ->where('template', '[a-z0-9-]{1,64}')
+            ->name('template');
+    });
+});

@@ -21,7 +21,7 @@ class Opening extends Model
 
     protected function casts(): array
     {
-        return ['active' => 'boolean'];
+        return ['active' => 'boolean', 'admin_edited_at' => 'immutable_datetime'];
     }
 
     public function templates(): HasMany

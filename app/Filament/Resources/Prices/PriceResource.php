@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Prices;
 
+use App\Filament\AdminNavigation;
 use App\Filament\Resources\Prices\Pages\ManagePrices;
 use App\Models\Addon;
+use App\Models\AuditLog;
 use App\Models\Plan;
 use App\Models\Price;
 use App\Services\Payments\Currencies;
@@ -22,6 +24,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Validation\Rules\Unique;
+use UnitEnum;
 
 /**
  * Price lists per currency (plan section 4.3: "prices per currency"). Amounts
@@ -35,7 +38,9 @@ class PriceResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCurrencyDollar;
 
-    protected static ?int $navigationSort = 2;
+    protected static string|UnitEnum|null $navigationGroup = AdminNavigation::Sales;
+
+    protected static ?int $navigationSort = 3;
 
     public static function getModelLabel(): string
     {
@@ -105,8 +110,10 @@ class PriceResource extends Resource
                 TernaryFilter::make('placeholder')->label(trans('app.admin.prices.placeholder')),
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()
+                    ->after(fn (Price $record) => AuditLog::record('price.updated', $record, $record->only(['priceable_type', 'priceable_id', 'currency', 'amount']))),
+                DeleteAction::make()
+                    ->before(fn (Price $record) => AuditLog::record('price.deleted', $record, $record->only(['priceable_type', 'priceable_id', 'currency', 'amount']))),
             ]);
     }
 

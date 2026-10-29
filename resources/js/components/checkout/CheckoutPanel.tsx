@@ -1,9 +1,12 @@
 import { router } from '@inertiajs/react';
-import { Building2, Check, CreditCard, Info, Minus, Plus, ShieldCheck } from 'lucide-react';
-import { useMemo, useState, type ReactNode } from 'react';
+import axios from 'axios';
+import { Building2, Check, CreditCard, Info, Minus, Plus, ShieldCheck, Tag, X } from 'lucide-react';
+import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { TierBadge } from '@/components/wizard/TierBadge';
+import { discountFor, type DiscountLine, type DiscountRules } from '@/lib/discount';
 import { useT } from '@/lib/i18n';
 import { chargeCurrency, formatMoney, total } from '@/lib/money';
 import { cn } from '@/lib/utils';
@@ -61,6 +64,11 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
     const [addons, setAddons] = useState<Record<string, number>>({});
     const [gateway, setGateway] = useState<string | null>(options.gateways[0]?.id ?? null);
     const [busy, setBusy] = useState(false);
+    const [codeOpen, setCodeOpen] = useState(false);
+    const [codeText, setCodeText] = useState('');
+    const [codeBusy, setCodeBusy] = useState(false);
+    const [codeError, setCodeError] = useState<string | null>(null);
+    const [rules, setRules] = useState<DiscountRules | null>(null);
 
     const selectedPlan = options.plans.find((p) => p.id === plan) ?? null;
     const features = selectedPlan ? selectedPlan.features : options.current_features;
@@ -74,8 +82,45 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
         () => [...(selectedPlan ? [{ prices: selectedPlan.prices }] : []), ...chosenAddons.map((a) => ({ prices: a.prices, quantity: addons[a.id] }))],
         [selectedPlan, chosenAddons, addons],
     );
-    const sum = charged ? total(choices, charged) : null;
+    const subtotal = charged ? total(choices, charged) : null;
     const nothing = choices.length === 0;
+
+    // the code is priced in the currency actually charged, like Discounts::amount on the server
+    const lines: DiscountLine[] = charged
+        ? [
+              ...(selectedPlan ? [{ type: 'plan' as const, id: selectedPlan.id, amount: selectedPlan.prices[charged] ?? 0 }] : []),
+              ...chosenAddons.map((a) => ({ type: 'addon' as const, id: a.id, amount: (a.prices[charged] ?? 0) * addons[a.id] })),
+          ]
+        : [];
+    const discount = rules && charged && subtotal !== null && !nothing ? discountFor(rules, lines, charged) : null;
+    const discountAmount = discount && discount.error === null ? discount.amount : 0;
+    const sum = subtotal === null ? null : Math.max(0, subtotal - discountAmount);
+    const free = sum === 0 && discountAmount > 0;
+
+    const applyCode = async (e: FormEvent) => {
+        e.preventDefault();
+        const code = codeText.trim();
+        if (!code) return;
+        setCodeBusy(true);
+        setCodeError(null);
+        try {
+            const { data } = await axios.post<{ discount: DiscountRules }>(options.discount_endpoint, { event_id: options.event_id, code }, { headers: { Accept: 'application/json' } });
+            setRules(data.discount);
+            setCodeText(data.discount.code);
+        } catch (err) {
+            const body = axios.isAxiosError(err) ? (err.response?.data as { errors?: Record<string, string[]>; message?: string } | undefined) : undefined;
+            setRules(null);
+            setCodeError(body?.errors ? (Object.values(body.errors)[0]?.[0] ?? null) : (body?.message ?? t('checkout.errors.discount_unknown')));
+        } finally {
+            setCodeBusy(false);
+        }
+    };
+
+    const removeCode = () => {
+        setRules(null);
+        setCodeText('');
+        setCodeError(null);
+    };
 
     const pickCountry = (code: string) => {
         setCountry(code);
@@ -98,13 +143,14 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
                 currency,
                 gateway,
                 country: country === 'other' ? null : country,
+                discount_code: rules && discount?.error === null ? rules.code : null,
                 from,
             },
             { preserveScroll: true, onFinish: () => setBusy(false) },
         );
     };
 
-    const firstError = errors.checkout ?? errors.plan ?? errors.addons ?? errors.currency ?? errors.gateway;
+    const firstError = errors.checkout ?? errors.plan ?? errors.addons ?? errors.currency ?? errors.gateway ?? errors.discount_code;
 
     return (
         <section className="bg-card grid gap-6 rounded-xl border p-4 sm:p-5" data-checkout aria-labelledby="checkout-title">
@@ -241,10 +287,78 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
                 </div>
             </Section>
 
+            <div className="grid gap-2" data-discount>
+                {rules ? (
+                    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
+                        <Tag className="size-4 shrink-0" />
+                        <span className="font-semibold" dir="ltr">
+                            {rules.code}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                            {discount?.error === 'currency'
+                                ? t('checkout.errors.discount_currency', { currency: t(`checkout.currencies.${charged}`) })
+                                : discount?.error === 'items'
+                                  ? t('checkout.discount.not_here', { code: rules.code })
+                                  : t('checkout.discount.applied', { code: rules.code })}
+                        </span>
+                        <Button type="button" variant="ghost" size="sm" className="h-9" onClick={removeCode} data-discount-remove>
+                            <X className="size-4" /> {t('checkout.discount.remove')}
+                        </Button>
+                    </div>
+                ) : codeOpen ? (
+                    <form className="grid gap-1.5" onSubmit={applyCode}>
+                        <label htmlFor="discount-code" className="text-sm font-semibold">
+                            {t('checkout.discount.label')}
+                        </label>
+                        <div className="flex gap-2">
+                            <Input
+                                id="discount-code"
+                                value={codeText}
+                                onChange={(e) => setCodeText(e.target.value)}
+                                placeholder={t('checkout.discount.placeholder')}
+                                autoComplete="off"
+                                autoCapitalize="characters"
+                                dir="ltr"
+                                className="h-11 uppercase"
+                                maxLength={40}
+                                aria-invalid={!!codeError}
+                                data-discount-input
+                            />
+                            <Button type="submit" variant="outline" className="h-11 shrink-0" disabled={codeBusy || !codeText.trim()} data-discount-apply>
+                                {codeBusy ? t('checkout.discount.applying') : t('checkout.discount.apply')}
+                            </Button>
+                        </div>
+                        {codeError && (
+                            <p className="text-destructive text-sm" role="alert" data-discount-error>
+                                {codeError}
+                            </p>
+                        )}
+                    </form>
+                ) : (
+                    <button type="button" className="text-primary flex min-h-11 w-fit items-center gap-1.5 text-sm font-semibold" onClick={() => setCodeOpen(true)} data-discount-toggle>
+                        <Tag className="size-4" /> {t('checkout.discount.toggle')}
+                    </button>
+                )}
+            </div>
+
             <div className="bg-muted/60 grid gap-1 rounded-xl p-4" data-total>
+                {discountAmount > 0 && subtotal !== null && charged && (
+                    <>
+                        <div className="text-muted-foreground flex items-baseline justify-between gap-3 text-sm">
+                            <span>{t('checkout.discount.subtotal')}</span>
+                            <span>{money(subtotal, charged)}</span>
+                        </div>
+                        <div className="flex items-baseline justify-between gap-3 text-sm font-medium text-emerald-700" data-discount-line>
+                            <span>{t('checkout.discount.line', { code: rules?.code ?? '' })}</span>
+                            <span>−{money(discountAmount, charged)}</span>
+                        </div>
+                    </>
+                )}
                 <div className="flex items-baseline justify-between gap-3">
                     <span className="font-semibold">{t('checkout.total')}</span>
-                    <span className="text-primary text-2xl font-bold">{sum !== null && charged ? money(sum, charged) : '—'}</span>
+                    <span className="text-primary text-2xl font-bold" data-total-amount>
+                        {free ? t('checkout.discount.free') : sum !== null && charged ? money(sum, charged) : '—'}
+                    </span>
                 </div>
                 {charged && charged !== currency && <span className="text-muted-foreground text-xs">{t('checkout.total_charged', { currency: t(`checkout.currencies.${charged}`) })}</span>}
             </div>
@@ -269,7 +383,9 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
                     ? t('checkout.paying')
                     : nothing
                       ? t('checkout.pick_something')
-                      : method?.method === 'transfer'
+                      : free
+                        ? t('checkout.discount.pay_free')
+                        : method?.method === 'transfer'
                         ? t('checkout.pay_transfer')
                         : t('checkout.pay_card', { amount: sum !== null && charged ? money(sum, charged) : '' })}
             </Button>

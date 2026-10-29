@@ -86,6 +86,11 @@ class Event extends Model
         return $this->hasMany(Entitlement::class);
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function reminders(): HasMany
     {
         return $this->hasMany(Reminder::class);
