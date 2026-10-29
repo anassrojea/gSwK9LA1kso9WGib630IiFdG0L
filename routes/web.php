@@ -7,9 +7,12 @@ use App\Http\Controllers\Dashboard\HallController;
 use App\Http\Controllers\Dashboard\HouseholdController as DashboardHouseholdController;
 use App\Http\Controllers\Dashboard\InvitationConfigController;
 use App\Http\Controllers\Dashboard\ReminderController;
+use App\Http\Controllers\Dashboard\UpgradeController;
 use App\Http\Controllers\Host\OpenLinkController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Marketing\HomeController;
+use App\Http\Controllers\Payments\CheckoutController;
+use App\Http\Controllers\Payments\OrderController;
 use App\Http\Controllers\Wizard\GuestController;
 use App\Http\Controllers\Wizard\MediaController;
 use App\Http\Controllers\Wizard\PreviewController;
@@ -19,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 // UUID keys: anything else is a 404 before it reaches PostgreSQL's uuid parser.
 Route::pattern('event', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
 Route::pattern('household', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+// order codes (Order::generateCode), bound by code
+Route::pattern('order', 'DW-[0-9]{4,6}');
 
 // Public pages (Blade). Guest invitations live in routes/invite.php.
 Route::get('/', HomeController::class)->name('home');
@@ -65,6 +70,12 @@ Route::middleware('auth')->group(function () {
             ->name('events.open-link.update');
     });
 
+    // Payments (plan section 12): one order per checkout, then the gateway
+    Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:20,1')->name('checkout.store');
+    Route::get('/orders/{order}/status', [OrderController::class, 'status'])->middleware('throttle:120,1')->name('orders.status');
+    Route::post('/orders/{order}/receipt', [OrderController::class, 'receipt'])->middleware('throttle:20,1')->name('orders.receipt');
+    Route::post('/orders/{order}/retry', [OrderController::class, 'retry'])->middleware('throttle:20,1')->name('orders.retry');
+
     Route::post('/halls/generate', [HallController::class, 'generate'])
         ->middleware('throttle:60,1')
         ->name('halls.generate');
@@ -76,6 +87,9 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::pattern('reminder', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
 
     Route::get('/events/{event}', [EventDashboardController::class, 'show'])->name('events.show');
+    Route::get('/events/{event}/upgrade', [UpgradeController::class, 'show'])->name('events.upgrade');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::patch('/events/{event}/messages', [EventDashboardController::class, 'messages'])->name('events.messages');
     Route::get('/events/{event}/guests.csv', [EventDashboardController::class, 'export'])->name('events.guests.export');
     Route::post('/events/{event}/guests/csv/preview', [GuestCsvController::class, 'preview'])

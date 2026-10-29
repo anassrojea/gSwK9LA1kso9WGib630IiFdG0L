@@ -9,6 +9,9 @@ use Illuminate\Support\Str;
 // Horizon's metrics graphs need a snapshot every five minutes (Forge runs schedule:run every minute).
 Schedule::command('horizon:snapshot')->everyFiveMinutes();
 
+// Transfer orders without a receipt expire 48 hours after checkout (plan section 12.2)
+Schedule::command('orders:expire')->everyFifteenMinutes()->withoutOverlapping();
+
 Artisan::command('daawa:make-admin {email} {--name=}', function (string $email) {
     $user = User::query()->firstOrNew(['email' => $email]);
     $password = null;
