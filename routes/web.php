@@ -1,7 +1,23 @@
 <?php
 
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\HallController;
+use App\Http\Controllers\Dashboard\InvitationConfigController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\Marketing\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+// Public pages (Blade). Guest invitations live in routes/invite.php.
+Route::get('/', HomeController::class)->name('home');
+Route::get('/locale/{locale}', LocaleController::class)->name('locale');
+
+// Host and venue area (Inertia + React). Auth routes come from Fortify.
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+    Route::patch('/events/{event}/config', [InvitationConfigController::class, 'update'])->name('events.config.update');
+
+    Route::post('/halls/generate', [HallController::class, 'generate'])
+        ->middleware('throttle:60,1')
+        ->name('halls.generate');
 });
