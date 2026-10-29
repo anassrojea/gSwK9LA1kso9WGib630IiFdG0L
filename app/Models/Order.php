@@ -2,12 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * items: the priced lines snapshotted at checkout, never re-read from the price list:
+ *   [{type: plan|addon, id, name, quantity, unit_amount, amount}]
+ * total_cents: the sum, in minor units of `currency` (App\Services\Payments\Currencies;
+ * SYP has no subunit). `currency` is what the gateway charges; `requested_currency`
+ * is the host's choice when a card method had to fall back to USD.
+ * State changes go through App\Services\Payments\OrderFulfillment.
+ */
 class Order extends Model
 {
     use HasFactory, HasUuids;
@@ -17,9 +27,18 @@ class Order extends Model
     /** awaiting_payment → receipt_received → approved | rejected | expired (48h); card: paid; refunded. */
     public const STATUSES = ['awaiting_payment', 'receipt_received', 'paid', 'approved', 'rejected', 'expired', 'refunded'];
 
-    protected $fillable = ['code', 'user_id', 'event_id', 'org_id', 'items', 'total_cents', 'currency', 'method', 'status', 'expires_at', 'paid_at'];
+    /** Waiting for the customer or the admin. */
+    public const PENDING = ['awaiting_payment', 'receipt_received'];
 
-    protected $attributes = ['status' => 'awaiting_payment'];
+    /** Money received: the order's entitlements apply. */
+    public const FULFILLED = ['paid', 'approved'];
+
+    protected $fillable = [
+        'code', 'user_id', 'event_id', 'org_id', 'items', 'total_cents', 'currency', 'requested_currency', 'method', 'gateway',
+        'gateway_ref', 'status', 'expires_at', 'paid_at', 'rejection_reason', 'refunded_at',
+    ];
+
+    protected $attributes = ['status' => 'awaiting_payment', 'gateway' => 'transfer'];
 
     protected function casts(): array
     {
@@ -28,6 +47,7 @@ class Order extends Model
             'total_cents' => 'integer',
             'expires_at' => 'immutable_datetime',
             'paid_at' => 'immutable_datetime',
+            'refunded_at' => 'immutable_datetime',
         ];
     }
 
@@ -48,6 +68,11 @@ class Order extends Model
         } while (static::query()->where('code', $code)->exists());
 
         return $code;
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'code';
     }
 
     public function user(): BelongsTo
@@ -73,5 +98,75 @@ class Order extends Model
     public function transferReceipts(): HasMany
     {
         return $this->hasMany(TransferReceipt::class);
+    }
+
+    /**
+     * The newest receipt (ordered rather than latestOfMany: PostgreSQL has no max(uuid)).
+     */
+    public function latestReceipt(): HasOne
+    {
+        return $this->hasOne(TransferReceipt::class)->orderByDesc('received_at')->orderByDesc('created_at');
+    }
+
+    public function entitlements(): HasMany
+    {
+        return $this->hasMany(Entitlement::class, 'source_order_id');
+    }
+
+    public function isTransfer(): bool
+    {
+        return $this->method === 'transfer';
+    }
+
+    public function isPending(): bool
+    {
+        return in_array($this->status, self::PENDING, true);
+    }
+
+    public function isFulfilled(): bool
+    {
+        return in_array($this->status, self::FULFILLED, true);
+    }
+
+    /**
+     * The plan line of the order, if any.
+     */
+    public function planId(): ?string
+    {
+        foreach ($this->items ?? [] as $item) {
+            if (($item['type'] ?? null) === 'plan') {
+                return $item['id'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return list<array{id: string, quantity: int}>
+     */
+    public function addonLines(): array
+    {
+        return collect($this->items ?? [])
+            ->where('type', 'addon')
+            ->map(fn (array $item) => ['id' => $item['id'], 'quantity' => (int) ($item['quantity'] ?? 1)])
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @param  Builder<Order>  $query
+     */
+    public function scopePending(Builder $query): void
+    {
+        $query->whereIn('status', self::PENDING);
+    }
+
+    /**
+     * @param  Builder<Order>  $query
+     */
+    public function scopeFulfilled(Builder $query): void
+    {
+        $query->whereIn('status', self::FULFILLED);
     }
 }

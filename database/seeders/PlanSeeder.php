@@ -4,11 +4,19 @@ namespace Database\Seeders;
 
 use App\Models\Addon;
 use App\Models\Plan;
+use App\Models\Price;
 use App\Services\Entitlements as E;
+use App\Services\Payments\PriceList;
 use Illuminate\Database\Seeder;
 
 /**
- * Plans and add-ons from plan section 13 (USD; localize before launch).
+ * Plans and add-ons from plan section 13, with a price list per currency.
+ *
+ * USD prices are the plan's (price_cents). SAR and SYP prices are
+ * PLACEHOLDERS (prices.placeholder = true, flagged in Filament) until the
+ * owner sets real ones in Admin → Prices; re-seeding never overwrites a price
+ * an admin saved. SYP amounts are whole pounds at roughly 12,000 SYP per USD
+ * (2026, old pounds): check them against the redenominated pound before launch.
  */
 class PlanSeeder extends Seeder
 {
@@ -49,5 +57,59 @@ class PlanSeeder extends Seeder
         foreach ($addons as $id => [$name, $price]) {
             Addon::query()->updateOrCreate(['id' => $id], ['name' => $name, 'price_cents' => $price, 'currency' => 'USD', 'active' => true]);
         }
+
+        $this->seedPrices();
+    }
+
+    /**
+     * id => [SAR (halalas), SYP (whole pounds)]: placeholders, see the class comment.
+     */
+    public const PLACEHOLDER_PRICES = [
+        'plan' => [
+            'premium' => [10900, 350000],
+            'signature' => [29900, 950000],
+            'venue_pro' => [36900, 1200000],
+        ],
+        'addon' => [
+            'template_unlock' => [3500, 110000],
+            'seating' => [5500, 180000],
+            'photo_cloud_90d' => [3500, 110000],
+            'photo_cloud_1y' => [9500, 300000],
+            'photo_cloud_forever' => [18500, 590000],
+            'guests_200' => [3900, 120000],
+            'qr_checkin' => [3900, 120000],
+            'wallet' => [1900, 60000],
+            'video_guestbook' => [4500, 145000],
+            'thank_you' => [2500, 85000],
+        ],
+    ];
+
+    private function seedPrices(): void
+    {
+        $prices = app(PriceList::class);
+
+        foreach (['plan' => Plan::class, 'addon' => Addon::class] as $type => $model) {
+            foreach ($model::query()->get() as $item) {
+                if ($item->price_cents > 0) {
+                    $this->seedPrice($prices, $item, 'USD', $item->price_cents, false);
+                }
+                if ($placeholder = self::PLACEHOLDER_PRICES[$type][$item->id] ?? null) {
+                    $this->seedPrice($prices, $item, 'SAR', $placeholder[0], true);
+                    $this->seedPrice($prices, $item, 'SYP', $placeholder[1], true);
+                }
+            }
+        }
+    }
+
+    private function seedPrice(PriceList $prices, Plan|Addon $item, string $currency, int $amount, bool $placeholder): void
+    {
+        $existing = Price::query()->where(['priceable_type' => $item->getMorphClass(), 'priceable_id' => $item->id, 'currency' => $currency])->first();
+
+        // an admin's price wins over the seed
+        if ($existing && ! $existing->placeholder) {
+            return;
+        }
+
+        $prices->set($item, $currency, $amount, $placeholder);
     }
 }

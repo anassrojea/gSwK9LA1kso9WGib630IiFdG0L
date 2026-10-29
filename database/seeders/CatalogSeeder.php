@@ -19,7 +19,7 @@ class CatalogSeeder extends Seeder
     {
         $openings = [
             // id => [name_ar, name_en, tier, ported to resources/js/openings/]
-            'envelope' => ['الظرف', 'Envelope', 'premium', true],
+            'envelope' => ['الظرف', 'Envelope', 'free', true], // the Free plan's opening (plan section 13.1)
             'rose' => ['الوردة', 'Rose', 'premium', true],
             'ringbox' => ['علبة الخاتم', 'Ring box', 'premium', true],
             'doors' => ['الأبواب المقوّسة', 'Arched doors', 'premium', true],
