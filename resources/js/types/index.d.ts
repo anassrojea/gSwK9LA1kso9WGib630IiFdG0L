@@ -16,5 +16,5 @@ export interface SharedProps {
     dir: 'rtl' | 'ltr';
     locales: string[];
     translations: Translations;
-    flash: { status: string | null };
+    flash: { status: string | null; warning?: string | null };
 }

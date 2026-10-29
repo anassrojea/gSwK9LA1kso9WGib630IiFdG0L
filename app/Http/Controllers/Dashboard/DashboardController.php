@@ -13,8 +13,9 @@ use Inertia\Response;
 class DashboardController extends Controller
 {
     /**
-     * Placeholder host dashboard: the user's own events and their organizations'
-     * events (the same rule as EventPolicy::view), with the top-line numbers.
+     * The host's events list: their own events and their organizations' events
+     * (the same rule as EventPolicy::view), with the top-line numbers. Each
+     * event links to its dashboard (EventDashboardController), drafts to the wizard.
      */
     public function __invoke(Request $request): Response
     {
@@ -53,6 +54,8 @@ class DashboardController extends Controller
                     'replied' => $event->replied,
                     'attending' => (int) ($attending[$event->id] ?? 0),
                 ],
+                // published events open their dashboard; drafts go back to the wizard
+                'dashboard_url' => $event->status === 'draft' ? null : route('dashboard.events.show', $event, false),
                 'edit_url' => route('create.step', [$event, $event->status === 'draft' ? 'details' : 'review'], false),
                 'preview_url' => ($token = $event->households->first()?->token) ? route('invite.show', $token) : null,
             ]),

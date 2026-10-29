@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\EventDashboardController;
+use App\Http\Controllers\Dashboard\GuestCsvController;
 use App\Http\Controllers\Dashboard\HallController;
+use App\Http\Controllers\Dashboard\HouseholdController as DashboardHouseholdController;
 use App\Http\Controllers\Dashboard\InvitationConfigController;
+use App\Http\Controllers\Dashboard\ReminderController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Marketing\HomeController;
 use App\Http\Controllers\Wizard\GuestController;
@@ -55,4 +59,27 @@ Route::middleware('auth')->group(function () {
     Route::post('/halls/generate', [HallController::class, 'generate'])
         ->middleware('throttle:60,1')
         ->name('halls.generate');
+});
+
+// Host dashboard per event (plan section 4.1). Every action is authorized in its
+// controller through EventPolicy / HouseholdPolicy (door staff: view and check-in).
+Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
+    Route::pattern('reminder', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+
+    Route::get('/events/{event}', [EventDashboardController::class, 'show'])->name('events.show');
+    Route::patch('/events/{event}/messages', [EventDashboardController::class, 'messages'])->name('events.messages');
+    Route::get('/events/{event}/guests.csv', [EventDashboardController::class, 'export'])->name('events.guests.export');
+    Route::post('/events/{event}/guests/csv/preview', [GuestCsvController::class, 'preview'])
+        ->middleware('throttle:30,1')
+        ->name('events.guests.csv.preview');
+    Route::post('/events/{event}/guests/csv', [GuestCsvController::class, 'import'])
+        ->middleware('throttle:30,1')
+        ->name('events.guests.csv.import');
+
+    Route::post('/events/{event}/reminders', [ReminderController::class, 'store'])->name('events.reminders.store');
+    Route::post('/reminders/{reminder}/sent', [ReminderController::class, 'sent'])->name('reminders.sent');
+
+    Route::patch('/households/{household}', [DashboardHouseholdController::class, 'update'])->name('households.update');
+    Route::delete('/households/{household}', [DashboardHouseholdController::class, 'destroy'])->name('households.destroy');
+    Route::post('/households/{household}/checkin', [DashboardHouseholdController::class, 'checkIn'])->name('households.checkin');
 });

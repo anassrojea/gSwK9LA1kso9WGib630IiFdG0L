@@ -51,6 +51,7 @@ class HandleInertiaRequests extends Middleware
             'translations' => fn () => trans('app', [], $locale),
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
+                'warning' => fn () => $request->session()->get('warning'),
             ],
         ];
     }
