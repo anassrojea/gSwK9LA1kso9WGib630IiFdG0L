@@ -178,7 +178,7 @@ return [
         'role' => 'الدور',
         'roles' => ['user' => 'عميل', 'admin' => 'مشرف'],
         'sign_in' => 'يدخل عبر',
-        'methods' => ['password' => 'كلمة المرور', 'google' => 'Google', 'none' => 'لا دخول بعد'],
+        'methods' => ['email_code' => 'رمز بالبريد', 'password' => 'كلمة المرور', 'google' => 'Google', 'none' => 'لا دخول بعد'],
         'joined' => 'انضم',
         'money' => 'المدفوعات',
         'total_paid' => 'إجمالي المدفوع',

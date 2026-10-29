@@ -178,7 +178,7 @@ return [
         'role' => 'Role',
         'roles' => ['user' => 'Customer', 'admin' => 'Admin'],
         'sign_in' => 'Signs in with',
-        'methods' => ['password' => 'Password', 'google' => 'Google', 'none' => 'No sign-in yet'],
+        'methods' => ['email_code' => 'Email code', 'password' => 'Password', 'google' => 'Google', 'none' => 'No sign-in yet'],
         'joined' => 'Joined',
         'money' => 'Payments',
         'total_paid' => 'Paid in total',

@@ -18,7 +18,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Schema as DbSchema;
 use UnitEnum;
 
 /**
@@ -37,8 +36,6 @@ class UserResource extends Resource
     protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'name';
-
-    private static ?bool $deletionColumn = null;
 
     public static function getModelLabel(): string
     {
@@ -60,18 +57,18 @@ class UserResource extends Resource
      */
     public static function tracksDeletionRequests(): bool
     {
-        return static::$deletionColumn ??= DbSchema::hasColumn('users', 'deletion_requested_at');
+        // users.deletion_requested_at exists since the account deletion migration (phase 5A)
+        return true;
     }
 
     /**
-     * @return list<string> password, google
+     * One source of truth with the account area: password, google, email_code.
+     *
+     * @return list<string>
      */
     public static function signInMethods(User $user): array
     {
-        return array_values(array_filter([
-            $user->getAuthPassword() ? 'password' : null,
-            $user->google_id ? 'google' : null,
-        ]));
+        return $user->signInMethods();
     }
 
     public static function form(Schema $schema): Schema
