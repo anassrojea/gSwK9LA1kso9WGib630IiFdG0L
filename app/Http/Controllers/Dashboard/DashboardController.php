@@ -53,6 +53,7 @@ class DashboardController extends Controller
                     'replied' => $event->replied,
                     'attending' => (int) ($attending[$event->id] ?? 0),
                 ],
+                'edit_url' => route('create.step', [$event, $event->status === 'draft' ? 'details' : 'review'], false),
                 'preview_url' => ($token = $event->households->first()?->token) ? route('invite.show', $token) : null,
             ]),
         ]);

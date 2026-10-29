@@ -46,3 +46,22 @@ function withRsvpSection(array $rsvp, string $template = 'warda-rose'): array
 
     return $config;
 }
+
+/**
+ * The draft a POST /create response redirected to.
+ */
+function draftFrom($response): Event
+{
+    preg_match('#/create/([0-9a-f-]{36})/#', (string) $response->headers->get('Location'), $m);
+
+    return Event::query()->with('invitation')->findOrFail($m[1] ?? null);
+}
+
+/**
+ * A draft made in the wizard by the current test client (a guest unless actingAs was called).
+ * Needs the catalog seeded.
+ */
+function wizardDraft(string $occasion = 'wedding'): Event
+{
+    return draftFrom(test()->post('/create', ['occasion' => $occasion]));
+}

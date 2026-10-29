@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Invite;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\Household;
 use App\Models\Invitation;
 use App\Services\Entitlements;
@@ -32,27 +33,38 @@ class InvitationController extends Controller
         $event = $household->event;
 
         return response()
-            ->view('invite.show', [
-                'config' => $config,
-                'sections' => InvitationConfig::visibleSections($config),
-                'event' => $event,
-                'invitation' => $invitation,
-                'themeVars' => ThemeStyles::cssVariables($config['theme']),
-                'fontsUrl' => ThemeStyles::fontsUrl($config['theme']),
-                'showBadge' => ! $entitlements->hasFeature($event, Entitlements::NO_BADGE),
-                'mediaUrl' => new MediaUrl($event),
-                'boot' => [
-                    'locale' => $config['locale'],
-                    'opening' => ['id' => $config['opening']['id'], 'options' => (object) ($config['opening']['options'] ?? [])],
-                    'effects' => (object) ($config['effects'] ?? []),
-                    'urls' => [
-                        'state' => route('invite.state', $token, false),
-                        'rsvp' => route('invite.rsvp', $token, false),
-                        'rose' => route('invite.rose', $invitation->slug, false),
-                    ],
-                ],
-            ])
+            ->view('invite.show', static::viewData($event, $invitation, $config, $entitlements, [
+                'state' => route('invite.state', $token, false),
+                'rsvp' => route('invite.rsvp', $token, false),
+                'rose' => route('invite.rose', $invitation->slug, false),
+            ]))
             ->header('Cache-Control', 'public, max-age=0, s-maxage=300');
+    }
+
+    /**
+     * Data for the invite.show view, shared with the wizard preview
+     * (App\Http\Controllers\Wizard\PreviewController).
+     *
+     * @param  array{state: ?string, rsvp: ?string, rose: ?string}  $urls
+     */
+    public static function viewData(Event $event, Invitation $invitation, array $config, Entitlements $entitlements, array $urls): array
+    {
+        return [
+            'config' => $config,
+            'sections' => InvitationConfig::visibleSections($config),
+            'event' => $event,
+            'invitation' => $invitation,
+            'themeVars' => ThemeStyles::cssVariables($config['theme']),
+            'fontsUrl' => ThemeStyles::fontsUrl($config['theme']),
+            'showBadge' => ! $entitlements->hasFeature($event, Entitlements::NO_BADGE),
+            'mediaUrl' => new MediaUrl($event),
+            'boot' => [
+                'locale' => $config['locale'],
+                'opening' => ['id' => $config['opening']['id'], 'options' => (object) ($config['opening']['options'] ?? [])],
+                'effects' => (object) ($config['effects'] ?? []),
+                'urls' => $urls,
+            ],
+        ];
     }
 
     /**

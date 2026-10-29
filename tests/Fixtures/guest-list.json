@@ -1,0 +1,29 @@
+{
+  "_comment": "Pasted guest-list lines and what they become. Shared by tests/Feature/Wizard/GuestListTest.php and tests/js/guest-list.test.ts so both parsers agree.",
+  "lines": [
+    ["أم فيصل - 3", "أم فيصل", 3],
+    ["أم فيصل - ٣", "أم فيصل", 3],
+    ["Khaled Ali, 2", "Khaled Ali", 2],
+    ["عائلة الزين: ٤", "عائلة الزين", 4],
+    ["عائلة القاسم، ٥", "عائلة القاسم", 5],
+    ["Sara (2)", "Sara", 2],
+    ["Omar x3", "Omar", 3],
+    ["Omar × 3", "Omar", 3],
+    ["Max 2", "Max", 2],
+    ["Alex", "Alex", 1],
+    ["خالة نورة", "خالة نورة", 1],
+    ["  سلمى  ", "سلمى", 1],
+    ["أبو محمد 6 أشخاص", "أبو محمد", 6],
+    ["The Smiths | 4 seats", "The Smiths", 4],
+    ["1. جدتي - 2", "جدتي", 2],
+    ["- Lina, 1", "Lina", 1],
+    ["• هند ٢", "هند", 2],
+    ["Family\t3", "Family", 3],
+    ["Khaled 0501234567", "Khaled 0501234567", 1],
+    ["Big family - 400", "Big family", 100],
+    ["Nobody - 0", "Nobody", 1],
+    ["عائلة ۳", "عائلة", 3],
+    ["2020", "2020", 1]
+  ],
+  "skipped": ["", "   ", " - "]
+}

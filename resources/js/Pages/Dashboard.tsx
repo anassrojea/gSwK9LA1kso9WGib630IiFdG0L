@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
-import { CalendarDays, ExternalLink } from 'lucide-react';
+import { Link } from '@inertiajs/react';
+import { CalendarDays, ExternalLink, Pencil, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +16,7 @@ interface EventSummary {
     starts_at: string | null;
     stats: { invited: number; opened: number; replied: number; attending: number };
     preview_url: string | null;
+    edit_url: string;
 }
 
 /**
@@ -33,8 +35,12 @@ export default function Dashboard({ events }: { events: EventSummary[] }) {
             <div className="mb-6 flex items-end justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold">{t('my_events')}</h1>
-                    <p className="text-sm text-muted-foreground">{t('create_soon')}</p>
                 </div>
+                <Button asChild size="lg" className="h-11">
+                    <Link href="/create">
+                        <Plus /> {t('create_invitation')}
+                    </Link>
+                </Button>
             </div>
 
             {events.length === 0 && <p className="text-muted-foreground">{t('no_events')}</p>}
@@ -50,6 +56,12 @@ export default function Dashboard({ events }: { events: EventSummary[] }) {
                                     <span className="ms-2 rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">{t(`status.${event.status}`)}</span>
                                 </CardDescription>
                             </div>
+                            <div className="flex flex-wrap gap-2">
+                            <Button variant={event.status === 'draft' ? 'default' : 'outline'} size="sm" asChild>
+                                <Link href={event.edit_url}>
+                                    <Pencil /> {t('continue_editing')}
+                                </Link>
+                            </Button>
                             {event.preview_url && (
                                 <Button variant="outline" size="sm" asChild>
                                     <a href={event.preview_url} target="_blank" rel="noopener">
@@ -57,6 +69,7 @@ export default function Dashboard({ events }: { events: EventSummary[] }) {
                                     </a>
                                 </Button>
                             )}
+                            </div>
                         </CardHeader>
                         <CardContent>
                             <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
