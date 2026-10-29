@@ -15,8 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(InvitationConfigValidator::class);
-        // per request (and per Octane request later): it caches granted features
-        $this->app->scoped(Entitlements::class);
+        $this->app->singleton(Entitlements::class);
     }
 
     public function boot(): void

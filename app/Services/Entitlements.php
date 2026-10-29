@@ -51,9 +51,6 @@ class Entitlements
     /** Applies when an event has no plan at all. */
     public const FALLBACK_PLAN = 'free';
 
-    /** @var array<string, Collection<int, string>> per-request cache keyed by event id */
-    private array $granted = [];
-
     public function hasFeature(Event $event, string $feature): bool
     {
         if (in_array($feature, $this->planFeatures($event), true)) {
@@ -103,15 +100,6 @@ class Entitlements
         return $event->households()->sum('seats_allowed') + $adding <= $limit;
     }
 
-    public function forget(?Event $event = null): void
-    {
-        if ($event) {
-            unset($this->granted[$event->getKey()]);
-        } else {
-            $this->granted = [];
-        }
-    }
-
     private function plan(Event $event): ?Plan
     {
         $planId = $event->plan_id ?? $event->organization?->plan_id ?? self::FALLBACK_PLAN;
@@ -137,7 +125,7 @@ class Entitlements
      */
     private function grantedFeatures(Event $event): Collection
     {
-        return $this->granted[$event->getKey()] ??= Entitlement::query()
+        return Entitlement::query()
             ->where(function ($query) use ($event) {
                 $query->where('event_id', $event->getKey());
                 if ($event->org_id) {

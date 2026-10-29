@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Picks the locale (?lang= → session → user → Accept-Language → default),
- * and shares the text direction so layouts render dir="rtl" for Arabic.
+ * Picks the locale (?lang= → session → user → default Arabic) and shares the
+ * text direction so layouts render dir="rtl" for Arabic. Accept-Language is
+ * deliberately ignored: many phones in the region are set to English, and
+ * the product is Arabic first with an explicit English toggle.
  */
 class SetLocale
 {
@@ -52,7 +54,6 @@ class SetLocale
             $request->query('lang'),
             $request->hasSession() ? $request->session()->get('locale') : null,
             $request->user()?->locale,
-            $request->getPreferredLanguage($supported),
         ];
 
         foreach ($candidates as $candidate) {

@@ -105,9 +105,10 @@ class InvitationConfigValidator
     {
         foreach (self::OBJECT_PATHS as $path) {
             $ref = &$config;
-            foreach ($path as $i => $segment) {
+            foreach ($path as $segment) {
                 if (! is_array($ref) || ! array_key_exists($segment, $ref)) {
                     unset($ref);
+
                     continue 2;
                 }
                 $ref = &$ref[$segment];
