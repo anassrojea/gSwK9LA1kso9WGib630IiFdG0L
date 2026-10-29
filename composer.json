@@ -10,17 +10,20 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
+        "anthropic-ai/sdk": "^1.3",
         "filament/filament": "^5.11",
         "inertiajs/inertia-laravel": "^3.5",
         "laravel/cashier": "^16.9",
         "laravel/fortify": "^1.41",
         "laravel/framework": "^12.0",
         "laravel/horizon": "^5.50",
+        "laravel/pulse": "^1.8",
         "laravel/reverb": "^1.12",
         "laravel/socialite": "^5.31",
         "laravel/tinker": "^2.10.1",
         "lemonsqueezy/laravel": "^1.9",
-        "opis/json-schema": "^2.6"
+        "opis/json-schema": "^2.6",
+        "sentry/sentry-laravel": "^4.29"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
