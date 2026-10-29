@@ -2,7 +2,11 @@
 
 use App\Models\Checkin;
 use App\Models\Event;
+use App\Models\Invitation;
+use App\Models\Organization;
+use App\Models\OrgMember;
 use App\Models\SeatAssignment;
+use App\Models\User;
 use App\Services\Dashboard\GuestBoard;
 use Carbon\CarbonImmutable;
 use Tests\Support\DashboardFixtures;
@@ -123,16 +127,16 @@ it('saves the host\'s own WhatsApp wording and uses it in the links', function (
 });
 
 it('gives hosts the open link settings on the event dashboard, and hides them from door staff', function () {
-    $event = \App\Models\Event::factory()->create(['status' => 'active']);
-    \App\Models\Invitation::factory()->for($event)->create();
+    $event = Event::factory()->create(['status' => 'active']);
+    Invitation::factory()->for($event)->create();
 
     $this->actingAs($event->owner)->get("/dashboard/events/{$event->id}")
         ->assertInertia(fn ($page) => $page->where('openLink.endpoint', fn ($url) => str_contains($url, "/events/{$event->id}/open-link")));
 
-    $org = \App\Models\Organization::factory()->create();
+    $org = Organization::factory()->create();
     $event->update(['org_id' => $org->id]);
-    $door = \App\Models\User::factory()->create();
-    \App\Models\OrgMember::factory()->create(['org_id' => $org->id, 'user_id' => $door->id, 'role' => 'door']);
+    $door = User::factory()->create();
+    OrgMember::factory()->create(['org_id' => $org->id, 'user_id' => $door->id, 'role' => 'door']);
 
     $this->actingAs($door)->get("/dashboard/events/{$event->id}")->assertInertia(fn ($page) => $page->where('openLink', null));
 });
