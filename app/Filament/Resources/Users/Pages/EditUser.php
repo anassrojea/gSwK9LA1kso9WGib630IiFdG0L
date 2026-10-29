@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\Users\UserResource;
 use App\Models\AuditLog;
+use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,15 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            // orders keep their customer (a restricting foreign key), and nobody deletes themselves
+            DeleteAction::make()
+                ->visible(fn (User $record) => ! $record->is(auth()->user()) && ! $record->orders()->exists())
+                ->modalDescription(trans('admin.users.delete_warning'))
+                ->before(fn (User $record) => AuditLog::record('user.deleted', $record, [
+                    'email' => $record->email,
+                    'phone' => $record->phone,
+                    'events' => $record->events()->count(),
+                ])),
         ];
     }
 

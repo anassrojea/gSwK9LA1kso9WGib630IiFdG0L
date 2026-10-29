@@ -31,9 +31,13 @@ class OrderInfolist
                         ->badge()->color(fn (string $state) => OrdersTable::STATUS_COLORS[$state] ?? 'gray'),
                     TextEntry::make('gateway')->label(trans('app.admin.orders.method'))->formatStateUsing(fn (string $state) => trans("app.payments.gateways.{$state}")),
                     TextEntry::make('total_cents')->label(trans('app.payments.amount'))->formatStateUsing(fn (Order $record) => $money($record, $record->total_cents))->weight('bold'),
+                    TextEntry::make('discount_code')->label(trans('admin.discounts.label'))
+                        ->formatStateUsing(fn (Order $record) => $record->discount_code.' · −'.$money($record, $record->discount_cents))
+                        ->badge()->color('success')
+                        ->placeholder('—'),
                     TextEntry::make('requested_currency')->label(trans('app.admin.orders.requested_currency'))->placeholder('—'),
                     TextEntry::make('gateway_ref')->label(trans('app.admin.orders.gateway_ref'))->placeholder('—')->copyable(),
-                    TextEntry::make('user.name')->label(trans('app.admin.orders.customer')),
+                    TextEntry::make('user.name')->label(trans('app.admin.orders.customer'))->placeholder(trans('admin.users.deleted_account')),
                     TextEntry::make('user.email')->label(trans('app.email'))->placeholder('—'),
                     TextEntry::make('user.phone')->label(trans('app.admin.orders.phone'))->placeholder('—'),
                     TextEntry::make('event.title')->label(trans('app.admin.orders.event'))->placeholder('—'),

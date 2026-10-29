@@ -35,6 +35,8 @@ class OrdersTable
                     ->weight('bold'),
                 TextColumn::make('user.name')
                     ->label(trans('app.admin.orders.customer'))
+                    // purged accounts leave their orders without a customer
+                    ->placeholder(trans('admin.users.deleted_account'))
                     ->description(fn (Order $record) => $record->user?->email)
                     ->searchable(),
                 TextColumn::make('event.title')

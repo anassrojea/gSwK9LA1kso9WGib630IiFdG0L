@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Addons;
 
+use App\Filament\AdminNavigation;
 use App\Filament\Resources\Addons\Pages\ManageAddons;
 use App\Models\Addon;
+use App\Models\AuditLog;
 use App\Services\Payments\Currencies;
 use App\Services\Payments\PriceList;
 use BackedEnum;
@@ -16,6 +18,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 /**
  * Add-ons (plan section 13.2). What each one unlocks lives in
@@ -27,7 +30,9 @@ class AddonResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPuzzlePiece;
 
-    protected static ?int $navigationSort = 3;
+    protected static string|UnitEnum|null $navigationGroup = AdminNavigation::Catalog;
+
+    protected static ?int $navigationSort = 5;
 
     public static function getModelLabel(): string
     {
@@ -79,7 +84,8 @@ class AddonResource extends Resource
                 IconColumn::make('active')->label(trans('app.admin.addons.active'))->boolean(),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->after(fn (Addon $record) => AuditLog::record('addon.updated', $record, $record->only(['name', 'price_cents', 'active']))),
             ]);
     }
 
