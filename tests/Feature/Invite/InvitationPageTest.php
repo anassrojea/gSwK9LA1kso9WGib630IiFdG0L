@@ -4,6 +4,7 @@ use App\Models\Event;
 use App\Models\Household;
 use App\Models\Invitation;
 use App\Models\LinkOpen;
+use App\Models\Media;
 use Database\Factories\InvitationFactory;
 
 it('returns 404 for an unknown token', function () {
@@ -130,10 +131,10 @@ it('counts roses sent to the couple', function () {
 
 it('renders the gallery, favorites, wishes and closing sections and resolves uploads', function () {
     $event = Event::factory()->create();
-    $own = \App\Models\Media::factory()->for($event)->create(['storage_key' => 'events/own.webp']);
-    $foreign = \App\Models\Media::factory()->create(['storage_key' => 'events/foreign.webp']);
+    $own = Media::factory()->for($event)->create(['storage_key' => 'events/own.webp']);
+    $foreign = Media::factory()->create(['storage_key' => 'events/foreign.webp']);
 
-    $config = \Database\Factories\InvitationFactory::sampleConfig();
+    $config = InvitationFactory::sampleConfig();
     $config['media'] = ['cover' => ['type' => 'image', 'src' => "media:{$own->id}"]];
     array_splice($config['sections'], 2, 0, [
         ['type' => 'gallery', 'photos' => [['src' => "media:{$own->id}", 'caption' => 'الخطوبة'], ['src' => "media:{$foreign->id}"]]],
