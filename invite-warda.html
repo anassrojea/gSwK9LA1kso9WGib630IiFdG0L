@@ -1,0 +1,360 @@
+<title>زفاف ريم وعمر</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Katibeh&family=Almarai:wght@400;700&family=Amiri:wght@400;700&display=swap">
+<style>
+/* Layout: one phone-width column (max 440px) on a blush backdrop; the opening is a pink rose bud that blooms petal by petal as the
+   guest scrolls, then drops petals over the couple's names. Deliberately single-theme (light, soft), every color set explicitly. */
+:root{
+  --blush:#FFF6F8; --petal:#F9D3DD; --rose:#E8839F; --rose-2:#F4A6BB; --deep:#A8325A; --wine:#6E1E3C;
+  --leaf:#5E8C61; --leaf-2:#86B184; --gold:#C9A35C; --ink:#3B2330; --soft:#8E6B78;
+  --display:"Katibeh","Amiri",serif;
+  --serif:"Amiri","Times New Roman",serif;
+  --label:"Almarai",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:#F3D9E0}
+body{color:var(--ink);font:18px/1.9 var(--serif);margin:0}
+.app{max-width:440px;margin:0 auto;background:var(--blush);position:relative;overflow-x:clip;box-shadow:0 0 50px rgba(168,50,90,.18)}
+.pad{padding-left:max(24px, env(safe-area-inset-left, 0px));padding-right:max(24px, env(safe-area-inset-right, 0px))}
+h2{font:400 40px/1.3 var(--display);color:var(--deep);margin:0;text-wrap:balance}
+p{margin:0}
+.label{font:700 12.5px/1 var(--label);letter-spacing:.03em;color:var(--rose)}
+:focus-visible{outline:2px solid var(--deep);outline-offset:3px}
+
+/* ---------- rose ---------- */
+#open{height:340vh;background:radial-gradient(110% 70% at 50% 42%,#ffffff 0%,#FDEEF2 35%,#F6D3DD 100%)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;place-items:center;overflow:hidden}
+.stage-top{position:absolute;top:calc(28px + env(safe-area-inset-top, 0px));left:0;right:0;text-align:center;display:grid;gap:4px;z-index:4}
+.stage-top .label{color:var(--rose)}
+.stage-top b{font:400 30px var(--display);color:var(--deep)}
+#rose{width:min(78vw,300px);height:auto;overflow:visible;transform-origin:50% 40%;will-change:transform}
+#rose.sway{animation:sway 4s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.falling{position:absolute;inset:0;pointer-events:none;z-index:3}
+.falling svg{position:absolute;left:50%;top:38%;width:22px;height:26px;margin-left:-11px;opacity:0}
+.reveal{position:absolute;left:0;right:0;bottom:15%;text-align:center;display:grid;gap:0;opacity:0;z-index:4}
+.reveal span{font:700 13px var(--label);color:var(--rose)}
+.reveal b{font:400 56px/1.2 var(--display);color:var(--deep)}
+.reveal small{font:700 13px var(--label);color:var(--soft);letter-spacing:.14em}
+.spark span{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);opacity:0;animation:tw 2.6s ease-in-out infinite}
+@keyframes tw{0%,100%{transform:scale(.6)}50%{transform:scale(1.2)}}
+.hint{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom, 0px));left:0;right:0;text-align:center;color:var(--deep);font:700 13px var(--label);display:grid;justify-items:center;gap:6px;z-index:4}
+.hint i{width:20px;height:32px;border:1.5px solid var(--rose);border-radius:12px;position:relative}
+.hint i::after{content:"";position:absolute;left:50%;top:6px;width:4px;height:7px;margin-left:-2px;border-radius:2px;background:var(--rose);animation:wheel 1.6s ease-in-out infinite}
+@keyframes wheel{0%{transform:translateY(0);opacity:1}100%{transform:translateY(12px);opacity:0}}
+
+/* ---------- content ---------- */
+section.blk{padding-block:54px;display:grid;gap:18px;justify-items:center;text-align:center;position:relative;overflow:hidden}
+.line{font:400 30px/1.6 var(--display);color:var(--deep);max-width:16ch}
+.hosts{display:grid;gap:2px}
+.hosts b{font:700 19px var(--serif);color:var(--wine)}
+.names{display:grid;justify-items:center;line-height:1.05}
+.names b{font:400 84px/1.05 var(--display);color:var(--deep)}
+.names i{font-style:normal;font:400 40px var(--display);color:var(--rose)}
+.sprig{width:160px;height:40px}
+
+.date{width:100%;display:grid;justify-items:center;gap:6px;position:relative;padding:30px 16px;border-radius:200px 200px 24px 24px;background:#fff;box-shadow:0 10px 30px rgba(168,50,90,.12)}
+.date .wd{font:700 14px var(--label);color:var(--rose)}
+.date .d{font:400 96px/1 var(--display);color:var(--deep)}
+.date .m{font:700 22px var(--serif);color:var(--wine)}
+.date .h{font-size:16px;color:var(--soft)}
+.date .tm{font:700 13px var(--label);background:var(--petal);color:var(--deep);padding:7px 14px;border-radius:999px}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
+.countdown div{background:#fff;border-radius:50% 50% 14px 14px;padding:14px 4px 8px;display:grid;border:1px solid var(--petal)}
+.countdown b{font:700 24px/1.2 var(--label);color:var(--deep);font-variant-numeric:tabular-nums}
+.countdown span{font:400 12px var(--label);color:var(--soft)}
+
+/* story on a stem */
+#story{background:linear-gradient(180deg,var(--blush),#FCE6EC)}
+.stem{position:relative;width:100%;display:grid;gap:26px;padding-block:6px}
+.stem::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;background:linear-gradient(var(--leaf-2),var(--leaf));border-radius:2px}
+.chap{position:relative;display:grid;grid-template-columns:1fr 34px 1fr;align-items:center;gap:8px}
+.chap .leaf{width:34px;height:34px;z-index:1}
+.chap .box{background:#fff;border-radius:16px;padding:14px;text-align:start;box-shadow:0 6px 18px rgba(168,50,90,.1);display:grid;gap:4px}
+.chap .yr{font:700 12px var(--label);color:var(--rose)}
+.chap h3{margin:0;font:400 26px/1.3 var(--display);color:var(--deep)}
+.chap p{font-size:15.5px;line-height:1.8}
+.chap:nth-child(odd) .box{grid-column:1}.chap:nth-child(odd) .leaf{grid-column:2}
+.chap:nth-child(even) .box{grid-column:3;grid-row:1}.chap:nth-child(even) .leaf{grid-column:2;grid-row:1;transform:scaleX(-1)}
+.bud-end{width:56px;height:60px;margin-top:-6px}
+
+.prog{width:100%;display:grid;gap:10px}
+.prog div{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:999px;padding:12px 20px;border:1px solid var(--petal)}
+.prog b{font:700 17px var(--serif);color:var(--wine)}
+.prog span{font:700 13px var(--label);color:var(--rose)}
+
+.place{width:100%;background:#fff;border-radius:22px;padding:18px;display:grid;gap:4px}
+.place b{font:400 34px var(--display);color:var(--deep)}
+.btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+.btn{font:700 14px var(--label);border-radius:999px;padding:12px 20px;border:1.5px solid var(--deep);background:#fff;color:var(--deep);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn.solid{background:var(--deep);color:#fff}
+.btn.black{background:#111;color:#fff;border-color:#111}
+.palette{display:flex;gap:10px;justify-content:center}
+.palette i{width:36px;height:36px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 0 0 1px var(--petal)}
+
+/* send a rose */
+.roses{background:var(--deep);color:#fff;border-radius:24px;padding:22px 18px;width:100%;display:grid;gap:10px;justify-items:center;position:relative;overflow:hidden}
+.roses b{font:400 52px/1 var(--display);color:var(--petal)}
+.roses .btn{border-color:#fff}
+.fly{position:absolute;width:22px;height:26px;pointer-events:none;animation:flyup 1.6s ease-out forwards}
+@keyframes flyup{0%{transform:translateY(0) rotate(0) scale(.6);opacity:1}100%{transform:translateY(-180px) rotate(200deg) scale(1.2);opacity:0}}
+
+#rsvp{background:#FCE6EC}
+.guest{background:#fff;border-radius:18px;padding:14px;width:100%;display:grid}
+.guest b{font:700 20px var(--serif);color:var(--wine)}
+.guest span{font:700 12.5px var(--label);color:var(--rose)}
+form{display:grid;gap:14px;width:100%;text-align:start}
+form label{display:grid;gap:6px;font:700 13px var(--label);color:var(--wine)}
+input[type=text],select,textarea{font:17px var(--serif);padding:10px 14px;border-radius:14px;border:1px solid var(--petal);background:#fff;color:var(--ink);width:100%}
+textarea{min-height:76px;resize:vertical}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice input{position:absolute;opacity:0}
+.choice label{display:block;text-align:center;border:1.5px solid var(--rose);border-radius:14px;padding:12px;cursor:pointer;color:var(--deep);font:700 14px var(--label);background:#fff}
+.choice input:checked+label{background:var(--rose);color:#fff}
+.choice input:focus-visible+label{outline:2px solid var(--deep);outline-offset:2px}
+.submit{font:700 15px var(--label);background:var(--deep);color:#fff;border:0;border-radius:999px;padding:14px;cursor:pointer}
+.done{display:grid;gap:12px;justify-items:center;width:100%}
+.ticket{background:#fff;border-radius:22px;padding:18px;width:100%;display:grid;gap:8px;justify-items:center}
+.ticket .tb{font:400 46px/1 var(--display);color:var(--deep)}
+.qr{width:112px;height:112px}
+.soft{color:var(--soft);font-size:16px}
+footer{padding-block:26px 40px;text-align:center;font:400 12px var(--label);color:var(--soft);background:var(--blush)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom, 0px));transform:translate(-50%,20px);background:var(--wine);color:#fff;font:700 13px/1.7 var(--label);
+  padding:10px 16px;border-radius:12px;max-width:min(400px,90vw);text-align:center;opacity:0;transition:.3s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.drift{position:absolute;top:-30px;width:18px;height:22px;opacity:.55;animation:drift 12s linear infinite;pointer-events:none}
+@keyframes drift{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(1100px) rotate(360deg)}}
+.js .rv{opacity:0;transform:translateY(24px);transition:opacity .9s ease, transform .9s ease}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.js .rv{opacity:1;transform:none;transition:none}#rose.sway,.drift,.spark span,.hint i::after{animation:none}.drift{display:none}}
+</style>
+
+<div class="app" dir="rtl" lang="ar">
+
+<section id="open" aria-label="الوردة">
+  <div class="stage">
+    <div class="stage-top"><span class="label">إلى عائلة الأستاذة هالة يوسف</span><b>وردةٌ لكم… انتظروها تتفتّح</b></div>
+    <div class="spark" id="spark" aria-hidden="true"></div>
+    <svg id="rose" class="sway" viewBox="-160 -200 320 430" aria-hidden="true">
+      <defs>
+        <linearGradient id="gBack" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#B8436A"/><stop offset="1" stop-color="#E8839F"/></linearGradient>
+        <linearGradient id="gMid" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#D9668A"/><stop offset=".7" stop-color="#F4A6BB"/><stop offset="1" stop-color="#FAD0DC"/></linearGradient>
+        <linearGradient id="gFront" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#E07896"/><stop offset=".6" stop-color="#F6B3C5"/><stop offset="1" stop-color="#FFE3EA"/></linearGradient>
+        <linearGradient id="gSepal" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#3F6B45"/><stop offset="1" stop-color="#86B184"/></linearGradient>
+        <radialGradient id="gGlow"><stop offset="0" stop-color="#FFF4C9" stop-opacity=".9"/><stop offset="1" stop-color="#FFF4C9" stop-opacity="0"/></radialGradient>
+      </defs>
+      <circle id="glow" cx="0" cy="-60" r="120" fill="url(#gGlow)" opacity="0"/>
+      <path d="M0 0 C 6 60, -10 120, 4 220" fill="none" stroke="#4E7A52" stroke-width="7" stroke-linecap="round"/>
+      <path d="M2 110 C 40 80, 80 92, 96 70 C 70 64, 30 70, 2 110Z" fill="#6B9A6A"/>
+      <path d="M2 110 C 40 84, 70 86, 96 70" fill="none" stroke="#4E7A52" stroke-width="1.5"/>
+      <path d="M0 160 C -36 136, -76 146, -92 124 C -66 116, -28 124, 0 160Z" fill="#6B9A6A"/>
+      <path d="M0 160 C -36 140, -64 136, -92 124" fill="none" stroke="#4E7A52" stroke-width="1.5"/>
+      <g id="head"></g>
+    </svg>
+    <div class="falling" id="falling" aria-hidden="true"></div>
+    <div class="reveal" id="reveal"><span>دعوة زفاف</span><b>ريم &amp; عمر</b><small>١٧ . ١٢ . ٢٠٢٦</small></div>
+    <div class="hint" id="hint"><i></i>مرّر للأسفل لتتفتّح الوردة</div>
+  </div>
+</section>
+
+<section class="blk pad">
+  <p class="line rv">كما تتفتّح الوردةُ على مهل… تفتّحت حكايتنا</p>
+  <div class="hosts rv">
+    <span class="label">بقلوبٍ مليئة بالفرح</span>
+    <b>يتشرف السيد ماجد الزين وحرمه</b>
+    <b>والسيد نبيل القاسم وحرمه</b>
+    <span>بدعوتكم لحضور حفل زفاف</span>
+  </div>
+  <div class="names rv"><b>ريم</b><i>&amp;</i><b>عمر</b></div>
+  <svg class="sprig rv" viewBox="0 0 160 40" aria-hidden="true"><path d="M10 30 Q80 0 150 30" fill="none" stroke="#5E8C61" stroke-width="2"/><g fill="#86B184"><ellipse cx="40" cy="18" rx="9" ry="4" transform="rotate(-30 40 18)"/><ellipse cx="120" cy="18" rx="9" ry="4" transform="rotate(30 120 18)"/></g><circle cx="80" cy="14" r="9" fill="#E8839F"/><circle cx="80" cy="14" r="5" fill="#F4A6BB"/></svg>
+</section>
+
+<section class="blk pad" style="padding-top:4px">
+  <div class="date rv">
+    <span class="wd">مساء الخميس</span>
+    <span class="d">١٧</span>
+    <span class="m">ديسمبر ٢٠٢٦</span>
+    <span class="h">الموافق ٨ رجب ١٤٤٨ هـ</span>
+    <span class="tm">الساعة ٨:٣٠ مساءً</span>
+  </div>
+  <div class="countdown rv" aria-label="العد التنازلي">
+    <div><b id="cdD">٠</b><span>يوم</span></div><div><b id="cdH">٠</b><span>ساعة</span></div>
+    <div><b id="cdM">٠</b><span>دقيقة</span></div><div><b id="cdS">٠</b><span>ثانية</span></div>
+  </div>
+</section>
+
+<section class="blk pad" id="story">
+  <span class="label rv">حكايتنا</span>
+  <h2 class="rv">بدأت بوردة</h2>
+  <div class="stem">
+    <div class="chap rv"><div class="box"><span class="yr">٢٠٢١</span><h3>آخر وردة في المحل</h3><p>كان يشتري ورداً لأمه، وكانت تريد الوردة الوردية الأخيرة. تركها لها… وبقيت الابتسامة.</p></div><svg class="leaf" viewBox="0 0 34 34"><path d="M17 17 C 26 6, 32 8, 33 2 C 24 2, 16 6, 17 17Z" fill="#86B184"/><circle cx="17" cy="17" r="6" fill="#E8839F"/></svg></div>
+    <div class="chap rv"><div class="box"><span class="yr">٢٠٢٢</span><h3>وردة كل خميس</h3><p>صار يرسل لها وردة واحدة كل خميس، بلا كلام. كانت الوردة تقول كل شيء.</p></div><svg class="leaf" viewBox="0 0 34 34"><path d="M17 17 C 26 6, 32 8, 33 2 C 24 2, 16 6, 17 17Z" fill="#86B184"/><circle cx="17" cy="17" r="6" fill="#F4A6BB"/></svg></div>
+    <div class="chap rv"><div class="box"><span class="yr">٢٠٢٥</span><h3>باقة الخطوبة</h3><p>في يوم الخطوبة جاء بباقة من مئة وردة… وفي وسطها الخاتم.</p></div><svg class="leaf" viewBox="0 0 34 34"><path d="M17 17 C 26 6, 32 8, 33 2 C 24 2, 16 6, 17 17Z" fill="#86B184"/><circle cx="17" cy="17" r="6" fill="#E8839F"/></svg></div>
+    <div class="chap rv"><div class="box"><span class="yr">٢٠٢٦</span><h3>والآن… تتفتّح</h3><p>تكتمل الحكاية في ليلةٍ نريدكم أن تكونوا فيها معنا.</p></div><svg class="leaf" viewBox="0 0 34 34"><path d="M17 17 C 26 6, 32 8, 33 2 C 24 2, 16 6, 17 17Z" fill="#86B184"/><circle cx="17" cy="17" r="6" fill="#A8325A"/></svg></div>
+  </div>
+  <svg class="bud-end rv" viewBox="0 0 56 60" aria-hidden="true"><path d="M28 58V30" stroke="#5E8C61" stroke-width="3"/><path d="M28 34C12 30 10 12 20 4c2 8 6 10 8 12 2-2 6-4 8-12 10 8 8 26-8 30z" fill="#E8839F"/><path d="M28 34c-6-4-8-12-4-20 2 6 4 8 4 8s2-2 4-8c4 8 2 16-4 20z" fill="#F4A6BB"/></svg>
+</section>
+
+<section class="blk pad">
+  <span class="label rv">برنامج الحفل</span>
+  <h2 class="rv">ليلة الورد</h2>
+  <div class="prog">
+    <div class="rv"><b>استقبال الضيوف</b><span>٨:٣٠ م</span></div>
+    <div class="rv"><b>زفّة العروسين بين الورود</b><span>٩:١٥ م</span></div>
+    <div class="rv"><b>الرقصة الأولى</b><span>٩:٤٥ م</span></div>
+    <div class="rv"><b>العشاء</b><span>١٠:٣٠ م</span></div>
+  </div>
+</section>
+
+<section class="blk pad" style="background:#fff">
+  <span class="label rv">المكان</span>
+  <div class="place rv" style="background:var(--blush)"><b>قاعة الورود الملكية</b><span class="soft">شارع الحدائق، مقابل البوابة الشمالية</span></div>
+  <div class="btns rv"><button type="button" class="btn solid" data-toast="يفتح موقع القاعة في تطبيق الخرائط">الاتجاهات</button><button type="button" class="btn" data-toast="يضيف الحفل إلى تقويم الهاتف">أضف للتقويم</button></div>
+  <span class="label rv">ألوان الحفل</span>
+  <div class="palette rv" aria-label="ألوان مقترحة"><i style="background:#F9D3DD"></i><i style="background:#E8839F"></i><i style="background:#86B184"></i><i style="background:#FFFFFF"></i></div>
+  <p class="soft rv">الوردي الفاتح، الوردي، الأخضر الهادئ والأبيض</p>
+</section>
+
+<section class="blk pad">
+  <div class="roses rv" id="roseBox">
+    <span class="label" style="color:var(--petal)">أهدِ العروسين وردة</span>
+    <b id="roseCount">١٢٤</b>
+    <span>وردة وصلت من الأحبّة</span>
+    <button type="button" class="btn" id="sendRose">أرسل وردة</button>
+  </div>
+</section>
+
+<section class="blk pad" id="rsvp">
+  <span class="label rv">تأكيد الحضور</span>
+  <h2 class="rv">هل ستكونون معنا؟</h2>
+  <div class="guest rv"><b>عائلة الأستاذة هالة يوسف</b><span>خصّصنا لكم مقعدين</span></div>
+  <form id="rsvpForm" class="rv" novalidate>
+    <label for="gName">الاسم<input type="text" id="gName" value="هالة يوسف" autocomplete="name"></label>
+    <div class="choice" role="radiogroup" aria-label="الحضور">
+      <span><input type="radio" name="att" id="attYes" value="yes" checked><label for="attYes">سأحضر بإذن الله</label></span>
+      <span><input type="radio" name="att" id="attNo" value="no"><label for="attNo">أعتذر</label></span>
+    </div>
+    <label for="gCount">عدد الحضور<select id="gCount"><option>شخص واحد</option><option selected>شخصان</option></select></label>
+    <label for="gMsg">تهنئة للعروسين (اختياري)<textarea id="gMsg">ألف مبروك، ودامت الوردة متفتحة في بيتكم</textarea></label>
+    <button class="submit" type="submit">إرسال الرد</button>
+  </form>
+  <div class="done" id="done" hidden>
+    <div class="ticket"><span class="label">بانتظاركم</span><span>طاولتكم</span><span class="tb">طاولة ٤</span>
+      <svg class="qr" id="qr" viewBox="0 0 29 29" shape-rendering="crispEdges" aria-label="رمز الدخول"></svg><span class="soft" style="font-size:13px">اعرضوا الرمز عند الدخول</span></div>
+    <div class="btns"><button type="button" class="btn black" data-toast="يحفظ الدعوة ورمز الدخول في محفظة الهاتف">أضف إلى المحفظة</button><button type="button" class="btn" id="edit">تعديل الرد</button></div>
+  </div>
+  <div class="done" id="sorry" hidden>
+    <div class="ticket"><span class="label">وصلنا ردّكم</span><p>شكراً لإبلاغنا، ودعواتكم تصل العروسين.</p></div>
+    <button type="button" class="btn" id="edit2">تعديل الرد</button>
+  </div>
+</section>
+
+<section class="blk pad" id="outro">
+  <h2 class="rv">بحضوركم تكتمل الوردة</h2>
+  <p class="soft rv">بعد الحفل، شاركونا صوركم في ألبوم العروسين.</p>
+  <button type="button" class="btn solid rv" data-toast="يفتح ألبوم الحفل لرفع الصور">رفع الصور</button>
+</section>
+
+<footer>صُمّمت هذه الدعوة عبر دعوة · مثال توضيحي</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script>
+document.documentElement.classList.add('js');
+const AR='٠١٢٣٤٥٦٧٨٩',ar=n=>String(n).replace(/\d/g,d=>AR[d]);
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2,lerp=(a,b,t)=>a+(b-a)*t;
+const NS='http://www.w3.org/2000/svg';
+const petalPath=(L,w)=>`M0 0 C ${-w} ${-L*.25}, ${-w*1.12} ${-L*.85}, ${-w*.38} ${-L} Q 0 ${-L*.9} ${w*.38} ${-L} C ${w*1.12} ${-L*.85}, ${w} ${-L*.25}, 0 0 Z`;
+
+/* rose head: layers drawn back to front. Each petal pivots at the top of the stem;
+   closed = narrow and upright (a bud), open = wide and spread. */
+const LAYERS=[
+  {name:'sepal',fill:'url(#gSepal)',L:54, w:9,  closed:[-38,-16,16,38],   open:[-120,-95,95,120],sx:[1,1],     sy:[1,1],    delay:0},
+  {name:'back', fill:'url(#gBack)', L:118,w:46, closed:[-11,-4,4,11],     open:[-58,-24,24,58], sx:[.45,1.05], sy:[1,.95],  delay:.15},
+  {name:'mid',  fill:'url(#gMid)',  L:104,w:40, closed:[-7,0,7],          open:[-34,0,34],      sx:[.45,1.0],  sy:[1,.92],  delay:.3},
+  {name:'inner',fill:'url(#gMid)',  L:80, w:30, closed:[-3,3],            open:[-12,12],        sx:[.5,.9],    sy:[1,1],    delay:.3},
+  {name:'front',fill:'url(#gFront)',L:96, w:44, closed:[-15,-6,6,15],     open:[-82,-50,50,82], sx:[.45,1.1],  sy:[1,.8],   delay:.05}
+];
+const head=document.getElementById('head');const petals=[];
+LAYERS.forEach(ly=>{
+  ly.closed.forEach((c,i)=>{
+    const p=document.createElementNS(NS,'path');p.setAttribute('d',petalPath(ly.L,ly.w));p.setAttribute('fill',ly.fill);
+    if(ly.name!=='sepal'){p.setAttribute('stroke','#C4567A');p.setAttribute('stroke-width','.6');p.setAttribute('stroke-opacity','.45')}
+    head.appendChild(p);petals.push({el:p,ly,c,o:ly.open[i]});
+  });
+  if(ly.name==='inner'){const center=document.createElementNS(NS,'g');
+    center.innerHTML='<path d="M0 -6 C -14 -22, -10 -48, 0 -54 C 10 -48, 14 -22, 0 -6Z" fill="#C9506F"/><path d="M-6 -30 Q 0 -44 8 -32" fill="none" stroke="#F4A6BB" stroke-width="2"/><path d="M-4 -40 Q 2 -50 6 -42" fill="none" stroke="#FAD0DC" stroke-width="1.6"/>';
+    head.appendChild(center);}
+});
+
+/* gold sparkles and loose petals */
+const spark=document.getElementById('spark');const sparks=[];
+for(let i=0;i<14;i++){const s=document.createElement('span');const a=i/14*Math.PI*2;s.style.left=`calc(50% + ${Math.cos(a)*(110+(i%3)*18)}px)`;s.style.top=`calc(38% + ${Math.sin(a)*(80+(i%2)*20)}px)`;s.style.animationDelay=-(i*.3)+'s';spark.appendChild(s);sparks.push(s)}
+const falling=document.getElementById('falling');const loose=[];
+let seed=9;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
+for(let i=0;i<10;i++){const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','-12 -26 24 28');s.innerHTML=`<path d="${petalPath(24,10)}" fill="${['#E8839F','#F4A6BB','#FAD0DC'][i%3]}"/>`;
+  falling.appendChild(s);loose.push({el:s,dx:(rnd()-.5)*300,dy:280+rnd()*220,r:(rnd()-.5)*540,d:rnd()*.25})}
+
+const open=document.getElementById('open'),rose=document.getElementById('rose'),glow=document.getElementById('glow'),
+  reveal=document.getElementById('reveal'),hint=document.getElementById('hint'),topT=document.querySelector('.stage-top');
+function frame(){
+  const p=clamp(-open.getBoundingClientRect().top/Math.max(1,open.offsetHeight-innerHeight));
+  rose.classList.toggle('sway',p<.02);
+  const b=clamp((p-.04)/.5),g=ease(clamp((p-.4)/.2)),f=ease(clamp((p-.62)/.32));
+  hint.style.opacity=1-clamp(p*8);
+  petals.forEach(pt=>{
+    // outer layers open first, inner ones follow, so the bloom unfolds from the outside in
+    const delay=pt.ly.delay;
+    const t=ease(clamp((b-delay)/(1-delay)));
+    const a=lerp(pt.c,pt.o,t),sx=lerp(pt.ly.sx[0],pt.ly.sx[1],t),sy=lerp(pt.ly.sy[0],pt.ly.sy[1],t);
+    pt.el.setAttribute('transform',`rotate(${a}) scale(${sx} ${sy})`);
+  });
+  glow.setAttribute('opacity',g*.9);
+  sparks.forEach(s=>s.style.opacity=g*(1-f*.6));
+  rose.style.transform=`translateY(${-f*70}px) scale(${1-f*.22})`;
+  loose.forEach(l=>{const k=clamp((f-l.d)/(1-l.d));l.el.style.opacity=k>0?1-clamp((k-.75)/.25):0;
+    l.el.style.transform=`translate(${l.dx*k}px,${l.dy*k}px) rotate(${l.r*k}deg)`});
+  reveal.style.opacity=f;reveal.style.transform=`translateY(${(1-f)*24}px)`;
+  topT.style.opacity=1-f;
+}
+let tk=false;addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(()=>{frame();tk=false})}},{passive:true});
+addEventListener('resize',frame);frame();
+
+/* ambient drifting petals in the story section */
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const st=document.getElementById('story');
+  for(let i=0;i<8;i++){const s=document.createElementNS(NS,'svg');s.setAttribute('class','drift');s.setAttribute('viewBox','-12 -26 24 28');s.innerHTML=`<path d="${petalPath(24,10)}" fill="#F4A6BB"/>`;
+    s.style.left=(5+rnd()*90)+'%';s.style.animationDelay=-(rnd()*12)+'s';s.style.animationDuration=(10+rnd()*6)+'s';st.appendChild(s)}}
+
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15}):null;
+document.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));
+
+/* countdown to Thu 17 Dec 2026, 8:30 PM (+03:00) */
+const target=new Date('2026-12-17T20:30:00+03:00').getTime();
+function tick(){let x=Math.max(0,target-Date.now());const D=Math.floor(x/864e5);x-=D*864e5;const H=Math.floor(x/36e5);x-=H*36e5;const M=Math.floor(x/6e4);x-=M*6e4;
+  cdD.textContent=ar(D);cdH.textContent=ar(H);cdM.textContent=ar(M);cdS.textContent=ar(Math.floor(x/1e3));}
+tick();setInterval(tick,1000);
+
+/* send a rose (sample counter; the real product stores it per event) */
+let roses=124;const rb=document.getElementById('roseBox');
+document.getElementById('sendRose').addEventListener('click',e=>{roses++;roseCount.textContent=ar(roses);
+  const s=document.createElementNS(NS,'svg');s.setAttribute('class','fly');s.setAttribute('viewBox','-12 -26 24 28');s.innerHTML=`<path d="${petalPath(24,10)}" fill="#F9D3DD"/>`;
+  s.style.left=(40+Math.random()*20)+'%';s.style.bottom='40px';rb.appendChild(s);setTimeout(()=>s.remove(),1700);toast('وصلت وردتك للعروسين');});
+
+/* decorative QR (not scannable) */
+(function(){const q=document.getElementById('qr');let s2=13,h='<rect width="29" height="29" fill="#fff"/>';const r=()=>(s2=(s2*9301+49297)%233280)/233280;
+  const F=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#6E1E3C"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#6E1E3C"/>`;
+  for(let y=0;y<29;y++)for(let x=0;x<29;x++){const f=(x<8&&y<8)||(x>20&&y<8)||(x<8&&y>20);if(!f&&r()<.48)h+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#6E1E3C"/>`}
+  q.innerHTML=h+F(0,0)+F(22,0)+F(0,22);})();
+
+const form=document.getElementById('rsvpForm'),done=document.getElementById('done'),sorry=document.getElementById('sorry');
+form.addEventListener('submit',e=>{e.preventDefault();const yes=attYes.checked;form.hidden=true;(yes?done:sorry).hidden=false;toast(yes?'شكراً لكم، وصل ردّكم للعروسين':'تم إرسال اعتذاركم');});
+attNo.addEventListener('change',()=>gCount.disabled=true);attYes.addEventListener('change',()=>gCount.disabled=false);
+['edit','edit2'].forEach(id=>document.getElementById(id).onclick=()=>{done.hidden=true;sorry.hidden=true;form.hidden=false});
+const t=document.getElementById('toast');let tt;
+function toast(m){t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600)}
+document.querySelectorAll('[data-toast]').forEach(b=>b.addEventListener('click',()=>toast('في الدعوة الحقيقية: '+b.dataset.toast)));
+</script>

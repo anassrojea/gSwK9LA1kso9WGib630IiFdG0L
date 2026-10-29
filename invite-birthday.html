@@ -1,0 +1,311 @@
+<title>عيد ميلاد آدم السابع</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Baloo+Bhaijaan+2:wght@400;500;700&display=swap">
+<style>
+/* Layout: one phone-width column (max 440px) on a violet backdrop; the opening is a gift box that unwraps as the guest scrolls,
+   releasing balloons and confetti. Deliberately single-theme and playful, every color set explicitly. */
+:root{
+  --violet:#5B3CC4; --violet-deep:#2A1766; --tomato:#FF5A4E; --tomato-2:#D93E33;
+  --sun:#FFC531; --teal:#1FB5A8; --sky:#E4F4FF; --paper:#FFF8EC; --ink:#241A3D; --soft:#6E6385;
+  --display:"Lalezar","Baloo Bhaijaan 2",sans-serif;
+  --body:"Baloo Bhaijaan 2",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--violet-deep)}
+body{color:var(--ink);font:17px/1.75 var(--body);margin:0}
+.app{max-width:440px;margin:0 auto;background:var(--paper);position:relative;overflow-x:clip;box-shadow:0 0 60px rgba(0,0,0,.4)}
+.pad{padding-left:max(22px, env(safe-area-inset-left, 0px));padding-right:max(22px, env(safe-area-inset-right, 0px))}
+h2{font:400 32px/1.3 var(--display);color:var(--violet);margin:0;text-wrap:balance}
+p{margin:0}
+.label{font:700 13px/1 var(--body);color:var(--tomato)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+
+/* ---------- gift box ---------- */
+#open{height:330vh;background:radial-gradient(110% 70% at 50% 45%,#7a5be0 0%,var(--violet) 45%,var(--violet-deep) 100%)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;place-items:center;overflow:hidden}
+.stage-top{position:absolute;top:calc(28px + env(safe-area-inset-top, 0px));left:0;right:0;text-align:center;display:grid;gap:2px;color:#fff;z-index:8}
+.stage-top .label{color:var(--sun)}
+.stage-top b{font:400 24px var(--display)}
+.dots span{position:absolute;border-radius:50%;opacity:.25}
+.gift{position:relative;width:220px;height:240px;margin-top:40px}
+.gbody{position:absolute;left:12px;right:12px;bottom:0;height:150px;z-index:3;border-radius:8px;
+  background:linear-gradient(90deg,transparent 42%,var(--sun) 42% 58%,transparent 58%),linear-gradient(180deg,var(--tomato),var(--tomato-2));
+  box-shadow:0 26px 40px rgba(20,8,60,.45)}
+.glid{position:absolute;left:0;right:0;top:44px;height:48px;z-index:4;border-radius:8px;
+  background:linear-gradient(90deg,transparent 42%,#ffd45c 42% 58%,transparent 58%),linear-gradient(180deg,#ff7a6f,var(--tomato));box-shadow:0 6px 10px rgba(0,0,0,.2)}
+.bow{position:absolute;left:50%;top:6px;width:100px;height:52px;margin-left:-50px;z-index:5}
+.balloons{position:absolute;left:50%;bottom:120px;width:0;height:0;z-index:2}
+.balloon{position:absolute;left:-20px;top:-30px;width:40px;height:90px}
+.confetti{position:absolute;left:50%;top:96px;width:0;height:0;z-index:6}
+.confetti span{position:absolute;width:8px;height:12px;border-radius:2px;opacity:0}
+.reveal{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);display:grid;justify-items:center;gap:0;opacity:0;z-index:7;pointer-events:none}
+.reveal .age{width:150px;height:150px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font:400 110px/1 var(--display);color:var(--violet);box-shadow:0 0 0 10px rgba(255,197,49,.3)}
+.reveal b{font:400 46px/1.3 var(--display);color:#fff;margin-top:10px}
+.reveal span{font:700 15px var(--body);color:var(--sun)}
+.hint{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom, 0px));left:0;right:0;text-align:center;color:#fff;font:700 14px var(--body);display:grid;justify-items:center;gap:6px}
+.hint i{width:20px;height:32px;border:2px solid var(--sun);border-radius:12px;position:relative}
+.hint i::after{content:"";position:absolute;left:50%;top:6px;width:4px;height:7px;margin-left:-2px;border-radius:2px;background:var(--sun);animation:wheel 1.6s ease-in-out infinite}
+@keyframes wheel{0%{transform:translateY(0);opacity:1}100%{transform:translateY(12px);opacity:0}}
+.gift.wiggle{animation:wig 2.4s ease-in-out infinite}
+@keyframes wig{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(-4deg)}80%{transform:rotate(4deg)}85%{transform:rotate(-3deg)}90%{transform:rotate(2deg)}}
+
+/* ---------- content ---------- */
+section.blk{padding-block:52px;display:grid;gap:18px;justify-items:center;text-align:center;position:relative}
+.wavy{width:100%;height:18px;display:block}
+.hosts{display:grid;gap:2px}
+.hosts b{font:700 19px var(--body);color:var(--violet)}
+.kid{font:400 72px/1.1 var(--display);color:var(--tomato)}
+.turns{display:flex;align-items:center;gap:12px;font:700 20px var(--body);color:var(--ink)}
+.turns i{font-style:normal;width:64px;height:64px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font:400 44px/1 var(--display);transform:rotate(-8deg)}
+.theme{background:var(--sky);border:2px dashed var(--teal);border-radius:16px;padding:14px 16px;width:100%;display:grid;gap:2px}
+.theme b{font:400 24px var(--display);color:var(--teal)}
+
+.ticket-date{width:100%;display:grid;grid-template-columns:1fr 1.2fr;border-radius:18px;overflow:hidden;box-shadow:0 10px 24px rgba(91,60,196,.18)}
+.ticket-date .l{background:var(--violet);color:#fff;padding:18px 10px;display:grid;align-content:center}
+.ticket-date .l b{font:400 76px/1 var(--display);color:var(--sun)}
+.ticket-date .r{background:#fff;padding:18px 14px;display:grid;align-content:center;gap:4px;text-align:start;border-inline-start:3px dashed var(--paper)}
+.ticket-date .r b{font:400 26px var(--display);color:var(--violet)}
+.ticket-date .r span{font-size:15px;color:var(--soft)}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
+.countdown div{border-radius:14px;padding:10px 4px;display:grid;color:#fff}
+.countdown div:nth-child(1){background:var(--tomato)}.countdown div:nth-child(2){background:var(--teal)}
+.countdown div:nth-child(3){background:var(--violet)}.countdown div:nth-child(4){background:#F28B2B}
+.countdown b{font:400 28px/1.2 var(--display);font-variant-numeric:tabular-nums}
+.countdown span{font:500 12px var(--body)}
+
+/* growing up */
+#grow{background:var(--sky)}
+.steps{display:grid;gap:12px;width:100%}
+.step{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:center;background:#fff;border-radius:16px;padding:12px;text-align:start}
+.step .n{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font:400 30px/1 var(--display);color:#fff}
+.step .n small{display:block;font:500 11px var(--body);margin-top:-6px}
+.step b{font:700 17px var(--body);color:var(--ink)}
+.step p{font-size:15px;color:var(--soft)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chips span{font:700 14px var(--body);padding:7px 14px;border-radius:999px;color:#fff}
+
+.prog{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.prog div{border-radius:16px;padding:14px 10px;display:grid;gap:4px;justify-items:center;background:#fff;border:2px solid #f1e7d6}
+.prog svg{width:46px;height:46px}
+.prog b{font:700 16px var(--body)}
+.prog span{font:700 13px var(--body);color:var(--tomato)}
+
+.place{width:100%;background:#fff;border-radius:18px;overflow:hidden;text-align:start}
+.place svg{display:block;width:100%;height:auto}
+.place .i{padding:14px 16px;display:grid;gap:2px}
+.place .i b{font:400 24px var(--display);color:var(--violet)}
+.btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+.btn{font:700 15px var(--body);border-radius:999px;padding:11px 20px;border:2px solid var(--violet);background:#fff;color:var(--violet);cursor:pointer}
+.btn.solid{background:var(--violet);color:#fff}
+.btn.black{background:#111;color:#fff;border-color:#111}
+.gifts{background:#fff;border-radius:16px;padding:16px;width:100%;display:grid;gap:6px;border:2px solid var(--sun)}
+.gifts b{font:400 22px var(--display);color:var(--tomato)}
+
+#rsvp{background:var(--violet);color:#fff}
+#rsvp h2{color:var(--sun)}
+.guest{background:rgba(255,255,255,.12);border-radius:16px;padding:12px;width:100%;display:grid}
+.guest b{font:700 19px var(--body)}
+.guest span{font:500 13px var(--body);color:var(--sun)}
+form{display:grid;gap:12px;width:100%;text-align:start}
+form label{display:grid;gap:5px;font:700 14px var(--body);color:#fff}
+input[type=text],select{font:16px var(--body);padding:10px 12px;border-radius:12px;border:0;background:#fff;color:var(--ink);width:100%}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice input{position:absolute;opacity:0}
+.choice label{display:block;text-align:center;border:2px solid rgba(255,255,255,.5);border-radius:12px;padding:11px;cursor:pointer;color:#fff;font:700 15px var(--body)}
+.choice input:checked+label{background:var(--sun);color:var(--violet-deep);border-color:var(--sun)}
+.choice input:focus-visible+label{outline:3px solid #fff;outline-offset:2px}
+.submit{font:400 22px var(--display);background:var(--tomato);color:#fff;border:0;border-radius:999px;padding:12px;cursor:pointer}
+.done{display:grid;gap:12px;justify-items:center;width:100%}
+.band{background:repeating-linear-gradient(-45deg,var(--sun) 0 14px,#ffd65e 14px 28px);color:var(--violet-deep);border-radius:16px;padding:16px;width:100%;display:grid;gap:6px;justify-items:center}
+.band b{font:400 26px var(--display)}
+.qr{width:110px;height:110px;border-radius:8px}
+.soft{color:var(--soft);font-size:15px}
+footer{padding-block:26px 40px;text-align:center;font:500 12px var(--body);color:var(--soft);background:var(--paper)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom, 0px));transform:translate(-50%,20px);background:var(--violet-deep);color:var(--sun);font:700 14px/1.6 var(--body);
+  padding:10px 16px;border-radius:12px;max-width:min(400px,90vw);text-align:center;opacity:0;transition:.3s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.js .rv{opacity:0;transform:translateY(24px) scale(.97);transition:opacity .7s ease, transform .7s cubic-bezier(.3,1.5,.6,1)}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.js .rv{opacity:1;transform:none;transition:none}.gift.wiggle,.hint i::after{animation:none}}
+</style>
+
+<div class="app" dir="rtl" lang="ar">
+
+<section id="open" aria-label="صندوق الهدية">
+  <div class="stage">
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <div class="stage-top"><span class="label">إلى صديق آدم: يوسف</span><b>عندك هدية! افتحها</b></div>
+    <div class="gift wiggle" id="gift">
+      <div class="balloons" id="balloons"></div>
+      <div class="gbody" id="gbody"></div>
+      <div class="glid" id="glid"></div>
+      <svg class="bow" id="bow" viewBox="0 0 100 52" aria-hidden="true"><path d="M50 40C30 10 4 8 8 30s30 14 42 10zM50 40c20-30 46-32 42-10s-30 14-42 10z" fill="#FFC531" stroke="#E0A400" stroke-width="2"/><circle cx="50" cy="40" r="9" fill="#FFD45C" stroke="#E0A400" stroke-width="2"/></svg>
+      <div class="confetti" id="confetti"></div>
+    </div>
+    <div class="reveal" id="reveal"><span>عيد ميلاد سعيد</span><div class="age">٧</div><b>آدم</b></div>
+    <div class="hint" id="hint"><i></i>مرّر للأسفل لفتح الهدية</div>
+  </div>
+</section>
+
+<section class="blk pad">
+  <svg class="wavy rv" viewBox="0 0 300 18" preserveAspectRatio="none" aria-hidden="true"><path d="M0 9q12-9 25 0t25 0 25 0 25 0 25 0 25 0 25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#FF5A4E" stroke-width="3"/></svg>
+  <div class="hosts rv"><span class="label">يا هلا ويا مرحبا</span><b>ماما وبابا يدعوانك لحفلة عيد ميلاد</b></div>
+  <div class="kid rv">آدم</div>
+  <div class="turns rv">يكمل عامه <i>٧</i> السابع</div>
+  <div class="theme rv"><span class="label" style="color:var(--violet)">موضوع الحفلة</span><b>مغامرة الديناصورات</b><span class="soft">تعال بلباس المستكشف، والقبعة علينا!</span></div>
+</section>
+
+<section class="blk pad" style="padding-top:6px">
+  <span class="label rv">متى؟</span>
+  <div class="ticket-date rv">
+    <div class="l"><span>نوفمبر</span><b>١٣</b><span>٢٠٢٦</span></div>
+    <div class="r"><b>يوم الجمعة</b><span>من ٤:٠٠ إلى ٧:٠٠ مساءً</span><span>الموافق ٣ جمادى الآخرة ١٤٤٨ هـ</span></div>
+  </div>
+  <div class="countdown rv" aria-label="العد التنازلي">
+    <div><b id="cdD">٠</b><span>يوم</span></div><div><b id="cdH">٠</b><span>ساعة</span></div>
+    <div><b id="cdM">٠</b><span>دقيقة</span></div><div><b id="cdS">٠</b><span>ثانية</span></div>
+  </div>
+</section>
+
+<section class="blk pad" id="grow">
+  <span class="label rv">حكاية آدم</span>
+  <h2 class="rv">آدم يكبر</h2>
+  <div class="steps">
+    <div class="step rv"><span class="n" style="background:var(--tomato)">١<small>سنة</small></span><div><b>أول خطوة</b><p>مشى نحو ماما وهو يضحك، ثم جلس على الأرض فرحاً بنفسه.</p></div></div>
+    <div class="step rv"><span class="n" style="background:var(--teal)">٢<small>سنتان</small></span><div><b>أول كلمة: «بابا»</b><p>وبعدها لم يتوقف عن الكلام أبداً.</p></div></div>
+    <div class="step rv"><span class="n" style="background:#F28B2B">٤<small>سنوات</small></span><div><b>أول يوم في الروضة</b><p>بكى في الصباح، وعاد بصديق جديد اسمه يوسف.</p></div></div>
+    <div class="step rv"><span class="n" style="background:var(--violet)">٧<small>سنوات</small></span><div><b>والآن… الحفلة الكبيرة</b><p>وينتظرك أنت لتكون معه!</p></div></div>
+  </div>
+  <span class="label rv" style="color:var(--violet)">أشياء يحبها آدم</span>
+  <div class="chips rv"><span style="background:var(--teal)">الديناصورات</span><span style="background:var(--tomato)">كرة القدم</span><span style="background:var(--violet)">اللون الأزرق</span><span style="background:#F28B2B">البيتزا</span><span style="background:#E04F9A">الرسم</span></div>
+</section>
+
+<section class="blk pad">
+  <span class="label rv">ماذا سنفعل؟</span>
+  <h2 class="rv">برنامج المرح</h2>
+  <div class="prog">
+    <div class="rv"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="22" fill="#E4F4FF"/><path d="M12 30c2-8 6-12 12-12s9 3 10 7l-4 1 1 4H12z" fill="#1FB5A8"/><circle cx="29" cy="22" r="1.5" fill="#241A3D"/></svg><b>البحث عن بيض الديناصور</b><span>٤:٠٠</span></div>
+    <div class="rv"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="22" fill="#FFF0D0"/><path d="M14 30h18l-3-14H17z" fill="#241A3D"/><path d="M16 14h14" stroke="#241A3D" stroke-width="3"/><path d="M30 10l2 3 3 1-3 1-2 3-1-3-3-1 3-1z" fill="#FFC531"/></svg><b>عرض الساحر</b><span>٤:٤٥</span></div>
+    <div class="rv"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="22" fill="#FFE3E0"/><rect x="12" y="22" width="22" height="12" rx="3" fill="#FF5A4E"/><path d="M12 26h22" stroke="#FFC531" stroke-width="2"/><path d="M23 14v8" stroke="#5B3CC4" stroke-width="2"/><path d="M23 10c2 2 2 4 0 4s-2-2 0-4z" fill="#F28B2B"/></svg><b>الكيكة والشموع</b><span>٥:٣٠</span></div>
+    <div class="rv"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="22" fill="#EDE7FF"/><rect x="13" y="20" width="20" height="14" rx="2" fill="#5B3CC4"/><rect x="11" y="16" width="24" height="6" rx="2" fill="#7a5be0"/><path d="M23 16v18" stroke="#FFC531" stroke-width="3"/></svg><b>فتح الهدايا</b><span>٦:١٥</span></div>
+  </div>
+</section>
+
+<section class="blk pad" style="background:#fff">
+  <span class="label rv">أين؟</span>
+  <div class="place rv" style="background:var(--paper)">
+    <svg viewBox="0 0 360 150" aria-label="رسم توضيحي لمكان الحفلة"><rect width="360" height="150" fill="#E4F4FF"/><path d="M0 120q90-30 180 0t180 0v30H0z" fill="#9BD86A"/>
+      <path d="M150 120V72l30-22 30 22v48z" fill="#FF5A4E"/><path d="M144 76l36-30 36 30" fill="none" stroke="#5B3CC4" stroke-width="6" stroke-linejoin="round"/><rect x="172" y="94" width="16" height="26" rx="3" fill="#FFC531"/>
+      <g><path d="M70 60v60" stroke="#241A3D"/><ellipse cx="70" cy="48" rx="13" ry="16" fill="#1FB5A8"/></g><g><path d="M280 50v70" stroke="#241A3D"/><ellipse cx="280" cy="38" rx="13" ry="16" fill="#FFC531"/></g><g><path d="M300 64v56" stroke="#241A3D"/><ellipse cx="300" cy="52" rx="12" ry="15" fill="#E04F9A"/></g></svg>
+    <div class="i"><b>حديقة بيت الجدّة</b><span class="soft">حي الياسمين، شارع الورد، بيت رقم ٧</span></div>
+  </div>
+  <div class="btns rv"><button type="button" class="btn solid" data-toast="يفتح الموقع في تطبيق الخرائط">الاتجاهات</button><button type="button" class="btn" data-toast="يضيف الحفلة إلى تقويم الهاتف">أضف للتقويم</button></div>
+  <div class="gifts rv"><b>فكرة هدية؟</b><p>آدم يحب كتب القصص والألغاز وألعاب التركيب. وجودك معه أجمل هدية!</p></div>
+</section>
+
+<section class="blk pad" id="rsvp">
+  <span class="label rv" style="color:var(--sun)">هل ستأتي؟</span>
+  <h2 class="rv">أكّد حضورك للحفلة</h2>
+  <div class="guest rv"><b>يوسف وعائلته</b><span>مكان لطفلين وشخص كبير</span></div>
+  <form id="rsvpForm" class="rv" novalidate>
+    <label for="gKid">اسم الطفل<input type="text" id="gKid" value="يوسف"></label>
+    <div class="choice" role="radiogroup" aria-label="الحضور">
+      <span><input type="radio" name="att" id="attYes" value="yes" checked><label for="attYes">أكيد جاي!</label></span>
+      <span><input type="radio" name="att" id="attNo" value="no"><label for="attNo">للأسف لا</label></span>
+    </div>
+    <div class="two">
+      <label for="gKids">عدد الأطفال<select id="gKids"><option>١</option><option selected>٢</option></select></label>
+      <label for="gAdults">عدد الكبار<select id="gAdults"><option>٠</option><option selected>١</option></select></label>
+    </div>
+    <label for="gAllergy">حساسية من طعام؟ (اختياري)<input type="text" id="gAllergy" value="المكسرات"></label>
+    <button class="submit" type="submit">أرسل الرد</button>
+  </form>
+  <div class="done" id="done" hidden>
+    <div class="band"><span>سوار الحفلة</span><b>أهلاً يوسف!</b><svg class="qr" id="qr" viewBox="0 0 29 29" shape-rendering="crispEdges" aria-label="رمز الدخول"></svg><span style="font-size:13px">أخبرنا بالحساسية: سنحضّر طعاماً بدون مكسرات</span></div>
+    <div class="btns"><button type="button" class="btn black" data-toast="يحفظ الدعوة في محفظة الهاتف">أضف إلى المحفظة</button><button type="button" class="btn" id="edit">تعديل الرد</button></div>
+  </div>
+  <div class="done" id="sorry" hidden>
+    <div class="band"><b>سنفتقدك!</b><p>شكراً لإخبارنا، وآدم يرسل لك تحية كبيرة.</p></div>
+    <button type="button" class="btn" id="edit2">تعديل الرد</button>
+  </div>
+</section>
+
+<section class="blk pad">
+  <h2 class="rv">لا تنسَ الكاميرا!</h2>
+  <p class="soft rv">بعد الحفلة، ارفع صورك مع آدم في ألبوم عيد الميلاد.</p>
+  <button type="button" class="btn solid rv" data-toast="يفتح ألبوم الحفلة لرفع الصور">رفع الصور</button>
+</section>
+
+<footer>صُمّمت هذه الدعوة عبر دعوة · مثال توضيحي</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script>
+document.documentElement.classList.add('js');
+const AR='٠١٢٣٤٥٦٧٨٩',ar=n=>String(n).replace(/\d/g,d=>AR[d]);
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+let seed=5;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
+const COLORS=['#FF5A4E','#FFC531','#1FB5A8','#E04F9A','#ffffff','#F28B2B'];
+
+/* background dots */
+const dots=document.getElementById('dots');
+for(let i=0;i<18;i++){const s=document.createElement('span');const z=8+rnd()*26;Object.assign(s.style,{left:rnd()*100+'%',top:rnd()*100+'%',width:z+'px',height:z+'px',background:COLORS[i%5]});dots.appendChild(s)}
+
+/* balloons */
+const bw=document.getElementById('balloons');const balloons=[];
+[[-74,'#1FB5A8',1.05],[-36,'#FFC531',.9],[0,'#E04F9A',1.15],[38,'#FF5A4E',.95],[76,'#ffffff',1.0]].forEach(([x,c,sp],i)=>{
+  const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 40 90');s.setAttribute('class','balloon');
+  s.innerHTML=`<ellipse cx="20" cy="22" rx="17" ry="21" fill="${c}"/><ellipse cx="13" cy="14" rx="4" ry="6" fill="#fff" opacity=".45"/><path d="M17 43h6l-3 4z" fill="${c}"/><path d="M20 47q-6 12 0 22t0 20" fill="none" stroke="#fff" stroke-width="1" opacity=".8"/>`;
+  bw.appendChild(s);balloons.push({el:s,x,sp,ph:i*1.3});});
+
+/* confetti: each piece has its own launch vector; position is a pure function of scroll progress */
+const cw=document.getElementById('confetti');const bits=[];
+for(let i=0;i<40;i++){const s=document.createElement('span');s.style.background=COLORS[i%COLORS.length];if(i%3===0){s.style.width='8px';s.style.height='8px';s.style.borderRadius='50%'}
+  cw.appendChild(s);const a=(-160+rnd()*140)*Math.PI/180,v=170+rnd()*190;bits.push({el:s,vx:Math.cos(a)*v,vy:Math.sin(a)*v,r:rnd()*720});}
+
+const open=document.getElementById('open'),gift=document.getElementById('gift'),bow=document.getElementById('bow'),glid=document.getElementById('glid'),
+  gbody=document.getElementById('gbody'),reveal=document.getElementById('reveal'),hint=document.getElementById('hint'),topT=document.querySelector('.stage-top');
+function frame(){
+  const p=clamp(-open.getBoundingClientRect().top/(open.offsetHeight-innerHeight));
+  gift.classList.toggle('wiggle',p<.02);
+  const b=ease(clamp((p-.03)/.14)),l=ease(clamp((p-.15)/.2)),q=clamp((p-.3)/.45),c=clamp((p-.3)/.4),f=ease(clamp((p-.7)/.26));
+  hint.style.opacity=1-clamp(p*8);
+  bow.style.transform=`translateY(${-b*30}px) rotate(${b*40}deg) scale(${1-b})`;bow.style.opacity=1-b;
+  glid.style.transform=`translate(${-l*90}px,${-l*170}px) rotate(${-l*35}deg)`;glid.style.opacity=1-clamp((l-.6)/.4);
+  balloons.forEach(o=>{const y=-q*420*o.sp,x=o.x*q+Math.sin(q*6+o.ph)*10;o.el.style.transform=`translate(${x}px,${y}px)`;});
+  bits.forEach(o=>{o.el.style.opacity=c>0?1-clamp((c-.65)/.35):0;
+    o.el.style.transform=`translate(${o.vx*c*1.3}px,${o.vy*c*1.3+300*c*c}px) rotate(${o.r*c}deg)`;});
+  gbody.style.transform=`translateY(${f*90}px)`;gbody.style.opacity=1-f;
+  reveal.style.opacity=f;reveal.style.transform=`translateY(calc(-50% + ${(1-f)*30}px)) scale(${.8+.2*f})`;
+  topT.style.opacity=1-f;
+}
+let tk=false;addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(()=>{frame();tk=false})}},{passive:true});
+addEventListener('resize',frame);frame();
+
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15}):null;
+document.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));
+
+/* countdown to Fri 13 Nov 2026, 4 PM (+03:00) */
+const target=new Date('2026-11-13T16:00:00+03:00').getTime();
+function tick(){let x=Math.max(0,target-Date.now());const D=Math.floor(x/864e5);x-=D*864e5;const H=Math.floor(x/36e5);x-=H*36e5;const M=Math.floor(x/6e4);x-=M*6e4;
+  cdD.textContent=ar(D);cdH.textContent=ar(H);cdM.textContent=ar(M);cdS.textContent=ar(Math.floor(x/1e3));}
+tick();setInterval(tick,1000);
+
+/* decorative QR (not scannable) */
+(function(){const q=document.getElementById('qr');let s2=23,h='<rect width="29" height="29" fill="#fff"/>';const r=()=>(s2=(s2*9301+49297)%233280)/233280;
+  const F=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#2A1766"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#2A1766"/>`;
+  for(let y=0;y<29;y++)for(let x=0;x<29;x++){const f=(x<8&&y<8)||(x>20&&y<8)||(x<8&&y>20);if(!f&&r()<.48)h+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#2A1766"/>`}
+  q.innerHTML=h+F(0,0)+F(22,0)+F(0,22);})();
+
+const form=document.getElementById('rsvpForm'),done=document.getElementById('done'),sorry=document.getElementById('sorry');
+form.addEventListener('submit',e=>{e.preventDefault();const yes=attYes.checked;form.hidden=true;(yes?done:sorry).hidden=false;toast(yes?'وصل ردّك! آدم متحمس جداً':'تم إرسال اعتذارك');});
+['edit','edit2'].forEach(id=>document.getElementById(id).onclick=()=>{done.hidden=true;sorry.hidden=true;form.hidden=false});
+const t=document.getElementById('toast');let tt;
+function toast(m){t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600)}
+document.querySelectorAll('[data-toast]').forEach(b=>b.addEventListener('click',()=>toast('في الدعوة الحقيقية: '+b.dataset.toast)));
+</script>

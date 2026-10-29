@@ -1,0 +1,339 @@
+<title>ليلة حناء سلمى</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rakkas&family=Scheherazade+New:wght@400;700&family=Kufam:wght@500;600&display=swap">
+<style>
+/* Layout: one phone-width column (max 440px) on a deep green backdrop; the opening is a pair of arched mashrabiya doors that swing open,
+   revealing a henna pattern that draws itself. Deliberately single-theme, every color set explicitly. */
+:root{
+  --green:#1F3B2D; --green-2:#2D5440; --green-deep:#0F1F17;
+  --henna:#B5482A; --henna-2:#D9744F; --saffron:#E9B949; --gold:#D4A64A;
+  --paper:#FBF3E6; --sand:#F2E2C6; --ink:#2E2117; --soft:#7A6552;
+  --display:"Rakkas","Scheherazade New",serif;
+  --body:"Scheherazade New","Times New Roman",serif;
+  --label:"Kufam","Scheherazade New",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--green-deep)}
+body{color:var(--ink);font:20px/1.8 var(--body);margin:0}
+.app{max-width:440px;margin:0 auto;background:var(--paper);position:relative;overflow-x:clip;box-shadow:0 0 60px rgba(0,0,0,.5)}
+.pad{padding-left:max(24px, env(safe-area-inset-left, 0px));padding-right:max(24px, env(safe-area-inset-right, 0px))}
+h2{font:400 32px/1.35 var(--display);color:var(--henna);margin:0;text-wrap:balance}
+p{margin:0}
+.label{font:500 13px/1 var(--label);color:var(--green-2)}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:3px}
+
+/* ---------- arched doors ---------- */
+#open{height:330vh;background:radial-gradient(100% 70% at 50% 45%, #2f5a44 0%, var(--green) 50%, var(--green-deep) 100%)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;place-items:center;overflow:hidden}
+.stage-top{position:absolute;top:calc(26px + env(safe-area-inset-top, 0px));left:0;right:0;text-align:center;display:grid;gap:2px;color:var(--sand);z-index:3}
+.stage-top .label{color:var(--saffron)}
+.stage-top b{font:400 22px var(--display);color:var(--sand)}
+.lanterns{position:absolute;top:0;left:0;right:0;height:170px;pointer-events:none}
+.lantern{position:absolute;top:0;width:34px;transform-origin:top center;animation:sway 4s ease-in-out infinite}
+.lantern svg{width:34px;height:auto;display:block}
+@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.arch-wrap{position:relative;width:min(76vw,290px);aspect-ratio:3/4.4;will-change:transform}
+.arch-frame{position:absolute;inset:-12px;border-radius:999px 999px 6px 6px/60% 60% 6px 6px;border:3px solid var(--gold);
+  box-shadow:0 0 0 6px rgba(212,166,74,.18),0 30px 60px rgba(0,0,0,.5)}
+.arch{position:absolute;inset:0;border-radius:999px 999px 4px 4px/58% 58% 4px 4px;overflow:hidden;perspective:900px;
+  background:radial-gradient(80% 60% at 50% 45%,#fff3d6,#f2c983 45%,#c97b3c 100%)}
+.interior{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.mandala{width:78%;aspect-ratio:1;position:absolute;top:14%;left:11%}
+.mandala *{fill:none;stroke:var(--henna);stroke-width:1.6;stroke-linecap:round}
+.interior .txt{position:absolute;bottom:13%;left:0;right:0;display:grid;gap:0;opacity:0}
+.interior .txt span{font:500 13px var(--label);color:var(--green)}
+.interior .txt b{font:400 46px/1.15 var(--display);color:var(--henna)}
+.door{position:absolute;top:0;bottom:0;width:50%;
+  background:
+   radial-gradient(circle at 50% 50%, transparent 30%, rgba(233,185,73,.55) 32% 36%, transparent 38%) 0 0/26px 26px,
+   radial-gradient(circle at 0 0, transparent 30%, rgba(233,185,73,.35) 32% 35%, transparent 37%) 0 0/26px 26px,
+   linear-gradient(180deg,#2d5440,#1a3226);
+  box-shadow:inset 0 0 0 6px #193024, inset 0 0 0 8px rgba(212,166,74,.6);backface-visibility:hidden}
+.door.l{left:0;transform-origin:left center}
+.door.r{right:0;transform-origin:right center}
+.door .knob{position:absolute;top:56%;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fbe39a,#a37a2a)}
+.door.l .knob{right:10px}.door.r .knob{left:10px}
+.hint{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom, 0px));left:0;right:0;text-align:center;color:var(--sand);font:500 13px var(--label);display:grid;justify-items:center;gap:6px}
+.hint i{width:20px;height:32px;border:1.5px solid var(--saffron);border-radius:12px;position:relative}
+.hint i::after{content:"";position:absolute;left:50%;top:6px;width:4px;height:7px;margin-left:-2px;border-radius:2px;background:var(--saffron);animation:wheel 1.6s ease-in-out infinite}
+@keyframes wheel{0%{transform:translateY(0);opacity:1}100%{transform:translateY(12px);opacity:0}}
+
+/* ---------- content ---------- */
+section.blk{padding-block:54px;display:grid;gap:18px;justify-items:center;text-align:center;position:relative}
+.ladies{display:inline-block;font:600 13px var(--label);color:var(--paper);background:var(--henna);padding:7px 14px;border-radius:999px}
+.hosts{display:grid;gap:2px}
+.hosts b{font:700 21px var(--body);color:var(--green)}
+.bride{font:400 76px/1.1 var(--display);color:var(--henna)}
+.bride small{display:block;font:500 15px var(--label);color:var(--green-2);margin-bottom:6px}
+.border{width:100%;height:22px}
+
+.date-tile{width:100%;background:var(--green);color:var(--paper);border-radius:180px 180px 8px 8px;padding:34px 20px 24px;display:grid;gap:6px;position:relative;overflow:hidden}
+.date-tile::before{content:"";position:absolute;inset:8px;border:1px solid rgba(212,166,74,.6);border-radius:172px 172px 4px 4px;pointer-events:none}
+.date-tile .wd{font:500 15px var(--label);color:var(--saffron)}
+.date-tile .d{font:400 80px/1 var(--display);color:var(--saffron)}
+.date-tile .m{font:700 24px var(--body)}
+.date-tile .h{font:400 17px var(--body);color:var(--sand)}
+.date-tile .tm{font:600 14px var(--label);color:var(--green);background:var(--saffron);justify-self:center;padding:6px 14px;border-radius:999px}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
+.countdown div{border:1px solid var(--gold);border-radius:8px;padding:10px 4px;display:grid;background:var(--sand)}
+.countdown b{font:600 24px/1.2 var(--label);color:var(--henna);font-variant-numeric:tabular-nums}
+.countdown span{font:500 12px var(--label);color:var(--soft)}
+
+/* bride's letter */
+#letter{background:var(--sand)}
+.paper{background:var(--paper);border-radius:4px;padding:30px 22px 26px;width:100%;text-align:start;position:relative;box-shadow:0 10px 24px rgba(80,40,10,.15);display:grid;gap:12px}
+.paper::before,.paper::after{content:"";position:absolute;left:0;right:0;height:10px;background:radial-gradient(circle at 5px 0,transparent 4px,var(--paper) 5px) 0 0/10px 10px repeat-x}
+.paper::before{top:-9px;transform:rotate(180deg)}
+.paper::after{bottom:-9px}
+.paper p{font-size:20px;line-height:1.95}
+.paper .sign{font:400 30px var(--display);color:var(--henna);text-align:end}
+.hand{width:90px;height:auto}
+
+.prog{width:100%;display:grid;gap:0;text-align:start;position:relative}
+.prog div{display:grid;grid-template-columns:70px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid rgba(181,72,42,.25);align-items:center}
+.prog div:last-child{border-bottom:0}
+.prog b{font:600 14px var(--label);color:var(--henna)}
+.prog span{font-size:20px}
+.prog em{display:block;font-style:normal;font-size:16px;color:var(--soft)}
+
+.dress{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.dress div{display:grid;gap:6px;justify-items:center;font:500 13px var(--label);color:var(--soft)}
+.dress svg{width:62px;height:76px}
+
+.place{width:100%;border:1px solid var(--gold);border-radius:10px;padding:16px;display:grid;gap:4px;background:#fff8ec}
+.place b{font:400 26px var(--display);color:var(--green)}
+.btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+.btn{font:600 14px var(--label);border-radius:999px;padding:12px 20px;border:1px solid var(--green);background:transparent;color:var(--green);cursor:pointer}
+.btn.solid{background:var(--green);color:var(--paper)}
+.btn.black{background:#111;color:#fff;border-color:#111}
+
+#rsvp{background:var(--green);color:var(--paper)}
+#rsvp h2{color:var(--saffron)}
+.guest{border:1px dashed var(--gold);border-radius:10px;padding:12px;width:100%;display:grid}
+.guest b{font:700 22px var(--body)}
+.guest span{font:500 13px var(--label);color:var(--saffron)}
+form{display:grid;gap:14px;width:100%;text-align:start}
+form label{display:grid;gap:6px;font:500 13px var(--label);color:var(--sand)}
+input[type=text],select{font:18px var(--body);padding:10px 12px;border-radius:8px;border:1px solid rgba(212,166,74,.6);background:rgba(255,255,255,.07);color:var(--paper);width:100%}
+select option{color:#222}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice input{position:absolute;opacity:0}
+.choice label{display:block;text-align:center;border:1px solid rgba(212,166,74,.6);border-radius:8px;padding:12px;cursor:pointer;color:var(--paper);font:600 14px var(--label)}
+.choice input:checked+label{background:var(--saffron);color:var(--green-deep);border-color:var(--saffron)}
+.choice input:focus-visible+label{outline:2px solid var(--sand);outline-offset:2px}
+.check{display:flex!important;grid-template-columns:none;align-items:center;gap:10px;font:500 14px var(--label);color:var(--paper)!important;background:rgba(255,255,255,.06);padding:12px;border-radius:8px;border:1px solid rgba(212,166,74,.35);cursor:pointer}
+.check input{accent-color:var(--saffron);width:18px;height:18px}
+.submit{font:600 15px var(--label);background:var(--henna-2);color:#fff;border:0;border-radius:999px;padding:14px;cursor:pointer}
+.done{display:grid;gap:12px;justify-items:center;width:100%}
+.ticket{background:var(--paper);color:var(--ink);border-radius:10px;padding:18px;width:100%;display:grid;gap:8px;justify-items:center}
+.qr{width:116px;height:116px}
+.soft{color:var(--soft);font-size:17px}
+footer{padding-block:26px 40px;text-align:center;font:500 12px var(--label);color:var(--soft);background:var(--paper)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom, 0px));transform:translate(-50%,20px);background:var(--green-deep);color:var(--saffron);font:500 13px/1.7 var(--label);
+  padding:10px 16px;border-radius:10px;max-width:min(400px,90vw);text-align:center;opacity:0;transition:.3s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.js .rv{opacity:0;transform:translateY(24px);transition:opacity .9s ease, transform .9s ease}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.js .rv{opacity:1;transform:none;transition:none}.lantern,.hint i::after{animation:none}}
+</style>
+
+<div class="app" dir="rtl" lang="ar">
+
+<section id="open" aria-label="باب الدعوة">
+  <div class="stage">
+    <div class="lanterns" aria-hidden="true" id="lanterns"></div>
+    <div class="stage-top"><span class="label">إلى الغالية أم فيصل وبناتها</span><b>تفضّلوا… الباب مفتوح لكم</b></div>
+    <div class="arch-wrap" id="arch">
+      <div class="arch-frame"></div>
+      <div class="arch">
+        <div class="interior">
+          <svg class="mandala" id="mandala" viewBox="-100 -100 200 200" aria-hidden="true"></svg>
+          <div class="txt" id="itxt"><span>ليلة الحنّاء</span><b>سلمى</b></div>
+        </div>
+        <div class="door l" id="doorL"><span class="knob"></span></div>
+        <div class="door r" id="doorR"><span class="knob"></span></div>
+      </div>
+    </div>
+    <div class="hint" id="hint"><i></i>مرّري للأسفل لفتح الباب</div>
+  </div>
+</section>
+
+<section class="blk pad">
+  <span class="ladies rv">دعوة خاصة للسيدات</span>
+  <div class="hosts rv">
+    <span class="label">على الحِنّة والفرح</span>
+    <b>تتشرف السيدة أم سلمى الراشد</b>
+    <span>بدعوتكنّ لمشاركتها ليلة حنّاء ابنتها</span>
+  </div>
+  <div class="bride rv"><small>العروس</small>سلمى</div>
+  <svg class="border rv" viewBox="0 0 300 22" preserveAspectRatio="xMidYMid meet" aria-hidden="true" id="border"></svg>
+</section>
+
+<section class="blk pad" style="padding-top:6px">
+  <div class="date-tile rv">
+    <span class="wd">مساء الثلاثاء</span>
+    <span class="d">٨</span>
+    <span class="m">ديسمبر ٢٠٢٦</span>
+    <span class="h">الموافق ٢٨ جمادى الآخرة ١٤٤٨ هـ</span>
+    <span class="tm">من الساعة ٨:٠٠ مساءً</span>
+  </div>
+  <div class="countdown rv" aria-label="العد التنازلي">
+    <div><b id="cdD">٠</b><span>يوم</span></div><div><b id="cdH">٠</b><span>ساعة</span></div>
+    <div><b id="cdM">٠</b><span>دقيقة</span></div><div><b id="cdS">٠</b><span>ثانية</span></div>
+  </div>
+  <p class="soft rv">قبل الزفاف بليلتين</p>
+</section>
+
+<section class="blk pad" id="letter">
+  <svg class="hand rv" viewBox="0 0 90 120" aria-hidden="true">
+    <path d="M30 118V70l-8-26a5 5 0 0 1 9-3l7 20V14a5 5 0 0 1 10 0v40V8a5 5 0 0 1 10 0v46V14a5 5 0 0 1 10 0v44V26a5 5 0 0 1 10 0v46c0 22-12 34-24 46z" fill="#F2C9A0" stroke="#B5482A" stroke-width="1.5"/>
+    <g fill="none" stroke="#B5482A" stroke-width="1.3"><circle cx="52" cy="86" r="10"/><circle cx="52" cy="86" r="4"/><path d="M42 86h-6M62 86h6M52 76v-6M52 96v6"/><path d="M43 14h0M53 10h0M63 16h0M73 28h0" stroke-width="4" stroke-linecap="round"/><path d="M40 30c4-3 8-3 10 0M50 26c4-3 8-3 10 0M60 32c4-3 8-3 10 0"/></g>
+  </svg>
+  <span class="label rv">رسالة من العروس</span>
+  <h2 class="rv">إلى صديقاتي وأحبّتي</h2>
+  <div class="paper rv">
+    <p>منذ الطفولة ونحن نحلم بهذه الليلة. كبرنا معاً، ضحكنا معاً، وتقاسمنا الأسرار والأحلام.</p>
+    <p>ليلة الحنّاء بالنسبة لي ليست مجرد نقش على اليد، بل وداعٌ جميل لبيت أهلي، وبدايةٌ جديدة أريدكنّ أن تكنّ جزءاً منها.</p>
+    <p>تعالين بالثوب المطرّز، بالضحكة نفسها، وبالأغاني القديمة التي نحبها.</p>
+    <span class="sign">سلمى</span>
+  </div>
+</section>
+
+<section class="blk pad">
+  <span class="label rv">فقرات الليلة</span>
+  <h2 class="rv">على الحِنّة</h2>
+  <div class="prog">
+    <div class="rv"><b>٨:٠٠ م</b><span>الاستقبال والقهوة العربية<em>مع التمر والبخور</em></span></div>
+    <div class="rv"><b>٨:٣٠ م</b><span>زفّة صينية الحنّاء<em>بالشموع والزغاريد</em></span></div>
+    <div class="rv"><b>٩:٠٠ م</b><span>نقش الحنّاء<em>نقّاشة الحنّاء متوفرة للضيفات</em></span></div>
+    <div class="rv"><b>١٠:٠٠ م</b><span>الأغاني الشعبية والرقص<em>مع الفرقة النسائية</em></span></div>
+    <div class="rv"><b>١١:٠٠ م</b><span>العشاء</span></div>
+  </div>
+</section>
+
+<section class="blk pad" style="background:var(--sand)">
+  <span class="label rv">اللباس</span>
+  <h2 class="rv">الثوب التراثي المطرّز</h2>
+  <div class="dress rv">
+    <div><svg viewBox="0 0 62 76"><path d="M20 4h22l14 14-8 6v48H14V24l-8-6z" fill="#B5482A"/><path d="M24 4q7 10 14 0M14 40h34M31 12v60" stroke="#E9B949" stroke-width="2" fill="none"/></svg>أحمر الحنّاء</div>
+    <div><svg viewBox="0 0 62 76"><path d="M20 4h22l14 14-8 6v48H14V24l-8-6z" fill="#2D5440"/><path d="M24 4q7 10 14 0M14 40h34M31 12v60" stroke="#E9B949" stroke-width="2" fill="none"/></svg>الأخضر</div>
+    <div><svg viewBox="0 0 62 76"><path d="M20 4h22l14 14-8 6v48H14V24l-8-6z" fill="#E9B949"/><path d="M24 4q7 10 14 0M14 40h34M31 12v60" stroke="#B5482A" stroke-width="2" fill="none"/></svg>الزعفراني</div>
+  </div>
+  <p class="soft rv">الحفل نسائي بالكامل، ويُسمح بالتصوير داخل القاعة.</p>
+</section>
+
+<section class="blk pad">
+  <span class="label rv">المكان</span>
+  <div class="place rv"><b>بيت العائلة · حي الروضة</b><span class="soft">شارع النخيل، فيلا رقم ١٢، المدخل الجانبي للسيدات</span></div>
+  <div class="btns rv">
+    <button type="button" class="btn solid" data-toast="يفتح موقع البيت في تطبيق الخرائط">الاتجاهات</button>
+    <button type="button" class="btn" data-toast="يضيف ليلة الحنّاء إلى تقويم الهاتف">أضيفي للتقويم</button>
+  </div>
+</section>
+
+<section class="blk pad" id="rsvp">
+  <span class="label rv" style="color:var(--saffron)">تأكيد الحضور</span>
+  <h2 class="rv">هل ستأتين على الحِنّة؟</h2>
+  <div class="guest rv"><b>أم فيصل وبناتها</b><span>خصّصنا لكنّ ٤ مقاعد</span></div>
+  <form id="rsvpForm" class="rv" novalidate>
+    <label for="gName">الاسم<input type="text" id="gName" value="أم فيصل" autocomplete="name"></label>
+    <div class="choice" role="radiogroup" aria-label="الحضور">
+      <span><input type="radio" name="att" id="attYes" value="yes" checked><label for="attYes">سآتي إن شاء الله</label></span>
+      <span><input type="radio" name="att" id="attNo" value="no"><label for="attNo">أعتذر</label></span>
+    </div>
+    <label for="gCount">عدد الحاضرات<select id="gCount"><option>١</option><option>٢</option><option selected>٣</option><option>٤</option></select></label>
+    <label class="check" for="gHenna"><input type="checkbox" id="gHenna" checked> أرغب بنقش الحنّاء في الحفل</label>
+    <button class="submit" type="submit">إرسال الرد</button>
+  </form>
+  <div class="done" id="done" hidden>
+    <div class="ticket"><span class="label">ننتظركِ على الحِنّة</span><b style="font:400 26px var(--display);color:var(--henna)">تم تأكيد ٣ حاضرات</b>
+      <span class="soft" style="font-size:16px">حجزنا لكِ دوراً عند نقّاشة الحنّاء</span>
+      <svg class="qr" id="qr" viewBox="0 0 29 29" shape-rendering="crispEdges" aria-label="رمز الدخول"></svg></div>
+    <div class="btns"><button type="button" class="btn black" data-toast="يحفظ الدعوة ورمز الدخول في محفظة الهاتف">أضيفي إلى المحفظة</button><button type="button" class="btn" style="color:var(--saffron);border-color:var(--saffron)" id="edit">تعديل الرد</button></div>
+  </div>
+  <div class="done" id="sorry" hidden>
+    <div class="ticket"><span class="label">وصلنا ردّكِ</span><p>سنفتقدكِ، ودعواتكِ للعروس تصلنا.</p></div>
+    <button type="button" class="btn" style="color:var(--saffron);border-color:var(--saffron)" id="edit2">تعديل الرد</button>
+  </div>
+</section>
+
+<section class="blk pad">
+  <h2 class="rv">حنّاكِ تزهي وفرحتنا تكتمل</h2>
+  <p class="soft rv">بعد الليلة، شاركينا صور النقش والفرح في ألبوم العروس.</p>
+  <button type="button" class="btn solid rv" data-toast="يفتح ألبوم ليلة الحنّاء لرفع الصور">رفع الصور</button>
+</section>
+
+<footer>صُمّمت هذه الدعوة عبر دعوة · مثال توضيحي</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script>
+document.documentElement.classList.add('js');
+const AR='٠١٢٣٤٥٦٧٨٩',ar=n=>String(n).replace(/\d/g,d=>AR[d]);
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const NS='http://www.w3.org/2000/svg';
+
+/* lanterns */
+const lw=document.getElementById('lanterns');
+[[5,96,0],[84,120,-1.2]].forEach(([x,len,delay])=>{const d=document.createElement('div');d.className='lantern';d.style.left=x+'%';d.style.animationDelay=delay+'s';
+  d.innerHTML=`<svg viewBox="0 0 34 ${len+50}"><path d="M17 0v${len}" stroke="#D4A64A"/><path d="M11 ${len}h12l3 6H8z" fill="#D4A64A"/><path d="M8 ${len+6}h18l-2 30H10z" fill="#E9B949" opacity=".9"/><path d="M12 ${len+10}h10v22H12z" fill="#fff3c4"/><path d="M10 ${len+36}h14l-3 5H13z" fill="#D4A64A"/></svg>`;lw.appendChild(d)});
+
+/* henna mandala: every stroke uses pathLength=1 so drawing is one dashoffset */
+const m=document.getElementById('mandala');
+function add(tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);e.setAttribute('pathLength',1);m.appendChild(e);return e}
+add('circle',{r:12});add('circle',{r:20});add('circle',{r:44});add('circle',{r:88});
+for(let i=0;i<12;i++){const a=i*30;add('path',{d:'M0 -22 Q14 -40 0 -62 Q-14 -40 0 -22',transform:`rotate(${a})`});add('path',{d:'M0 -48 Q6 -54 0 -60 Q-6 -54 0 -48',transform:`rotate(${a})`})}
+for(let i=0;i<12;i++){const a=i*30+15;add('path',{d:'M0 -64 Q20 -72 0 -86 Q-20 -72 0 -64',transform:`rotate(${a})`});add('circle',{cx:0,cy:-94,r:2.5,transform:`rotate(${a-15})`})}
+for(let i=0;i<8;i++)add('path',{d:'M0 -12 L4 -4 L0 0 L-4 -4 Z',transform:`rotate(${i*45})`});
+const strokes=[...m.children];strokes.forEach(s=>{s.style.strokeDasharray=1;s.style.strokeDashoffset=1});
+
+/* border motif */
+(function(){const b=document.getElementById('border');let h='<path d="M0 11h300" stroke="#D4A64A" stroke-width=".8"/>';
+  for(let x=15;x<300;x+=30)h+=`<path d="M${x} 3q6 8 0 16q-6-8 0-16z" fill="#B5482A"/><circle cx="${x+15}" cy="11" r="2" fill="#D4A64A"/>`;b.innerHTML=h})();
+
+/* doors + drawing driven by scroll */
+const open=document.getElementById('open'),doorL=document.getElementById('doorL'),doorR=document.getElementById('doorR'),
+  arch=document.getElementById('arch'),itxt=document.getElementById('itxt'),hint=document.getElementById('hint'),top_=document.querySelector('.stage-top');
+function frame(){
+  const p=clamp(-open.getBoundingClientRect().top/(open.offsetHeight-innerHeight));
+  const d=ease(clamp((p-.04)/.32)),dr=clamp((p-.22)/.42),t=ease(clamp((p-.5)/.18)),f=ease(clamp((p-.74)/.24));
+  hint.style.opacity=1-clamp(p*8);
+  doorL.style.transform=`rotateY(${d*100}deg)`;
+  doorR.style.transform=`rotateY(${-d*100}deg)`;
+  const n=strokes.length;
+  strokes.forEach((s,i)=>{const start=i/n*.6;s.style.strokeDashoffset=1-clamp((dr-start)/.4)});
+  itxt.style.opacity=t;itxt.style.transform=`translateY(${(1-t)*14}px)`;
+  arch.style.transform=`scale(${1+f*1.6})`;arch.style.opacity=1-f;
+  top_.style.opacity=1-f;
+}
+let tk=false;addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(()=>{frame();tk=false})}},{passive:true});
+addEventListener('resize',frame);frame();
+
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15}):null;
+document.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));
+
+/* countdown to Tue 8 Dec 2026, 8 PM (+03:00) */
+const target=new Date('2026-12-08T20:00:00+03:00').getTime();
+function tick(){let x=Math.max(0,target-Date.now());const D=Math.floor(x/864e5);x-=D*864e5;const H=Math.floor(x/36e5);x-=H*36e5;const M=Math.floor(x/6e4);x-=M*6e4;
+  cdD.textContent=ar(D);cdH.textContent=ar(H);cdM.textContent=ar(M);cdS.textContent=ar(Math.floor(x/1e3));}
+tick();setInterval(tick,1000);
+
+/* decorative QR (not scannable) */
+(function(){const q=document.getElementById('qr');let seed=41,h='<rect width="29" height="29" fill="#fff"/>';const r=()=>(seed=(seed*9301+49297)%233280)/233280;
+  const F=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#1F3B2D"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#1F3B2D"/>`;
+  for(let y=0;y<29;y++)for(let x=0;x<29;x++){const f=(x<8&&y<8)||(x>20&&y<8)||(x<8&&y>20);if(!f&&r()<.48)h+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#1F3B2D"/>`}
+  q.innerHTML=h+F(0,0)+F(22,0)+F(0,22);})();
+
+const form=document.getElementById('rsvpForm'),done=document.getElementById('done'),sorry=document.getElementById('sorry');
+form.addEventListener('submit',e=>{e.preventDefault();const yes=attYes.checked;form.hidden=true;(yes?done:sorry).hidden=false;toast(yes?'شكراً، وصل ردّكِ للعروس':'تم إرسال اعتذاركِ');});
+attNo.addEventListener('change',()=>{gCount.disabled=true;gHenna.disabled=true});attYes.addEventListener('change',()=>{gCount.disabled=false;gHenna.disabled=false});
+['edit','edit2'].forEach(id=>document.getElementById(id).onclick=()=>{done.hidden=true;sorry.hidden=true;form.hidden=false});
+
+const t=document.getElementById('toast');let tt;
+function toast(msg){t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600)}
+document.querySelectorAll('[data-toast]').forEach(b=>b.addEventListener('click',()=>toast('في الدعوة الحقيقية: '+b.dataset.toast)));
+</script>

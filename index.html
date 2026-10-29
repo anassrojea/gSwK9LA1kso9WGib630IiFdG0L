@@ -1,0 +1,881 @@
+<title>Daawa Invitations Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=Amiri:wght@400;700&family=Great+Vibes&family=Marcellus&family=Aref+Ruqaa:wght@700&display=swap">
+<style>
+/* Layout: one reading column (max 1120px) of chaptered sections; tool-like blocks (hall, cards, pricing) break into grids. */
+:root{
+  --paper:#F6F4F8; --surface:#FFFFFF; --ink:#1D1726; --muted:#655D70; --line:#E1DCE7;
+  --accent:#7A2E5A; --accent-soft:#F1E3EC; --gold:#9A7630; --gold-soft:#F4EBD8;
+  --ok:#2F7D5B; --warn:#A86A12; --bad:#B23A3A;
+  --display:"Bodoni Moda", "Didot", Georgia, serif;
+  --body:"IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#141019; --surface:#1D1724; --ink:#EEE8F3; --muted:#A99FB4; --line:#30283A;
+    --accent:#D58BB9; --accent-soft:#3A2234; --gold:#D9B56A; --gold-soft:#3A3020;
+    --ok:#5FBF91; --warn:#E0A548; --bad:#E57878;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#141019; --surface:#1D1724; --ink:#EEE8F3; --muted:#A99FB4; --line:#30283A;
+  --accent:#D58BB9; --accent-soft:#3A2234; --gold:#D9B56A; --gold-soft:#3A3020;
+  --ok:#5FBF91; --warn:#E0A548; --bad:#E57878;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:15px/1.6 var(--body);
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:0 64px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(34px,5vw,54px);line-height:1.08}
+h2{font-size:clamp(26px,3.2vw,34px);line-height:1.15}
+h3{font-size:19px;line-height:1.3;font-family:var(--body);font-weight:600;letter-spacing:0}
+p{margin:0;max-width:68ch}
+.eyebrow{font:500 11.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.muted{color:var(--muted)}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header.top{padding-block:40px 28px;display:grid;gap:18px;border-bottom:1px solid var(--line)}
+.verdict{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--mono);padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+.pill i{width:8px;height:8px;border-radius:50%;display:inline-block}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13.5px}
+nav.toc a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+nav.toc a:hover{color:var(--ink);border-color:var(--line)}
+
+section{padding-block:56px 8px;display:grid;gap:22px}
+.sec-head{display:grid;gap:10px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:10px;align-content:start}
+ul.clean{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+ul.clean li{padding-left:18px;position:relative}
+ul.clean li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean.gold li::before{background:var(--gold)}
+ul.clean.bad li::before{background:var(--bad)}
+
+/* verdict scorecard */
+.score{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.score>div{background:var(--surface);padding:16px;display:grid;gap:6px;align-content:start}
+.meter{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.meter b{display:block;height:100%;background:var(--accent)}
+.score .lbl{display:flex;justify-content:space-between;font-size:13px;font-weight:600}
+.score .lbl span{font:500 12px var(--mono);color:var(--muted)}
+
+/* flows */
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13.5px}
+.flow span{background:var(--accent-soft);color:var(--ink);padding:7px 11px;border-radius:6px}
+.flow em{font-style:normal;color:var(--muted)}
+
+/* feature table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font:500 11.5px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:var(--paper)}
+tbody tr:last-child td{border-bottom:0}
+td.c{text-align:center}
+.tag{font:500 11px/1 var(--mono);padding:4px 7px;border-radius:4px;white-space:nowrap;display:inline-block}
+.t-free{background:var(--line);color:var(--ink)}
+.t-paid{background:var(--accent-soft);color:var(--accent)}
+.t-addon{background:var(--gold-soft);color:var(--gold)}
+.ph{font:500 11px var(--mono);color:var(--muted)}
+
+/* hall */
+.hall{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:16px;align-items:start}
+@media (max-width:860px){.hall{grid-template-columns:1fr}}
+.hall-canvas{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;overflow-x:auto}
+.hall-canvas svg{display:block;width:100%;min-width:560px;height:auto}
+.ctrl{display:grid;gap:14px}
+.ctrl label{display:grid;gap:6px;font-size:13px;font-weight:600}
+.ctrl label output{font:500 13px var(--mono);color:var(--accent)}
+.ctrl .row{display:flex;justify-content:space-between;align-items:baseline}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;border:0;background:transparent;color:var(--ink);font:500 13px var(--body);padding:8px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:2px}
+.stat b{font:500 20px var(--mono);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+pre.code{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px;font:12.5px/1.55 var(--mono);overflow-x:auto;color:var(--ink)}
+.svg-text{fill:var(--muted);font-family:var(--mono)}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.card-item{display:grid;gap:10px;align-content:start;width:100%;max-width:300px;justify-self:center}
+.card-meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card-meta h3{font-size:15px}
+.phone{position:relative;aspect-ratio:9/16;max-width:100%;border-radius:22px;overflow:hidden;
+  background:var(--c-bg);color:var(--c-ink);border:6px solid #17121c;box-shadow:0 10px 30px rgba(20,10,30,.18);
+  display:grid;place-items:center;text-align:center;padding:26px 18px;isolation:isolate}
+.phone .inner{display:grid;gap:10px;justify-items:center;z-index:2}
+.phone .k{font:500 9.5px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--c-acc)}
+.phone .names{font-family:var(--c-font);font-size:var(--c-size,34px);line-height:1.1;color:var(--c-ink)}
+.phone .amp{color:var(--c-acc)}
+.phone .rule{width:60px;height:1px;background:var(--c-acc)}
+.phone .when{font-size:12px;line-height:1.5;color:var(--c-ink);opacity:.85}
+.phone .btn{margin-top:6px;font:600 11px var(--body);letter-spacing:.06em;padding:8px 14px;border-radius:999px;background:var(--c-acc);color:var(--c-bg)}
+.phone .count{display:flex;gap:10px;font:500 10px var(--mono);color:var(--c-ink);opacity:.8}
+.phone .count b{display:block;font-size:16px;color:var(--c-acc)}
+.phone .fx{position:absolute;inset:0;z-index:1;pointer-events:none}
+.phone .fx span{position:absolute;display:block}
+.phone.off .fx, .phone.off .shimmer{display:none}
+.phone .frame{position:absolute;inset:12px;border:1px solid var(--c-acc);border-radius:12px;opacity:.5;z-index:1}
+.shimmer{background:linear-gradient(100deg,var(--c-acc) 20%,#fff8e0 40%,var(--c-acc) 60%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:shine 4s linear infinite}
+@keyframes shine{to{background-position:-150% 0}}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0)}100%{transform:translateY(560px) rotate(300deg)}}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
+@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-520px);opacity:0}}
+.card-ctrls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.sw{display:flex;gap:6px}
+.sw button{width:22px;height:22px;border-radius:50%;border:2px solid var(--surface);outline:1px solid var(--line);cursor:pointer;padding:0}
+.sw button[aria-pressed="true"]{outline:2px solid var(--accent)}
+select{font:13px var(--body);padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);cursor:pointer}
+.toggle input{accent-color:var(--accent)}
+.fxlist{font:12px var(--mono);color:var(--muted)}
+
+/* pricing */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:12px;align-content:start}
+.plan.hl{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.plan .price{font:500 34px/1 var(--display)}
+.plan .price small{font:400 13px var(--body);color:var(--muted)}
+.plan ul{font-size:13.5px}
+.plan .who{font-size:13px;color:var(--muted)}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.bar-row{display:grid;grid-template-columns:110px 1fr 80px;gap:10px;align-items:center;font-size:13px}
+.bar-row .b{height:14px;border-radius:3px;background:var(--accent);min-width:2px}
+.bar-row .b.g{background:var(--gold)}
+.bar-row .b.m{background:var(--muted)}
+.bar-row .v{font:500 13px var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.big{font:500 40px/1 var(--display)}
+
+/* wallet */
+.wallet-row{display:flex;flex-wrap:wrap;gap:28px;justify-content:center;align-items:flex-start}
+.wallet-row figure{margin:0;display:grid;gap:10px;justify-items:center}
+.wallet-row figcaption{font:500 12px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.pass{width:290px;max-width:100%;border-radius:14px;overflow:hidden;box-shadow:0 14px 34px rgba(30,10,20,.28);font-family:"IBM Plex Sans Arabic",var(--body)}
+.pass .lb{display:block;font:600 10px/1.3 "IBM Plex Sans Arabic",var(--body);color:#C8A45D}
+.pass .vl{display:block;font:600 15px/1.35 "IBM Plex Sans Arabic",var(--body)}
+.pass.apple{background:#5A1A2C;color:#FBF6F2;padding:14px 16px 18px;display:grid;gap:14px}
+.pass .hdr{display:flex;justify-content:space-between;align-items:center}
+.pass .logo{display:flex;align-items:center;gap:8px;font:600 15px "IBM Plex Sans Arabic",var(--body)}
+.pass .logo svg{width:26px;height:26px}
+.pass .strip{margin-inline:-16px;height:104px;background:radial-gradient(90% 120% at 50% 0%,#8a3450,#3a0f1c);display:grid;place-items:center;position:relative}
+.pass .strip b{font:700 34px/1 "Aref Ruqaa",serif;color:#E8D29C}
+.pass .fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pass .qrbox{background:#fff;border-radius:8px;padding:10px;justify-self:center;display:grid;gap:4px;justify-items:center}
+.pass .qrbox svg{width:118px;height:118px;display:block}
+.pass .qrbox small{font:500 10px var(--mono);color:#333}
+.pass.google{background:#5A1A2C;color:#FBF6F2;display:grid}
+.pass.google .top{padding:16px;display:grid;gap:12px}
+.pass.google .issuer{display:flex;align-items:center;gap:8px;font:500 13px "IBM Plex Sans Arabic",var(--body);color:#E8D29C}
+.pass.google .issuer i{width:28px;height:28px;border-radius:50%;background:#E8D29C;display:grid;place-items:center;color:#5A1A2C;font-style:normal;font-weight:700}
+.pass.google h4{margin:0;font:600 22px/1.3 "IBM Plex Sans Arabic",var(--body)}
+.pass.google .fields{grid-template-columns:1fr 1fr}
+.pass.google .hero{height:96px;background:linear-gradient(180deg,#3a0f1c,#8a3450);display:grid;place-items:center}
+.pass.google .hero b{font:700 30px/1 "Aref Ruqaa",serif;color:#E8D29C}
+.lock{width:250px;aspect-ratio:9/19;border-radius:36px;border:7px solid #111;background:linear-gradient(180deg,#2b1a3a,#5A1A2C 60%,#1a0a12);color:#fff;display:grid;grid-template-rows:auto 1fr auto;padding:34px 12px 18px;text-align:center}
+.lock .t{font:300 58px/1 var(--body)}
+.lock .d{font:500 13px var(--body);opacity:.85}
+.notif{background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border-radius:16px;padding:10px 12px;text-align:right;display:grid;gap:3px;font-family:"IBM Plex Sans Arabic",var(--body)}
+.notif .nh{display:flex;justify-content:space-between;font:500 11px var(--body);opacity:.8;direction:ltr}
+.notif b{font-size:13.5px}
+.notif span{font-size:12.5px;opacity:.92}
+
+/* payments */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;counter-reset:s;margin:0;padding:0;list-style:none}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:6px;align-content:start;font-size:13.5px;counter-increment:s}
+.steps li::before{content:counter(s);font:500 12px var(--mono);color:var(--surface);background:var(--accent);width:22px;height:22px;border-radius:50%;display:grid;place-items:center}
+.steps b{font-size:14px}
+.status{font:500 11.5px/1 var(--mono);padding:5px 8px;border-radius:999px;white-space:nowrap;display:inline-block}
+.st-wait{background:var(--gold-soft);color:var(--gold)}
+.st-rec{background:var(--accent-soft);color:var(--accent)}
+.st-ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.st-no{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.act{display:flex;gap:6px}
+.act button{font:500 12.5px var(--body);border-radius:6px;padding:5px 10px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.act button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.chat{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:8px}
+.bubble{max-width:88%;padding:9px 12px;border-radius:10px;font-size:13.5px;line-height:1.55}
+.bubble.me{justify-self:end;background:color-mix(in srgb,var(--ok) 20%,var(--surface));}
+.bubble.them{justify-self:start;background:var(--surface);border:1px solid var(--line)}
+.bubble small{display:block;font:11px var(--mono);color:var(--muted);margin-top:3px}
+.bank{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13.5px}
+.bank span{color:var(--muted)}
+.bank b{font-family:var(--mono);font-weight:500}
+
+/* roadmap */
+.road{display:grid;gap:0;border-left:2px solid var(--line);margin-left:6px}
+.step{position:relative;padding:0 0 26px 24px;display:grid;gap:6px}
+.step::before{content:"";position:absolute;left:-8px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.step .when{font:500 12px var(--mono);color:var(--accent)}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+
+@media (prefers-reduced-motion: reduce){
+  .phone .fx span,.shimmer{animation:none!important}
+}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Product concept · Interactive digital invitations</span>
+  <h1>Weddings, engagements and celebrations, from the invite to the photos afterward</h1>
+  <p class="muted">“Daawa” is a working name (Arabic for invitation). This page covers whether the idea is worth building, the feature plan, a live seating-hall generator, sample cards, pricing and what each part can earn.</p>
+  <div class="verdict">
+    <span class="pill"><i style="background:var(--ok)"></i>Verdict: worth building, if you lead with seating and guest control</span>
+    <span class="pill"><i style="background:var(--warn)"></i>Crowded market for plain e-cards</span>
+    <span class="pill"><i style="background:var(--accent)"></i>MVP in about 10–12 weeks solo</span>
+  </div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#opinion">My opinion</a><a href="#features">Features</a><a href="#hall">Hall &amp; seating SVG</a><a href="#cards">Card examples</a><a href="#wallet">Wallet pass</a><a href="#pricing">Pricing</a><a href="#payments">Payments</a><a href="#money">Monetization</a><a href="#revenue">Revenue model</a><a href="#tech">Tech</a><a href="#roadmap">Roadmap</a><a href="#risks">Risks</a>
+  </nav>
+</header>
+
+<section id="opinion">
+  <div class="sec-head">
+    <span class="eyebrow">My opinion</span>
+    <h2>A good idea, but the card alone is not the product</h2>
+    <p>Pretty animated invitations already exist (Paperless Post, Greenvelope, Evite, Canva, and many Instagram sellers who make a video invite for a small fee). Competing on beautiful cards only is a race to the bottom. What hosts actually struggle with is the guest list: who is coming, how many seats each family gets, where everyone sits, and getting the photos back afterward. Your seating hall idea is the real differentiator. Build the product around the whole event, and use the cards as the entry point.</p>
+  </div>
+  <div class="score">
+    <div><div class="lbl">Demand <span>8/10</span></div><div class="meter"><b style="width:80%"></b></div><p class="muted" style="font-size:13px">Every wedding needs invites. Digital is already normal via WhatsApp.</p></div>
+    <div><div class="lbl">Differentiation <span>7/10</span></div><div class="meter"><b style="width:70%"></b></div><p class="muted" style="font-size:13px">Seating + per-guest seat limits + photo wall is rare, especially with Arabic/RTL.</p></div>
+    <div><div class="lbl">Willingness to pay <span>7/10</span></div><div class="meter"><b style="width:70%"></b></div><p class="muted" style="font-size:13px">Weddings are emotional, high-budget events. $30–80 is small next to the hall bill.</p></div>
+    <div><div class="lbl">Repeat usage <span>4/10</span></div><div class="meter"><b style="width:40%"></b></div><p class="muted" style="font-size:13px">A couple marries once. Fix this with venues, planners and many event types.</p></div>
+    <div><div class="lbl">Build difficulty <span>6/10</span></div><div class="meter"><b style="width:60%"></b></div><p class="muted" style="font-size:13px">Card editor and seating drag-and-drop are the hardest parts.</p></div>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <h3>Three strategic moves I would make</h3>
+      <ul class="clean">
+        <li><b>Sell to venues and planners, not only couples.</b> A hall that uploads its own layout once brings you every couple who books it. That solves the "people marry once" problem.</li>
+        <li><b>Personalized guest links.</b> Each family gets its own link with its name and an allowed seat count ("2 seats reserved for you"). This stops uninvited extras, which hosts really care about.</li>
+        <li><b>WhatsApp first.</b> Most invites will be opened from a WhatsApp chat on a mid-range phone. The link preview image and a fast first load matter more than any 3D effect.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Where your ideas are strongest</h3>
+      <ul class="clean gold">
+        <li><b>SVG generated halls:</b> correct call. Halls share one structure (stage, dance floor, tables), so a parametric generator covers 90% of venues today and becomes a hall designer later.</li>
+        <li><b>Default card values the customer can change:</b> right model. Store each card as a config (colors, fonts, effects) so templates are data, not code.</li>
+        <li><b>Paid photo cloud:</b> strong upsell, because it arrives after the event when the host is happy and storage has a real cost you can justify.</li>
+        <li><b>Three.js for every card:</b> I would limit this. Use it for a few premium "3D" cards and build the rest with CSS/GSAP animation that loads fast everywhere.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="sec-head">
+    <span class="eyebrow">Features</span>
+    <h2>Two journeys: the host who builds, the guest who opens</h2>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <span class="eyebrow">Host journey</span>
+      <div class="flow"><span>Pick event type</span><em>→</em><span>Pick card</span><em>→</em><span>Edit text, colors, fonts, photos, video</span><em>→</em><span>Import guests</span><em>→</em><span>Set seats per guest</span><em>→</em><span>Send links</span><em>→</em><span>Track RSVPs</span><em>→</em><span>Seat people</span><em>→</em><span>Collect photos</span></div>
+    </div>
+    <div class="panel">
+      <span class="eyebrow">Guest journey</span>
+      <div class="flow"><span>Tap WhatsApp link</span><em>→</em><span>Envelope opens</span><em>→</em><span>Names, date, countdown</span><em>→</em><span>Map &amp; add to calendar</span><em>→</em><span>RSVP with name &amp; count</span><em>→</em><span>Gets table number + QR</span><em>→</em><span>Uploads photos after</span></div>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>What it does</th><th>Phase</th><th>Tier</th></tr></thead>
+      <tbody>
+        <tr><td>Card templates</td><td>Wedding, engagement, birthday, graduation, baby welcome, Eid gathering. Default values, all editable.</td><td class="ph">MVP</td><td><span class="tag t-free">Free</span> <span class="tag t-paid">Premium</span></td></tr>
+        <tr><td>Card editor</td><td>Text, colors, fonts, photo gallery, cover video, turn each animation on/off, Arabic &amp; English (RTL).</td><td class="ph">MVP</td><td><span class="tag t-free">Basic</span> <span class="tag t-paid">Full</span></td></tr>
+        <tr><td>RSVP</td><td>Guest types name, attending yes/no, number of people. Host sees a live list.</td><td class="ph">MVP</td><td><span class="tag t-free">Free</span></td></tr>
+        <tr><td>Envelope opening &amp; our story</td><td>The invite opens like an envelope as the guest scrolls. A short "How we met" timeline adds the personal touch.</td><td class="ph">MVP</td><td><span class="tag t-paid">Premium</span></td></tr>
+        <tr><td>Bank transfer via WhatsApp</td><td>Customer transfers, sends the receipt on WhatsApp, an admin approves and the event unlocks.</td><td class="ph">MVP</td><td><span class="tag t-free">All paid plans</span></td></tr>
+        <tr><td>Personal guest links</td><td>Link per family with their name and a seat limit. Blocks extra guests.</td><td class="ph">MVP</td><td><span class="tag t-paid">Premium</span></td></tr>
+        <tr><td>Event details</td><td>Countdown, Google/Apple Maps, add to calendar, dress code, schedule.</td><td class="ph">MVP</td><td><span class="tag t-free">Free</span></td></tr>
+        <tr><td>Hall &amp; seating planner</td><td>Generated SVG hall, tables and chairs. Drag confirmed guests onto seats. Split men/women sections.</td><td class="ph">V2</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Table lookup</td><td>Guest sees "You are at Table 7" on the invite and on arrival.</td><td class="ph">V2</td><td><span class="tag t-paid">Signature</span></td></tr>
+        <tr><td>QR check-in</td><td>Door staff scan guests in. Host sees arrivals live.</td><td class="ph">V2</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Wallet pass</td><td>Apple Wallet and Google Wallet pass in the event's design, with table number and entry QR. Updates itself if the time changes.</td><td class="ph">V2</td><td><span class="tag t-paid">Signature</span> <span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Reminders</td><td>Automatic reminder 3 days and 1 day before, to those who have not replied.</td><td class="ph">V2</td><td><span class="tag t-paid">Premium</span></td></tr>
+        <tr><td>Photo wall / cloud</td><td>Guests upload photos and videos after the party. Host downloads everything in one ZIP.</td><td class="ph">V2</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Video guestbook</td><td>Guests record a short congratulations video.</td><td class="ph">V3</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Thank-you card</td><td>After the event, send a thank-you card with the best photos to everyone who came.</td><td class="ph">V3</td><td><span class="tag t-paid">Premium</span></td></tr>
+        <tr><td>Hall designer</td><td>Venues draw their own layout (stage position, columns, entrances, VIP area).</td><td class="ph">V3</td><td><span class="tag t-paid">Venue Pro</span></td></tr>
+        <tr><td>Template marketplace</td><td>Outside designers sell cards; you keep a commission.</td><td class="ph">V3</td><td><span class="tag t-addon">Revenue share</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="hall">
+  <div class="sec-head">
+    <span class="eyebrow">Hall &amp; seating SVG</span>
+    <h2>One generator, every hall</h2>
+    <p>This is a working example. The hall is generated from a few numbers, exactly as you described: the stage for the couple at the front, the dance floor in front of it, and tables filling the rest. Change the sliders, switch to a split hall, and click any chair to cycle its status.</p>
+  </div>
+  <div class="hall">
+    <div class="hall-canvas"><svg id="hallSvg" viewBox="0 0 800 580" role="img" aria-label="Generated wedding hall layout"></svg></div>
+    <div class="panel ctrl">
+      <label for="tables"><span class="row">Tables <output id="tablesOut">20</output></span><input type="range" id="tables" min="4" max="48" value="20"></label>
+      <label for="chairs"><span class="row">Chairs per table <output id="chairsOut">8</output></span><input type="range" id="chairs" min="4" max="12" value="8"></label>
+      <div style="display:grid;gap:6px"><span style="font-size:13px;font-weight:600">Layout</span>
+        <div class="seg" role="group" aria-label="Layout">
+          <button type="button" id="lyMixed" aria-pressed="true">Mixed hall</button>
+          <button type="button" id="lySplit" aria-pressed="false">Men / Women</button>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b id="sCap">160</b><span>Seats</span></div>
+        <div class="stat"><b id="sConf">0</b><span>Confirmed</span></div>
+        <div class="stat"><b id="sPend">0</b><span>Pending</span></div>
+        <div class="stat"><b id="sFree">0</b><span>Free seats</span></div>
+      </div>
+      <div class="legend"><span><i style="background:var(--accent)"></i>Confirmed</span><span><i style="background:var(--gold)"></i>Pending</span><span><i style="border:1.5px solid var(--muted)"></i>Free</span></div>
+      <p class="muted" style="font-size:12.5px">Sample data. In the real product, confirmed RSVPs appear in a side list and you drag them onto chairs.</p>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <h3>The hall is stored as data</h3>
+      <p class="muted" style="font-size:13.5px">The SVG is drawn from a small JSON object. Venues save one of these, and the seating assignments reference table and chair ids. A future hall designer only edits this object.</p>
+      <pre class="code" id="hallJson"></pre>
+    </div>
+    <div class="panel">
+      <h3>Why SVG and not canvas or 3D</h3>
+      <ul class="clean">
+        <li>Every chair is a real element: clickable, accessible, and easy to drag guests onto.</li>
+        <li>Crisp on any screen and printable as a seating chart PDF for the hall staff.</li>
+        <li>Small: a 400-seat hall is a few KB, generated on the device.</li>
+        <li>Later you can add shapes (long banquet tables, sofas, a VIP row) by adding new table types to the same schema.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="cards">
+  <div class="sec-head">
+    <span class="eyebrow">Card examples</span>
+    <h2>Six starter templates with live controls</h2>
+    <p>Each card has default colors, fonts and effects. Try the swatches, the font menu and the animation switch. These are built with CSS only, which shows how far you get before needing Three.js. The Signature card is where a real 3D scene (envelope or gate opening) would go.</p>
+    <p><b>Full scrollable Arabic samples</b>, each showing the complete mobile webview a guest gets, with its own opening effect:</p>
+    <ul class="clean">
+      <li><a href="https://claude.ai/artifact/GEyJQaijABdopNBTNthf5H" target="_blank" rel="noopener">Wedding · Layali</a>: an envelope opens and the letter slides out.</li>
+      <li><a href="https://claude.ai/artifact/5sUZt51HWK8oBZRXui9PVp" target="_blank" rel="noopener">Wedding · Reem &amp; Omar</a>: a pink rose bud blooms petal by petal and drops petals over the names.</li>
+      <li><a href="https://claude.ai/artifact/CQrHSCW4K2qjpTFRzhcZqr" target="_blank" rel="noopener">Engagement · Rana &amp; Karim</a>: a velvet ring box opens and the ring rises with a glow.</li>
+      <li><a href="https://claude.ai/artifact/DaBh4nKEEfBRq1uWi6V6tH" target="_blank" rel="noopener">Henna night · Salma</a>: arched doors swing open and a henna pattern draws itself.</li>
+      <li><a href="https://claude.ai/artifact/HCE6D6DcrX29Zn6Npft8GT" target="_blank" rel="noopener">Birthday · Adam turns 7</a>: a gift box unwraps and releases balloons and confetti.</li>
+      <li><a href="https://claude.ai/artifact/D5qsS522KYCY7VSkLciBit" target="_blank" rel="noopener">Graduation · Rami Haddad</a>: a diploma unties, unrolls, and caps fly into the air.</li>
+    </ul>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section id="wallet">
+  <div class="sec-head">
+    <span class="eyebrow">Wallet pass</span>
+    <h2>The invitation lives in the guest's phone wallet</h2>
+    <p>After a guest confirms, they tap "Add to Wallet". The pass carries the couple's colors and names, the table number and the entry QR. On the day, it can appear on the lock screen when the guest is near the hall. The drawings follow the real field layouts of Apple Wallet event tickets and Google Wallet event passes; the QR codes are decorative.</p>
+  </div>
+  <div class="wallet-row">
+    <figure>
+      <div class="pass apple" dir="rtl">
+        <div class="hdr">
+          <span class="logo"><svg viewBox="0 0 26 26"><rect x="2" y="6" width="22" height="15" rx="2" fill="none" stroke="#E8D29C" stroke-width="1.6"/><path d="M2 7l11 8 11-8" fill="none" stroke="#E8D29C" stroke-width="1.6"/></svg>دعوة</span>
+          <span><span class="lb">التاريخ</span><span class="vl">١٠ ديسمبر</span></span>
+        </div>
+        <div class="strip"><b>ليان &amp; يوسف</b></div>
+        <div class="fields">
+          <span><span class="lb">القاعة</span><span class="vl">النور</span></span>
+          <span><span class="lb">الوقت</span><span class="vl">٨:٠٠ م</span></span>
+          <span><span class="lb">الطاولة</span><span class="vl">٧</span></span>
+        </div>
+        <div class="fields" style="grid-template-columns:2fr 1fr">
+          <span><span class="lb">الضيف</span><span class="vl">عائلة خالد العلي</span></span>
+          <span><span class="lb">المقاعد</span><span class="vl">٢</span></span>
+        </div>
+        <div class="qrbox"><svg class="wqr" data-seed="11" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg><small>DW-7-0142</small></div>
+      </div>
+      <figcaption>Apple Wallet · event ticket</figcaption>
+    </figure>
+    <figure>
+      <div class="pass google" dir="rtl">
+        <div class="top">
+          <span class="issuer"><i>د</i>دعوة · حفل زفاف</span>
+          <h4>ليان و يوسف</h4>
+          <div class="fields">
+            <span><span class="lb">التاريخ</span><span class="vl">الخميس ١٠/١٢/٢٠٢٦</span></span>
+            <span><span class="lb">الوقت</span><span class="vl">٨:٠٠ مساءً</span></span>
+            <span><span class="lb">المكان</span><span class="vl">قاعة النور الكبرى</span></span>
+            <span><span class="lb">الطاولة · المقاعد</span><span class="vl">٧ · ٢</span></span>
+          </div>
+          <div class="qrbox"><svg class="wqr" data-seed="29" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg><small>DW-7-0142</small></div>
+        </div>
+        <div class="hero"><b>بحضوركم يكتمل الفرح</b></div>
+      </div>
+      <figcaption>Google Wallet · event pass</figcaption>
+    </figure>
+    <figure>
+      <div class="lock">
+        <div><div class="d">Thursday, 10 December</div><div class="t">7:42</div></div>
+        <div></div>
+        <div class="notif" dir="rtl">
+          <div class="nh"><span>WALLET</span><span>now</span></div>
+          <b>زفاف ليان ويوسف</b>
+          <span>قاعة النور قريبة منك. اضغط لعرض بطاقة الدخول · طاولة ٧</span>
+        </div>
+      </div>
+      <figcaption>On the day · lock screen</figcaption>
+    </figure>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <h3>How to build it</h3>
+      <ul class="clean">
+        <li><b>Apple Wallet:</b> generate a signed <code>.pkpass</code> file on your server (event ticket style). Needs an Apple Developer account ($99/year) and a Pass Type ID certificate.</li>
+        <li><b>Google Wallet:</b> create an event ticket class per event and an object per guest through the Google Wallet API, then show a "Save to Google Wallet" link. The issuer account is free.</li>
+        <li>The pass design comes from the card config: background color, text color, label color, names, and a strip or hero image rendered from the card.</li>
+        <li>Add the hall's location and the event date so the pass shows up near the hall on the day.</li>
+        <li>Passes can be updated after saving. If the time changes or the guest moves table, every saved pass updates.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Limits to plan for</h3>
+      <ul class="clean gold">
+        <li>Wallets use fixed templates: you choose colors, images and fields, not free layout. Animations stay in the web invite.</li>
+        <li>Some Android phones have no Google Wallet. Show the same pass as a page with "Save to home screen".</li>
+        <li>The pass QR is the same one used for check-in at the door, so wallet passes and the QR check-in add-on sell well together.</li>
+        <li>Pricing: included in Signature, $5 add-on on Premium.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="sec-head">
+    <span class="eyebrow">Pricing</span>
+    <h2>Pay per event, plus a monthly plan for venues</h2>
+    <p>Couples buy once per event, so subscriptions feel wrong to them. Venues and planners run many events a month, so they get a subscription. Prices are in USD as a starting point; localize them to your market's currency and price level.</p>
+  </div>
+  <div class="plans">
+    <div class="plan">
+      <span class="eyebrow">Free</span>
+      <div class="price">$0</div>
+      <p class="who">To try it and spread the brand</p>
+      <ul class="clean">
+        <li>Free templates</li><li>Up to 50 guests</li><li>RSVP with name and count</li><li>Map, countdown, calendar</li><li>Small "Made with Daawa" badge</li>
+      </ul>
+    </div>
+    <div class="plan hl">
+      <span class="eyebrow">Premium · most chosen</span>
+      <div class="price">$29 <small>/ event</small></div>
+      <p class="who">Engagements, birthdays, small weddings</p>
+      <ul class="clean">
+        <li>All Premium templates</li><li>Up to 300 guests</li><li>All fonts and colors, cover video</li><li>Personal guest links with seat limits</li><li>Automatic reminders</li><li>No badge, custom link name</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <span class="eyebrow">Signature</span>
+      <div class="price">$79 <small>/ event</small></div>
+      <p class="who">Full weddings</p>
+      <ul class="clean">
+        <li>Everything in Premium</li><li>3D Signature cards</li><li>Up to 1,000 guests</li><li>Seating planner included</li><li>QR check-in included</li><li>Photo wall, 90 days</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <span class="eyebrow">Venue &amp; Planner Pro</span>
+      <div class="price">$49 <small>/ month</small></div>
+      <p class="who">Wedding halls, hotels, planners</p>
+      <ul class="clean">
+        <li>Their own hall layouts</li><li>15 Signature events per month</li><li>Their logo on invites (white label)</li><li>Team accounts for staff</li><li>Listed in the venue directory</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="payments">
+  <div class="sec-head">
+    <span class="eyebrow">Payments</span>
+    <h2>Card online, or bank transfer approved over WhatsApp</h2>
+    <p>Many customers in the region prefer a bank transfer or a local wallet over entering a card. Offer both. Card payments unlock the event instantly; transfers wait for an admin to check the money arrived and approve.</p>
+  </div>
+  <div class="grid g3">
+    <div class="panel"><span class="tag t-paid" style="justify-self:start">Instant</span><h3>Card &amp; Apple Pay</h3><p class="muted" style="font-size:13.5px">Through a payment gateway. The event unlocks automatically after payment.</p></div>
+    <div class="panel"><span class="tag t-addon" style="justify-self:start">Manual approval</span><h3>Bank transfer via WhatsApp</h3><p class="muted" style="font-size:13.5px">Customer transfers, sends the receipt on WhatsApp, you approve in the admin panel.</p></div>
+    <div class="panel"><span class="tag t-free" style="justify-self:start">Later</span><h3>Local instant transfers</h3><p class="muted" style="font-size:13.5px">Services like CliQ, STC Pay or InstaPay, depending on your country. Start manual, automate when volume grows.</p></div>
+  </div>
+  <ol class="steps">
+    <li><b>Choose transfer</b>Customer picks a plan and "Bank transfer" at checkout.</li>
+    <li><b>Get a reference</b>Order is created as "Waiting for payment" with a code like DW-4821 and the bank details.</li>
+    <li><b>Transfer</b>Customer transfers and writes the code in the transfer note.</li>
+    <li><b>WhatsApp</b>One tap opens your WhatsApp with a ready message and the code. They attach the receipt.</li>
+    <li><b>Check &amp; approve</b>Admin checks the bank account, finds the order by code, clicks Approve.</li>
+    <li><b>Unlocked</b>The plan activates and the customer gets a WhatsApp and email confirmation.</li>
+  </ol>
+  <div class="grid g3">
+    <div class="panel">
+      <span class="eyebrow">Customer sees at checkout</span>
+      <div class="bank">
+        <span>Order</span><b>DW-4821</b>
+        <span>Plan</span><b>Signature · $79</b>
+        <span>Bank</span><b>Example Bank</b>
+        <span>IBAN</span><b>XX00 0000 0000 0000 0000</b>
+        <span>Note</span><b>DW-4821</b>
+      </div>
+      <span class="status st-wait" style="justify-self:start">Waiting for payment · 48h</span>
+      <p class="muted" style="font-size:12.5px">They can keep editing and previewing. Sending invites unlocks after approval.</p>
+    </div>
+    <div class="panel">
+      <span class="eyebrow">WhatsApp conversation</span>
+      <div class="chat" dir="rtl">
+        <div class="bubble me">مرحباً، حوّلت مبلغ ٧٩$ لطلب DW-4821 (باقة Signature). مرفق الإيصال 📎<small>9:14 PM</small></div>
+        <div class="bubble them">شكراً لكم! تم التأكد من التحويل وتفعيل باقتكم. بالتوفيق 🤍<small>9:31 PM</small></div>
+      </div>
+    </div>
+    <div class="panel">
+      <span class="eyebrow">Rules that prevent problems</span>
+      <ul class="clean bad">
+        <li>Approve only after seeing the money in the bank, never from a screenshot alone.</li>
+        <li>Unique code per order; reject duplicate or reused receipts.</li>
+        <li>Orders expire after 48 hours without payment.</li>
+        <li>Log who approved each order and when.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sec-head" style="gap:4px"><span class="eyebrow">Admin panel · transfer approvals (try the buttons)</span></div>
+  <div class="tbl-wrap">
+    <table id="approvals">
+      <thead><tr><th>Order</th><th>Customer</th><th>Plan</th><th>Amount</th><th>Receipt</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>DW-4821</td><td>Sara M.</td><td>Signature</td><td>$79</td><td>WhatsApp · 9:14 PM</td><td><span class="status st-rec">Receipt received</span></td><td class="act"><button type="button" class="ok">Approve</button><button type="button">Reject</button></td></tr>
+        <tr><td>DW-4817</td><td>Ahmad K.</td><td>Premium</td><td>$29</td><td>WhatsApp · 6:02 PM</td><td><span class="status st-rec">Receipt received</span></td><td class="act"><button type="button" class="ok">Approve</button><button type="button">Reject</button></td></tr>
+        <tr><td>DW-4812</td><td>Huda R.</td><td>Seating add-on</td><td>$15</td><td class="muted">None yet</td><td><span class="status st-wait">Waiting · 31h left</span></td><td class="muted">—</td></tr>
+        <tr><td>DW-4809</td><td>Lina H.</td><td>Signature</td><td>$79</td><td>WhatsApp · Mon</td><td><span class="status st-ok">Approved</span></td><td class="muted">by Anas</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="money">
+  <div class="sec-head">
+    <span class="eyebrow">Monetization</span>
+    <h2>Fifteen ways the product earns</h2>
+    <p>Your three ideas (paid cards, paid seating, paid photo cloud) are all here. The rest are ones I would add, grouped by when the host meets them.</p>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>When the host sees it</th><th>Suggested price</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td><b>Premium &amp; Signature cards</b> <span class="muted">(your idea)</span></td><td>Choosing a template</td><td>$29 / $79 per event</td><td><span class="tag t-paid">Tier</span></td></tr>
+        <tr><td>Single premium template unlock</td><td>Likes one card, stays on Free</td><td>$9</td><td><span class="tag t-addon">One-off</span></td></tr>
+        <tr><td><b>Seating planner</b> <span class="muted">(your idea)</span></td><td>After first RSVPs arrive</td><td>$15</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td><b>Photo cloud</b> <span class="muted">(your idea)</span></td><td>Day after the event</td><td>$9 for 90 days · $25 for 1 year · $49 forever</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Extra guest packs</td><td>Hits the guest limit</td><td>$10 per 200 guests</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>QR check-in</td><td>A week before</td><td>$10</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Wallet pass for every guest</td><td>Turning on RSVP</td><td>Included in Signature · $5 on Premium</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>WhatsApp sending &amp; reminders</td><td>Sending invites</td><td>Message cost + margin, e.g. $5 per 100</td><td><span class="tag t-addon">Usage</span></td></tr>
+        <tr><td>Video invitation editing</td><td>Wants a cinematic video card</td><td>$20–40, done by your team or a freelancer</td><td><span class="tag t-addon">Service</span></td></tr>
+        <tr><td>Printed extras</td><td>Near the date</td><td>Table number cards and QR stands, priced per order</td><td><span class="tag t-addon">Physical</span></td></tr>
+        <tr><td>Video guestbook</td><td>Editing the card</td><td>$12</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Thank-you card + highlight gallery</td><td>After the event</td><td>$7</td><td><span class="tag t-addon">Add-on</span></td></tr>
+        <tr><td>Venue &amp; planner subscriptions</td><td>B2B sales</td><td>$49–149 / month</td><td><span class="tag t-paid">Recurring</span></td></tr>
+        <tr><td>Template marketplace</td><td>Browsing cards</td><td>Designers keep 70%, you keep 30%</td><td><span class="tag t-paid">Commission</span></td></tr>
+        <tr><td>Vendor listings</td><td>Planning page</td><td>Photographers, florists, makeup artists pay for a featured spot</td><td><span class="tag t-paid">Ads</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel">
+    <h3>Pricing tactics that usually work for events</h3>
+    <ul class="clean">
+      <li><b>Let them build for free, charge when they send.</b> People pay once they have invested time editing and want to share.</li>
+      <li><b>Bundles beat lists.</b> Show Signature as "everything for the wedding" so add-ons feel like a deal inside it.</li>
+      <li><b>The Free badge is marketing.</b> Every free invite reaches 50 people who may host their own event next.</li>
+      <li><b>Seasonal pricing.</b> Wedding season and Eid holidays are peaks; run early-bird discounts before them.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="revenue">
+  <div class="sec-head">
+    <span class="eyebrow">Revenue model</span>
+    <h2>What a month could look like</h2>
+    <p>Move the inputs to see monthly revenue. All numbers are assumptions for planning, not market data. Costs cover payment fees (about 4%) and hosting, storage and messages (about $2 per paid event).</p>
+  </div>
+  <div class="calc">
+    <div class="panel ctrl">
+      <label for="events"><span class="row">Paid events per month <output id="eventsOut">120</output></span><input type="range" id="events" min="10" max="1000" step="10" value="120"></label>
+      <label for="mix"><span class="row">Share choosing Signature <output id="mixOut">30%</output></span><input type="range" id="mix" min="0" max="100" step="5" value="30"></label>
+      <label for="attach"><span class="row">Buy at least one add-on <output id="attachOut">40%</output></span><input type="range" id="attach" min="0" max="100" step="5" value="40"></label>
+      <label for="venues"><span class="row">Venue subscribers <output id="venuesOut">10</output></span><input type="range" id="venues" min="0" max="200" value="10"></label>
+    </div>
+    <div class="panel">
+      <span class="eyebrow">Estimated monthly result</span>
+      <div class="big" id="net">$0</div>
+      <p class="muted" style="font-size:13px">Net after payment fees and running costs</p>
+      <div style="display:grid;gap:8px;margin-top:6px" id="bars"></div>
+    </div>
+  </div>
+</section>
+
+<section id="tech">
+  <div class="sec-head">
+    <span class="eyebrow">Tech</span>
+    <h2>A stack that keeps invites fast on any phone</h2>
+  </div>
+  <div class="grid g3">
+    <div class="panel"><h3>Cards as config</h3><p class="muted" style="font-size:13.5px">Each template is a JSON file: theme tokens (colors, fonts), sections (cover, names, details, gallery, RSVP) and an effects list where each effect has an on/off flag. One renderer draws all cards. New cards become design work, not code.</p></div>
+    <div class="panel"><h3>Animation</h3><p class="muted" style="font-size:13.5px">CSS and GSAP for most effects, Lottie for illustrated motion. Three.js only on Signature cards, loaded lazily after the first screen, with a still image fallback and respect for "reduce motion".</p></div>
+    <div class="panel"><h3>App</h3><p class="muted" style="font-size:13.5px">Next.js (or Nuxt/SvelteKit) with server rendering so the WhatsApp preview image and title work. Postgres for events, guests and seats. Full RTL support from day one.</p></div>
+    <div class="panel"><h3>Media</h3><p class="muted" style="font-size:13.5px">Object storage (S3 or Cloudflare R2) with automatic image resizing. Video through a streaming service so guests do not download a 200 MB file. Storage cost sets your photo cloud price.</p></div>
+    <div class="panel"><h3>Payments</h3><p class="muted" style="font-size:13.5px">Stripe where it is available, plus a local gateway for your region (for example Tap, PayTabs or HyperPay in the Gulf). Support Apple Pay and local cards.</p></div>
+    <div class="panel"><h3>Messaging</h3><p class="muted" style="font-size:13.5px">Start with "copy link" and WhatsApp share buttons. Add the WhatsApp Business API for automated reminders later, since each message costs money and needs approved templates.</p></div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="sec-head">
+    <span class="eyebrow">Roadmap</span>
+    <h2>Ship the invite first, then the seating, then the platform</h2>
+  </div>
+  <div class="road">
+    <div class="step"><span class="when">Weeks 1–2</span><h3>Validate before coding</h3><p class="muted">Make 3 cards by hand and sell them to 10 real couples through Instagram or friends. Talk to 5 wedding halls about the seating idea. If halls say yes, you have your channel.</p></div>
+    <div class="step"><span class="when">Weeks 3–12</span><h3>MVP</h3><p class="muted">8–10 templates, the card editor, RSVP, personal guest links, payments, Arabic and English. Launch with Free and Premium.</p></div>
+    <div class="step"><span class="when">Months 4–5</span><h3>V2: the event tools</h3><p class="muted">Seating planner on the SVG hall, QR check-in, reminders, photo wall. Launch Signature.</p></div>
+    <div class="step"><span class="when">Months 6–9</span><h3>V3: the platform</h3><p class="muted">Venue Pro with the hall designer, template marketplace, vendor listings, thank-you cards.</p></div>
+  </div>
+</section>
+
+<section id="risks">
+  <div class="sec-head">
+    <span class="eyebrow">Risks</span>
+    <h2>What could go wrong, and the answer to each</h2>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Risk</th><th>Why it matters</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>Heavy 3D cards</td><td>Slow loads on older phones; guests leave before the card opens.</td><td>Budget under 2 seconds to first view on 4G. 3D only on Signature, loaded after the first screen.</td></tr>
+        <tr><td>One-time customers</td><td>Low lifetime value per couple.</td><td>Many event types, venue subscriptions, referral credit for guests who later host.</td></tr>
+        <tr><td>Photo storage costs</td><td>Video uploads can grow fast.</td><td>Compress on upload, set size limits per plan, delete after the paid period unless extended.</td></tr>
+        <tr><td>Privacy</td><td>Guest names, phone numbers and family photos.</td><td>Unlisted links, optional PIN on the photo wall, clear deletion, no public indexing of events.</td></tr>
+        <tr><td>Seasonality</td><td>Revenue peaks in wedding season and around holidays.</td><td>Push birthdays, graduations and corporate events in quiet months.</td></tr>
+        <tr><td>Copycats</td><td>Card designs are easy to imitate.</td><td>Your moat is the guest data, seating and venue network, not the visuals.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>Prepared 27 October 2026. Prices, revenue figures and timelines are planning assumptions to test with real customers.</footer>
+</div>
+
+<script>
+/* ---------- Hall generator ---------- */
+const svg=document.getElementById('hallSvg');
+const NS='http://www.w3.org/2000/svg';
+const state={tables:20,chairs:8,layout:'mixed',status:{}};
+function rnd(seed){let x=Math.sin(seed*99.13)*43758.5453;return x-Math.floor(x)}
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||svg).appendChild(e);return e}
+function defaultStatus(t,c){const r=rnd(t*31+c*7+state.chairs);return r<.55?'conf':r<.72?'pend':'free'}
+function placeTables(n,x0,y0,w,h,startIdx){
+  const cols=Math.max(1,Math.round(Math.sqrt(n*w/h)));const rows=Math.ceil(n/cols);
+  const cw=w/cols,ch=h/rows,s=Math.min(cw,ch);const out=[];
+  for(let i=0;i<n;i++){const r=Math.floor(i/cols),c=i%cols;
+    const inRow=Math.min(cols,n-r*cols);const offset=(cols-inRow)*cw/2;
+    out.push({id:startIdx+i+1,x:x0+offset+cw*c+cw/2,y:y0+ch*r+ch/2,s});}
+  return out;
+}
+function drawHall(){
+  svg.innerHTML='';
+  const W=800,H=580;
+  el('rect',{x:6,y:6,width:W-12,height:H-12,rx:14,fill:'none',stroke:'var(--line)','stroke-width':2});
+  // stage
+  el('rect',{x:270,y:24,width:260,height:62,rx:10,fill:'var(--accent-soft)',stroke:'var(--accent)','stroke-width':1.5});
+  const st=el('text',{x:400,y:52,'text-anchor':'middle','font-size':13,fill:'var(--ink)','font-family':'var(--body)','font-weight':600});st.textContent='Couple stage (Kosha)';
+  const st2=el('text',{x:400,y:71,'text-anchor':'middle','font-size':10.5,class:'svg-text'});st2.textContent='stage · 260 × 62';
+  // dance floor
+  el('rect',{x:310,y:100,width:180,height:70,rx:6,fill:'none',stroke:'var(--gold)','stroke-dasharray':'5 4','stroke-width':1.5});
+  const df=el('text',{x:400,y:140,'text-anchor':'middle','font-size':11,class:'svg-text'});df.textContent='Dance floor';
+  // entrance
+  el('rect',{x:360,y:H-14,width:80,height:8,fill:'var(--muted)'});
+  const en=el('text',{x:400,y:H-22,'text-anchor':'middle','font-size':10.5,class:'svg-text'});en.textContent='Entrance';
+  let tables=[];
+  const top=190,bottom=H-40;
+  if(state.layout==='split'){
+    const half=Math.ceil(state.tables/2);
+    tables=placeTables(half,24,top,360,bottom-top,0).map(t=>({...t,side:'Men'}))
+      .concat(placeTables(state.tables-half,416,top,360,bottom-top,half).map(t=>({...t,side:'Women'})));
+    el('line',{x1:400,y1:top-8,x2:400,y2:bottom+6,stroke:'var(--muted)','stroke-width':2,'stroke-dasharray':'2 5'});
+    [['Men',204],['Women',596]].forEach(([l,x])=>{const t=el('text',{x,y:top-10,'text-anchor':'middle','font-size':11,class:'svg-text','letter-spacing':'2'});t.textContent=l.toUpperCase()+' SECTION'});
+  } else {
+    tables=placeTables(state.tables,24,top,752,bottom-top,0);
+  }
+  let cap=0,conf=0,pend=0;
+  tables.forEach(t=>{
+    const chairR=Math.max(3.2,Math.min(9,t.s*0.075));
+    const ring=t.s/2-chairR-3;
+    const tr=Math.max(8,ring-chairR*1.7);
+    const g=el('g',{});
+    el('circle',{cx:t.x,cy:t.y,r:tr,fill:'var(--surface)',stroke:'var(--ink)','stroke-width':1.2},g);
+    const lb=el('text',{x:t.x,y:t.y+4,'text-anchor':'middle','font-size':Math.max(8,Math.min(13,tr*.6)),fill:'var(--ink)','font-family':'var(--mono)'},g);lb.textContent='T'+t.id;
+    for(let c=0;c<state.chairs;c++){
+      const a=-Math.PI/2+c*2*Math.PI/state.chairs;
+      const key=t.id+'-'+c;
+      const s=state.status[key]||defaultStatus(t.id,c);
+      cap++; if(s==='conf')conf++; if(s==='pend')pend++;
+      const fill=s==='conf'?'var(--accent)':s==='pend'?'var(--gold)':'var(--surface)';
+      const ch=el('circle',{cx:t.x+ring*Math.cos(a),cy:t.y+ring*Math.sin(a),r:chairR,fill,stroke:s==='free'?'var(--muted)':fill,'stroke-width':1.2,style:'cursor:pointer',tabindex:0,role:'button','aria-label':'Table '+t.id+' chair '+(c+1)+': '+(s==='conf'?'confirmed':s==='pend'?'pending':'free')},g);
+      const tt=el('title',{},ch);tt.textContent='Table '+t.id+(t.side?' ('+t.side+')':'')+' · Chair '+(c+1);
+      const cycle=()=>{state.status[key]=s==='free'?'conf':s==='conf'?'pend':'free';drawHall();};
+      ch.addEventListener('click',cycle);
+      ch.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cycle();}});
+    }
+  });
+  document.getElementById('sCap').textContent=cap;
+  document.getElementById('sConf').textContent=conf;
+  document.getElementById('sPend').textContent=pend;
+  document.getElementById('sFree').textContent=cap-conf-pend;
+  document.getElementById('hallJson').textContent=JSON.stringify({
+    hall:"Al Noor Ballroom", size:{w:800,h:580},
+    stage:{x:270,y:24,w:260,h:62}, danceFloor:{x:310,y:100,w:180,h:70},
+    sections: state.layout==='split'?["men","women"]:["mixed"],
+    tables:{count:state.tables, shape:"round", chairsPerTable:state.chairs},
+    seat:{table:7, chair:3, guestId:"g_0142"}
+  },null,2);
+}
+const tIn=document.getElementById('tables'),cIn=document.getElementById('chairs');
+tIn.addEventListener('input',()=>{state.tables=+tIn.value;document.getElementById('tablesOut').textContent=tIn.value;drawHall()});
+cIn.addEventListener('input',()=>{state.chairs=+cIn.value;document.getElementById('chairsOut').textContent=cIn.value;state.status={};drawHall()});
+const bM=document.getElementById('lyMixed'),bS=document.getElementById('lySplit');
+bM.onclick=()=>{state.layout='mixed';bM.setAttribute('aria-pressed','true');bS.setAttribute('aria-pressed','false');drawHall()};
+bS.onclick=()=>{state.layout='split';bS.setAttribute('aria-pressed','true');bM.setAttribute('aria-pressed','false');drawHall()};
+drawHall();
+
+/* ---------- Cards ---------- */
+const FONTS={amiri:'"Amiri", serif',bodoni:'"Bodoni Moda", Georgia, serif',script:'"Great Vibes", cursive',marcellus:'"Marcellus", serif',plex:'"IBM Plex Sans", sans-serif'};
+const CARDS=[
+ {name:'Layali',type:'Wedding',tier:'Signature',tierCls:'t-addon',dir:'rtl',font:'amiri',size:'36px',
+  kicker:'حفل زفاف',names:['ليان','يوسف'],amp:'و',when:'الخميس ١٠ ديسمبر ٢٠٢٦<br>قاعة النور · ٨:٠٠ مساءً',btn:'تأكيد الحضور',
+  palettes:[['#0F1A33','#F3E9D2','#D4AF5A'],['#2A0F1F','#F6E8EC','#D9A6B8'],['#0E2620','#EAF2EC','#C9B074']],
+  fx:'sparkle',fxNames:'Gold shimmer · Sparkles · 3D gate opening',shimmer:true},
+ {name:'Garden Vows',type:'Engagement',tier:'Premium',tierCls:'t-paid',dir:'ltr',font:'script',size:'40px',
+  kicker:'We are engaged',names:['Maya','Omar'],amp:'&',when:'Friday, 20 November 2026<br>The Olive Garden · 7 PM',btn:'RSVP',
+  palettes:[['#EEF2EA','#2F3D2E','#B76E79'],['#F7EDEB','#4A2C2A','#7E9C7A'],['#E9EEF5','#22303F','#C08A4E']],
+  fx:'petals',fxNames:'Falling petals · Fade-in text'},
+ {name:'Ivory Line',type:'Wedding',tier:'Free',tierCls:'t-free',dir:'ltr',font:'bodoni',size:'32px',
+  kicker:'Together with their families',names:['Nour','Karim'],amp:'&',when:'Saturday, 12 December 2026<br>Grand Hall · 8 PM',btn:'Will you attend?',
+  palettes:[['#FFFFFF','#1A1A1A','#8A8A8A'],['#F2F2EE','#1F2A2E','#5B7680'],['#1A1A1A','#F5F5F5','#B8B8B8']],
+  fx:'none',fxNames:'Fade-in text'},
+ {name:'Confetti Pop',type:'Birthday',tier:'Free',tierCls:'t-free',dir:'ltr',font:'plex',size:'34px',
+  kicker:'You are invited',names:['Adam','turns 7'],amp:'',when:'Sunday, 8 November 2026<br>Fun Zone Park · 4 PM',btn:'Count me in',
+  palettes:[['#FFF4D6','#2B1D52','#FF5A5F'],['#E6F7FF','#0D2B45','#FF9F1C'],['#2B1D52','#FFFFFF','#FFD23F']],
+  fx:'confetti',fxNames:'Confetti burst · Bouncing title'},
+ {name:'Little Star',type:'Baby welcome',tier:'Premium',tierCls:'t-paid',dir:'ltr',font:'marcellus',size:'30px',
+  kicker:'Welcome to the world',names:['Baby Salma',''],amp:'',when:'Aqiqah gathering<br>Friday, 4 December 2026 · 5 PM',btn:'Join us',
+  palettes:[['#1E2A4A','#F1F4FB','#F5D58A'],['#F3EAF6','#3D2F4A','#C59BD6'],['#E8F4F1','#21413A','#7FB8A6']],
+  fx:'stars',fxNames:'Twinkling stars · Moon glow'},
+ {name:'Cap & Gown',type:'Graduation',tier:'Premium',tierCls:'t-paid',dir:'ltr',font:'bodoni',size:'30px',
+  kicker:'Class of 2026',names:['Rami Haddad',''],amp:'',when:'Graduation party<br>Thursday, 19 November 2026 · 6 PM',btn:'RSVP',
+  palettes:[['#13302A','#F1EBDD','#CDA349'],['#3A1020','#F5E9EC','#D7B26A'],['#0F1B2D','#E8EEF7','#7FA7D9']],
+  fx:'rise',fxNames:'Rising caps · Gold shimmer',shimmer:true}
+];
+function fxHTML(kind,acc){
+  let h='';
+  const n=kind==='confetti'?22:kind==='stars'?18:kind==='sparkle'?16:kind==='petals'?12:kind==='rise'?8:0;
+  const colors=['#FF5A5F','#FFD23F','#3EC1D3','#7B5CFF','#2EC4B6'];
+  for(let i=0;i<n;i++){
+    const l=Math.round(rnd(i+3)*92)+2,d=(rnd(i+11)*5).toFixed(2),dur=(5+rnd(i+5)*5).toFixed(2),t=Math.round(rnd(i+17)*90)+3;
+    if(kind==='petals')h+=`<span style="left:${l}%;top:-20px;width:10px;height:14px;border-radius:70% 0 70% 0;background:${acc};opacity:.7;animation:fall ${dur}s linear ${-d}s infinite"></span>`;
+    if(kind==='confetti')h+=`<span style="left:${l}%;top:-20px;width:7px;height:11px;background:${colors[i%5]};animation:fall ${(+dur*0.7).toFixed(2)}s linear ${-d}s infinite"></span>`;
+    if(kind==='stars'||kind==='sparkle')h+=`<span style="left:${l}%;top:${t}%;width:${kind==='stars'?5:4}px;height:${kind==='stars'?5:4}px;border-radius:50%;background:${acc};box-shadow:0 0 8px ${acc};animation:twinkle ${(2+rnd(i)*3).toFixed(2)}s ease-in-out ${-d}s infinite"></span>`;
+    if(kind==='rise')h+=`<span style="left:${l}%;bottom:-20px;width:16px;height:6px;background:${acc};transform-origin:center;animation:rise ${dur}s linear ${-d}s infinite"><i style="position:absolute;left:4px;top:-6px;width:8px;height:6px;background:${acc}"></i></span>`;
+  }
+  return h;
+}
+const cardsEl=document.getElementById('cards');
+CARDS.forEach((c,ci)=>{
+  const wrap=document.createElement('div');wrap.className='card-item';
+  const swatches=c.palettes.map((p,i)=>`<button type="button" aria-label="Color set ${i+1}" aria-pressed="${i===0}" style="background:linear-gradient(135deg,${p[0]} 50%,${p[2]} 50%)" data-i="${i}"></button>`).join('');
+  const fontOpts=Object.keys(FONTS).map(k=>`<option value="${k}" ${k===c.font?'selected':''}>${{amiri:'Amiri',bodoni:'Bodoni',script:'Script',marcellus:'Marcellus',plex:'Modern sans'}[k]}</option>`).join('');
+  const names=c.names[1]?(c.amp?`${c.names[0]} <span class="amp">${c.amp}</span> ${c.names[1]}`:`${c.names[0]}<br><span style="font-size:.55em">${c.names[1]}</span>`):c.names[0];
+  wrap.innerHTML=`
+   <div class="card-meta"><h3>${c.name} <span class="muted" style="font-weight:400">· ${c.type}</span></h3><span class="tag ${c.tierCls}">${c.tier}</span></div>
+   <div class="phone" dir="${c.dir}">
+     <div class="frame"></div><div class="fx"></div>
+     <div class="inner">
+       <span class="k">${c.kicker}</span>
+       <div class="names ${c.shimmer?'shimmer':''}">${names}</div>
+       <span class="rule"></span>
+       <div class="when">${c.when}</div>
+       <div class="count"><span><b>44</b>days</span><span><b>06</b>hrs</span><span><b>21</b>min</span></div>
+       <span class="btn">${c.btn}</span>
+     </div>
+   </div>
+   <div class="card-ctrls">
+     <div class="sw" role="group" aria-label="Colors">${swatches}</div>
+     <select id="font-${ci}" aria-label="Font for ${c.name}">${fontOpts}</select>
+     <label class="toggle" for="anim-${ci}"><input type="checkbox" id="anim-${ci}" checked> Animation</label>
+   </div>
+   <div class="fxlist">Effects: ${c.fxNames}</div>`;
+  cardsEl.appendChild(wrap);
+  const phone=wrap.querySelector('.phone'),fx=wrap.querySelector('.fx');
+  const apply=i=>{const p=c.palettes[i];phone.style.setProperty('--c-bg',p[0]);phone.style.setProperty('--c-ink',p[1]);phone.style.setProperty('--c-acc',p[2]);fx.innerHTML=fxHTML(c.fx,p[2]);};
+  phone.style.setProperty('--c-font',FONTS[c.font]);phone.style.setProperty('--c-size',c.size);
+  apply(0);
+  wrap.querySelectorAll('.sw button').forEach(b=>b.onclick=()=>{wrap.querySelectorAll('.sw button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');apply(+b.dataset.i)});
+  wrap.querySelector('select').onchange=e=>phone.style.setProperty('--c-font',FONTS[e.target.value]);
+  wrap.querySelector('input[type=checkbox]').onchange=e=>phone.classList.toggle('off',!e.target.checked);
+});
+
+/* ---------- Wallet pass QR (decorative) ---------- */
+document.querySelectorAll('.wqr').forEach(q=>{
+  let seed=+q.dataset.seed;const r=()=>(seed=(seed*9301+49297)%233280)/233280;
+  let h='<rect width="29" height="29" fill="#fff"/>';
+  const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#2A0B14"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#2A0B14"/>`;
+  for(let y=0;y<29;y++)for(let x=0;x<29;x++){const inF=(x<8&&y<8)||(x>20&&y<8)||(x<8&&y>20);if(!inF&&r()<.48)h+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#2A0B14"/>`}
+  q.innerHTML=h+finder(0,0)+finder(22,0)+finder(0,22);
+});
+
+/* ---------- Transfer approvals demo ---------- */
+document.querySelectorAll('#approvals .act').forEach(cell=>{
+  const pill=cell.parentElement.querySelector('.status');
+  const [ok,no]=cell.querySelectorAll('button');
+  if(!ok)return;
+  ok.onclick=()=>{pill.className='status st-ok';pill.textContent='Approved · customer notified';cell.innerHTML='<span class="muted">by you, just now</span>'};
+  no.onclick=()=>{pill.className='status st-no';pill.textContent='Rejected · asked to resend';cell.innerHTML='<span class="muted">by you, just now</span>'};
+});
+
+/* ---------- Revenue calculator ---------- */
+const ids=['events','mix','attach','venues'];
+const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
+function calc(){
+  const ev=+events.value,mix=+mix_.value/100,att=+attach.value/100,ven=+venues.value;
+  document.getElementById('eventsOut').textContent=ev;
+  document.getElementById('mixOut').textContent=Math.round(mix*100)+'%';
+  document.getElementById('attachOut').textContent=Math.round(att*100)+'%';
+  document.getElementById('venuesOut').textContent=ven;
+  const tiers=ev*(mix*79+(1-mix)*29);
+  const addons=ev*att*22;           // average add-on basket
+  const subs=ven*49;
+  const gross=tiers+addons+subs;
+  const costs=gross*0.04+ev*2+ven*15*2;
+  const net=gross-costs;
+  document.getElementById('net').textContent=fmt(net);
+  const rows=[['Event tiers',tiers,''],['Add-ons',addons,'g'],['Venue plans',subs,''],['Costs',-costs,'m']];
+  const max=Math.max(...rows.map(r=>Math.abs(r[1])),1);
+  document.getElementById('bars').innerHTML=rows.map(r=>`<div class="bar-row"><span>${r[0]}</span><div class="b ${r[2]}" style="width:${Math.abs(r[1])/max*100}%"></div><span class="v">${r[1]<0?'−':''}${fmt(Math.abs(r[1]))}</span></div>`).join('');
+}
+const events=document.getElementById('events'),mix_=document.getElementById('mix'),attach=document.getElementById('attach'),venues=document.getElementById('venues');
+[events,mix_,attach,venues].forEach(i=>i.addEventListener('input',calc));
+calc();
+</script>
