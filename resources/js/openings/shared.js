@@ -23,3 +23,24 @@ export function part(stageEl, name) {
     if (!el) throw new Error(`opening markup is missing [data-part="${name}"]`);
     return el;
 }
+
+/**
+ * options.color / options.accentColor become --o-color / --o-accent on the
+ * opening section; each opening's CSS falls back to theme colors without them.
+ */
+export function applyColors(stageEl, options) {
+    const section = stageEl.closest('.opening');
+    if (options.color) section?.style.setProperty('--o-color', options.color);
+    if (options.accentColor) section?.style.setProperty('--o-accent', options.accentColor);
+}
+
+/** Scatters n twinkling dots over a container (decoration only, skipped with reduced motion). */
+export function scatter(container, n, rnd = Math.random) {
+    for (let i = 0; i < n; i++) {
+        const s = document.createElement('span');
+        s.style.left = `${rnd() * 100}%`;
+        s.style.top = `${rnd() * 100}%`;
+        s.style.animationDelay = `${-rnd() * 3.5}s`;
+        container.appendChild(s);
+    }
+}

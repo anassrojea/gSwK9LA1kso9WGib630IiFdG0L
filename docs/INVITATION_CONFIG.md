@@ -26,6 +26,22 @@ invitations already sent keep rendering.
 Media references (`src`) are an `https://` URL, a `/storage/...` path, or `media:<uuid>` for an upload,
 which only resolves for uploads of the same event.
 
+## Openings
+
+Each opening is `resources/views/invite/openings/{id}.blade.php` plus `resources/js/openings/{id}.js`
+(`init(stage, options)`, `render(progress)`). What the generic options tint, and their theme fallbacks:
+
+| `id` | `color` | `accentColor` | `kicker` | `headline` |
+|---|---|---|---|---|
+| `envelope` | envelope (`accent`) | seal (`gold`) | line above the headline | headline |
+| `rose` | — (`petalColor`: petals) | — | — | headline |
+| `ringbox` | velvet box (`accent`) | ring metal (`gold`) | line above the names | headline |
+| `doors` | doors (`accent`) | henna drawing and name (`label`) | line above the name | headline |
+| `gift` | wrapping (`label`) | ribbon, bow, age badge (`gold`) | line above the age | headline |
+| `diploma` | ribbon and seal (`#9E2B2B`) | rods and gold details (`gold`) | first line of the certificate | headline |
+
+The gift shows `names.age` in its badge (the first letter of the name when there is no age).
+
 ## Sections
 
 | `type` | Required | Optional |

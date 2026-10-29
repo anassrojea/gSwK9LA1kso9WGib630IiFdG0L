@@ -2,7 +2,8 @@
  * Drives an opening module from scroll position. The opening section is
  * tall (~330vh) with a sticky stage; progress is how far it has scrolled:
  *   progress = -section.top / (section.height - viewport.height), clamped to 0..1
- * With prefers-reduced-motion the section collapses to one screen showing the final frame.
+ * With prefers-reduced-motion the section collapses to one screen showing the final frame
+ * (or the module's `still` progress when its final frame is empty).
  */
 import { clamp } from '../openings/shared.js';
 
@@ -14,7 +15,7 @@ export function mountOpening(section, mod, options = {}) {
 
     if (motion.matches) {
         section.classList.add('is-static');
-        mod.render(1);
+        mod.render(mod.still ?? 1);
         return;
     }
 

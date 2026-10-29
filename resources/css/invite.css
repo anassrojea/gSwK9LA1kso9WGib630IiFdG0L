@@ -71,6 +71,135 @@ a{color:inherit}
 .op-rose .spark span{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--c-gold);box-shadow:0 0 8px var(--c-gold);opacity:0;animation:twr 2.6s ease-in-out infinite}
 @keyframes twr{0%,100%{transform:scale(.6)}50%{transform:scale(1.2)}}
 
+/* The four openings below read --o-color / --o-accent (set from options.color /
+   options.accentColor by resources/js/openings/shared.js) with theme fallbacks. */
+
+/* ring box (engagement) */
+.op-ringbox{--o-color:var(--c-accent);--o-accent:var(--c-gold);--o-glow:color-mix(in srgb,var(--o-color),white 14%);--o-lid:color-mix(in srgb,var(--o-color),white 24%);--o-lid-2:color-mix(in srgb,var(--o-color),white 7%);--o-base:color-mix(in srgb,var(--o-color),white 16%);
+  height:320vh;background:radial-gradient(110% 70% at 50% 45%,var(--o-glow) 0%,var(--o-color) 50%,color-mix(in srgb,var(--o-color) 50%,black) 100%)}
+/* lighter shades that keep the velvet saturated (mixing with white greys it out) */
+@supports (color:oklch(from red l c h)){
+  .op-ringbox{--o-glow:oklch(from var(--o-color) calc(l + .1) calc(c + .03) h);--o-lid:oklch(from var(--o-color) calc(l + .17) calc(c + .05) h);--o-lid-2:oklch(from var(--o-color) calc(l + .06) calc(c + .03) h);--o-base:oklch(from var(--o-color) calc(l + .13) calc(c + .05) h)}
+}
+.op-ringbox .stage-top,.op-ringbox .hint{color:var(--c-gold-light)}
+.op-ringbox .stage-top .label{color:color-mix(in srgb,var(--c-label) 40%,white)}
+.op-ringbox .stage-top b{font:500 20px var(--f-display)}
+.op-ringbox .box{position:relative;width:240px;height:240px;perspective:900px}
+.op-ringbox .inside{position:absolute;inset-inline:12px;top:42px;height:82px;border-radius:10px;background:radial-gradient(70% 90% at 50% 30%,color-mix(in srgb,var(--o-accent) 12%,white),color-mix(in srgb,var(--o-accent) 55%,white));box-shadow:inset 0 6px 14px rgb(0 0 0 / .35)}
+.op-ringbox .inside::after{content:"";position:absolute;inset-inline:30%;top:52%;height:6px;border-radius:3px;background:color-mix(in srgb,var(--o-accent) 85%,black);box-shadow:inset 0 2px 3px rgb(0 0 0 / .35)}
+.op-ringbox .base{position:absolute;inset-inline:0;top:120px;height:100px;border-radius:6px 6px 18px 18px;z-index:3;background:linear-gradient(180deg,var(--o-base),color-mix(in srgb,var(--o-color) 85%,black));box-shadow:0 28px 50px rgb(0 0 0 / .5)}
+.op-ringbox .base::before{content:"";position:absolute;left:50%;top:22px;width:46px;height:12px;margin-left:-23px;border-radius:3px;background:linear-gradient(90deg,color-mix(in srgb,var(--o-accent) 85%,black),color-mix(in srgb,var(--o-accent) 45%,white),color-mix(in srgb,var(--o-accent) 85%,black))}
+.op-ringbox .lid{position:absolute;inset-inline:0;top:28px;height:96px;z-index:5;border-radius:18px 18px 6px 6px;transform-origin:top center;background:linear-gradient(180deg,var(--o-lid),var(--o-lid-2));box-shadow:inset 0 -4px 0 rgb(0 0 0 / .25)}
+.op-ringbox .lid.satin{background:linear-gradient(0deg,color-mix(in srgb,var(--o-accent) 18%,white),color-mix(in srgb,var(--o-accent) 65%,white))}
+.op-ringbox .ring{position:absolute;left:50%;top:56px;width:64px;height:64px;margin-left:-32px;z-index:4;transform-origin:center 70%}
+.op-ringbox .ring svg{width:100%;height:100%;overflow:visible}
+.op-ringbox .rb-dark{stop-color:color-mix(in srgb,var(--o-accent) 82%,black)}
+.op-ringbox .rb-light{stop-color:color-mix(in srgb,var(--o-accent) 35%,white)}
+.op-ringbox .glow{position:absolute;left:50%;top:88px;width:220px;height:220px;margin:-110px 0 0 -110px;border-radius:50%;background:radial-gradient(circle,rgb(255 240 210 / .75),rgb(255 240 210 / 0) 65%);opacity:0;z-index:2;pointer-events:none}
+.op-ringbox .reveal{position:absolute;inset-inline:0;bottom:22%;text-align:center;display:grid;gap:4px;opacity:0;padding-inline:16px}
+.op-ringbox .reveal b{font:700 44px/1.2 var(--f-display);color:var(--c-gold-light)}
+.op-ringbox .reveal span{font:500 14px var(--f-label);color:color-mix(in srgb,var(--c-label) 40%,white)}
+.op-ringbox .reveal small{font:500 13px var(--f-label);color:var(--o-accent);letter-spacing:.12em}
+.stars span{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;animation:tw 3.5s ease-in-out infinite}
+
+/* arched doors (henna, iftar) */
+.op-doors{--o-color:var(--c-accent);--o-accent:var(--c-label);background:radial-gradient(100% 70% at 50% 45%,color-mix(in srgb,var(--o-color),white 6%) 0%,color-mix(in srgb,var(--o-color) 60%,color-mix(in srgb,var(--o-color) 40%,black)) 50%,color-mix(in srgb,var(--o-color) 40%,black) 100%)}
+.op-doors .stage-top{color:var(--c-surface);gap:2px;z-index:3}
+.op-doors .stage-top .label{color:var(--c-gold-light)}
+.op-doors .stage-top b{font:400 22px var(--f-display)}
+.op-doors .hint{color:var(--c-surface)}
+.op-doors .lanterns{position:absolute;top:0;inset-inline:0;height:170px;pointer-events:none}
+.op-doors .lantern{position:absolute;top:0;width:34px;height:auto;transform-origin:top center;animation:lsway 4s ease-in-out infinite}
+@keyframes lsway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.op-doors .ln-cord{stroke:var(--c-gold)}
+.op-doors .ln-metal{fill:var(--c-gold)}
+.op-doors .ln-glass{fill:var(--c-gold-light);opacity:.9}
+.op-doors .ln-light{fill:#fff3c4}
+.op-doors .arch-wrap{position:relative;width:min(76vw,290px);aspect-ratio:3/4.4;will-change:transform}
+.op-doors .arch-frame{position:absolute;inset:-12px;border-radius:999px 999px 6px 6px/60% 60% 6px 6px;border:3px solid var(--c-gold);box-shadow:0 0 0 6px color-mix(in srgb,var(--c-gold) 18%,transparent),0 30px 60px rgb(0 0 0 / .5)}
+.op-doors .arch{position:absolute;inset:0;border-radius:999px 999px 4px 4px/58% 58% 4px 4px;overflow:hidden;perspective:900px;background:radial-gradient(80% 60% at 50% 45%,color-mix(in srgb,var(--c-gold) 12%,white),color-mix(in srgb,var(--c-gold) 70%,white) 45%,color-mix(in srgb,var(--c-gold) 70%,var(--o-accent)) 100%)}
+.op-doors .interior{position:absolute;inset:0}
+.op-doors .mandala{position:absolute;top:14%;left:11%;width:78%;aspect-ratio:1}
+.op-doors .mandala *{fill:none;stroke:var(--o-accent);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.op-doors .txt{position:absolute;bottom:13%;inset-inline:0;display:grid;text-align:center;opacity:0}
+.op-doors .txt span{font:500 13px var(--f-label);color:var(--o-color)}
+.op-doors .txt b{font:400 46px/1.15 var(--f-display);color:var(--o-accent)}
+.op-doors .door{position:absolute;top:0;bottom:0;width:50%;backface-visibility:hidden;
+  background:radial-gradient(circle at 50% 50%,transparent 30%,color-mix(in srgb,var(--c-gold-light) 55%,transparent) 32% 36%,transparent 38%) 0 0/26px 26px,
+    radial-gradient(circle at 0 0,transparent 30%,color-mix(in srgb,var(--c-gold-light) 35%,transparent) 32% 35%,transparent 37%) 0 0/26px 26px,
+    linear-gradient(180deg,var(--o-color),color-mix(in srgb,var(--o-color) 62%,black));
+  box-shadow:inset 0 0 0 6px color-mix(in srgb,var(--o-color) 55%,black),inset 0 0 0 8px color-mix(in srgb,var(--c-gold) 60%,transparent)}
+.op-doors .door.l{left:0;transform-origin:left center}
+.op-doors .door.r{right:0;transform-origin:right center}
+.op-doors .knob{position:absolute;top:56%;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,color-mix(in srgb,var(--c-gold-light) 60%,white),color-mix(in srgb,var(--c-gold) 70%,black))}
+.op-doors .door.l .knob{right:10px}
+.op-doors .door.r .knob{left:10px}
+
+/* gift box (birthday, baby welcome) */
+.op-gift{--o-color:var(--c-label);--o-accent:var(--c-gold);background:radial-gradient(110% 70% at 50% 45%,color-mix(in srgb,var(--c-accent),white 22%) 0%,var(--c-accent) 45%,color-mix(in srgb,var(--c-accent) 45%,black) 100%)}
+.op-gift .stage-top{color:#fff;gap:2px;z-index:8}
+.op-gift .stage-top .label{color:var(--o-accent)}
+.op-gift .stage-top b{font:400 24px var(--f-display)}
+.op-gift .hint{color:#fff;z-index:8}
+.op-gift .dots span{position:absolute;border-radius:50%;opacity:.25}
+.op-gift .gift{position:relative;width:220px;height:240px;margin-top:40px}
+.op-gift .gift.wiggle{animation:wig 2.4s ease-in-out infinite}
+@keyframes wig{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(-4deg)}80%{transform:rotate(4deg)}85%{transform:rotate(-3deg)}90%{transform:rotate(2deg)}}
+.op-gift .gbody{position:absolute;inset-inline:12px;bottom:0;height:150px;z-index:3;border-radius:8px;background:linear-gradient(90deg,transparent 42%,var(--o-accent) 42% 58%,transparent 58%),linear-gradient(180deg,var(--o-color),color-mix(in srgb,var(--o-color) 82%,black));box-shadow:0 26px 40px rgb(20 8 60 / .45)}
+.op-gift .glid{position:absolute;inset-inline:0;top:44px;height:48px;z-index:4;border-radius:8px;background:linear-gradient(90deg,transparent 42%,color-mix(in srgb,var(--o-accent) 80%,white) 42% 58%,transparent 58%),linear-gradient(180deg,color-mix(in srgb,var(--o-color) 82%,white),var(--o-color));box-shadow:0 6px 10px rgb(0 0 0 / .2)}
+.op-gift .bow{position:absolute;left:50%;top:6px;width:100px;height:52px;margin-left:-50px;z-index:5;fill:var(--o-accent);stroke:color-mix(in srgb,var(--o-accent) 80%,black);stroke-width:2}
+.op-gift .bow circle{fill:color-mix(in srgb,var(--o-accent) 75%,white)}
+.op-gift .balloons{position:absolute;left:50%;bottom:120px;width:0;height:0;z-index:2}
+.op-gift .balloon{position:absolute;left:-20px;top:-30px;width:40px;height:90px}
+.op-gift .confetti{position:absolute;left:50%;top:96px;width:0;height:0;z-index:6}
+.op-gift .confetti span{position:absolute;width:8px;height:12px;border-radius:2px;opacity:0}
+.op-gift .confetti .dot{height:8px;border-radius:50%}
+.op-gift .reveal{position:absolute;inset-inline:0;top:50%;transform:translateY(-50%);display:grid;justify-items:center;text-align:center;opacity:0;z-index:7;pointer-events:none;padding-inline:16px}
+.op-gift .reveal span{font:700 15px var(--f-body);color:var(--o-accent)}
+.op-gift .badge{width:150px;height:150px;border-radius:50%;background:var(--o-accent);display:grid;place-items:center;font:400 110px/1 var(--f-display);color:var(--c-accent);box-shadow:0 0 0 10px color-mix(in srgb,var(--o-accent) 30%,transparent)}
+.op-gift .reveal b{font:400 46px/1.3 var(--f-display);color:#fff;margin-top:10px}
+
+/* diploma (graduation) */
+.op-diploma{--o-night:color-mix(in srgb,var(--c-ink) 80%,black);--o-color:#9E2B2B;--o-accent:var(--c-gold);background:radial-gradient(100% 70% at 50% 45%,color-mix(in srgb,var(--o-night) 82%,color-mix(in srgb,var(--c-accent) 40%,white)) 0%,color-mix(in srgb,var(--o-night) 92%,color-mix(in srgb,var(--c-accent) 40%,white)) 45%,var(--o-night) 100%)}
+.op-diploma .stage-top{color:var(--c-surface);z-index:5}
+.op-diploma .stage-top .label{color:var(--o-accent)}
+.op-diploma .stage-top b{font:600 20px var(--f-label)}
+.op-diploma .hint{color:var(--c-surface);z-index:5}
+.op-diploma .gdust span{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--c-gold-light);opacity:.5}
+.op-diploma .dip{position:relative;width:270px;height:388px;z-index:2}
+.op-diploma .rod{position:absolute;inset-inline:-13px;top:0;height:24px;border-radius:12px;z-index:2;background:linear-gradient(180deg,color-mix(in srgb,var(--c-surface) 40%,white),color-mix(in srgb,var(--o-accent) 30%,var(--c-surface)) 55%,color-mix(in srgb,var(--o-accent) 55%,var(--c-soft)));box-shadow:0 6px 14px rgb(0 0 0 / .35)}
+.op-diploma .rod[data-part=rod-bottom]{top:364px}
+.op-diploma .rod::before,.op-diploma .rod::after{content:"";position:absolute;top:2px;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 35%,color-mix(in srgb,var(--o-accent) 55%,white),color-mix(in srgb,var(--o-accent) 72%,black))}
+.op-diploma .rod::before{inset-inline-start:-8px}
+.op-diploma .rod::after{inset-inline-end:-8px}
+.op-diploma .paper{position:absolute;top:24px;inset-inline:0;height:340px;overflow:hidden}
+.op-diploma .paper .in{height:340px;padding:20px 22px;display:grid;justify-items:center;align-content:center;gap:6px;text-align:center;border-inline:1px solid color-mix(in srgb,var(--o-accent) 40%,transparent);
+  background:linear-gradient(90deg,color-mix(in srgb,var(--c-surface) 90%,var(--o-accent)),var(--c-surface) 12%,var(--c-surface) 88%,color-mix(in srgb,var(--c-surface) 90%,var(--o-accent)))}
+.op-diploma .crest{width:62px;height:46px}
+.op-diploma .cr-top{fill:var(--c-ink)}
+.op-diploma .cr-band{fill:var(--c-accent)}
+.op-diploma .cr-cord{stroke:var(--o-accent);stroke-width:2}
+.op-diploma .cr-tassel{fill:var(--o-accent)}
+.op-diploma .in .t{font:600 12px var(--f-label);color:var(--c-accent);letter-spacing:.1em}
+.op-diploma .in .h{font:700 24px/1.4 var(--f-label);color:var(--c-ink)}
+.op-diploma .in .s{font:400 14px/1.7 var(--f-body);color:var(--c-soft)}
+.op-diploma .in .n{font:700 40px/1.2 var(--f-display);color:var(--c-accent)}
+.op-diploma .in .d{font:600 14px/1.6 var(--f-body);color:var(--c-ink)}
+.op-diploma .sig{display:flex;justify-content:space-between;width:100%;margin-top:8px;font:500 11px var(--f-label);color:var(--c-soft)}
+.op-diploma .sig span{border-top:1px solid var(--o-accent);padding-top:4px;min-width:80px}
+.op-diploma .ribbon{position:absolute;left:50%;top:50%;width:70px;height:110px;margin:-55px 0 0 -35px;z-index:3;pointer-events:none}
+.op-diploma .rb-tail{fill:var(--o-color)}
+.op-diploma .rb-band{fill:color-mix(in srgb,var(--o-color) 88%,white)}
+.op-diploma .rb-seal{fill:color-mix(in srgb,var(--o-color) 88%,black)}
+.op-diploma .rb-ring{stroke:color-mix(in srgb,var(--o-color) 60%,white)}
+.op-diploma .rb-mark{fill:color-mix(in srgb,var(--o-color) 45%,white)}
+.op-diploma .caps{position:absolute;inset:0;pointer-events:none;z-index:4}
+.op-diploma .cap{position:absolute;bottom:-70px;width:64px;height:auto;opacity:0}
+.op-diploma .cp-top{fill:var(--c-ink);stroke:var(--o-accent);stroke-width:1}
+.op-diploma .cp-band{fill:color-mix(in srgb,var(--c-ink) 88%,white)}
+.op-diploma .cp-cord{stroke:var(--o-accent);stroke-width:2}
+.op-diploma .cp-tassel{fill:var(--o-accent)}
+
 /* cover (openings not ported yet) */
 .op-cover{height:auto;background:var(--c-backdrop)}
 .op-cover .stage{position:relative;min-height:80svh}
@@ -122,6 +251,7 @@ section.blk.alt,.sec-story{background:var(--c-surface)}
 .story-stem .chap h3{font:400 26px/1.3 var(--f-display)}
 .story-stem .chap p{font-size:15.5px;line-height:1.8}
 .letter-body{background:var(--c-bg);border-radius:var(--radius);padding:22px;text-align:start;display:grid;gap:8px}
+.letter-body h3{font:400 22px/1.4 var(--f-display);color:var(--c-accent)}
 .quote{font:400 22px/1.8 var(--f-display);color:var(--c-accent)}
 .drift{position:absolute;top:-30px;width:18px;height:22px;opacity:.55;animation:drift 12s linear infinite;pointer-events:none}
 @keyframes drift{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(1100px) rotate(360deg)}}
@@ -234,5 +364,6 @@ section.blk.alt,.sec-story{background:var(--c-surface)}
 @media (prefers-reduced-motion: reduce){
   .js .rv{opacity:1;transform:none;transition:none}
   .dust,.drift,.hint i::after,.spark span{display:none}
-  .op-rose .rose.sway{animation:none}
+  .op-rose .rose.sway,.op-doors .lantern,.op-gift .gift.wiggle{animation:none}
+  .stars{display:none}
 }
