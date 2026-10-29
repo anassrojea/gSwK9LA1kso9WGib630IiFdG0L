@@ -33,6 +33,10 @@ Then, on the server:
    because Cloudflare sits in front, so the origin must not be reachable directly. Rate limits
    on guest links key on the client IP. Do not open Reverb's port (8080); Nginx proxies to it locally.
 5. **OPcache** is on by default on Forge. Keep it on.
+6. **Upload limits**: the wizard accepts photos up to 10 MB (compressed in the browser first), music up to 10 MB
+   and cover videos up to 50 MB. Raise PHP's limits (Forge → Server → PHP → Max File Upload Size: **60 MB**,
+   which sets `upload_max_filesize` and `post_max_size`) and Nginx's `client_max_body_size 60M;` in the site config.
+   Cloudflare's free plan accepts request bodies up to 100 MB.
 
 ## 2. Create the sites
 
