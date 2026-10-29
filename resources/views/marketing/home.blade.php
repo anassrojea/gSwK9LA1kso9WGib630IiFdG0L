@@ -16,7 +16,7 @@
         <nav class="flex items-center gap-4 text-sm">
             <a href="{{ route('locale', $locale === 'ar' ? 'en' : 'ar') }}" class="text-muted-foreground hover:text-foreground">{{ __('app.switch_language') }}</a>
             @auth
-                <a href="{{ route('dashboard') }}" class="rounded-md bg-primary px-4 py-2 text-primary-foreground">{{ __('app.dashboard') }}</a>
+                <a href="{{ route('dashboard') }}" class="rounded-md bg-primary px-4 py-2 text-primary-foreground">{{ __('app.dashboard.title') }}</a>
             @else
                 <a href="{{ route('login') }}" class="hover:underline">{{ __('app.login') }}</a>
                 <a href="{{ route('register') }}" class="rounded-md bg-primary px-4 py-2 text-primary-foreground">{{ __('app.register') }}</a>

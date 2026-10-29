@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\HouseholdOpened;
 use App\Models\Household;
 use App\Models\LinkOpen;
 use Illuminate\Support\Facades\Cache;
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\DB;
  * and a hash of the user agent are stored. Reloads from the same device
  * within the dedupe window count once, so the page view and the /state call
  * it triggers never double count.
+ *
+ * Each recorded open is broadcast to the host dashboard (HouseholdOpened).
+ * The broadcast is queued, and a broken queue or socket server never turns
+ * into an error for the guest.
  */
 class OpenTracker
 {
@@ -39,6 +44,8 @@ class OpenTracker
                 'first_opened_at' => $now,
             ]);
         });
+
+        rescue(fn () => HouseholdOpened::dispatch($household));
 
         return true;
     }
