@@ -39,8 +39,8 @@ class RsvpController extends Controller
 
         $data = $request->validate([
             'attending' => ['required', 'boolean'],
-            'people_count' => [Rule::requiredIf($request->boolean('attending')), 'nullable', 'integer', 'min:1', 'max:'.$household->seats_allowed],
-            'kids_count' => ['nullable', 'integer', 'min:0', 'lte:people_count'],
+            'people_count' => [Rule::excludeIf(! $request->boolean('attending')), 'required', 'integer', 'min:1', 'max:'.$household->seats_allowed],
+            'kids_count' => [Rule::excludeIf(! $request->boolean('attending')), 'nullable', 'integer', 'min:0', 'lte:people_count'],
             'message' => [Rule::prohibitedIf(! ($section['askMessage'] ?? false)), 'nullable', 'string', 'max:500'],
             'allergies' => [Rule::prohibitedIf(! ($section['askAllergies'] ?? false)), 'nullable', 'string', 'max:300'],
         ], [

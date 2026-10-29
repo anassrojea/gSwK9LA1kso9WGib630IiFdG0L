@@ -37,6 +37,12 @@ it('lets the owner update their event', function () {
     expect($event->invitation->fresh()->config['opening']['id'])->toBe('envelope');
 });
 
+it('returns 404 for an event id that is not a UUID', function () {
+    $this->actingAs(User::factory()->create())
+        ->patchJson('/events/not-a-uuid/config', ['config' => []])
+        ->assertNotFound();
+});
+
 it('requires login to update an event', function () {
     $event = Event::factory()->create();
 

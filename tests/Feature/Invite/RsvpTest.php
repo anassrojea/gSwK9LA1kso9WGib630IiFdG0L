@@ -61,7 +61,7 @@ it('does not allow more kids than people', function () {
 it('stores a declined reply with nobody attending', function () {
     [, $household] = invitedHousehold(seats: 4);
 
-    $this->postJson("/i/{$household->token}/rsvp", ['attending' => false, 'people_count' => 4])
+    $this->postJson("/i/{$household->token}/rsvp", ['attending' => false, 'people_count' => 9])
         ->assertOk()
         ->assertJsonPath('rsvp.attending', false)
         ->assertJsonPath('rsvp.people_count', 0);
