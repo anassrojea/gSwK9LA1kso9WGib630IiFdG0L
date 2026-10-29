@@ -60,7 +60,9 @@ class EventInfolist
                                 ->formatStateUsing(fn (string $state) => trans("app.status.{$state}"))
                                 ->badge()->color(fn (string $state) => EventsTable::STATUS_COLORS[$state] ?? 'gray'),
                             TextEntry::make('owner.name')->label(trans('app.admin.orders.customer'))->placeholder(trans('admin.events.guest_draft')),
-                            TextEntry::make('starts_at')->label(trans('admin.events.starts_at'))->dateTime()->placeholder('—'),
+                            TextEntry::make('starts_at')->label(trans('admin.events.starts_at'))->dateTime()->placeholder('—')
+                                // the event's own local time, as hosts and guests see it
+                                ->timezone(fn ($record) => $record->timezone ?: config('app.timezone')),
                             TextEntry::make('timezone')->label(trans('admin.events.timezone')),
                             TextEntry::make('venue_name')->label(trans('admin.events.venue'))->placeholder('—'),
                             TextEntry::make('invitation.published_at')->label(trans('admin.events.published'))->dateTime()->placeholder(trans('admin.events.not_published')),

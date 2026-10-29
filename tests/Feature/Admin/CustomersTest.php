@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Services\Entitlements;
 use App\Services\Payments\OrderFulfillment;
 use App\Services\PublishGate;
+use Carbon\CarbonImmutable;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
@@ -181,4 +182,13 @@ it('grants and revokes features through the entitlement path payments use, audit
     // only admins: the same path refuses anyone else
     expect(fn () => app(OrderFulfillment::class)->grantFeature($event, 'seating', null, $event->owner))
         ->toThrow(AuthorizationException::class);
+});
+
+it('shows the event start in the event\'s own time zone', function () {
+    $event = customerEvent();
+    $event->forceFill(['timezone' => 'Asia/Riyadh', 'starts_at' => CarbonImmutable::parse('2026-12-10T20:00:00+03:00')->utc()])->save();
+
+    Livewire::test(ViewEvent::class, ['record' => $event->id])
+        ->assertSee('20:00')
+        ->assertDontSee('17:00');
 });

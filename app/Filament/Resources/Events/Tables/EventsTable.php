@@ -65,6 +65,7 @@ class EventsTable
                 TextColumn::make('starts_at')
                     ->label(trans('admin.events.starts_at'))
                     ->date()
+                    ->timezone(fn ($record) => $record->timezone ?: config('app.timezone'))
                     ->sortable(),
                 TextColumn::make('storage_until')
                     ->label(trans('admin.events.storage_until'))
