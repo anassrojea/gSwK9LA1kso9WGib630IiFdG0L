@@ -3,6 +3,7 @@
 use App\Http\Controllers\Invite\InvitationController;
 use App\Http\Controllers\Invite\RoseController;
 use App\Http\Controllers\Invite\RsvpController;
+use App\Http\Controllers\Wizard\PreviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +29,15 @@ Route::post('/i/{token}/rsvp', [RsvpController::class, 'store'])
 Route::post('/e/{slug}/rose', [RoseController::class, 'store'])
     ->middleware('throttle:invite-rose')
     ->name('invite.rose');
+
+// The wizard preview's per-guest calls (placeholder guest, RSVP switched off),
+// signed in the path because invite.js sends no cookies and appends ?open=1.
+Route::get('/p/{event}/{expires}/{signature}/state', [PreviewController::class, 'state'])
+    ->whereUuid('event')->whereNumber('expires')->where('signature', '[0-9a-f]{64}')
+    ->middleware('throttle:invite-state')
+    ->name('create.preview.state');
+
+Route::post('/p/{event}/{expires}/{signature}/rsvp', [PreviewController::class, 'rsvp'])
+    ->whereUuid('event')->whereNumber('expires')->where('signature', '[0-9a-f]{64}')
+    ->middleware('throttle:invite-rsvp')
+    ->name('create.preview.rsvp');

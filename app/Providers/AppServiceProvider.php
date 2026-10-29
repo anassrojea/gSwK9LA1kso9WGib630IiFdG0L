@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Services\DraftAccess;
 use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfigValidator;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +27,13 @@ class AppServiceProvider extends ServiceProvider
         Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 
         $this->configureRateLimiting();
+
+        // Drafts started without an account follow the visitor into their new or existing account.
+        Event::listen([Login::class, Registered::class], function (Login|Registered $event) {
+            if (request()->hasSession()) {
+                app(DraftAccess::class)->attachTo($event->user);
+            }
+        });
     }
 
     /**
@@ -43,5 +54,17 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('invite-rose', fn (Request $request) => Limit::perMinute(20)
             ->by($request->route('slug').'|'.$request->ip()));
+
+        // Wizard: anyone can start a draft, so creating them is throttled per visitor
+        RateLimiter::for('drafts', fn (Request $request) => [
+            Limit::perMinute(10)->by('m|'.($request->user()?->getKey() ?? $request->ip())),
+            Limit::perHour(60)->by('h|'.$request->ip()),
+        ]);
+
+        RateLimiter::for('autosave', fn (Request $request) => Limit::perMinute(120)
+            ->by(($request->user()?->getKey() ?? $request->ip()).'|'.$request->path()));
+
+        RateLimiter::for('uploads', fn (Request $request) => Limit::perMinute(30)
+            ->by($request->user()?->getKey() ?? $request->ip()));
     }
 }
