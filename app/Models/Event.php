@@ -90,6 +90,11 @@ class Event extends Model
         return $this->hasOne(Rose::class);
     }
 
+    public function openLink(): HasOne
+    {
+        return $this->hasOne(OpenLink::class);
+    }
+
     public function isArchived(): bool
     {
         return $this->status === 'archived';

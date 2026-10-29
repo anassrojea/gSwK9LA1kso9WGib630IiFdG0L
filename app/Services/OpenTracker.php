@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Household;
 use App\Models\LinkOpen;
+use App\Models\OpenLink;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -18,8 +19,33 @@ class OpenTracker
 {
     public const DEDUPE_SECONDS = 600;
 
+    /**
+     * Link-preview fetchers (WhatsApp, Telegram, …) read the page to build the
+     * preview card when a link is shared; that is not the guest opening it.
+     */
+    public const CRAWLERS = ['WhatsApp/', 'facebookexternalhit', 'TelegramBot', 'Twitterbot', 'Slackbot', 'Discordbot'];
+
+    public static function isCrawler(?string $userAgent): bool
+    {
+        if (! $userAgent) {
+            return false;
+        }
+
+        foreach (self::CRAWLERS as $needle) {
+            if (stripos($userAgent, $needle) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function record(Household $household, ?string $userAgent): bool
     {
+        if (static::isCrawler($userAgent)) {
+            return false;
+        }
+
         $uaHash = $userAgent ? hash('sha256', $userAgent) : null;
 
         if (! Cache::add('invite-open:'.$household->getKey().':'.substr($uaHash ?? '-', 0, 16), 1, self::DEDUPE_SECONDS)) {
@@ -36,6 +62,37 @@ class OpenTracker
                 'last_opened_at' => $now,
             ]);
             Household::query()->whereKey($household->getKey())->whereNull('first_opened_at')->update([
+                'first_opened_at' => $now,
+            ]);
+        });
+
+        return true;
+    }
+
+    /**
+     * Opens of an event's open link are counted on the link itself (first,
+     * last, count); there is no household until someone replies.
+     */
+    public function recordOpenLink(OpenLink $link, ?string $userAgent): bool
+    {
+        if (static::isCrawler($userAgent)) {
+            return false;
+        }
+
+        $uaHash = $userAgent ? hash('sha256', $userAgent) : '-';
+
+        if (! Cache::add('invite-open-link:'.$link->getKey().':'.substr($uaHash, 0, 16), 1, self::DEDUPE_SECONDS)) {
+            return false;
+        }
+
+        $now = now();
+
+        DB::transaction(function () use ($link, $now) {
+            OpenLink::query()->whereKey($link->getKey())->update([
+                'open_count' => DB::raw('open_count + 1'),
+                'last_opened_at' => $now,
+            ]);
+            OpenLink::query()->whereKey($link->getKey())->whereNull('first_opened_at')->update([
                 'first_opened_at' => $now,
             ]);
         });

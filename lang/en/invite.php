@@ -101,6 +101,21 @@ return [
         'button' => 'Upload photos',
         'soon' => 'The album opens after the event',
     ],
+    // one link for everyone (plan section 8)
+    'open_link' => [
+        'name' => 'Your name',
+        'name_placeholder' => 'e.g. Khalid Al-Ali',
+        'full' => 'Sorry, all places are taken. Thank you for your interest!',
+        'only_left' => '{1} Only one place is left.|[2,*] Only :count places are left.',
+        'too_many' => '{1} One reply can bring one person.|[2,*] One reply can bring up to :count people.',
+        'seats_left' => '{1} One place left|[2,*] :count places left',
+    ],
+    // the link preview image (/i/{token}/og.png)
+    'og' => [
+        'special' => 'A special invitation',
+        'for' => 'for :name',
+        'open' => 'You are invited',
+    ],
     'footer' => 'This invitation was made with Daawa',
     'make_yours' => 'Design yours',
     'not_found_title' => 'Invitation not found',

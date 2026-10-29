@@ -14,12 +14,9 @@ trait ResolvesHousehold
      *
      * @return array{0: Household, 1: Invitation, 2: array}
      */
-    protected function resolve(string $token): array
+    protected function resolve(string $token, ?Household $household = null): array
     {
-        $household = Household::query()
-            ->with(['event.invitation', 'rsvp'])
-            ->where('token', $token)
-            ->first();
+        $household ??= $this->findHousehold($token);
 
         $invitation = $household?->event?->invitation;
 
@@ -29,5 +26,17 @@ trait ResolvesHousehold
         SetLocale::apply($config['locale']);
 
         return [$household, $invitation, $config];
+    }
+
+    /**
+     * The household behind a personal token, if any. On a miss the guest
+     * controllers try the event's open link, served at the same /i/{token}.
+     */
+    protected function findHousehold(string $token): ?Household
+    {
+        return Household::query()
+            ->with(['event.invitation', 'rsvp'])
+            ->where('token', $token)
+            ->first();
     }
 }

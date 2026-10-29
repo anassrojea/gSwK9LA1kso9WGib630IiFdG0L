@@ -6,6 +6,7 @@
 import { mountOpening } from './invite/driver.js';
 import { NS, petalPath, seeded } from './openings/shared.js';
 import { toLocalDigits } from './lib/digits';
+import { openLinkView, replyStorageKey, stateQuery } from './lib/open-link';
 
 document.documentElement.classList.add('js');
 
@@ -105,6 +106,21 @@ const strings = rsvp ? JSON.parse(rsvp.dataset.strings || '{}') : {};
 const form = rsvp?.querySelector('[data-rsvp-form]');
 let state = null;
 
+/* open link (one link for everyone): the guest types their name; the reply token stays on this device */
+const nameField = form?.querySelector('[data-name]');
+const replyKey = nameField && boot.urls?.state ? replyStorageKey(boot.urls.state) : null;
+const storage = (value) => {
+    try {
+        if (value === undefined) return replyKey ? localStorage.getItem(replyKey) : null;
+        if (replyKey && value) localStorage.setItem(replyKey, value);
+        else if (replyKey) localStorage.removeItem(replyKey);
+    } catch {
+        // private mode / storage disabled: the reply still works, it just can't be changed later
+    }
+    return null;
+};
+let replyToken = storage();
+
 function show(el, visible) {
     if (el) el.hidden = !visible;
 }
@@ -129,7 +145,12 @@ function setAttendingFields(attending) {
 
 function applyState(next) {
     state = next;
-    document.querySelectorAll('[data-guest-name]').forEach((el) => (el.textContent = next.household.name));
+    if (next.household.name) document.querySelectorAll('[data-guest-name]').forEach((el) => (el.textContent = next.household.name));
+    if (replyKey) {
+        replyToken = next.reply_token || null;
+        storage(replyToken);
+        if (next.household.name) nameField.value = next.household.name;
+    }
 
     const roseCount = document.querySelector('[data-rose-count]');
     if (roseCount && typeof next.roses === 'number') roseCount.textContent = digits(next.roses);
@@ -163,7 +184,10 @@ function applyState(next) {
 
     const done = rsvp.querySelector('[data-done]');
     const sorry = rsvp.querySelector('[data-sorry]');
-    show(form, !reply && next.rsvp_open);
+    const open = next.open_link ? openLinkView(next.open_link, !!reply, next.rsvp_open) : null;
+    if (open) rsvp.querySelector('[data-seats]').textContent = open.seatsLeft ? strings.seatsLeft?.[open.seatsLeft] ?? '' : '';
+    show(form, open ? open.form : !reply && next.rsvp_open);
+    show(rsvp.querySelector('[data-full]'), !!open?.full);
     show(done, !!reply?.attending);
     show(sorry, !!reply && !reply.attending);
     show(rsvp.querySelector('[data-closed]'), !reply && !next.rsvp_open);
@@ -178,7 +202,7 @@ function applyState(next) {
 }
 
 if (boot.urls?.state) {
-    request(`${boot.urls.state}?open=1`).then(applyState).catch(() => {});
+    request(boot.urls.state + stateQuery(true, replyToken)).then(applyState).catch(() => {});
 }
 
 if (form) {
@@ -202,6 +226,11 @@ if (form) {
         const submit = form.querySelector('[type=submit]');
         const attending = form.querySelector('#att-yes').checked;
         const payload = { attending };
+        if (nameField) {
+            payload.name = nameField.value.trim();
+            if (!payload.name) return nameField.reportValidity();
+            if (replyToken) payload.reply_token = replyToken;
+        }
         if (attending) {
             payload.people_count = Number(people.value);
             const kids = form.querySelector('[data-kids]');
@@ -223,6 +252,8 @@ if (form) {
         } catch (e) {
             error.textContent = e.status === 422 || e.status === 429 ? e.message : strings.error;
             show(error, true);
+            // open link: places may have run out meanwhile, refresh what is left
+            if (replyKey && e.status === 422) request(boot.urls.state + stateQuery(false, replyToken)).then(applyState).catch(() => {});
         } finally {
             submit.disabled = false;
             submit.textContent = strings.submit || '';

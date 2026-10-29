@@ -18,7 +18,16 @@ class Entitlements
 
     public const PREMIUM_TEMPLATES = 'premium_templates';
 
+    /**
+     * One personal link per household (plan section 5: Premium). Not enforced yet:
+     * when payments land, gate GuestController (wizard) and the dashboard's guest
+     * writes with hasFeature($event, PERSONAL_LINKS), and send free events to the
+     * open link instead (see docs/GUEST_LINKS.md).
+     */
     public const PERSONAL_LINKS = 'personal_links';
+
+    /** One link for everyone with a total people cap (plan section 8): every plan, free included. */
+    public const OPEN_LINK = 'open_link';
 
     public const OPEN_TRACKING = 'open_tracking';
 
@@ -43,7 +52,7 @@ class Entitlements
     public const OPENINGS_3D = 'openings_3d';
 
     public const FEATURES = [
-        self::RSVP, self::PREMIUM_TEMPLATES, self::PERSONAL_LINKS, self::OPEN_TRACKING, self::REMINDERS,
+        self::RSVP, self::OPEN_LINK, self::PREMIUM_TEMPLATES, self::PERSONAL_LINKS, self::OPEN_TRACKING, self::REMINDERS,
         self::COVER_VIDEO, self::NO_BADGE, self::CUSTOM_SLUG, self::SEATING, self::QR_CHECKIN, self::WALLET,
         self::PHOTO_WALL, self::LIVE_DAY, self::OPENINGS_3D,
     ];
