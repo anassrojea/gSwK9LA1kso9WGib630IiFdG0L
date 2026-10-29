@@ -834,17 +834,17 @@ Expect **about €15–30/month** before real traffic, plus the Apple fee once a
 
 Built as references for the openings and sections. Private links; share them from the page menu when needed.
 
-| Sample | Opening | Link |
+| Sample | Opening | Source · Link |
 |---|---|---|
-| Plan page (features, hall generator, pricing, wallet, payments) | — | https://claude.ai/artifact/CUPbBAqeens66kjbcLMWA8 |
-| Wedding · Layali | Envelope | https://claude.ai/artifact/GEyJQaijABdopNBTNthf5H |
-| Wedding · Reem & Omar | Pink rose blooming | https://claude.ai/artifact/5sUZt51HWK8oBZRXui9PVp |
-| Engagement · Rana & Karim | Ring box | https://claude.ai/artifact/CQrHSCW4K2qjpTFRzhcZqr |
-| Henna night · Salma | Arched doors + henna drawing | https://claude.ai/artifact/DaBh4nKEEfBRq1uWi6V6tH |
-| Birthday · Adam turns 7 | Gift box, balloons, confetti | https://claude.ai/artifact/HCE6D6DcrX29Zn6Npft8GT |
-| Graduation · Rami Haddad | Diploma unrolling, caps | https://claude.ai/artifact/D5qsS522KYCY7VSkLciBit |
+| Plan page (features, hall generator, pricing, wallet, payments) | — | [`samples/index.html`](samples/index.html) · https://claude.ai/artifact/CUPbBAqeens66kjbcLMWA8 |
+| Wedding · Layali | Envelope | [`samples/invite-layali.html`](samples/invite-layali.html) · https://claude.ai/artifact/GEyJQaijABdopNBTNthf5H |
+| Wedding · Reem & Omar | Pink rose blooming | [`samples/invite-warda.html`](samples/invite-warda.html) · https://claude.ai/artifact/5sUZt51HWK8oBZRXui9PVp |
+| Engagement · Rana & Karim | Ring box | [`samples/invite-khutuba.html`](samples/invite-khutuba.html) · https://claude.ai/artifact/CQrHSCW4K2qjpTFRzhcZqr |
+| Henna night · Salma | Arched doors + henna drawing | [`samples/invite-henna.html`](samples/invite-henna.html) · https://claude.ai/artifact/DaBh4nKEEfBRq1uWi6V6tH |
+| Birthday · Adam turns 7 | Gift box, balloons, confetti | [`samples/invite-birthday.html`](samples/invite-birthday.html) · https://claude.ai/artifact/HCE6D6DcrX29Zn6Npft8GT |
+| Graduation · Rami Haddad | Diploma unrolling, caps | [`samples/invite-graduation.html`](samples/invite-graduation.html) · https://claude.ai/artifact/D5qsS522KYCY7VSkLciBit |
 
-Source files are next to this document: `invite-layali.html`, `invite-warda.html`, `invite-khutuba.html`, `invite-henna.html`, `invite-birthday.html`, `invite-graduation.html`, `index.html`. Each opening's scroll logic (the `frame()` function) can be moved almost as-is into `resources/js/openings/`, and each sample's sections map directly to Blade partials in `resources/views/invite/sections/`.
+Source files live in [`docs/samples/`](samples/): `invite-layali.html`, `invite-warda.html`, `invite-khutuba.html`, `invite-henna.html`, `invite-birthday.html`, `invite-graduation.html`, `index.html`. The envelope and rose openings are already ported to `resources/js/openings/envelope.js` and `rose.js`. Each opening's scroll logic (the `frame()` function) can be moved almost as-is into `resources/js/openings/`, and each sample's sections map directly to Blade partials in `resources/views/invite/sections/`.
 
 ---
 
