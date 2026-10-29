@@ -9,6 +9,7 @@ import { GuestTable, type RowHandlers } from '@/components/dashboard/GuestTable'
 import { MessagesDialog } from '@/components/dashboard/MessagesDialog';
 import { Funnel, StatCards } from '@/components/dashboard/Overview';
 import { ReminderDialog } from '@/components/dashboard/ReminderDialog';
+import { UpgradeBanner } from '@/components/dashboard/UpgradeBanner';
 import { OpenLinkPanel } from '@/components/wizard/OpenLinkPanel';
 import { TierBadge } from '@/components/wizard/TierBadge';
 import { Button } from '@/components/ui/button';
@@ -276,6 +277,10 @@ export default function EventDashboard(props: DashboardProps) {
                             </Link>
                         </Button>
                     </section>
+                )}
+
+                {props.upgradeHint && !(can.update && !can.send && guests.some((g) => g.link)) && (
+                    <UpgradeBanner eventId={event.id} hint={props.upgradeHint} upgradeUrl={urls.upgrade} />
                 )}
 
                 <StatCards stats={stats} />

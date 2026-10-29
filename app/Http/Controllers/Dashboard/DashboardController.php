@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Household;
+use App\Models\User;
+use App\Services\Account\UpgradeHints;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,7 +20,7 @@ class DashboardController extends Controller
      * (the same rule as EventPolicy::view), with the top-line numbers. Each
      * event links to its dashboard (EventDashboardController), drafts to the wizard.
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, UpgradeHints $hints): Response
     {
         $user = $request->user();
         $orgIds = $user->organizations()->pluck('organizations.id');
@@ -58,7 +61,24 @@ class DashboardController extends Controller
                 'dashboard_url' => $event->status === 'draft' ? null : route('dashboard.events.show', $event, false),
                 'edit_url' => route('create.step', [$event, $event->status === 'draft' ? 'details' : 'review'], false),
                 'preview_url' => ($token = $event->households->first()?->token) ? route('invite.show', $token) : null,
+                // plan badge and "Upgrade" (phase 5A): upgrading is the owner's / org editor's call
+                ...$this->plan($event, $user, $hints),
             ]),
         ]);
+    }
+
+    /**
+     * @return array{plan: string, upgrade_url: ?string}
+     */
+    private function plan(Event $event, User $user, UpgradeHints $hints): array
+    {
+        $hint = $hints->for($event);
+
+        return [
+            'plan' => $hint['plan'],
+            'upgrade_url' => $hint['can_upgrade'] && ! $event->isArchived() && $user->can('update', $event)
+                ? AccountController::upgradeUrl($event)
+                : null,
+        ];
     }
 }

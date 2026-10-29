@@ -1,9 +1,10 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { CalendarDays, ExternalLink, LayoutDashboard, Pencil, Plus } from 'lucide-react';
+import { CalendarDays, ExternalLink, Gem, LayoutDashboard, Pencil, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { TierBadge } from '@/components/wizard/TierBadge';
 import AppLayout from '@/layouts/AppLayout';
 import { useT } from '@/lib/i18n';
 import { toLocalDigits } from '@/lib/digits';
@@ -18,6 +19,9 @@ interface EventSummary {
     preview_url: string | null;
     edit_url: string;
     dashboard_url: string | null;
+    plan: string;
+    /** null when the event has the top plan or the user can't upgrade it */
+    upgrade_url: string | null;
 }
 
 /**
@@ -56,9 +60,12 @@ export default function Dashboard({ events }: { events: EventSummary[] }) {
                                         {event.title}
                                     </Link>
                                 </CardTitle>
-                                <CardDescription className="flex items-center gap-1.5">
+                                <CardDescription className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
                                     <CalendarDays className="size-4" /> {date(event.starts_at)}
                                     <span className="ms-2 rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">{t(`status.${event.status}`)}</span>
+                                    <span className="ms-1 inline-flex" data-plan-badge={event.plan}>
+                                        <TierBadge tier={event.plan} />
+                                    </span>
                                 </CardDescription>
                             </div>
                             <div className="flex flex-wrap gap-2">
@@ -74,6 +81,13 @@ export default function Dashboard({ events }: { events: EventSummary[] }) {
                                     <Pencil /> {t('continue_editing')}
                                 </Link>
                             </Button>
+                            {event.upgrade_url && event.status !== 'draft' && (
+                                <Button variant="ghost" size="sm" asChild className="text-amber-800 hover:text-amber-900">
+                                    <Link href={event.upgrade_url} data-upgrade-link>
+                                        <Gem /> {t('account.billing.upgrade')}
+                                    </Link>
+                                </Button>
+                            )}
                             {event.preview_url && (
                                 <Button variant="outline" size="sm" asChild>
                                     <a href={event.preview_url} target="_blank" rel="noopener">
