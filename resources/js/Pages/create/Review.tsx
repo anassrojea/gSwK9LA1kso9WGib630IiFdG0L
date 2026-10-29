@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { OpenLinkPanel } from '@/components/wizard/OpenLinkPanel';
 import { TierBadge } from '@/components/wizard/TierBadge';
 import WizardLayout from '@/components/wizard/WizardLayout';
+import { copyText } from '@/lib/clipboard';
 import { useT } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import type { SharedProps } from '@/types';
-import type { GuestRow, PlanSummary, WizardProps } from '@/types/wizard';
+import type { GuestRow, OpenLinkSettings, PlanSummary, WizardProps } from '@/types/wizard';
 
 interface Props extends WizardProps {
     households: GuestRow[];
@@ -19,6 +21,7 @@ interface Props extends WizardProps {
     planReasons: string[];
     plans: PlanSummary[];
     publishUrl: string;
+    openLink: OpenLinkSettings | null;
     errors?: Record<string, string>;
 }
 
@@ -26,21 +29,6 @@ function usePrice() {
     const { locale } = useT();
     return (cents: number, currency: string) =>
         new Intl.NumberFormat(locale === 'ar' ? 'ar-u-nu-arab' : 'en', { style: 'currency', currency, maximumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100);
-}
-
-async function copy(text: string) {
-    try {
-        await navigator.clipboard.writeText(text);
-        return true;
-    } catch {
-        // older browsers / insecure origins
-        const area = Object.assign(document.createElement('textarea'), { value: text });
-        document.body.appendChild(area);
-        area.select();
-        const ok = document.execCommand('copy');
-        area.remove();
-        return ok;
-    }
 }
 
 function LinkRow({ guest }: { guest: GuestRow }) {
@@ -62,7 +50,7 @@ function LinkRow({ guest }: { guest: GuestRow }) {
                     variant="outline"
                     className="h-11"
                     onClick={async () => {
-                        if (guest.link && (await copy(guest.link))) {
+                        if (guest.link && (await copyText(guest.link))) {
                             setCopied(true);
                             setTimeout(() => setCopied(false), 1800);
                         }
@@ -90,6 +78,8 @@ export default function Review(props: Props) {
     const price = usePrice();
     const planName = (plan: PlanSummary) => (['free', 'premium', 'signature'].includes(plan.id) ? t(`wizard.tiers.${plan.id}`) : plan.name);
     const [publishing, setPublishing] = useState(false);
+    const [openLinkOn, setOpenLinkOn] = useState(!!props.openLink?.enabled);
+    const canPublish = props.households.length > 0 || openLinkOn;
     const { config, event } = props;
     const date = config.sections.find((s) => s.type === 'date');
     const place = config.sections.find((s) => s.type === 'place');
@@ -108,7 +98,7 @@ export default function Review(props: Props) {
 
     const copyAll = async () => {
         const text = props.households.map((g) => `${g.name}: ${g.link}`).join('\n');
-        if (await copy(text)) toast.success(t('wizard.review.copied_all'));
+        if (await copyText(text)) toast.success(t('wizard.review.copied_all'));
     };
 
     return (
@@ -191,6 +181,8 @@ export default function Review(props: Props) {
                     </section>
                 )}
 
+                {props.openLink && <OpenLinkPanel initial={props.openLink} title={event.title} onChange={(link) => setOpenLinkOn(link.enabled)} />}
+
                 {!event.published && auth.user && (
                     <section className="grid gap-2">
                         {props.errors?.publish && (
@@ -198,10 +190,10 @@ export default function Review(props: Props) {
                                 {props.errors.publish}
                             </p>
                         )}
-                        <Button className="h-14 text-lg" onClick={publish} disabled={publishing || props.households.length === 0} data-publish>
+                        <Button className="h-14 text-lg" onClick={publish} disabled={publishing || !canPublish} data-publish>
                             <Send /> {t('wizard.review.publish')}
                         </Button>
-                        {props.households.length === 0 && <p className="text-muted-foreground text-center text-sm">{t('wizard.review.need_guests')}</p>}
+                        {!canPublish && <p className="text-muted-foreground text-center text-sm">{t('wizard.review.need_guests_or_link')}</p>}
                     </section>
                 )}
 

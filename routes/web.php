@@ -3,6 +3,7 @@
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\HallController;
 use App\Http\Controllers\Dashboard\InvitationConfigController;
+use App\Http\Controllers\Host\OpenLinkController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Marketing\HomeController;
 use App\Http\Controllers\Wizard\GuestController;
@@ -51,6 +52,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/create/{event}/publish', [WizardController::class, 'publish'])
         ->middleware('can:update,event')
         ->name('create.publish');
+
+    // Open link (one link for everyone with a people cap): JSON for the wizard and the dashboard
+    Route::middleware('can:update,event')->group(function () {
+        Route::get('/events/{event}/open-link', [OpenLinkController::class, 'show'])->name('events.open-link.show');
+        Route::put('/events/{event}/open-link', [OpenLinkController::class, 'update'])
+            ->middleware('throttle:60,1')
+            ->name('events.open-link.update');
+    });
 
     Route::post('/halls/generate', [HallController::class, 'generate'])
         ->middleware('throttle:60,1')

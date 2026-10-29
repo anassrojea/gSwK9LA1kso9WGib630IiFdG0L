@@ -38,6 +38,24 @@ export interface GuestRow {
     message?: string;
 }
 
+/** GET/PUT /events/{event}/open-link (App\Services\OpenLinks::payload). */
+export interface OpenLinkSettings {
+    available: boolean;
+    enabled: boolean;
+    cap: number | null;
+    max_cap: number;
+    max_per_reply: number;
+    url: string | null;
+    people: number;
+    seats_left: number | null;
+    replies: number;
+    opens: number;
+    first_opened_at: string | null;
+    last_opened_at: string | null;
+    published: boolean;
+    endpoint: string;
+}
+
 export interface PlanSummary {
     id: string;
     name: string;
