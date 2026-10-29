@@ -21,6 +21,16 @@
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ __('invite.special_invite') }}{{ $date ? ' · '.$date->day().' '.$date->monthYear() : '' }}">
     <meta property="og:locale" content="{{ $locale === 'ar' ? 'ar_AR' : 'en_US' }}">
+    @if ($ogImage ?? null)
+        {{-- per-token preview card ("دعوة خاصة لعائلة …"), rendered by headless Chromium: App\Services\OgImage\OgImage --}}
+        <meta property="og:image" content="{{ $ogImage }}">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="{{ \App\Services\OgImage\OgImage::WIDTH }}">
+        <meta property="og:image:height" content="{{ \App\Services\OgImage\OgImage::HEIGHT }}">
+        <meta property="og:image:alt" content="{{ $title }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="{{ $ogImage }}">
+    @endif
     <meta name="theme-color" content="{{ $config['theme']['colors']['backdrop'] ?? $config['theme']['colors']['accent'] }}">
     @if ($fontsUrl)
         <link rel="preconnect" href="https://fonts.googleapis.com">

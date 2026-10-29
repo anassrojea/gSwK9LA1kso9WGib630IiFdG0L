@@ -37,6 +37,32 @@ Then, on the server:
    and cover videos up to 50 MB. Raise PHP's limits (Forge → Server → PHP → Max File Upload Size: **60 MB**,
    which sets `upload_max_filesize` and `post_max_size`) and Nginx's `client_max_body_size 60M;` in the site config.
    Cloudflare's free plan accepts request bodies up to 100 MB.
+7. **Chromium** for the WhatsApp link preview images (`/i/{token}/og.png`, plan sections 14.1 and 15.1).
+   The app runs Chromium's own `--headless --screenshot` CLI through `symfony/process` on a small Blade view
+   (`resources/views/og/card.blade.php`), so Arabic is shaped by a real browser. No Node, Puppeteer or Browsershot
+   is needed at runtime, only the binary. Install Google Chrome from its `.deb` (it adds Google's apt repository,
+   so `apt upgrade` keeps it patched):
+
+   ```bash
+   wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+   sudo apt-get install -y ./google-chrome-stable_current_amd64.deb fonts-noto-core
+   rm google-chrome-stable_current_amd64.deb
+   ```
+
+   Do **not** use Ubuntu's `chromium-browser` package: it is a snap, and snaps get a private `/tmp`, so Chromium
+   cannot read the page the app writes there. `fonts-noto-core` brings Noto Naskh/Kufi Arabic, the fallback when the
+   theme's Google Fonts cannot be downloaded (the app downloads each font set once into `storage/app/private/og-fonts`
+   and inlines it; Chromium itself never touches the network).
+
+   The app finds `/usr/bin/google-chrome-stable` by itself; set `OG_CHROME_PATH` for any other location (e.g. a
+   `chrome-headless-shell` from `npx @puppeteer/browsers install chrome-headless-shell@stable`). If renders fail with
+   "No usable sandbox" (Ubuntu 24.04 restricts unprivileged user namespaces), set `OG_CHROME_NO_SANDBOX=true`: the
+   page is the app's own HTML with every request blocked, so the sandbox adds little here. Check it as the `forge` user:
+
+   ```bash
+   php artisan tinker --execute="echo app(App\Services\OgImage\Chromium::class)->binary();"
+   curl -sI https://daawa.link/i/<a token>/og.png   # 200 image/png (a 302 to /og-fallback.png means the render failed: see the log)
+   ```
 
 ## 2. Create the sites
 
@@ -107,6 +133,12 @@ AWS_ENDPOINT=https://<account>.r2.cloudflarestorage.com
 
 CLOUDFLARE_ZONE_ID=...
 CLOUDFLARE_API_TOKEN=...   # token with Zone → Cache Purge only
+
+# Link preview images (config/og.php); defaults shown
+OG_CHROME_PATH=            # empty: /usr/bin/chromium, /usr/bin/google-chrome-stable, …
+OG_CHROME_NO_SANDBOX=false
+OG_TIMEOUT=30              # seconds per render in the queue
+OG_SYNC_TIMEOUT=8          # seconds og.png waits for a missing image before redirecting to /og-fallback.png
 ```
 
 The `VITE_*` variables in `.env.example` are read at build time by `npm run build`, so they must be
@@ -232,21 +264,35 @@ Guest invitations are built to be cached at the edge (plan sections 6.4 and 21):
   (the `invite` middleware group has no session), and `X-Robots-Tag: noindex`. Nothing personal is in
   the HTML: the guest's name, seats and RSVP come from `GET /i/{token}/state`.
 - `GET /i/{token}/state` and every `POST` answer `Cache-Control: no-store, private`.
+- `GET /i/{token}/og.png` (the link preview image) is linked from the page as `og.png?v={hash}`; the hash changes
+  whenever the guest's name, the invitation or its theme changes. With the current `v` it answers
+  `Cache-Control: public, max-age=86400, s-maxage=31536000, immutable`; with any other `v` (or none) only 5 minutes.
+  So its cache key **must include the query string**, unlike the HTML. It is never counted as an open.
 - Built assets in `/build/assets/*` have content hashes in their names.
 
-Rules (Caching → Cache Rules), in this order:
+Rules (Caching → Cache Rules), in this order. When several rules match, the later one wins for each setting, so the
+`og.png` rule must come after "Invitations":
 
 | # | Name | When incoming requests match | Then |
 |---|---|---|---|
 | 1 | Invite JSON: bypass | `(http.request.uri.path wildcard "/i/*/state") or (http.request.uri.path wildcard "/i/*/rsvp") or (starts_with(http.request.uri.path, "/e/"))` | **Bypass cache** |
 | 2 | Invitations | `starts_with(http.request.uri.path, "/i/") and http.request.method eq "GET"` | **Eligible for cache**; Edge TTL: *use cache-control header if present* (300 s); Browser TTL: *respect origin*; Cache key: ignore query string |
-| 3 | Build assets | `starts_with(http.request.uri.path, "/build/")` | **Eligible for cache**; Edge TTL 1 month; Browser TTL 1 year |
+| 3 | Invite preview images | `http.request.uri.path wildcard "/i/*/og.png"` | **Eligible for cache**; Edge TTL: *use cache-control header if present*; Browser TTL: *respect origin*; Cache key: **include the query string** (all parameters) |
+| 4 | Build assets | `starts_with(http.request.uri.path, "/build/")` | **Eligible for cache**; Edge TTL 1 month; Browser TTL 1 year |
+
+Preview images are rendered ahead of time by the `GenerateOgImage` job (Horizon, `default` queue) when a household
+is created or renamed, an invitation is published or edited (30 s later, so autosaves render once) or the open link
+is switched on. They are stored on the media disk under `og/{event_id}/{household_id|open}-{hash}.png`; the previous
+version is deleted when a new one is written. A request for a missing image renders it on the spot (one render per
+image at a time, at most `OG_SYNC_TIMEOUT` seconds), otherwise it redirects to the static `public/og-fallback.png`.
 
 Everything else (dashboard, `/admin`, `/horizon`, `/login`, `/livewire*`, `/broadcasting/auth`) stays
 uncached, which is Cloudflare's default for HTML with cookies; do not add "cache everything" rules for them.
 
 Open tracking keeps working with the edge cache: the page calls `/state?open=1` on every load, which is
-never cached, and the server de-duplicates opens per device for 10 minutes.
+never cached, and the server de-duplicates opens per device for 10 minutes. Link-preview fetchers
+(`WhatsApp/`, `facebookexternalhit`, `TelegramBot`, `Twitterbot`, `Slackbot`, `Discordbot`) are never counted
+(`App\Services\OpenTracker::CRAWLERS`). An event's open link counts its opens on the link itself (`open_links`).
 
 **Purge on edit** (plan section 6.4): when a host edits an invitation, its `/i/*` pages must be purged
 through the Cloudflare API with `CLOUDFLARE_ZONE_ID` and `CLOUDFLARE_API_TOKEN` (permission: Zone → Cache Purge).
@@ -259,7 +305,8 @@ the 5-minute edge TTL bounds staleness.
   e.g. 20 requests per 10 seconds per IP → Block for 10 s. The app has its own per-token limits
   (`AppServiceProvider::configureRateLimiting`); this stops floods before they reach PHP.
 - Managed rules / Bot Fight Mode: on, but check that WhatsApp's link preview fetcher (`WhatsApp/2.x` user agent)
-  can still read `/i/*` pages; add a skip rule for it if previews break.
+  can still read `/i/*` pages and `/i/*/og.png`; add a skip rule for it if previews break. Facebook's Sharing
+  Debugger (or sending the link to yourself on WhatsApp) shows the card as WhatsApp will.
 
 ## 9. First deploy checklist
 

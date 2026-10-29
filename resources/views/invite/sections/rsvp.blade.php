@@ -1,4 +1,5 @@
-{{-- Filled in by resources/js/invite.js from GET /i/{token}/state; the seat limit is enforced again on the server. --}}
+{{-- Filled in by resources/js/invite.js from GET /i/{token}/state; the seat limit is enforced again on the server.
+     On the open link ($openLink) the form also asks for the guest's name and the total is capped (OpenLinkController). --}}
 <section class="blk pad sec-rsvp" id="rsvp" data-rsvp
          data-strings="{{ json_encode([
              'thanksYes' => __('invite.rsvp.thanks_yes'),
@@ -10,12 +11,19 @@
              'seats' => collect(range(1, 20))->mapWithKeys(fn ($n) => [$n => trans_choice('invite.rsvp.seats', $n, ['count' => \App\Services\Digits::localize($n, $locale)])]),
              'people' => collect(range(1, 20))->mapWithKeys(fn ($n) => [$n => trans_choice('invite.rsvp.person', $n, ['count' => \App\Services\Digits::localize($n, $locale)])]),
              'confirmedPeople' => __('invite.rsvp.confirmed_people', ['people' => ':people']),
+             'seatsLeft' => ($openLink ?? false) ? collect(range(1, 10))->mapWithKeys(fn ($n) => [$n => trans_choice('invite.open_link.seats_left', $n, ['count' => \App\Services\Digits::localize($n, $locale)])]) : null,
          ], JSON_UNESCAPED_UNICODE) }}">
     <span class="label rv">{{ $s['label'] ?? __('invite.rsvp.label') }}</span>
     <h2 class="rv">{{ $s['title'] ?? __('invite.rsvp.title') }}</h2>
     <div class="guest rv"><b data-guest-name>{{ __('invite.dear_guest') }}</b><span data-seats></span></div>
 
     <form class="rsvp-form rv" data-rsvp-form novalidate>
+        @if ($openLink ?? false)
+            <label for="rsvp-name">{{ __('invite.open_link.name') }}
+                <input type="text" id="rsvp-name" name="name" maxlength="{{ \App\Services\Wizard\GuestListParser::MAX_NAME }}" required
+                       autocomplete="name" placeholder="{{ __('invite.open_link.name_placeholder') }}" data-name>
+            </label>
+        @endif
         <div class="choice" role="radiogroup" aria-label="{{ __('invite.rsvp.attendance') }}">
             <span><input type="radio" name="attending" id="att-yes" value="1" checked><label for="att-yes">{{ __('invite.rsvp.yes') }}</label></span>
             <span><input type="radio" name="attending" id="att-no" value="0"><label for="att-no">{{ __('invite.rsvp.no') }}</label></span>
@@ -68,4 +76,7 @@
         <button type="button" class="btn ghost" data-edit>{{ __('invite.rsvp.edit') }}</button>
     </div>
     <p class="note" data-closed hidden>{{ __('invite.rsvp.closed') }}</p>
+    @if ($openLink ?? false)
+        <p class="note" data-full hidden>{{ __('invite.open_link.full') }}</p>
+    @endif
 </section>

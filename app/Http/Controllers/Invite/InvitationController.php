@@ -10,6 +10,7 @@ use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfig;
 use App\Services\InvitationConfig\MediaUrl;
 use App\Services\InvitationConfig\ThemeStyles;
+use App\Services\OgImage\OgImage;
 use App\Services\OpenTracker;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,9 +25,14 @@ class InvitationController extends Controller
      * Per-guest parts (name, seats, RSVP state) come from /state, so this HTML
      * holds nothing personal and can be cached at the edge.
      */
-    public function show(Request $request, string $token, OpenTracker $opens, Entitlements $entitlements): Response
+    public function show(Request $request, string $token, OpenTracker $opens, Entitlements $entitlements, OgImage $og): Response
     {
-        [$household, $invitation, $config] = $this->resolve($token);
+        $household = $this->findHousehold($token);
+        if (! $household) {
+            return app(OpenLinkController::class)->show($request, $token, $opens, $entitlements, $og);
+        }
+
+        [$household, $invitation, $config] = $this->resolve($token, $household);
 
         $opens->record($household, $request->userAgent());
 
@@ -37,7 +43,7 @@ class InvitationController extends Controller
                 'state' => route('invite.state', $token, false),
                 'rsvp' => route('invite.rsvp', $token, false),
                 'rose' => route('invite.rose', $invitation->slug, false),
-            ]))
+            ], ogImage: $og->publicUrl($token, $og->hash($invitation, $config, $household))))
             ->header('Cache-Control', 'public, max-age=0, s-maxage=300');
     }
 
@@ -46,10 +52,14 @@ class InvitationController extends Controller
      * (App\Http\Controllers\Wizard\PreviewController).
      *
      * @param  array{state: ?string, rsvp: ?string, rose: ?string}  $urls
+     * @param  ?string  $ogImage  absolute URL of the link preview image (none in the wizard preview)
+     * @param  bool  $openLink  the RSVP form asks for the guest's name (one link for everyone)
      */
-    public static function viewData(Event $event, Invitation $invitation, array $config, Entitlements $entitlements, array $urls): array
+    public static function viewData(Event $event, Invitation $invitation, array $config, Entitlements $entitlements, array $urls, ?string $ogImage = null, bool $openLink = false): array
     {
         return [
+            'ogImage' => $ogImage,
+            'openLink' => $openLink,
             'config' => $config,
             'sections' => InvitationConfig::visibleSections($config),
             'event' => $event,
@@ -73,7 +83,12 @@ class InvitationController extends Controller
      */
     public function state(Request $request, string $token, OpenTracker $opens, Entitlements $entitlements): JsonResponse
     {
-        [$household, $invitation, $config] = $this->resolve($token);
+        $household = $this->findHousehold($token);
+        if (! $household) {
+            return app(OpenLinkController::class)->state($request, $token, $opens, $entitlements);
+        }
+
+        [$household, $invitation, $config] = $this->resolve($token, $household);
 
         if ($request->boolean('open')) {
             $opens->record($household, $request->userAgent());

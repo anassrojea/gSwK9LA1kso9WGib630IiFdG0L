@@ -14,12 +14,12 @@ class PlanSeeder extends Seeder
 {
     public function run(): void
     {
-        $premium = [E::RSVP, E::PREMIUM_TEMPLATES, E::PERSONAL_LINKS, E::OPEN_TRACKING, E::REMINDERS, E::COVER_VIDEO, E::NO_BADGE, E::CUSTOM_SLUG];
+        $premium = [E::RSVP, E::OPEN_LINK, E::PREMIUM_TEMPLATES, E::PERSONAL_LINKS, E::OPEN_TRACKING, E::REMINDERS, E::COVER_VIDEO, E::NO_BADGE, E::CUSTOM_SLUG];
         $signature = [...$premium, E::SEATING, E::QR_CHECKIN, E::WALLET, E::LIVE_DAY, E::PHOTO_WALL, E::OPENINGS_3D];
 
         $plans = [
             ['id' => 'free', 'name' => 'Free', 'price_cents' => 0, 'interval' => null,
-                'limits' => ['guests' => 50, 'storage_days' => 0, 'features' => [E::RSVP]]],
+                'limits' => ['guests' => 50, 'storage_days' => 0, 'features' => [E::RSVP, E::OPEN_LINK]]],
             ['id' => 'premium', 'name' => 'Premium', 'price_cents' => 2900, 'interval' => null,
                 'limits' => ['guests' => 300, 'storage_days' => 30, 'features' => $premium]],
             ['id' => 'signature', 'name' => 'Signature', 'price_cents' => 7900, 'interval' => null,

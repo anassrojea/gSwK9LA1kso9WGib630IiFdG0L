@@ -294,6 +294,7 @@ section.blk.alt,.sec-story{background:var(--c-surface)}
 .sec-rsvp{background:var(--c-accent);color:var(--c-on-accent)}
 .sec-rsvp h2{color:var(--c-gold-light)}
 .sec-rsvp .label{color:var(--c-gold)}
+.sec-rsvp .note{color:var(--c-gold-light);max-width:420px;margin-inline:auto}
 .guest{border:1px solid color-mix(in srgb, var(--c-gold) 60%, transparent);border-radius:var(--radius);padding:14px;width:100%;display:grid;gap:2px}
 .guest b{font:700 20px var(--f-body)}
 .guest span{font:500 13px var(--f-label);color:var(--c-gold-light)}

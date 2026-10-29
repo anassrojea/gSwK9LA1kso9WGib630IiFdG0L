@@ -7,10 +7,12 @@ use App\Models\Event;
 use App\Models\Household;
 use App\Models\Media;
 use App\Models\Opening;
+use App\Models\OpenLink;
 use App\Models\Plan;
 use App\Models\Template;
 use App\Models\Theme;
 use App\Services\Entitlements;
+use App\Services\OpenLinks;
 use App\Services\Wizard\DraftCreator;
 use App\Services\Wizard\PlanAdvisor;
 use Illuminate\Http\RedirectResponse;
@@ -112,8 +114,9 @@ class WizardController extends Controller
         $invitation = $event->invitation;
         abort_unless($invitation, 404);
 
-        if (! $event->households()->exists()) {
-            return back()->withErrors(['publish' => trans('app.wizard.review.need_guests')]);
+        // something to send: personal links, or the open link for everyone
+        if (! $event->households()->exists() && ! $event->openLink()->where('enabled', true)->exists()) {
+            return back()->withErrors(['publish' => trans('app.wizard.review.need_guests_or_link')]);
         }
 
         $invitation->published_at ??= now();
@@ -187,8 +190,9 @@ class WizardController extends Controller
         $locale = $config['locale'];
 
         return [
-            'households' => $this->households($event, withLinks: $event->invitation->published_at !== null, locale: $locale),
-            'seats' => (int) $event->households()->sum('seats_allowed'),
+            // families invited by name; replies through the open link have no link to send
+            'households' => $this->households($event, withLinks: $event->invitation->published_at !== null, locale: $locale, personalOnly: true),
+            'seats' => (int) $event->households()->whereRaw('not (? = any(tags))', [OpenLink::TAG])->sum('seats_allowed'),
             'limit' => $entitlements->limit($event, 'guests'),
             'plan' => $advice['plan'] ? [
                 'id' => $advice['plan']->id,
@@ -202,12 +206,16 @@ class WizardController extends Controller
                 ->map(fn (Plan $p) => ['id' => $p->id, 'name' => $p->name, 'price_cents' => $p->price_cents, 'currency' => $p->currency, 'guests' => $p->limits['guests'] ?? null])
                 ->values(),
             'publishUrl' => route('create.publish', $event, false),
+            // only for the signed-in host: the endpoints sit behind auth + can:update,event
+            'openLink' => $request->user() ? app(OpenLinks::class)->payload($event) : null,
         ];
     }
 
-    private function households(Event $event, bool $withLinks = false, string $locale = 'ar'): array
+    private function households(Event $event, bool $withLinks = false, string $locale = 'ar', bool $personalOnly = false): array
     {
-        return $event->households()->orderBy('created_at')->orderBy('id')->get()
+        return $event->households()
+            ->when($personalOnly, fn ($q) => $q->whereRaw('not (? = any(tags))', [OpenLink::TAG]))
+            ->orderBy('created_at')->orderBy('id')->get()
             ->map(function (Household $h) use ($withLinks, $event, $locale) {
                 $row = ['id' => $h->id, 'name' => $h->display_name, 'seats' => $h->seats_allowed];
                 if ($withLinks) {

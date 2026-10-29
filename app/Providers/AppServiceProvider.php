@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Household;
+use App\Models\Invitation;
+use App\Models\OpenLink;
+use App\Observers\OgImageWarmer;
 use App\Services\DraftAccess;
 use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfigValidator;
@@ -28,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureRateLimiting();
 
+        // Link preview images are rendered ahead of time when what they show changes.
+        Household::observe(OgImageWarmer::class);
+        Invitation::observe(OgImageWarmer::class);
+        OpenLink::observe(OgImageWarmer::class);
+
         // Drafts started without an account follow the visitor into their new or existing account.
         Event::listen([Login::class, Registered::class], function (Login|Registered $event) {
             if (request()->hasSession()) {
@@ -47,10 +56,27 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('invite-state', fn (Request $request) => Limit::perMinute(60)
             ->by($request->route('token').'|'.$request->ip()));
 
-        RateLimiter::for('invite-rsvp', fn (Request $request) => [
-            Limit::perMinute(10)->by('m|'.$request->route('token').'|'.$request->ip()),
-            Limit::perHour(60)->by('h|'.$request->route('token')),
-        ]);
+        RateLimiter::for('invite-rsvp', function (Request $request) {
+            $token = (string) $request->route('token');
+
+            // The open link is shared by everyone, so its hourly budget is per device
+            // (same numbers as a personal link) plus a ceiling for the whole link.
+            if (strlen($token) === OpenLink::TOKEN_LENGTH) {
+                return [
+                    Limit::perMinute(10)->by('m|'.$token.'|'.$request->ip()),
+                    Limit::perHour(60)->by('h|'.$token.'|'.$request->ip()),
+                    Limit::perHour(1000)->by('h|'.$token),
+                ];
+            }
+
+            return [
+                Limit::perMinute(10)->by('m|'.$token.'|'.$request->ip()),
+                Limit::perHour(60)->by('h|'.$token),
+            ];
+        });
+
+        // Link preview images: crawlers fetch them once per share; the edge cache absorbs the rest.
+        RateLimiter::for('invite-og', fn (Request $request) => Limit::perMinute(60)->by($request->ip()));
 
         RateLimiter::for('invite-rose', fn (Request $request) => Limit::perMinute(20)
             ->by($request->route('slug').'|'.$request->ip()));
