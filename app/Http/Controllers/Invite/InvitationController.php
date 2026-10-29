@@ -7,6 +7,7 @@ use App\Models\Household;
 use App\Models\Invitation;
 use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfig;
+use App\Services\InvitationConfig\MediaUrl;
 use App\Services\InvitationConfig\ThemeStyles;
 use App\Services\OpenTracker;
 use Illuminate\Http\JsonResponse;
@@ -39,6 +40,7 @@ class InvitationController extends Controller
                 'themeVars' => ThemeStyles::cssVariables($config['theme']),
                 'fontsUrl' => ThemeStyles::fontsUrl($config['theme']),
                 'showBadge' => ! $entitlements->hasFeature($event, Entitlements::NO_BADGE),
+                'mediaUrl' => new MediaUrl($event),
                 'boot' => [
                     'locale' => $config['locale'],
                     'opening' => ['id' => $config['opening']['id'], 'options' => (object) ($config['opening']['options'] ?? [])],
@@ -89,6 +91,8 @@ class InvitationController extends Controller
                 'people_count' => $rsvp->people_count,
                 'kids_count' => $rsvp->kids_count,
                 'message' => $rsvp->message,
+                'meal' => $rsvp->extras['meal'] ?? null,
+                'allergies' => $rsvp->extras['allergies'] ?? null,
                 'responded_at' => $rsvp->responded_at?->toIso8601String(),
             ] : null,
             'rsvp_open' => RsvpController::isOpen($rsvpSection),

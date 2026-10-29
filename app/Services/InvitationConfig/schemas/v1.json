@@ -5,26 +5,80 @@
   "description": "One JSON document per invitation (plan section 6.2). Mirrored by resources/js/lib/config-schema.ts (Zod); keep both in sync.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "occasion", "locale", "opening", "theme", "sections"],
+  "required": [
+    "version",
+    "occasion",
+    "locale",
+    "opening",
+    "theme",
+    "sections"
+  ],
   "properties": {
-    "version": { "const": 1 },
-    "occasion": { "enum": ["wedding", "engagement", "henna", "birthday", "graduation", "baby_welcome", "iftar", "other"] },
-    "locale": { "enum": ["ar", "en"] },
+    "version": {
+      "const": 1
+    },
+    "occasion": {
+      "enum": [
+        "wedding",
+        "engagement",
+        "henna",
+        "birthday",
+        "graduation",
+        "baby_welcome",
+        "iftar",
+        "other"
+      ]
+    },
+    "locale": {
+      "enum": [
+        "ar",
+        "en"
+      ]
+    },
     "opening": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id"],
+      "required": [
+        "id"
+      ],
       "properties": {
-        "id": { "enum": ["envelope", "rose", "ringbox", "doors", "gift", "diploma"] },
+        "id": {
+          "enum": [
+            "envelope",
+            "rose",
+            "ringbox",
+            "doors",
+            "gift",
+            "diploma"
+          ]
+        },
         "options": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "petalColor": { "$ref": "#/$defs/color" },
-            "envelopeColor": { "$ref": "#/$defs/color" },
-            "sealText": { "type": "string", "maxLength": 6 },
-            "kicker": { "type": "string", "maxLength": 60 },
-            "headline": { "type": "string", "maxLength": 80 }
+            "color": {
+              "$ref": "#/$defs/color",
+              "description": "Main object color (envelope, ring box, doors, gift box, diploma ribbon)"
+            },
+            "accentColor": {
+              "$ref": "#/$defs/color",
+              "description": "Second color (seal, ring, bow, ribbon)"
+            },
+            "petalColor": {
+              "$ref": "#/$defs/color"
+            },
+            "sealText": {
+              "type": "string",
+              "maxLength": 6
+            },
+            "kicker": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "headline": {
+              "type": "string",
+              "maxLength": 80
+            }
           }
         }
       }
@@ -32,36 +86,116 @@
     "theme": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "colors", "fonts"],
+      "required": [
+        "id",
+        "colors",
+        "fonts"
+      ],
       "properties": {
-        "id": { "$ref": "#/$defs/slug" },
+        "id": {
+          "$ref": "#/$defs/slug"
+        },
         "colors": {
           "type": "object",
-          "required": ["bg", "ink", "accent", "soft", "gold"],
-          "propertyNames": { "pattern": "^[a-z][a-zA-Z0-9]{0,23}$" },
-          "additionalProperties": { "$ref": "#/$defs/color" },
+          "required": [
+            "bg",
+            "ink",
+            "accent",
+            "soft",
+            "gold"
+          ],
+          "propertyNames": {
+            "pattern": "^[a-z][a-zA-Z0-9]{0,23}$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/color"
+          },
           "maxProperties": 16
         },
         "fonts": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["display", "body", "label"],
+          "required": [
+            "display",
+            "body",
+            "label"
+          ],
           "properties": {
-            "display": { "$ref": "#/$defs/font" },
-            "body": { "$ref": "#/$defs/font" },
-            "label": { "$ref": "#/$defs/font" }
+            "display": {
+              "$ref": "#/$defs/font"
+            },
+            "body": {
+              "$ref": "#/$defs/font"
+            },
+            "label": {
+              "$ref": "#/$defs/font"
+            }
           }
         },
-        "radius": { "type": "integer", "minimum": 0, "maximum": 32 }
+        "radius": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        }
       }
     },
     "effects": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "fallingPetals": { "type": "boolean" },
-        "sparkles": { "type": "boolean" },
-        "music": { "type": "boolean" }
+        "fallingPetals": {
+          "type": "boolean"
+        },
+        "sparkles": {
+          "type": "boolean"
+        },
+        "music": {
+          "type": "boolean"
+        }
+      }
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cover": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "src"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "image",
+                "video"
+              ]
+            },
+            "src": {
+              "$ref": "#/$defs/mediaRef"
+            },
+            "poster": {
+              "$ref": "#/$defs/mediaRef"
+            }
+          }
+        },
+        "music": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "src"
+          ],
+          "properties": {
+            "src": {
+              "$ref": "#/$defs/mediaRef"
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 80
+            }
+          }
+        }
       }
     },
     "sections": {
@@ -70,92 +204,404 @@
       "maxItems": 30,
       "items": {
         "type": "object",
-        "required": ["type"],
+        "required": [
+          "type"
+        ],
         "properties": {
-          "type": { "enum": ["intro_line", "hosts", "names", "date", "story", "program", "place", "dress_code", "send_rose", "rsvp", "album_teaser"] }
+          "type": {
+            "enum": [
+              "intro_line",
+              "hosts",
+              "names",
+              "date",
+              "story",
+              "program",
+              "place",
+              "dress_code",
+              "gallery",
+              "favorites",
+              "wishes",
+              "send_rose",
+              "rsvp",
+              "album_teaser",
+              "closing"
+            ]
+          }
         },
         "allOf": [
-          { "if": { "properties": { "type": { "const": "intro_line" } } }, "then": { "$ref": "#/$defs/section_intro_line" } },
-          { "if": { "properties": { "type": { "const": "hosts" } } }, "then": { "$ref": "#/$defs/section_hosts" } },
-          { "if": { "properties": { "type": { "const": "names" } } }, "then": { "$ref": "#/$defs/section_names" } },
-          { "if": { "properties": { "type": { "const": "date" } } }, "then": { "$ref": "#/$defs/section_date" } },
-          { "if": { "properties": { "type": { "const": "story" } } }, "then": { "$ref": "#/$defs/section_story" } },
-          { "if": { "properties": { "type": { "const": "program" } } }, "then": { "$ref": "#/$defs/section_program" } },
-          { "if": { "properties": { "type": { "const": "place" } } }, "then": { "$ref": "#/$defs/section_place" } },
-          { "if": { "properties": { "type": { "const": "dress_code" } } }, "then": { "$ref": "#/$defs/section_dress_code" } },
-          { "if": { "properties": { "type": { "const": "send_rose" } } }, "then": { "$ref": "#/$defs/section_send_rose" } },
-          { "if": { "properties": { "type": { "const": "rsvp" } } }, "then": { "$ref": "#/$defs/section_rsvp" } },
-          { "if": { "properties": { "type": { "const": "album_teaser" } } }, "then": { "$ref": "#/$defs/section_album_teaser" } }
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "intro_line"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_intro_line"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "hosts"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_hosts"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "names"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_names"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "date"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_date"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "story"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_story"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "program"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_program"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "place"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_place"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "dress_code"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_dress_code"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "gallery"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_gallery"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "favorites"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_favorites"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "wishes"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_wishes"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "send_rose"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_send_rose"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "rsvp"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_rsvp"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "album_teaser"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_album_teaser"
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "closing"
+                }
+              }
+            },
+            "then": {
+              "$ref": "#/$defs/section_closing"
+            }
+          }
         ]
       }
     }
   },
   "$defs": {
-    "color": { "type": "string", "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$" },
-    "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 64 },
-    "font": { "type": "string", "pattern": "^[A-Za-z0-9 ]{2,40}$" },
-    "text": { "type": "string", "minLength": 1, "maxLength": 300 },
-    "longText": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "color": {
+      "type": "string",
+      "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "font": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9 ]{2,40}$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "longText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
     "common": {
-      "hidden": { "type": "boolean" },
-      "title": { "type": "string", "maxLength": 80 },
-      "label": { "type": "string", "maxLength": 60 }
+      "hidden": {
+        "type": "boolean"
+      },
+      "title": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "label": {
+        "type": "string",
+        "maxLength": 60
+      }
+    },
+    "mediaRef": {
+      "type": "string",
+      "maxLength": 500,
+      "pattern": "^(https://[^\\s\"'<>]+|/storage/[A-Za-z0-9/_.-]+|media:[0-9a-fA-F-]{36})$",
+      "description": "An https URL, a public /storage path, or media:<uuid> for an uploaded file"
     },
     "section_intro_line": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "text"],
+      "required": [
+        "type",
+        "text"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "text": { "$ref": "#/$defs/longText" },
-        "style": { "enum": ["line", "verse"] },
-        "caption": { "type": "string", "maxLength": 80 }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "text": {
+          "$ref": "#/$defs/longText"
+        },
+        "style": {
+          "enum": [
+            "line",
+            "verse"
+          ]
+        },
+        "caption": {
+          "type": "string",
+          "maxLength": 80
+        }
       }
     },
     "section_hosts": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "lines"],
+      "required": [
+        "type",
+        "lines"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" },
-        "lines": { "type": "array", "minItems": 1, "maxItems": 6, "items": { "$ref": "#/$defs/text" } },
-        "outro": { "type": "string", "maxLength": 200 }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "outro": {
+          "type": "string",
+          "maxLength": 200
+        }
       }
     },
     "section_names": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "first"],
+      "required": [
+        "type",
+        "first"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "first": { "type": "string", "minLength": 1, "maxLength": 40 },
-        "second": { "type": "string", "minLength": 1, "maxLength": 40 },
-        "note": { "type": "string", "maxLength": 200 }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "first": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "second": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "age": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 150
+        }
       }
     },
     "section_date": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "start"],
+      "required": [
+        "type",
+        "start"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" },
-        "start": { "type": "string", "format": "date-time" },
-        "showHijri": { "type": "boolean" },
-        "hijriOverride": { "type": "string", "maxLength": 60 },
-        "countdown": { "type": "boolean" }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "showHijri": {
+          "type": "boolean"
+        },
+        "hijriOverride": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "countdown": {
+          "type": "boolean"
+        }
       }
     },
     "section_story": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "chapters"],
+      "required": [
+        "type",
+        "chapters"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" },
-        "title": { "$ref": "#/$defs/common/title" },
-        "style": { "enum": ["timeline", "stem", "letter"] },
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        },
+        "style": {
+          "enum": [
+            "timeline",
+            "stem",
+            "letter",
+            "messages"
+          ]
+        },
         "chapters": {
           "type": "array",
           "minItems": 1,
@@ -163,25 +609,50 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["title", "text"],
+            "required": [
+              "title",
+              "text"
+            ],
             "properties": {
-              "year": { "type": "string", "maxLength": 20 },
-              "title": { "type": "string", "minLength": 1, "maxLength": 80 },
-              "text": { "$ref": "#/$defs/longText" }
+              "year": {
+                "type": "string",
+                "maxLength": 20
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "text": {
+                "$ref": "#/$defs/longText"
+              }
             }
           }
         },
-        "quote": { "type": "string", "maxLength": 300 }
+        "quote": {
+          "type": "string",
+          "maxLength": 300
+        }
       }
     },
     "section_program": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "items"],
+      "required": [
+        "type",
+        "items"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" },
-        "title": { "$ref": "#/$defs/common/title" },
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        },
         "items": {
           "type": "array",
           "minItems": 1,
@@ -189,10 +660,20 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["time", "label"],
+            "required": [
+              "time",
+              "label"
+            ],
             "properties": {
-              "time": { "type": "string", "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$" },
-              "label": { "type": "string", "minLength": 1, "maxLength": 80 }
+              "time": {
+                "type": "string",
+                "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              }
             }
           }
         }
@@ -201,59 +682,332 @@
     "section_place": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "name"],
+      "required": [
+        "type",
+        "name"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" },
-        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
-        "address": { "type": "string", "maxLength": 300 },
-        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
-        "lng": { "type": "number", "minimum": -180, "maximum": 180 }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "address": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "lat": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "lng": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "mapUrl": {
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^https://"
+        }
       },
-      "dependentRequired": { "lat": ["lng"], "lng": ["lat"] }
+      "dependentRequired": {
+        "lat": [
+          "lng"
+        ],
+        "lng": [
+          "lat"
+        ]
+      }
     },
     "section_dress_code": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "colors"],
+      "required": [
+        "type"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" },
-        "colors": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/color" } },
-        "note": { "type": "string", "maxLength": 200 }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "colors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/color"
+          }
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "colors"
+          ]
+        },
+        {
+          "required": [
+            "note"
+          ]
+        }
+      ]
+    },
+    "section_gallery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "photos"
+      ],
+      "properties": {
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        },
+        "photos": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "src"
+            ],
+            "properties": {
+              "src": {
+                "$ref": "#/$defs/mediaRef"
+              },
+              "caption": {
+                "type": "string",
+                "maxLength": 80
+              },
+              "alt": {
+                "type": "string",
+                "maxLength": 120
+              }
+            }
+          }
+        }
+      }
+    },
+    "section_favorites": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "items"
+      ],
+      "properties": {
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "text"
+            ],
+            "properties": {
+              "icon": {
+                "type": "string",
+                "maxLength": 8,
+                "description": "An emoji"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              }
+            }
+          }
+        }
+      }
+    },
+    "section_wishes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "items"
+      ],
+      "properties": {
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "text"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 60
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              }
+            }
+          }
+        }
       }
     },
     "section_send_rose": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type"],
+      "required": [
+        "type"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        }
       }
     },
     "section_rsvp": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type"],
+      "required": [
+        "type"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" },
-        "title": { "$ref": "#/$defs/common/title" },
-        "askMessage": { "type": "boolean" },
-        "askAllergies": { "type": "boolean" },
-        "cutoff": { "type": "string", "format": "date-time" }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        },
+        "askMessage": {
+          "type": "boolean"
+        },
+        "askAllergies": {
+          "type": "boolean"
+        },
+        "cutoff": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "askKids": {
+          "type": "boolean"
+        },
+        "mealOptions": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          }
+        }
       }
     },
     "section_album_teaser": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type"],
+      "required": [
+        "type"
+      ],
       "properties": {
-        "type": true, "hidden": { "$ref": "#/$defs/common/hidden" },
-        "label": { "$ref": "#/$defs/common/label" },
-        "title": { "$ref": "#/$defs/common/title" },
-        "text": { "type": "string", "maxLength": 300 }
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    },
+    "section_closing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": true,
+        "hidden": {
+          "$ref": "#/$defs/common/hidden"
+        },
+        "label": {
+          "$ref": "#/$defs/common/label"
+        },
+        "title": {
+          "$ref": "#/$defs/common/title"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        }
       }
     }
   }

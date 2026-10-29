@@ -136,12 +136,22 @@
         "type": "rsvp",
         "title": "هل ستشاركوننا الفرح؟",
         "askMessage": true,
-        "askAllergies": false
+        "askAllergies": false,
+        "askKids": true,
+        "mealOptions": [
+          "لحم",
+          "دجاج",
+          "نباتي"
+        ]
       },
       {
         "type": "album_teaser",
         "title": "شاركونا صوركم",
         "text": "التقطتم لحظة جميلة؟ ارفعوها هنا لتبقى ذكرى في ألبوم العروسين."
+      },
+      {
+        "type": "closing",
+        "text": "بحضوركم يكتمل الفرح"
       }
     ]
   }

@@ -78,6 +78,15 @@ it('rejects bad input', function (Closure $mutate, string $pointer) {
     'latitude out of range' => [function (&$c) {
         $c['sections'][6]['lat'] = 123;
     }, '/sections/6/lat'],
+    'gallery photo from another site over http' => [function (&$c) {
+        $c['sections'][] = ['type' => 'gallery', 'photos' => [['src' => 'http://evil.test/x.jpg']]];
+    }, '/sections/11/photos/0/src'],
+    'meal options that repeat' => [function (&$c) {
+        $c['sections'][9]['mealOptions'] = ['لحم', 'لحم'];
+    }, '/sections/9/mealOptions'],
+    'dress code with neither colors nor note' => [function (&$c) {
+        $c['sections'][7] = ['type' => 'dress_code'];
+    }, '/sections/7'],
     'dress code color not hex' => [function (&$c) {
         $c['sections'][7]['colors'][] = 'pink';
     }, '/sections/7/colors/3'],

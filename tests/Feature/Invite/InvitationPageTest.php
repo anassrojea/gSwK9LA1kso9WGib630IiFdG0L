@@ -127,3 +127,29 @@ it('counts roses sent to the couple', function () {
     $this->postJson("/e/{$slug}/rose")->assertOk()->assertJson(['count' => 2]);
     $this->postJson('/e/unknown-slug/rose')->assertNotFound();
 });
+
+it('renders the gallery, favorites, wishes and closing sections and resolves uploads', function () {
+    $event = Event::factory()->create();
+    $own = \App\Models\Media::factory()->for($event)->create(['storage_key' => 'events/own.webp']);
+    $foreign = \App\Models\Media::factory()->create(['storage_key' => 'events/foreign.webp']);
+
+    $config = \Database\Factories\InvitationFactory::sampleConfig();
+    $config['media'] = ['cover' => ['type' => 'image', 'src' => "media:{$own->id}"]];
+    array_splice($config['sections'], 2, 0, [
+        ['type' => 'gallery', 'photos' => [['src' => "media:{$own->id}", 'caption' => 'الخطوبة'], ['src' => "media:{$foreign->id}"]]],
+        ['type' => 'favorites', 'items' => [['icon' => '🚀', 'text' => 'الفضاء']]],
+        ['type' => 'wishes', 'items' => [['name' => 'خالته', 'text' => 'مبروك يا بطل']]],
+        ['type' => 'closing', 'text' => 'بحضوركم يكتمل الفرح'],
+    ]);
+    Invitation::factory()->for($event)->create(['config' => $config]);
+    $household = Household::factory()->for($event)->create();
+
+    $this->get("/i/{$household->token}")
+        ->assertOk()
+        ->assertSee('/storage/events/own.webp', false)
+        ->assertDontSee('foreign.webp', false) // another event's upload never resolves
+        ->assertSee('الخطوبة')
+        ->assertSee('الفضاء')
+        ->assertSee('مبروك يا بطل')
+        ->assertSee('بحضوركم يكتمل الفرح');
+});

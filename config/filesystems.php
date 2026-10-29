@@ -15,6 +15,10 @@ return [
 
     'default' => env('FILESYSTEM_DISK', 'local'),
 
+    // Where invitation uploads (cover, gallery, music) go: "public" locally,
+    // "s3" (Hetzner Object Storage / Cloudflare R2) in production.
+    'media_disk' => env('MEDIA_DISK', 'public'),
+
     /*
     |--------------------------------------------------------------------------
     | Filesystem Disks

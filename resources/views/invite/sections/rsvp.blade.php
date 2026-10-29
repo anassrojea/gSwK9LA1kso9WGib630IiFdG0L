@@ -23,6 +23,20 @@
         <label for="rsvp-people">{{ __('invite.rsvp.people') }}
             <select id="rsvp-people" name="people_count" data-people><option value="1">{{ trans_choice('invite.rsvp.person', 1, ['count' => 1]) }}</option></select>
         </label>
+        @if ($s['askKids'] ?? false)
+            <label for="rsvp-kids">{{ __('invite.rsvp.kids') }}
+                <select id="rsvp-kids" name="kids_count" data-kids><option value="0">{{ \App\Services\Digits::localize(0, $locale) }}</option></select>
+            </label>
+        @endif
+        @if (! empty($s['mealOptions']))
+            <label for="rsvp-meal">{{ __('invite.rsvp.meal') }}
+                <select id="rsvp-meal" name="meal">
+                    @foreach ($s['mealOptions'] as $meal)
+                        <option value="{{ $meal }}">{{ $meal }}</option>
+                    @endforeach
+                </select>
+            </label>
+        @endif
         @if ($s['askMessage'] ?? false)
             <label for="rsvp-message">{{ __('invite.rsvp.message') }}
                 <textarea id="rsvp-message" name="message" maxlength="500"></textarea>

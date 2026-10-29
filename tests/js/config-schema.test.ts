@@ -38,6 +38,9 @@ const bad: Record<string, [(c: any) => void, string]> = {
     'program time out of range': [(c) => (c.sections[5].items[0].time = '25:00'), '/sections/5'],
     'latitude out of range': [(c) => (c.sections[6].lat = 123), '/sections/6'],
     'dress code color not hex': [(c) => c.sections[7].colors.push('pink'), '/sections/7'],
+    'gallery photo over http': [(c) => c.sections.push({ type: 'gallery', photos: [{ src: 'http://evil.test/x.jpg' }] }), '/sections/11'],
+    'meal options that repeat': [(c) => (c.sections[9].mealOptions = ['لحم', 'لحم']), '/sections/9'],
+    'dress code with neither colors nor note': [(c) => (c.sections[7] = { type: 'dress_code' }), '/sections/7'],
 };
 
 for (const [name, [mutate, pointer]] of Object.entries(bad)) {

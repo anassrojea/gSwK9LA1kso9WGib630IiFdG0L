@@ -2,7 +2,17 @@
 <section class="blk pad sec-story story-{{ $style }}" data-drift>
     <span class="label rv">{{ $s['label'] ?? __('invite.story.label') }}</span>
     <h2 class="rv">{{ $s['title'] ?? __('invite.story.title') }}</h2>
-    @if ($style === 'letter')
+    @if ($style === 'messages')
+        <div class="messages">
+            @foreach ($s['chapters'] as $chapter)
+                <div class="msg rv {{ $loop->odd ? 'from' : 'to' }}">
+                    @isset($chapter['year'])<span class="yr">{{ \App\Services\Digits::localize($chapter['year'], $locale) }}</span>@endisset
+                    <b>{{ $chapter['title'] }}</b>
+                    <p>{{ $chapter['text'] }}</p>
+                </div>
+            @endforeach
+        </div>
+    @elseif ($style === 'letter')
         <div class="letter-body rv">
             @foreach ($s['chapters'] as $chapter)
                 <h3>{{ $chapter['title'] }}</h3>

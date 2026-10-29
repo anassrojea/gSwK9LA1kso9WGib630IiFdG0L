@@ -144,7 +144,8 @@
         "type": "rsvp",
         "title": "هل ستكونون معنا؟",
         "askMessage": true,
-        "askAllergies": false
+        "askAllergies": false,
+        "askKids": true
       },
       {
         "type": "album_teaser",

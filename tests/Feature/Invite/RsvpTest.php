@@ -115,3 +115,23 @@ it('rate-limits replies', function () {
 it('returns 404 when replying with an invalid token', function () {
     $this->postJson('/i/DoesNotExist99/rsvp', ['attending' => true, 'people_count' => 1])->assertNotFound();
 });
+
+it('stores the meal choice when the host offers one', function () {
+    [, $household] = invitedHousehold(config: withRsvpSection(['mealOptions' => ['لحم', 'دجاج']]));
+
+    $this->postJson("/i/{$household->token}/rsvp", ['attending' => true, 'people_count' => 1, 'meal' => 'سمك'])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('meal');
+
+    $this->postJson("/i/{$household->token}/rsvp", ['attending' => true, 'people_count' => 1, 'meal' => 'دجاج'])
+        ->assertOk()
+        ->assertJsonPath('rsvp.meal', 'دجاج');
+});
+
+it('refuses kids and meal fields the host did not ask for', function () {
+    [, $household] = invitedHousehold(config: withRsvpSection(['askKids' => false]));
+
+    $this->postJson("/i/{$household->token}/rsvp", ['attending' => true, 'people_count' => 2, 'kids_count' => 1, 'meal' => 'x'])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['kids_count', 'meal']);
+});

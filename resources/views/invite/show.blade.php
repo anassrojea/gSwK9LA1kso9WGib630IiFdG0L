@@ -44,6 +44,18 @@
         @include('invite.openings.cover', ['names' => $names, 'date' => $date, 'occasionLabel' => $occasionLabel])
     @endif
 
+    @php($cover = $config['media']['cover'] ?? null)
+    @if ($cover && ($coverSrc = $mediaUrl($cover['src'])))
+        <figure class="cover-media">
+            @if ($cover['type'] === 'video')
+                <video src="{{ $coverSrc }}" @if ($poster = $mediaUrl($cover['poster'] ?? null)) poster="{{ $poster }}" @endif
+                       muted playsinline loop autoplay preload="metadata" aria-label="{{ $title }}"></video>
+            @else
+                <img src="{{ $coverSrc }}" alt="{{ $title }}" loading="lazy" decoding="async">
+            @endif
+        </figure>
+    @endif
+
     <main>
         @foreach ($sections as $i => $s)
             @includeIf('invite.sections.'.$s['type'], [
@@ -62,6 +74,13 @@
         @endif
         <a href="{{ url('/') }}" rel="noopener">{{ __('invite.make_yours') }}</a>
     </footer>
+
+    @php($music = ($config['effects']['music'] ?? false) ? ($config['media']['music'] ?? null) : null)
+    @if ($music && ($musicSrc = $mediaUrl($music['src'])))
+        {{-- never autoplays: browsers block it and guests may be somewhere quiet --}}
+        <button type="button" class="music-toggle" data-music="{{ $musicSrc }}" aria-pressed="false"
+                aria-label="{{ __('invite.music.play') }}" data-label-play="{{ __('invite.music.play') }}" data-label-pause="{{ __('invite.music.pause') }}">♪</button>
+    @endif
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </div>

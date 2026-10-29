@@ -109,6 +109,24 @@ function show(el, visible) {
     if (el) el.hidden = !visible;
 }
 
+/** Kids are counted within the party: 0 … people − 1. */
+function fillKids(selected = 0) {
+    const kids = form?.querySelector('[data-kids]');
+    if (!kids) return;
+    const max = Math.max(0, Number(form.querySelector('[data-people]').value) - 1);
+    kids.replaceChildren(...Array.from({ length: max + 1 }, (_, i) => {
+        const option = document.createElement('option');
+        option.value = String(i);
+        option.textContent = digits(i);
+        return option;
+    }));
+    kids.value = String(Math.min(selected, max));
+}
+
+function setAttendingFields(attending) {
+    form?.querySelectorAll('[data-people], [data-kids], [name=meal]').forEach((field) => (field.disabled = !attending));
+}
+
 function applyState(next) {
     state = next;
     document.querySelectorAll('[data-guest-name]').forEach((el) => (el.textContent = next.household.name));
@@ -129,14 +147,19 @@ function applyState(next) {
         return option;
     }));
     people.value = String(Math.min(seats, next.rsvp?.people_count || seats));
+    fillKids(next.rsvp?.kids_count ?? 0);
 
     const reply = next.rsvp;
     if (reply) {
         form.querySelector(reply.attending ? '#att-yes' : '#att-no').checked = true;
         const message = form.querySelector('[name=message]');
         if (message && reply.message) message.value = reply.message;
+        const allergies = form.querySelector('[name=allergies]');
+        if (allergies && reply.allergies) allergies.value = reply.allergies;
+        const meal = form.querySelector('[name=meal]');
+        if (meal && reply.meal) meal.value = reply.meal;
     }
-    people.disabled = reply ? !reply.attending : false;
+    setAttendingFields(reply ? reply.attending : true);
 
     const done = rsvp.querySelector('[data-done]');
     const sorry = rsvp.querySelector('[data-sorry]');
@@ -161,8 +184,9 @@ if (boot.urls?.state) {
 if (form) {
     const people = form.querySelector('[data-people]');
     form.querySelectorAll('[name=attending]').forEach((radio) =>
-        radio.addEventListener('change', () => (people.disabled = form.querySelector('#att-no').checked)),
+        radio.addEventListener('change', () => setAttendingFields(form.querySelector('#att-yes').checked)),
     );
+    people.addEventListener('change', () => fillKids(Number(form.querySelector('[data-kids]')?.value || 0)));
 
     rsvp.querySelectorAll('[data-edit]').forEach((button) =>
         button.addEventListener('click', () => {
@@ -178,7 +202,13 @@ if (form) {
         const submit = form.querySelector('[type=submit]');
         const attending = form.querySelector('#att-yes').checked;
         const payload = { attending };
-        if (attending) payload.people_count = Number(people.value);
+        if (attending) {
+            payload.people_count = Number(people.value);
+            const kids = form.querySelector('[data-kids]');
+            if (kids) payload.kids_count = Number(kids.value);
+            const meal = form.querySelector('[name=meal]');
+            if (meal) payload.meal = meal.value;
+        }
         ['message', 'allergies'].forEach((name) => {
             const field = form.querySelector(`[name=${name}]`);
             if (field) payload[name] = field.value.trim() || null;
@@ -225,5 +255,19 @@ if (roseButton && boot.urls?.rose) {
         } finally {
             setTimeout(() => (roseButton.disabled = false), 1200);
         }
+    });
+}
+
+/* ---------- background music (only when the host turned it on, never autoplays) ---------- */
+const musicButton = document.querySelector('[data-music]');
+if (musicButton) {
+    let audio = null;
+    musicButton.addEventListener('click', () => {
+        audio ??= Object.assign(new Audio(musicButton.dataset.music), { loop: true });
+        const playing = !audio.paused;
+        if (playing) audio.pause();
+        else audio.play().catch(() => {});
+        musicButton.setAttribute('aria-pressed', String(!playing));
+        musicButton.setAttribute('aria-label', playing ? musicButton.dataset.labelPlay : musicButton.dataset.labelPause);
     });
 }

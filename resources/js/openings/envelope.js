@@ -21,9 +21,10 @@ export function init(stageEl, options = {}) {
         hint: part(stageEl, 'hint'),
     };
 
-    if (options.envelopeColor) {
-        stageEl.closest('.opening')?.style.setProperty('--c-accent', options.envelopeColor);
-    }
+    // options.color tints the envelope, options.accentColor the seal (default: theme accent and gold)
+    const section = stageEl.closest('.opening');
+    if (options.color) section?.style.setProperty('--c-accent', options.color);
+    if (options.accentColor) section?.style.setProperty('--c-gold', options.accentColor);
 
     // gold dust twinkling around the envelope
     if (!options.reducedMotion && options.effects?.sparkles !== false) {

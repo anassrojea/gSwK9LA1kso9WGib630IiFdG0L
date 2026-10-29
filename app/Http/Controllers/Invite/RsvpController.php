@@ -40,7 +40,8 @@ class RsvpController extends Controller
         $data = $request->validate([
             'attending' => ['required', 'boolean'],
             'people_count' => [Rule::excludeIf(! $request->boolean('attending')), 'required', 'integer', 'min:1', 'max:'.$household->seats_allowed],
-            'kids_count' => [Rule::excludeIf(! $request->boolean('attending')), 'nullable', 'integer', 'min:0', 'lte:people_count'],
+            'kids_count' => [Rule::excludeIf(! $request->boolean('attending')), Rule::prohibitedIf(! ($section['askKids'] ?? false)), 'nullable', 'integer', 'min:0', 'lte:people_count'],
+            'meal' => [Rule::excludeIf(! $request->boolean('attending')), Rule::prohibitedIf(empty($section['mealOptions'])), 'nullable', Rule::in($section['mealOptions'] ?? [])],
             'message' => [Rule::prohibitedIf(! ($section['askMessage'] ?? false)), 'nullable', 'string', 'max:500'],
             'allergies' => [Rule::prohibitedIf(! ($section['askAllergies'] ?? false)), 'nullable', 'string', 'max:300'],
         ], [
@@ -58,7 +59,10 @@ class RsvpController extends Controller
                 'people_count' => $attending ? (int) $data['people_count'] : 0,
                 'kids_count' => $attending ? (int) ($data['kids_count'] ?? 0) : 0,
                 'message' => $data['message'] ?? null,
-                'extras' => array_filter(['allergies' => $data['allergies'] ?? null]) ?: null,
+                'extras' => array_filter([
+                    'allergies' => $data['allergies'] ?? null,
+                    'meal' => $attending ? ($data['meal'] ?? null) : null,
+                ]) ?: null,
                 'responded_at' => now(),
             ]);
         });

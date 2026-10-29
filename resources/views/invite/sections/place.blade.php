@@ -1,6 +1,6 @@
 @php
     $query = isset($s['lat'], $s['lng']) ? $s['lat'].','.$s['lng'] : trim($s['name'].' '.($s['address'] ?? ''));
-    $mapsUrl = 'https://www.google.com/maps/search/?api=1&query='.urlencode($query);
+    $mapsUrl = $s['mapUrl'] ?? 'https://www.google.com/maps/search/?api=1&query='.urlencode($query);
 @endphp
 <section class="blk pad sec-place alt">
     <span class="label rv">{{ $s['label'] ?? __('invite.place.label') }}</span>

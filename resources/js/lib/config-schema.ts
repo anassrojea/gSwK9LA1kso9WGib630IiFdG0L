@@ -11,7 +11,8 @@ export const CONFIG_VERSION = 1 as const;
 export const OCCASIONS = ['wedding', 'engagement', 'henna', 'birthday', 'graduation', 'baby_welcome', 'iftar', 'other'] as const;
 export const OPENINGS = ['envelope', 'rose', 'ringbox', 'doors', 'gift', 'diploma'] as const;
 export const SECTION_TYPES = [
-    'intro_line', 'hosts', 'names', 'date', 'story', 'program', 'place', 'dress_code', 'send_rose', 'rsvp', 'album_teaser',
+    'intro_line', 'hosts', 'names', 'date', 'story', 'program', 'place', 'dress_code', 'gallery', 'favorites', 'wishes',
+    'send_rose', 'rsvp', 'album_teaser', 'closing',
 ] as const;
 
 const color = z.string().regex(/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, 'Use a hex color like #A8325A');
@@ -24,6 +25,11 @@ const title = z.string().max(80).optional();
 const hidden = z.boolean().optional();
 // JSON Schema "format": "date-time" (RFC 3339, offset required)
 const dateTime = z.iso.datetime({ offset: true });
+/** An https URL, a public /storage path, or media:<uuid> for an uploaded file. */
+export const mediaRef = z
+    .string()
+    .max(500)
+    .regex(/^(https:\/\/[^\s"'<>]+|\/storage\/[A-Za-z0-9/_.-]+|media:[0-9a-fA-F-]{36})$/, 'Use an https link or an uploaded file');
 
 const section = <T extends (typeof SECTION_TYPES)[number], S extends z.ZodRawShape>(type: T, shape: S) =>
     z.strictObject({ type: z.literal(type), hidden, ...shape });
@@ -44,6 +50,7 @@ export const namesSection = section('names', {
     first: z.string().min(1).max(40),
     second: z.string().min(1).max(40).optional(),
     note: z.string().max(200).optional(),
+    age: z.number().int().min(0).max(150).optional(),
 });
 
 export const dateSection = section('date', {
@@ -57,7 +64,7 @@ export const dateSection = section('date', {
 export const storySection = section('story', {
     label,
     title,
-    style: z.enum(['timeline', 'stem', 'letter']).optional(),
+    style: z.enum(['timeline', 'stem', 'letter', 'messages']).optional(),
     chapters: z
         .array(z.strictObject({ year: z.string().max(20).optional(), title: z.string().min(1).max(80), text: longText }))
         .min(1)
@@ -80,12 +87,35 @@ export const placeSection = section('place', {
     address: z.string().max(300).optional(),
     lat: z.number().min(-90).max(90).optional(),
     lng: z.number().min(-180).max(180).optional(),
+    mapUrl: z.string().max(500).regex(/^https:\/\//).optional(),
 }).refine((s) => (s.lat === undefined) === (s.lng === undefined), { message: 'lat and lng go together', path: ['lng'] });
 
 export const dressCodeSection = section('dress_code', {
     label,
-    colors: z.array(color).min(1).max(8),
-    note: z.string().max(200).optional(),
+    title,
+    colors: z.array(color).min(1).max(8).optional(),
+    note: z.string().max(300).optional(),
+}).refine((s) => s.colors !== undefined || s.note !== undefined, { message: 'Add colors or a note', path: ['colors'] });
+
+export const gallerySection = section('gallery', {
+    label,
+    title,
+    photos: z
+        .array(z.strictObject({ src: mediaRef, caption: z.string().max(80).optional(), alt: z.string().max(120).optional() }))
+        .min(1)
+        .max(12),
+});
+
+export const favoritesSection = section('favorites', {
+    label,
+    title,
+    items: z.array(z.strictObject({ icon: z.string().max(8).optional(), text: z.string().min(1).max(60) })).min(1).max(12),
+});
+
+export const wishesSection = section('wishes', {
+    label,
+    title,
+    items: z.array(z.strictObject({ name: z.string().max(60).optional(), text: z.string().min(1).max(300) })).min(1).max(12),
 });
 
 export const sendRoseSection = section('send_rose', { label });
@@ -95,6 +125,13 @@ export const rsvpSection = section('rsvp', {
     title,
     askMessage: z.boolean().optional(),
     askAllergies: z.boolean().optional(),
+    askKids: z.boolean().optional(),
+    mealOptions: z
+        .array(z.string().min(1).max(40))
+        .min(2)
+        .max(6)
+        .refine((o) => new Set(o).size === o.length, { message: 'Meal options must be different' })
+        .optional(),
     cutoff: dateTime.optional(),
 });
 
@@ -103,6 +140,8 @@ export const albumTeaserSection = section('album_teaser', {
     title,
     text: z.string().max(300).optional(),
 });
+
+export const closingSection = section('closing', { label, title, text: z.string().min(1).max(300) });
 
 export const sectionSchema = z.union([
     introLineSection,
@@ -113,9 +152,13 @@ export const sectionSchema = z.union([
     programSection,
     placeSection,
     dressCodeSection,
+    gallerySection,
+    favoritesSection,
+    wishesSection,
     sendRoseSection,
     rsvpSection,
     albumTeaserSection,
+    closingSection,
 ]);
 
 export const invitationConfigSchema = z.strictObject({
@@ -126,8 +169,9 @@ export const invitationConfigSchema = z.strictObject({
         id: z.enum(OPENINGS),
         options: z
             .strictObject({
+                color: color.optional(),
+                accentColor: color.optional(),
                 petalColor: color.optional(),
-                envelopeColor: color.optional(),
                 sealText: z.string().max(6).optional(),
                 kicker: z.string().max(60).optional(),
                 headline: z.string().max(80).optional(),
@@ -145,6 +189,12 @@ export const invitationConfigSchema = z.strictObject({
     }),
     effects: z
         .strictObject({ fallingPetals: z.boolean().optional(), sparkles: z.boolean().optional(), music: z.boolean().optional() })
+        .optional(),
+    media: z
+        .strictObject({
+            cover: z.strictObject({ type: z.enum(['image', 'video']), src: mediaRef, poster: mediaRef.optional() }).optional(),
+            music: z.strictObject({ src: mediaRef, title: z.string().max(80).optional() }).optional(),
+        })
         .optional(),
     sections: z.array(sectionSchema).min(1).max(30),
 });
