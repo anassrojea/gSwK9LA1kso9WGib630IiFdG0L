@@ -1,0 +1,25 @@
+{
+  "id": "royal-ink",
+  "name_ar": "أزرق ملكي وحبر",
+  "name_en": "Royal ink",
+  "tier": "premium",
+  "tokens": {
+    "colors": {
+      "bg": "#F7F3EA",
+      "ink": "#1B1E27",
+      "accent": "#2F5DA8",
+      "soft": "#6C6658",
+      "gold": "#CDA349",
+      "goldLight": "#EAD49C",
+      "surface": "#F4EBD8",
+      "backdrop": "#15171E",
+      "label": "#2F5DA8"
+    },
+    "radius": 6
+  },
+  "fonts": {
+    "display": "Mirza",
+    "body": "Noto Naskh Arabic",
+    "label": "Cairo"
+  }
+}

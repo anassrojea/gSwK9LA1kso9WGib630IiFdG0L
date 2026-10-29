@@ -1,0 +1,108 @@
+{
+  "id": "mawlood-gift",
+  "occasion": "baby_welcome",
+  "name_ar": "مولود",
+  "name_en": "New baby",
+  "tier": "premium",
+  "opening_id": "gift",
+  "theme_id": "blush-garden",
+  "sort": 70,
+  "default_config": {
+    "version": 1,
+    "occasion": "baby_welcome",
+    "locale": "ar",
+    "opening": {
+      "id": "gift",
+      "options": {
+        "kicker": "أهلاً بالصغيرة",
+        "headline": "وصلتنا أجمل هدية"
+      }
+    },
+    "theme": {
+      "id": "blush-garden",
+      "colors": {
+        "bg": "#FFF6F8",
+        "ink": "#3B2330",
+        "accent": "#A8325A",
+        "soft": "#8E6B78",
+        "gold": "#C9A35C",
+        "goldLight": "#F9D3DD",
+        "surface": "#FCE6EC",
+        "backdrop": "#F3D9E0",
+        "label": "#E8839F"
+      },
+      "fonts": {
+        "display": "Katibeh",
+        "body": "Amiri",
+        "label": "Almarai"
+      },
+      "radius": 20
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "وصلت الصغيرة… وامتلأ البيت فرحاً"
+      },
+      {
+        "type": "hosts",
+        "label": "بقلوبٍ شاكرة",
+        "lines": [
+          "أحمد وريم"
+        ],
+        "outro": "يدعوانكم لاستقبال مولودتهما الأولى"
+      },
+      {
+        "type": "names",
+        "first": "لين",
+        "note": "وُلدت فجر الجمعة، وهي بصحة وعافية والحمد لله"
+      },
+      {
+        "type": "date",
+        "label": "موعد الاستقبال",
+        "start": "2026-12-05T17:00:00+03:00",
+        "showHijri": true,
+        "countdown": false
+      },
+      {
+        "type": "program",
+        "label": "برنامج الاستقبال",
+        "title": "عصرية حلوة",
+        "items": [
+          {
+            "time": "17:00",
+            "label": "استقبال المهنّئين"
+          },
+          {
+            "time": "17:30",
+            "label": "توزيع المغلي والحلوى"
+          },
+          {
+            "time": "18:00",
+            "label": "دعاء الجدّين للصغيرة"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "بيت الجدّة",
+        "address": "جبل عمّان، الدوار الثالث، عمارة ٤",
+        "lat": 31.9515,
+        "lng": 35.9239
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستزوروننا؟",
+        "askMessage": true
+      },
+      {
+        "type": "closing",
+        "text": "أنبتها الله نباتاً حسناً، وجعلها قرّة عين لوالديها"
+      }
+    ]
+  }
+}

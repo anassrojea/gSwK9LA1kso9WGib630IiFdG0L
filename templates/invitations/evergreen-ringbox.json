@@ -1,0 +1,159 @@
+{
+  "id": "evergreen-ringbox",
+  "occasion": "wedding",
+  "name_ar": "إيفرغرين",
+  "name_en": "Evergreen",
+  "tier": "premium",
+  "opening_id": "ringbox",
+  "theme_id": "wine-gold",
+  "sort": 100,
+  "default_config": {
+    "version": 1,
+    "occasion": "wedding",
+    "locale": "en",
+    "opening": {
+      "id": "ringbox",
+      "options": {
+        "kicker": "We said yes",
+        "headline": "We have lovely news to share"
+      }
+    },
+    "theme": {
+      "id": "wine-gold",
+      "colors": {
+        "bg": "#FBF6F2",
+        "ink": "#3A1420",
+        "accent": "#5A1A2C",
+        "soft": "#86636C",
+        "gold": "#C8A45D",
+        "goldLight": "#E8D29C",
+        "surface": "#F3E4E2",
+        "backdrop": "#2A0B14",
+        "label": "#C8A45D"
+      },
+      "fonts": {
+        "display": "Playfair Display",
+        "body": "Cormorant Garamond",
+        "label": "Montserrat"
+      },
+      "radius": 4
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "Two hearts, one story, and a seat saved for you."
+      },
+      {
+        "type": "hosts",
+        "label": "Together with their families",
+        "lines": [
+          "Mr and Mrs James Carter",
+          "Mr and Mrs David Hughes"
+        ],
+        "outro": "invite you to celebrate the marriage of"
+      },
+      {
+        "type": "names",
+        "first": "Emma",
+        "second": "Noah",
+        "note": "Join us for a summer evening of vows, dinner and dancing."
+      },
+      {
+        "type": "date",
+        "label": "Save the date",
+        "start": "2027-06-12T16:30:00+01:00",
+        "countdown": true
+      },
+      {
+        "type": "story",
+        "style": "timeline",
+        "label": "Our story",
+        "title": "How it began",
+        "chapters": [
+          {
+            "year": "2019",
+            "title": "A borrowed umbrella",
+            "text": "A downpour outside the library, one umbrella and a walk that took the long way round."
+          },
+          {
+            "year": "2022",
+            "title": "A home of our own",
+            "text": "Two bookshelves became one, and the kitchen finally had enough mugs."
+          },
+          {
+            "year": "2026",
+            "title": "The question",
+            "text": "On the same library steps, Noah asked. Emma said yes before he finished."
+          }
+        ],
+        "quote": "“Whatever our souls are made of, his and mine are the same.”"
+      },
+      {
+        "type": "program",
+        "label": "Programme",
+        "title": "The day",
+        "items": [
+          {
+            "time": "16:30",
+            "label": "Ceremony in the garden"
+          },
+          {
+            "time": "17:30",
+            "label": "Drinks and canapés"
+          },
+          {
+            "time": "19:00",
+            "label": "Dinner and speeches"
+          },
+          {
+            "time": "21:00",
+            "label": "First dance"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "Hartwell House",
+        "address": "Oxford Road, Aylesbury HP17 8NR",
+        "lat": 51.8003,
+        "lng": -0.8455
+      },
+      {
+        "type": "dress_code",
+        "label": "Dress code",
+        "title": "Black tie optional",
+        "colors": [
+          "#5A1A2C",
+          "#C8A45D",
+          "#F3E4E2"
+        ],
+        "note": "Wine, gold and blush are very welcome."
+      },
+      {
+        "type": "rsvp",
+        "title": "Will you join us?",
+        "askMessage": true,
+        "askAllergies": true,
+        "mealOptions": [
+          "Beef",
+          "Fish",
+          "Vegetarian"
+        ]
+      },
+      {
+        "type": "album_teaser",
+        "title": "Share your photos",
+        "text": "Caught a beautiful moment? Upload it here after the wedding."
+      },
+      {
+        "type": "closing",
+        "text": "We can’t wait to celebrate with you."
+      }
+    ]
+  }
+}

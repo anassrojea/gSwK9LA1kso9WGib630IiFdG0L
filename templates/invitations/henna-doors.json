@@ -1,0 +1,144 @@
+{
+  "id": "henna-doors",
+  "occasion": "henna",
+  "name_ar": "حنّاء",
+  "name_en": "Henna",
+  "tier": "premium",
+  "opening_id": "doors",
+  "theme_id": "henna-green",
+  "sort": 40,
+  "default_config": {
+    "version": 1,
+    "occasion": "henna",
+    "locale": "ar",
+    "opening": {
+      "id": "doors",
+      "options": {
+        "headline": "تفضّلوا… الباب مفتوح لكم"
+      }
+    },
+    "theme": {
+      "id": "henna-green",
+      "colors": {
+        "bg": "#FBF3E6",
+        "ink": "#2E2117",
+        "accent": "#2D5440",
+        "soft": "#7A6552",
+        "gold": "#D4A64A",
+        "goldLight": "#E9B949",
+        "surface": "#F2E2C6",
+        "backdrop": "#0F1F17",
+        "label": "#B5482A"
+      },
+      "fonts": {
+        "display": "Rakkas",
+        "body": "Scheherazade New",
+        "label": "Kufam"
+      },
+      "radius": 10
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "hosts",
+        "label": "على الحِنّة والفرح",
+        "lines": [
+          "تتشرف السيدة أم سلمى الراشد"
+        ],
+        "outro": "بدعوتكنّ لمشاركتها ليلة حنّاء ابنتها"
+      },
+      {
+        "type": "names",
+        "first": "سلمى",
+        "note": "دعوة خاصة للسيدات، قبل الزفاف بليلتين"
+      },
+      {
+        "type": "date",
+        "label": "موعد الحنّاء",
+        "start": "2026-12-08T20:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "story",
+        "style": "letter",
+        "label": "رسالة من العروس",
+        "title": "إلى صديقاتي وأحبّتي",
+        "chapters": [
+          {
+            "title": "كبرنا معاً",
+            "text": "منذ الطفولة ونحن نحلم بهذه الليلة. كبرنا معاً، ضحكنا معاً، وتقاسمنا الأسرار والأحلام."
+          },
+          {
+            "title": "أكثر من نقش",
+            "text": "ليلة الحنّاء بالنسبة لي ليست مجرد نقش على اليد، بل وداعٌ جميل لبيت أهلي، وبدايةٌ جديدة أريدكنّ أن تكنّ جزءاً منها."
+          },
+          {
+            "title": "تعالين كما أنتنّ",
+            "text": "تعالين بالثوب المطرّز، بالضحكة نفسها، وبالأغاني القديمة التي نحبها."
+          }
+        ],
+        "quote": "سلمى"
+      },
+      {
+        "type": "program",
+        "label": "فقرات الليلة",
+        "title": "على الحِنّة",
+        "items": [
+          {
+            "time": "20:00",
+            "label": "الاستقبال والقهوة العربية"
+          },
+          {
+            "time": "20:30",
+            "label": "زفّة صينية الحنّاء"
+          },
+          {
+            "time": "21:00",
+            "label": "نقش الحنّاء"
+          },
+          {
+            "time": "22:00",
+            "label": "الأغاني الشعبية والرقص"
+          },
+          {
+            "time": "23:00",
+            "label": "العشاء"
+          }
+        ]
+      },
+      {
+        "type": "dress_code",
+        "label": "اللباس",
+        "title": "الثوب التراثي المطرّز",
+        "colors": [
+          "#B5482A",
+          "#2D5440",
+          "#E9B949"
+        ],
+        "note": "الحفل نسائي بالكامل، ويُسمح بالتصوير داخل القاعة."
+      },
+      {
+        "type": "place",
+        "name": "بيت العائلة · حي الروضة",
+        "address": "شارع النخيل، فيلا رقم ١٢، المدخل الجانبي للسيدات",
+        "lat": 31.9946,
+        "lng": 35.8742
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستأتين على الحِنّة؟",
+        "askMessage": true
+      },
+      {
+        "type": "album_teaser",
+        "title": "حنّاكِ تزهي وفرحتنا تكتمل",
+        "text": "بعد الليلة، شاركينا صور النقش والفرح في ألبوم العروس."
+      }
+    ]
+  }
+}

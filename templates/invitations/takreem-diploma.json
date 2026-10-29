@@ -1,0 +1,123 @@
+{
+  "id": "takreem-diploma",
+  "occasion": "other",
+  "name_ar": "تكريم",
+  "name_en": "Tribute",
+  "tier": "premium",
+  "opening_id": "diploma",
+  "theme_id": "olive-sand",
+  "sort": 90,
+  "default_config": {
+    "version": 1,
+    "occasion": "other",
+    "locale": "ar",
+    "opening": {
+      "id": "diploma",
+      "options": {
+        "color": "#5B6B3A",
+        "kicker": "حفل تكريم",
+        "headline": "شهادة شكر… افتحوها"
+      }
+    },
+    "theme": {
+      "id": "olive-sand",
+      "colors": {
+        "bg": "#FAF6EE",
+        "ink": "#2F3324",
+        "accent": "#5B6B3A",
+        "soft": "#7D7A66",
+        "gold": "#B8925A",
+        "goldLight": "#E5D3B0",
+        "surface": "#EFE8D8",
+        "backdrop": "#2B3120",
+        "label": "#9C7A44"
+      },
+      "fonts": {
+        "display": "El Messiri",
+        "body": "Noto Naskh Arabic",
+        "label": "Tajawal"
+      },
+      "radius": 12
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "hosts",
+        "label": "بكل امتنان",
+        "lines": [
+          "أسرة مدرسة الأمل"
+        ],
+        "outro": "تدعوكم لحفل تكريم معلّمتنا الغالية"
+      },
+      {
+        "type": "names",
+        "first": "أ. سعاد المصري",
+        "note": "بعد ٣٥ عاماً من التعليم والعطاء"
+      },
+      {
+        "type": "date",
+        "label": "الموعد",
+        "start": "2026-12-15T11:00:00+03:00",
+        "showHijri": false,
+        "countdown": true
+      },
+      {
+        "type": "program",
+        "label": "فقرات الحفل",
+        "title": "صباح الوفاء",
+        "items": [
+          {
+            "time": "11:00",
+            "label": "استقبال الضيوف"
+          },
+          {
+            "time": "11:30",
+            "label": "كلمة مديرة المدرسة"
+          },
+          {
+            "time": "12:00",
+            "label": "رسائل الطالبات وتقديم الدرع"
+          },
+          {
+            "time": "12:45",
+            "label": "ضيافة"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "مسرح مدرسة الأمل",
+        "address": "الشميساني، شارع عبد الحميد شرف",
+        "lat": 31.9701,
+        "lng": 35.9006
+      },
+      {
+        "type": "wishes",
+        "label": "من طالباتها",
+        "items": [
+          {
+            "name": "دفعة ٢٠٠٥",
+            "text": "علّمتِنا أن الخط الجميل يبدأ من قلبٍ صبور. شكراً لكِ."
+          },
+          {
+            "name": "نور",
+            "text": "كل ما أكتبه اليوم بدأ من حصة إنشاء معكِ."
+          }
+        ]
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستشاركوننا التكريم؟",
+        "askMessage": true
+      },
+      {
+        "type": "closing",
+        "text": "شكراً لكِ… فالعطاء لا يتقاعد"
+      }
+    ]
+  }
+}

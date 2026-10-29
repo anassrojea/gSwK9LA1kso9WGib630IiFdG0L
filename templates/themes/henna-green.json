@@ -1,0 +1,25 @@
+{
+  "id": "henna-green",
+  "name_ar": "أخضر وحنّاء",
+  "name_en": "Henna green",
+  "tier": "premium",
+  "tokens": {
+    "colors": {
+      "bg": "#FBF3E6",
+      "ink": "#2E2117",
+      "accent": "#2D5440",
+      "soft": "#7A6552",
+      "gold": "#D4A64A",
+      "goldLight": "#E9B949",
+      "surface": "#F2E2C6",
+      "backdrop": "#0F1F17",
+      "label": "#B5482A"
+    },
+    "radius": 10
+  },
+  "fonts": {
+    "display": "Rakkas",
+    "body": "Scheherazade New",
+    "label": "Kufam"
+  }
+}

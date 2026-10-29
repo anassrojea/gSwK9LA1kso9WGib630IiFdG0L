@@ -1,0 +1,25 @@
+{
+  "id": "navy-blush",
+  "name_ar": "كحلي ووردي",
+  "name_en": "Navy & blush",
+  "tier": "premium",
+  "tokens": {
+    "colors": {
+      "bg": "#F7EAE7",
+      "ink": "#2B2233",
+      "accent": "#1E2A44",
+      "soft": "#7D6A72",
+      "gold": "#C9A877",
+      "goldLight": "#EBD9B4",
+      "surface": "#EFD6D6",
+      "backdrop": "#111827",
+      "label": "#C77D86"
+    },
+    "radius": 14
+  },
+  "fonts": {
+    "display": "El Messiri",
+    "body": "Tajawal",
+    "label": "Tajawal"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "id": "iftar-doors",
+  "occasion": "iftar",
+  "name_ar": "مائدة رمضان",
+  "name_en": "Ramadan table",
+  "tier": "premium",
+  "opening_id": "doors",
+  "theme_id": "midnight-navy",
+  "sort": 80,
+  "default_config": {
+    "version": 1,
+    "occasion": "iftar",
+    "locale": "ar",
+    "opening": {
+      "id": "doors",
+      "options": {
+        "color": "#24365A",
+        "accentColor": "#1F2E4D",
+        "kicker": "إفطار رمضاني",
+        "headline": "أهلاً بكم على مائدة الإفطار"
+      }
+    },
+    "theme": {
+      "id": "midnight-navy",
+      "colors": {
+        "bg": "#F7F5EF",
+        "ink": "#1B2333",
+        "accent": "#1F2E4D",
+        "soft": "#6B7385",
+        "gold": "#C2A15A",
+        "goldLight": "#E6D5A8",
+        "surface": "#ECE8DD",
+        "backdrop": "#0E1626",
+        "label": "#B08F48"
+      },
+      "fonts": {
+        "display": "Reem Kufi",
+        "body": "Amiri",
+        "label": "Almarai"
+      },
+      "radius": 8
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "رمضان يجمعنا، والمائدة تحلو بكم"
+      },
+      {
+        "type": "hosts",
+        "label": "رمضان كريم",
+        "lines": [
+          "تتشرف عائلة الحسيني"
+        ],
+        "outro": "بدعوتكم لمشاركتها مائدة الإفطار"
+      },
+      {
+        "type": "names",
+        "first": "آل الحسيني",
+        "note": "في بيتنا، كما في كل عام"
+      },
+      {
+        "type": "date",
+        "label": "موعد الإفطار",
+        "start": "2027-02-20T17:45:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "program",
+        "label": "برنامج الأمسية",
+        "title": "من الأذان إلى التراويح",
+        "items": [
+          {
+            "time": "17:45",
+            "label": "أذان المغرب والإفطار على التمر"
+          },
+          {
+            "time": "18:00",
+            "label": "صلاة المغرب"
+          },
+          {
+            "time": "18:15",
+            "label": "مائدة الإفطار"
+          },
+          {
+            "time": "19:30",
+            "label": "القهوة والقطايف"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "بيت العائلة",
+        "address": "دابوق، شارع الملكة نور، فيلا ٩",
+        "lat": 31.9839,
+        "lng": 35.8312
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستشاركوننا الإفطار؟",
+        "askKids": true,
+        "askAllergies": true
+      },
+      {
+        "type": "closing",
+        "text": "تقبّل الله منا ومنكم صالح الأعمال"
+      }
+    ]
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "id": "khutuba-ringbox",
+  "occasion": "engagement",
+  "name_ar": "خطوبة",
+  "name_en": "Khutuba",
+  "tier": "premium",
+  "opening_id": "ringbox",
+  "theme_id": "navy-blush",
+  "sort": 30,
+  "default_config": {
+    "version": 1,
+    "occasion": "engagement",
+    "locale": "ar",
+    "opening": {
+      "id": "ringbox",
+      "options": {
+        "kicker": "قالت نعم",
+        "headline": "لدينا خبرٌ جميل نشارككم إياه"
+      }
+    },
+    "theme": {
+      "id": "navy-blush",
+      "colors": {
+        "bg": "#F7EAE7",
+        "ink": "#2B2233",
+        "accent": "#1E2A44",
+        "soft": "#7D6A72",
+        "gold": "#C9A877",
+        "goldLight": "#EBD9B4",
+        "surface": "#EFD6D6",
+        "backdrop": "#111827",
+        "label": "#C77D86"
+      },
+      "fonts": {
+        "display": "El Messiri",
+        "body": "Tajawal",
+        "label": "Tajawal"
+      },
+      "radius": 14
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "style": "verse",
+        "text": "بسم الله الرحمن الرحيم"
+      },
+      {
+        "type": "hosts",
+        "label": "بقلوبٍ يملؤها الفرح",
+        "lines": [
+          "تتشرف عائلتا الخطيب والسعدي"
+        ],
+        "outro": "بدعوتكم لمشاركتهم فرحة خطوبة"
+      },
+      {
+        "type": "names",
+        "first": "رنا",
+        "second": "كريم"
+      },
+      {
+        "type": "date",
+        "label": "موعدنا",
+        "start": "2026-11-20T19:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "story",
+        "style": "messages",
+        "label": "رسائل صغيرة",
+        "title": "كيف التقينا",
+        "chapters": [
+          {
+            "year": "2022",
+            "title": "في عرس صديقة",
+            "text": "جلسنا على الطاولة نفسها صدفة. ضحكنا على النكتة نفسها، فعرفنا أن بيننا شيئاً مشتركاً."
+          },
+          {
+            "year": "2023",
+            "title": "صباح الخير",
+            "text": "صارت رسالة «صباح الخير» عادة يومية، ثم صارت أجمل ما في الصباح."
+          },
+          {
+            "year": "2026",
+            "title": "طَلَبُ اليد",
+            "text": "جاء كريم مع أهله يطلب يد رنا، وقرأنا الفاتحة. والآن نحتفل معكم."
+          }
+        ],
+        "quote": "ومن هنا تبدأ الحكاية"
+      },
+      {
+        "type": "program",
+        "label": "برنامج السهرة",
+        "title": "ليلةٌ من القلب",
+        "items": [
+          {
+            "time": "19:00",
+            "label": "استقبال الضيوف"
+          },
+          {
+            "time": "19:30",
+            "label": "قراءة الفاتحة"
+          },
+          {
+            "time": "20:00",
+            "label": "تلبيس الشبكة"
+          },
+          {
+            "time": "21:00",
+            "label": "العشاء والحلويات"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "حديقة قصر الياسمين",
+        "address": "طريق المطار، بعد الإشارة الثالثة يميناً",
+        "lat": 31.8723,
+        "lng": 35.8921
+      },
+      {
+        "type": "dress_code",
+        "label": "ألوان السهرة المقترحة",
+        "colors": [
+          "#EFD6D6",
+          "#C9A877",
+          "#1E2A44",
+          "#FFFFFF"
+        ],
+        "note": "الوردي الهادئ، الشمبانيا، الكحلي والأبيض"
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستكونون معنا؟",
+        "askMessage": true,
+        "askAllergies": false
+      },
+      {
+        "type": "album_teaser",
+        "title": "فرحتنا تكتمل بكم",
+        "text": "التقطتم صوراً في الحفل؟ شاركوها معنا بعد السهرة."
+      }
+    ]
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "id": "birthday-gift",
+  "occasion": "birthday",
+  "name_ar": "هدية",
+  "name_en": "Gift",
+  "tier": "premium",
+  "opening_id": "gift",
+  "theme_id": "party-violet",
+  "sort": 50,
+  "default_config": {
+    "version": 1,
+    "occasion": "birthday",
+    "locale": "ar",
+    "opening": {
+      "id": "gift",
+      "options": {
+        "kicker": "عيد ميلاد سعيد",
+        "headline": "عندك هدية! افتحها"
+      }
+    },
+    "theme": {
+      "id": "party-violet",
+      "colors": {
+        "bg": "#FFF8EC",
+        "ink": "#241A3D",
+        "accent": "#5B3CC4",
+        "soft": "#6E6385",
+        "gold": "#FFC531",
+        "goldLight": "#FFD45C",
+        "surface": "#E4F4FF",
+        "backdrop": "#2A1766",
+        "label": "#FF5A4E"
+      },
+      "fonts": {
+        "display": "Lalezar",
+        "body": "Baloo Bhaijaan 2",
+        "label": "Baloo Bhaijaan 2"
+      },
+      "radius": 16
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "hosts",
+        "label": "يا هلا ويا مرحبا",
+        "lines": [
+          "ماما وبابا يدعوانك"
+        ],
+        "outro": "لحفلة عيد ميلاد ابنهما"
+      },
+      {
+        "type": "names",
+        "first": "آدم",
+        "age": 7,
+        "note": "موضوع الحفلة: مغامرة الديناصورات. تعال بلباس المستكشف، والقبعة علينا!"
+      },
+      {
+        "type": "date",
+        "label": "متى؟",
+        "start": "2026-11-13T16:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "story",
+        "style": "timeline",
+        "label": "حكاية آدم",
+        "title": "آدم يكبر",
+        "chapters": [
+          {
+            "year": "2020",
+            "title": "أول خطوة",
+            "text": "مشى نحو ماما وهو يضحك، ثم جلس على الأرض فرحاً بنفسه."
+          },
+          {
+            "year": "2021",
+            "title": "أول كلمة: «بابا»",
+            "text": "وبعدها لم يتوقف عن الكلام أبداً."
+          },
+          {
+            "year": "2023",
+            "title": "أول يوم في الروضة",
+            "text": "بكى في الصباح، وعاد بصديق جديد اسمه يوسف."
+          },
+          {
+            "year": "2026",
+            "title": "والآن… الحفلة الكبيرة",
+            "text": "وينتظرك أنت لتكون معه!"
+          }
+        ]
+      },
+      {
+        "type": "favorites",
+        "label": "أشياء يحبها آدم",
+        "items": [
+          {
+            "icon": "🦕",
+            "text": "الديناصورات"
+          },
+          {
+            "icon": "⚽",
+            "text": "كرة القدم"
+          },
+          {
+            "icon": "💙",
+            "text": "اللون الأزرق"
+          },
+          {
+            "icon": "🍕",
+            "text": "البيتزا"
+          },
+          {
+            "icon": "🎨",
+            "text": "الرسم"
+          }
+        ]
+      },
+      {
+        "type": "program",
+        "label": "ماذا سنفعل؟",
+        "title": "برنامج المرح",
+        "items": [
+          {
+            "time": "16:00",
+            "label": "البحث عن بيض الديناصور"
+          },
+          {
+            "time": "16:45",
+            "label": "عرض الساحر"
+          },
+          {
+            "time": "17:30",
+            "label": "الكيكة والشموع"
+          },
+          {
+            "time": "18:15",
+            "label": "فتح الهدايا"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "label": "أين؟",
+        "name": "حديقة بيت الجدّة",
+        "address": "حي الياسمين، شارع الورد، بيت رقم ٧",
+        "lat": 31.9632,
+        "lng": 35.8597
+      },
+      {
+        "type": "closing",
+        "label": "فكرة هدية؟",
+        "text": "آدم يحب كتب القصص والألغاز وألعاب التركيب. وجودك معه أجمل هدية!"
+      },
+      {
+        "type": "rsvp",
+        "label": "هل ستأتي؟",
+        "title": "أكّد حضورك للحفلة",
+        "askKids": true,
+        "askAllergies": true
+      },
+      {
+        "type": "album_teaser",
+        "title": "لا تنسَ الكاميرا!",
+        "text": "بعد الحفلة، ارفع صورك مع آدم في ألبوم عيد الميلاد."
+      }
+    ]
+  }
+}

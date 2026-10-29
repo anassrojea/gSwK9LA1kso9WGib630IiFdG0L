@@ -1,0 +1,25 @@
+{
+  "id": "party-violet",
+  "name_ar": "بنفسجي مرح",
+  "name_en": "Party violet",
+  "tier": "premium",
+  "tokens": {
+    "colors": {
+      "bg": "#FFF8EC",
+      "ink": "#241A3D",
+      "accent": "#5B3CC4",
+      "soft": "#6E6385",
+      "gold": "#FFC531",
+      "goldLight": "#FFD45C",
+      "surface": "#E4F4FF",
+      "backdrop": "#2A1766",
+      "label": "#FF5A4E"
+    },
+    "radius": 16
+  },
+  "fonts": {
+    "display": "Lalezar",
+    "body": "Baloo Bhaijaan 2",
+    "label": "Baloo Bhaijaan 2"
+  }
+}

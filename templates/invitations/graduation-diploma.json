@@ -1,0 +1,152 @@
+{
+  "id": "graduation-diploma",
+  "occasion": "graduation",
+  "name_ar": "شهادة",
+  "name_en": "Diploma",
+  "tier": "premium",
+  "opening_id": "diploma",
+  "theme_id": "royal-ink",
+  "sort": 60,
+  "default_config": {
+    "version": 1,
+    "occasion": "graduation",
+    "locale": "ar",
+    "opening": {
+      "id": "diploma",
+      "options": {
+        "kicker": "دعوة احتفال",
+        "headline": "وصلتكم شهادة… افتحوها"
+      }
+    },
+    "theme": {
+      "id": "royal-ink",
+      "colors": {
+        "bg": "#F7F3EA",
+        "ink": "#1B1E27",
+        "accent": "#2F5DA8",
+        "soft": "#6C6658",
+        "gold": "#CDA349",
+        "goldLight": "#EAD49C",
+        "surface": "#F4EBD8",
+        "backdrop": "#15171E",
+        "label": "#2F5DA8"
+      },
+      "fonts": {
+        "display": "Mirza",
+        "body": "Noto Naskh Arabic",
+        "label": "Cairo"
+      },
+      "radius": 6
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "hosts",
+        "label": "بكل فخر واعتزاز",
+        "lines": [
+          "يتشرف السيد سمير حداد وحرمه"
+        ],
+        "outro": "بدعوتكم لمشاركتهم فرحة تخرّج ابنهم"
+      },
+      {
+        "type": "names",
+        "first": "م. رامي حداد",
+        "note": "بكالوريوس هندسة الحاسوب · دفعة ٢٠٢٦"
+      },
+      {
+        "type": "date",
+        "label": "الموعد",
+        "start": "2026-11-19T18:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "story",
+        "style": "timeline",
+        "label": "الرحلة",
+        "title": "أربع سنوات في سطور",
+        "chapters": [
+          {
+            "year": "2022",
+            "title": "السنة الأولى",
+            "text": "أول محاضرة، أول قهوة الساعة السابعة صباحاً، وأول سطر برمجة."
+          },
+          {
+            "year": "2023",
+            "title": "السنة الثانية",
+            "text": "أول مشروع حقيقي مع الأصدقاء: تطبيق صغير لمواعيد الحافلات."
+          },
+          {
+            "year": "2024",
+            "title": "السنة الثالثة",
+            "text": "التدريب الصيفي في شركة برمجيات، وأول راتب صغير وفرحة كبيرة."
+          },
+          {
+            "year": "2026",
+            "title": "السنة الرابعة",
+            "text": "مشروع التخرج، ثم القبعة في الهواء. وصلنا!"
+          }
+        ],
+        "quote": "إلى أمي التي سهرت معي، وإلى أبي الذي آمن بي: هذه الشهادة لكما."
+      },
+      {
+        "type": "program",
+        "label": "برنامج الحفل",
+        "title": "ليلة التخرّج",
+        "items": [
+          {
+            "time": "18:00",
+            "label": "استقبال الضيوف"
+          },
+          {
+            "time": "18:45",
+            "label": "كلمة الخرّيج وعرض صور الرحلة"
+          },
+          {
+            "time": "19:15",
+            "label": "قطع الكيك ورمي القبعات"
+          },
+          {
+            "time": "20:00",
+            "label": "العشاء"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "تراس مطعم السَّطح",
+        "address": "فندق المدينة، الطابق العاشر",
+        "lat": 31.9566,
+        "lng": 35.9457
+      },
+      {
+        "type": "wishes",
+        "label": "من لوحة التهاني",
+        "items": [
+          {
+            "name": "خالته منى",
+            "text": "فخورين فيك يا رامي، والقادم أجمل بإذن الله."
+          },
+          {
+            "name": "صديقه طارق",
+            "text": "من أول سطر برمجة لليوم… مبروك يا بشمهندس!"
+          }
+        ]
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستحتفلون معنا؟",
+        "askMessage": true
+      },
+      {
+        "type": "album_teaser",
+        "title": "لحظة القبعات",
+        "text": "صوّرتم رمي القبعات؟ ارفعوا الصور لتكون في ألبوم التخرّج."
+      }
+    ]
+  }
+}
