@@ -3,6 +3,7 @@
 namespace App\Services\Payments;
 
 use App\Models\AuditLog;
+use App\Models\DiscountCode;
 use App\Models\Entitlement;
 use App\Models\Event;
 use App\Models\Order;
@@ -28,6 +29,7 @@ use Illuminate\Validation\ValidationException;
  *   transfer: awaiting_payment → receipt_received → approved (admin) → refunded
  *                                                 → rejected (admin)
  *             awaiting_payment → expired (48h, orders:expire)
+ *   zero total (100% discount code): awaiting_payment → paid at checkout (fulfillFree)
  *
  * paid / approved grant the order's entitlements to its event: the plan
  * (events.plan_id), add-ons (entitlements rows, with `until` when time-limited)
@@ -83,6 +85,35 @@ class OrderFulfillment
         });
 
         return $payment;
+    }
+
+    /**
+     * A zero total (a 100% discount code): nothing to charge, so the order is
+     * paid at once, without a gateway, and unlocks like any other.
+     */
+    public function fulfillFree(Order $order): bool
+    {
+        return DB::transaction(function () use ($order) {
+            $order = Order::query()->whereKey($order->getKey())->lockForUpdate()->firstOrFail();
+
+            if ($order->total_cents !== 0 || $order->status !== 'awaiting_payment') {
+                return false;
+            }
+
+            $order->payments()->create([
+                'provider' => 'discount',
+                'provider_ref' => 'discount:'.$order->code,
+                'amount_cents' => 0,
+                'currency' => $order->currency,
+                'status' => 'succeeded',
+                'raw' => ['discount_code' => $order->discount_code, 'discount' => $order->discount_cents],
+            ]);
+            $order->forceFill(['expires_at' => null]);
+
+            $this->complete($order, 'paid', null, ['provider' => 'discount', 'discount_code' => $order->discount_code]);
+
+            return true;
+        });
     }
 
     /**
@@ -232,6 +263,7 @@ class OrderFulfillment
             }
 
             AuditLog::record('order.refunded', $order, array_filter(['reason' => $reason]), $actor);
+            $this->releaseDiscount($order, $actor);
 
             return true;
         });
@@ -316,6 +348,7 @@ class OrderFulfillment
 
         $this->grant($order, $paidAt);
         AuditLog::record("order.{$status}", $order, $data + ['total' => $order->total_cents, 'currency' => $order->currency], $actor);
+        $this->redeemDiscount($order, $actor);
 
         DB::afterCommit(fn () => $order->user?->notify(new OrderApproved($order)));
     }
@@ -340,22 +373,126 @@ class OrderFulfillment
             $until = isset($definition['days']) ? $from->addDays((int) $definition['days']) : null;
 
             for ($i = 0; $i < max(1, $line['quantity']); $i++) {
-                Entitlement::query()->create([
-                    'event_id' => $event->getKey(),
-                    'feature' => $definition['feature'],
-                    'until' => $until,
-                    'source_order_id' => $order->getKey(),
-                ]);
-            }
-
-            // photo cloud keeps the album: the event's storage lasts at least as long
-            if ($definition['feature'] === 'photo_cloud' && $until && (! $event->storage_until || $event->storage_until->lt($until))) {
-                $event->storage_until = $until->toDateString();
+                $this->addEntitlement($event, $definition['feature'], $until, $order);
             }
         }
 
         $this->syncGuestLimit($event);
         $event->save();
+    }
+
+    /**
+     * An admin grants a feature by hand (Filament, event page): the same rows
+     * and side effects as an add-on bought through an order, without the order.
+     */
+    public function grantFeature(Event $event, string $feature, ?CarbonImmutable $until, User $admin, ?string $note = null): Entitlement
+    {
+        $this->ensureAdmin($admin);
+
+        return DB::transaction(function () use ($event, $feature, $until, $admin, $note) {
+            $event = Event::query()->whereKey($event->getKey())->lockForUpdate()->firstOrFail();
+
+            $entitlement = $this->addEntitlement($event, $feature, $until, null);
+            $this->syncGuestLimit($event);
+            $event->save();
+
+            AuditLog::record('entitlement.granted', $event, array_filter([
+                'entitlement_id' => $entitlement->getKey(),
+                'feature' => $feature,
+                'until' => $until?->toIso8601String(),
+                'note' => $note,
+            ]), $admin);
+
+            return $entitlement;
+        });
+    }
+
+    /**
+     * An admin ends a granted or bought feature now (as a refund ends an order's add-ons).
+     */
+    public function revokeEntitlement(Entitlement $entitlement, User $admin, ?string $reason = null): bool
+    {
+        $this->ensureAdmin($admin);
+
+        return DB::transaction(function () use ($entitlement, $admin, $reason) {
+            $entitlement = Entitlement::query()->whereKey($entitlement->getKey())->lockForUpdate()->firstOrFail();
+            if ($entitlement->until !== null && $entitlement->until->lte(now())) {
+                return false;
+            }
+
+            $entitlement->update(['until' => now()]);
+
+            $event = $entitlement->event_id ? Event::query()->whereKey($entitlement->event_id)->lockForUpdate()->first() : null;
+            if ($event) {
+                $this->syncGuestLimit($event);
+                $event->save();
+            }
+
+            AuditLog::record('entitlement.revoked', $event ?? $entitlement, array_filter([
+                'entitlement_id' => $entitlement->getKey(),
+                'feature' => $entitlement->feature,
+                'source_order_id' => $entitlement->source_order_id,
+                'reason' => $reason,
+            ]), $admin);
+
+            return true;
+        });
+    }
+
+    /**
+     * One entitlements row, plus what the feature changes on the event (the caller saves the event).
+     */
+    private function addEntitlement(Event $event, string $feature, ?CarbonImmutable $until, ?Order $order): Entitlement
+    {
+        $entitlement = Entitlement::query()->create([
+            'event_id' => $event->getKey(),
+            'feature' => $feature,
+            'until' => $until,
+            'source_order_id' => $order?->getKey(),
+        ]);
+
+        // photo cloud keeps the album: the event's storage lasts at least as long
+        if ($feature === 'photo_cloud' && $until && (! $event->storage_until || $event->storage_until->lt($until))) {
+            $event->storage_until = $until->toDateString();
+        }
+
+        return $entitlement;
+    }
+
+    /**
+     * A paid or approved order now counts as a use of its code (Discounts::uses).
+     * Money already taken is never refused: a code past its limit by then is flagged in the audit log.
+     */
+    private function redeemDiscount(Order $order, ?User $actor): void
+    {
+        $code = $order->discount_code_id ? DiscountCode::query()->whereKey($order->discount_code_id)->lockForUpdate()->first() : null;
+        if (! $code) {
+            return;
+        }
+
+        $discounts = app(Discounts::class);
+        $uses = $discounts->uses($code);
+        $byUser = $order->user ? $discounts->uses($code, $order->user) : 0;
+        $over = ($code->max_uses !== null && $uses > $code->max_uses)
+            || ($code->max_uses_per_user !== null && $byUser > $code->max_uses_per_user);
+
+        AuditLog::record($over ? 'discount.over_limit' : 'discount.redeemed', $code, [
+            'order' => $order->code,
+            'discount' => $order->discount_cents,
+            'currency' => $order->currency,
+            'uses' => $uses,
+        ], $actor);
+    }
+
+    /**
+     * A refunded order gives its use of the code back (expired and rejected orders never took one).
+     */
+    private function releaseDiscount(Order $order, ?User $actor): void
+    {
+        $code = $order->discount_code_id ? DiscountCode::query()->find($order->discount_code_id) : null;
+        if ($code) {
+            AuditLog::record('discount.released', $code, ['order' => $order->code, 'status' => $order->status], $actor);
+        }
     }
 
     private function ensureAdmin(User $user): void

@@ -1,6 +1,8 @@
 /** App\Services\Payments\CheckoutService::options */
 export interface CheckoutOptions {
     endpoint: string;
+    /** POST {event_id, code} → {discount: DiscountRules} or 422 */
+    discount_endpoint: string;
     event_id: string;
     currencies: { code: string; exponent: number }[];
     countries: { code: string; currency: string }[];
@@ -55,6 +57,8 @@ export interface OrderSummary {
     requested_currency: string | null;
     total: number;
     total_formatted: string;
+    /** the code used at checkout and what it took off (total is already net of it) */
+    discount: { code: string; amount: number; amount_formatted: string; subtotal_formatted: string } | null;
     summary: string;
     created_at: string | null;
     expires_at: string | null;
