@@ -7,12 +7,15 @@ use App\Models\Household;
 use App\Models\Invitation;
 use App\Models\OpenLink;
 use App\Models\Plan;
+use App\Models\User;
 use App\Observers\OgImageWarmer;
+use App\Services\Account\SessionRegistry;
 use App\Services\DraftAccess;
 use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfigValidator;
 use App\Services\Payments\PaymentGateways;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -57,6 +60,13 @@ class AppServiceProvider extends ServiceProvider
         Event::listen([Login::class, Registered::class], function (Login|Registered $event) {
             if (request()->hasSession()) {
                 app(DraftAccess::class)->attachTo($event->user);
+            }
+        });
+
+        // Account → Security lists signed-in devices; a device that logs out leaves the list.
+        Event::listen(Logout::class, function (Logout $event) {
+            if ($event->user instanceof User && request()->hasSession()) {
+                app(SessionRegistry::class)->forget($event->user, request()->session()->getId());
             }
         });
     }

@@ -6,6 +6,8 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Controllers\Auth\EmailCodeController;
+use App\Services\Account\LoginCodes;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -23,11 +25,16 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
+        // "Continue with Google" shows only when GOOGLE_CLIENT_ID is set; "Email me a code" when login codes are on
         Fortify::loginView(fn () => Inertia::render('auth/Login', [
             'status' => session('status'),
             'canResetPassword' => true,
+            'loginCodes' => LoginCodes::enabled(),
+            'codeEmail' => session(EmailCodeController::SESSION_KEY),
         ]));
-        Fortify::registerView(fn () => Inertia::render('auth/Register'));
+        Fortify::registerView(fn () => Inertia::render('auth/Register', [
+            'loginCodes' => LoginCodes::enabled(),
+        ]));
         Fortify::requestPasswordResetLinkView(fn () => Inertia::render('auth/ForgotPassword', [
             'status' => session('status'),
         ]));

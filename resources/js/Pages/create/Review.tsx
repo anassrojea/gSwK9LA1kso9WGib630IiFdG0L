@@ -3,6 +3,7 @@ import { CalendarDays, Check, Copy, Gem, LayoutDashboard, LogIn, MapPin, Send, S
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+import { GoogleButton } from '@/components/auth/GoogleButton';
 import { CheckoutPanel } from '@/components/checkout/CheckoutPanel';
 import { OrderPanel } from '@/components/checkout/OrderPanel';
 import { Button } from '@/components/ui/button';
@@ -211,6 +212,7 @@ export default function Review(props: Props) {
                                 </Link>
                             </Button>
                         </div>
+                        <GoogleButton className="h-12" />
                     </section>
                 )}
 

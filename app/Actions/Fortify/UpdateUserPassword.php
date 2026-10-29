@@ -8,13 +8,15 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 
+/**
+ * Account → Security: change the password, or set a first one for an account
+ * that signs in with Google or an email code (no current password to give).
+ */
 class UpdateUserPassword implements UpdatesUserPasswords
 {
     use PasswordValidationRules;
 
     /**
-     * Validate and update the user's password.
-     *
      * @param  array<string, string>  $input
      *
      * @throws ValidationException
@@ -22,11 +24,11 @@ class UpdateUserPassword implements UpdatesUserPasswords
     public function update(User $user, array $input): void
     {
         Validator::make($input, [
-            'current_password' => ['required', 'string', 'current_password:web'],
+            'current_password' => $user->hasPassword() ? ['required', 'string', 'current_password:web'] : ['nullable'],
             'password' => $this->passwordRules(),
         ], [
-            'current_password.current_password' => __('The provided password does not match your current password.'),
-        ])->validateWithBag('updatePassword');
+            'current_password.current_password' => trans('app.account.errors.wrong_password'),
+        ])->validate();
 
         $user->forceFill([
             'password' => Hash::make($input['password']),

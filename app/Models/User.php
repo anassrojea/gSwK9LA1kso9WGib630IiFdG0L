@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\Account\GoogleAuth;
+use App\Services\Account\LoginCodes;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -36,6 +38,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'trial_ends_at' => 'datetime',
+            'deletion_requested_at' => 'immutable_datetime',
         ];
     }
 
@@ -45,6 +48,34 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference
     public function preferredLocale(): string
     {
         return $this->locale ?: config('app.locale');
+    }
+
+    public function hasPassword(): bool
+    {
+        return filled($this->getAuthPassword());
+    }
+
+    /**
+     * The ways this account can sign in now: password, google, email_code.
+     * The account area never removes the last one (App\Http\Controllers\Account\SecurityController).
+     *
+     * @return list<string>
+     */
+    public function signInMethods(): array
+    {
+        return array_values(array_filter([
+            $this->hasPassword() ? 'password' : null,
+            $this->google_id && GoogleAuth::enabled() ? 'google' : null,
+            filled($this->email) && LoginCodes::enabled() ? 'email_code' : null,
+        ]));
+    }
+
+    /**
+     * Unlinking Google must leave another way in (a password or email codes).
+     */
+    public function canUnlinkGoogle(): bool
+    {
+        return $this->google_id !== null && array_diff($this->signInMethods(), ['google']) !== [];
     }
 
     public function isAdmin(): bool

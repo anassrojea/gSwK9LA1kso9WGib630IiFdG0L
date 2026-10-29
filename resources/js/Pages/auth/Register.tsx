@@ -1,6 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 
+import { GoogleButton, OrDivider, useGoogleEnabled } from '@/components/auth/GoogleButton';
 import { FieldError } from '@/components/FieldError';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,8 +9,9 @@ import { Label } from '@/components/ui/label';
 import GuestLayout from '@/layouts/GuestLayout';
 import { useT } from '@/lib/i18n';
 
-export default function Register() {
+export default function Register({ loginCodes = false }: { loginCodes?: boolean }) {
     const { t } = useT();
+    const google = useGoogleEnabled();
     const form = useForm({ name: '', email: '', password: '', password_confirmation: '' });
 
     const submit = (e: FormEvent) => {
@@ -29,12 +31,23 @@ export default function Register() {
     return (
         <GuestLayout title={t('register')}>
             <Head title={t('register')} />
+            {google && (
+                <div className="mb-4 grid gap-4">
+                    <GoogleButton />
+                    <OrDivider />
+                </div>
+            )}
             <form onSubmit={submit} className="grid gap-4">
                 {field('name', t('name_label'), 'text', 'name')}
                 {field('email', t('email'), 'email', 'username')}
                 {field('password', t('password'), 'password', 'new-password')}
                 {field('password_confirmation', t('password_confirmation'), 'password', 'new-password')}
-                <Button type="submit" disabled={form.processing}>{t('register')}</Button>
+                <Button type="submit" className="h-11 text-base" disabled={form.processing}>{t('register')}</Button>
+                {loginCodes && (
+                    <Button asChild variant="ghost" className="h-11">
+                        <Link href="/login" data-register-code>{t('auth.code.use_code')}</Link>
+                    </Button>
+                )}
                 <p className="text-center text-sm text-muted-foreground">
                     {t('have_account')}{' '}
                     <Link href="/login" className="text-primary underline-offset-4 hover:underline">{t('login')}</Link>
