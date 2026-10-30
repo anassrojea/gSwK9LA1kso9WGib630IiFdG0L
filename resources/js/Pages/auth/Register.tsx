@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 
 import { GoogleButton, OrDivider, useGoogleEnabled } from '@/components/auth/GoogleButton';
 import { FieldError } from '@/components/FieldError';
+import { LegalLinks } from '@/components/LegalLinks';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -42,6 +43,9 @@ export default function Register({ loginCodes = false }: { loginCodes?: boolean 
                 {field('email', t('email'), 'email', 'username')}
                 {field('password', t('password'), 'password', 'new-password')}
                 {field('password_confirmation', t('password_confirmation'), 'password', 'new-password')}
+                <p className="text-muted-foreground text-xs leading-relaxed" data-register-legal>
+                    <LegalLinks text={t('site.agree')} links={{ terms: 'terms', privacy: 'privacy' }} />
+                </p>
                 <Button type="submit" className="h-11 text-base" disabled={form.processing}>{t('register')}</Button>
                 {loginCodes && (
                     <Button asChild variant="ghost" className="h-11">

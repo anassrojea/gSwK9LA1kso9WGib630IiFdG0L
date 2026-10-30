@@ -3,6 +3,8 @@ import '../css/app.css';
 import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 
+import { initMonitoring } from '@/lib/monitoring';
+
 const appName = import.meta.env.VITE_APP_NAME || 'Daawa';
 
 createInertiaApp({
@@ -19,3 +21,6 @@ createInertiaApp({
     },
     progress: { color: '#A8325A' },
 });
+
+// Sentry (only with VITE_SENTRY_DSN) and PostHog (only with VITE_POSTHOG_KEY and consent)
+initMonitoring();

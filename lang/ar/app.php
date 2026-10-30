@@ -1088,4 +1088,21 @@ return [
     ],
 
     'publish_gate' => ['edit_needs_upgrade' => 'هذا التعديل يحتاج باقة :plan. رقّوا المناسبة إلى هذه الباقة من لوحة التحكم ثم أعيدوا المحاولة.'],
+
+    // الموقع العام والصفحات القانونية (المرحلة 6أ): روابط تظهر في صفحات React
+    'site' => [
+        'terms' => 'شروط الاستخدام',
+        'privacy' => 'سياسة الخصوصية',
+        'refund' => 'سياسة الاسترداد',
+        'cookies' => 'ملفات تعريف الارتباط',
+        'agree' => 'بإنشائك الحساب فإنك توافق على :terms و:privacy.',
+        'checkout_links' => 'اقرأ :terms و:refund قبل الدفع.',
+        'urls' => [
+            'terms' => '/legal/terms',
+            'privacy' => '/legal/privacy',
+            'refund' => '/legal/refund',
+            'cookies' => '/legal/cookies',
+        ],
+        'admin_pulse' => 'صحّة الخادم (Pulse)',
+    ],
 ];

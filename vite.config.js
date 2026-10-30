@@ -14,6 +14,9 @@ export default defineConfig({
                 // guest invitations (Blade + vanilla JS, no framework runtime)
                 'resources/css/invite.css',
                 'resources/js/invite.js',
+                // public site (Blade + a little vanilla JS)
+                'resources/css/marketing.css',
+                'resources/js/marketing.js',
             ],
             refresh: true,
         }),

@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\Marketing;
 
 use App\Http\Controllers\Controller;
-use Database\Seeders\DemoSeeder;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
     /**
-     * Placeholder landing page (Blade, SEO-friendly). Lists the demo
-     * invitations outside production.
+     * GET /: the landing page (SiteController::home) in the visitor's language:
+     * Arabic for crawlers and new visitors, English after ?lang=en or the
+     * language switch. Its canonical URL is / or /en accordingly.
      */
-    public function __invoke(): View
+    public function __invoke(SiteController $site): View
     {
-        return view('marketing.home', [
-            'demos' => app()->isProduction() ? [] : DemoSeeder::TOKENS,
-        ]);
+        return $site->home();
     }
 }
