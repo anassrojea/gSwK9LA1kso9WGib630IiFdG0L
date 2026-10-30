@@ -17,6 +17,11 @@ export default defineConfig({
                 // public site (Blade + a little vanilla JS)
                 'resources/css/marketing.css',
                 'resources/js/marketing.js',
+                // guest album and the hall's live photo wall (phase 7B)
+                'resources/css/album.css',
+                'resources/js/album.js',
+                'resources/css/wall.css',
+                'resources/js/wall.js',
             ],
             refresh: true,
         }),

@@ -325,7 +325,7 @@ export default function EventDashboard(props: DashboardProps) {
                             {t('dashboard.big.seat')}
                         </BigButton>
                     )}
-                    <BigButton name="album" icon={<Images />} disabled note={t('dashboard.big.soon')}>
+                    <BigButton name="album" icon={<Images />} href={`/dashboard/events/${event.id}/album`}>
                         {t('dashboard.big.album')}
                     </BigButton>
                     <BigButton name="export" icon={<Download />} href={exportUrl} note={filtered ? t('dashboard.table.showing', { shown: visible.length, total: guests.length }) : undefined}>

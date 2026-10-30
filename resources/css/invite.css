@@ -318,6 +318,14 @@ section.blk.alt,.sec-story{background:var(--c-surface)}
 .ticket .label{color:var(--c-label)}
 .ticket .tb{display:block;font:700 40px/1 var(--f-display);color:var(--c-accent)}
 .btn.ghost{color:var(--c-gold-light);border-color:var(--c-gold)}
+/* wallet buttons on the ticket (phase 7B) */
+.wallet-btns{display:grid;gap:8px;width:100%;margin-top:4px}
+.wallet-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border-radius:10px;padding:10px 14px;font:600 14px var(--f-label);text-decoration:none}
+.wallet-btn svg{width:20px;height:20px;flex:none}
+.wallet-btn.apple{background:#000;color:#fff}
+.wallet-btn.google{background:#fff;color:#1f1f1f;border:1px solid #c4c7c5}
+.wallet-btn.web{color:var(--c-accent);border:1.5px solid var(--c-accent)}
+.wallet-btn[hidden]{display:none}
 
 .foot{padding-block:28px 40px;text-align:center;font:500 12px var(--f-label);color:var(--c-soft);background:var(--c-bg);display:grid;gap:6px}
 .foot a{color:var(--c-accent);font-weight:700}

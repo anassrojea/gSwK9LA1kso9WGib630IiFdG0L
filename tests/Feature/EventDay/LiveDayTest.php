@@ -2,6 +2,7 @@
 
 use App\Models\OrgMember;
 use App\Models\SeatAssignment;
+use App\Services\Album\Album;
 use App\Services\EventDay;
 use Carbon\CarbonImmutable;
 use Tests\Support\DashboardFixtures;
@@ -35,7 +36,8 @@ it('shows the live day panel only within the event-day window, in the event\'s t
     $live = $state();
     expect($live['stream'])->toBe('https://youtube.com/live/abc')
         ->and($live['directions'])->toStartWith('https://')
-        ->and($live['wall'])->toBeNull();
+        // Signature includes the photo wall: guests get its public link
+        ->and($live['wall'])->toEndWith('/wall');
 
     $this->travelTo(CarbonImmutable::parse('2026-12-11 04:01', 'Asia/Riyadh'));
     expect($state())->toBeNull();
@@ -101,4 +103,15 @@ it('gives the dashboard panel its links, features and window', function () {
         ->assertJsonPath('urls.seating', "/dashboard/events/{$event->id}/seating")
         ->assertJsonPath('live_stream_url', 'https://youtube.com/live/abc')
         ->assertJsonPath('live.from', '2026-12-10T08:00:00+03:00');
+});
+
+it('never gives guests the link to a private photo wall', function () {
+    [$event, $f] = p7aLiveEvent();
+    app(Album::class)->update($event, ['wall_private' => true]);
+    $this->travelTo(CarbonImmutable::parse('2026-12-10 21:00', 'Asia/Riyadh'));
+
+    $live = $this->getJson("/i/{$f['Ali']->token}/state")->assertOk()->json('live');
+
+    expect($live)->not->toBeNull()
+        ->and($live['wall'])->toBeNull();
 });

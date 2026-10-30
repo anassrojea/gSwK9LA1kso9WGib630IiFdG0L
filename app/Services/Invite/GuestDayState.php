@@ -2,14 +2,15 @@
 
 namespace App\Services\Invite;
 
+use App\Models\Event;
 use App\Models\Household;
 use App\Models\Invitation;
+use App\Services\Album\Album;
 use App\Services\Entitlements;
 use App\Services\EventDay;
 use App\Services\InvitationConfig\InvitationConfig;
 use App\Services\Seating\HallLayoutData;
 use App\Services\Seating\SeatingPlan;
-use Illuminate\Support\Facades\Route;
 
 /**
  * The per-guest event-day parts of GET /i/{token}/state (plan sections 9 and
@@ -53,13 +54,25 @@ class GuestDayState
                 'venue' => $place['name'] ?? $event->venue_name,
                 'directions' => static::directions($place, $event->venue_name, $event->address, $event->lat, $event->lng),
                 'stream' => $event->live_stream_url,
-                // the live photo wall (phase 7B) plugs in here once its route exists
-                'wall' => Route::has('wall.show') ? rescue(fn () => route('wall.show', $invitation->slug, false), null, false) : null,
+                // the live photo wall (phase 7B): only with the feature, and never a private
+                // wall, whose secret link belongs to the hall screen, not to every guest
+                'wall' => static::wallLink($event, $invitation->slug),
                 'until' => EventDay::window($event)[1]->toIso8601String(),
             ];
         }
 
         return ['seat' => $seat, 'qr' => $qr, 'live' => $live];
+    }
+
+    private static function wallLink(Event $event, ?string $slug): ?string
+    {
+        $album = app(Album::class);
+
+        if (! $slug || ! $album->wallEnabled($event) || $album->settings($event)['wall_private']) {
+            return null;
+        }
+
+        return route('wall.show', $slug, false);
     }
 
     /**

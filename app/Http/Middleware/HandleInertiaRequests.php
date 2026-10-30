@@ -60,7 +60,12 @@ class HandleInertiaRequests extends Middleware
             'locales' => SetLocale::supported(),
             // flat dictionary for the React pages (react-i18next can take over once the wizard lands)
             // plus lang/{locale}/invoices.php under "invoices" (download links on orders and billing)
-            'translations' => fn () => trans('app', [], $locale) + ['invoices' => trans('invoices', [], $locale)],
+            // and the album and AI dictionaries (phase 7B), read as t('album.host.…') / t('ai.…')
+            'translations' => fn () => trans('app', [], $locale) + [
+                'invoices' => trans('invoices', [], $locale),
+                'album' => trans('album', [], $locale),
+                'ai' => trans('ai', [], $locale),
+            ],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
                 'warning' => fn () => $request->session()->get('warning'),

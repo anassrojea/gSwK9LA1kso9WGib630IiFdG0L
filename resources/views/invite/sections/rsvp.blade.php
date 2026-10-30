@@ -73,6 +73,7 @@
                 <img alt="{{ __('invite.live.qr_alt') }}" width="176" height="176" loading="lazy" decoding="async">
                 <figcaption>{{ __('invite.live.qr') }}</figcaption>
             </figure>
+            @include('invite.partials.wallet_buttons')
         </div>
         <button type="button" class="btn ghost" data-edit>{{ __('invite.rsvp.edit') }}</button>
     </div>

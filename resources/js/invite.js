@@ -8,6 +8,7 @@ import { renderDay } from './invite/day.js';
 import { NS, petalPath, seeded } from './openings/shared.js';
 import { toLocalDigits } from './lib/digits';
 import { openLinkView, replyStorageKey, stateQuery } from './lib/open-link';
+import { deviceFrom, walletPlatformsFor } from './lib/wallet';
 
 document.documentElement.classList.add('js');
 
@@ -303,3 +304,12 @@ if (musicButton) {
         musicButton.setAttribute('aria-label', playing ? musicButton.dataset.labelPlay : musicButton.dataset.labelPause);
     });
 }
+
+/* ---------- album and wallet (phase 7B) ---------- */
+// a table QR (/i/{token}?upload=1) goes straight to the album's upload page
+const albumLink = document.querySelector('[data-album-link]');
+if (albumLink && new URLSearchParams(location.search).get('upload') === '1') location.replace(albumLink.href);
+
+// an iPhone gets the Apple Wallet button, an Android phone Google's; other devices both
+const walletShown = walletPlatformsFor(deviceFrom(navigator.userAgent, navigator.maxTouchPoints || 0));
+document.querySelectorAll('[data-wallet-platform]').forEach((a) => (a.hidden = !walletShown.includes(a.dataset.walletPlatform)));

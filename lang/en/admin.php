@@ -288,5 +288,6 @@ return [
         'guests_200' => 'Extra 200 guests',
         'video_guestbook' => 'Video guestbook',
         'thank_you' => 'Thank-you card',
+        'ai_poem' => 'AI poem',
     ],
 ];

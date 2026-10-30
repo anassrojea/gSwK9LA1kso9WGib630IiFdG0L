@@ -5,6 +5,7 @@ use App\Http\Controllers\Account\PrivacyController;
 use App\Http\Controllers\Account\SecurityController;
 use App\Http\Controllers\Auth\EmailCodeController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Dashboard\AlbumController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EventDashboardController;
 use App\Http\Controllers\Dashboard\EventDayController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Marketing\HomeController;
 use App\Http\Controllers\Payments\CheckoutController;
 use App\Http\Controllers\Payments\OrderController;
+use App\Http\Controllers\Wizard\AiController;
 use App\Http\Controllers\Wizard\GuestController;
 use App\Http\Controllers\Wizard\MediaController;
 use App\Http\Controllers\Wizard\PreviewController;
@@ -214,3 +216,32 @@ Route::prefix('door/{event}')->name('door.')->group(function () {
     Route::get('/pass/{pass}', [DoorPassController::class, 'show'])->middleware(['signed', 'throttle:30,1'])->name('pass');
     Route::post('/pass/{pass}', [DoorPassController::class, 'unlock'])->middleware(['signed', 'throttle:20,1'])->name('pass.unlock');
 });
+
+// Phase 7B, guest extras: the host's album page, moderation and ZIP export (plan section 11),
+// and AI writing in the wizard and the dashboard (plan section 14.3). Authorized in the controllers.
+Route::middleware('auth')->group(function () {
+    Route::pattern('media', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+    Route::pattern('entry', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+    Route::pattern('generation', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+
+    Route::get('/dashboard/events/{event}/album', [AlbumController::class, 'show'])->name('dashboard.events.album');
+    Route::put('/dashboard/events/{event}/album/settings', [AlbumController::class, 'settings'])
+        ->middleware('throttle:30,1')
+        ->name('dashboard.events.album.settings');
+    Route::patch('/media/{media}', [AlbumController::class, 'update'])->middleware('throttle:240,1')->name('media.update');
+    Route::delete('/media/{media}', [AlbumController::class, 'destroy'])->middleware('throttle:240,1')->name('media.destroy');
+    Route::post('/media/{media}/use', [AlbumController::class, 'use'])->middleware('throttle:30,1')->name('media.use');
+    Route::delete('/guestbook/{entry}', [AlbumController::class, 'destroyGuestbook'])->name('guestbook.destroy');
+    Route::post('/events/{event}/album/export', [AlbumController::class, 'export'])->middleware('throttle:5,10')->name('events.album.export');
+
+    Route::post('/events/{event}/ai/story', [AiController::class, 'story'])->middleware('throttle:ai')->name('events.ai.story');
+    Route::post('/events/{event}/ai/poem', [AiController::class, 'poem'])->middleware('throttle:ai')->name('events.ai.poem');
+    Route::post('/events/{event}/guests/clean', [AiController::class, 'clean'])->middleware('throttle:ai')->name('events.guests.clean');
+    Route::get('/ai/generations/{generation}', [AiController::class, 'show'])->middleware('throttle:ai-poll')->name('ai.generations.show');
+});
+
+// the album ZIP from the email: the signature is the key (the link expires)
+Route::get('/album-exports/{event}/{file}', [AlbumController::class, 'download'])
+    ->where('file', 'album-[0-9]{8}-[0-9]{6}-[a-z0-9]{6}\.zip')
+    ->middleware('signed')
+    ->name('album.export.download');

@@ -1,7 +1,8 @@
-import { router, useForm } from '@inertiajs/react';
+import { router, useForm, usePage } from '@inertiajs/react';
 import { Minus, Plus, Trash2, UserPlus, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
+import { AiCleanGuests } from '@/components/ai/AiCleanGuests';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,6 +11,7 @@ import WizardLayout from '@/components/wizard/WizardLayout';
 import { parseGuestList } from '@/lib/guest-list';
 import { useT } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
+import type { SharedProps } from '@/types';
 import type { GuestRow, WizardProps } from '@/types/wizard';
 
 interface Props extends WizardProps {
@@ -91,6 +93,7 @@ function GuestItem({ guest }: { guest: GuestRow }) {
  */
 export default function Guests(props: Props) {
     const { t, tc, n } = useT();
+    const { auth } = usePage<SharedProps>().props;
     const paste = useForm({ text: '' });
     const single = useForm({ name: '', seats: 2 });
     const parsed = useMemo(() => parseGuestList(paste.data.text), [paste.data.text]);
@@ -155,6 +158,7 @@ export default function Guests(props: Props) {
                     <Button type="submit" className="h-12 text-base" disabled={paste.processing || parsed.length === 0}>
                         <UserPlus /> {parsed.length ? t('wizard.guests.add_families', { families: tc('wizard.guests.families', parsed.length) }) : t('wizard.guests.add_list')}
                     </Button>
+                    <AiCleanGuests text={paste.data.text} cleanUrl={`/events/${props.event.id}/guests/clean`} importUrl={`/events/${props.event.id}/guests/import`} signedIn={!!auth.user} onDone={() => paste.reset()} />
                 </form>
 
                 <section className="grid gap-3">
