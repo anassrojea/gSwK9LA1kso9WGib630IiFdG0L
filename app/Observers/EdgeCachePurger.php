@@ -8,6 +8,7 @@ use App\Models\Household;
 use App\Models\Invitation;
 use App\Models\Media;
 use App\Models\OpenLink;
+use App\Models\Organization;
 use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * (plan section 6.4): an invitation is published, unpublished or edited after
  * publishing; a household is renamed or deleted; the open link is switched,
  * re-tokened or deleted; the event's plan (badge, features) or status changes
- * (ended, archived: the page answers 404); an uploaded file is deleted.
+ * (ended, archived: the page answers 404); an uploaded file is deleted; an
+ * organization's name, logo, white label or plan changes (phase 8A).
  * Drafts are never cached, so nothing is purged before the first publish.
  * Registered in AppServiceProvider.
  */
@@ -35,6 +37,10 @@ class EdgeCachePurger implements ShouldHandleEventsAfterCommit
             $model instanceof Event => $model->wasChanged(['plan_id', 'status']) && $this->published($model->getKey())
                 ? PurgeEdgeCache::forEvent($model)
                 : null,
+            // phase 8A: white label (name, logo, colors) and the org's plan show on its events' pages
+            $model instanceof Organization => $model->wasChanged(['name', 'logo_url', 'white_label', 'plan_id'])
+                ? $this->organization($model)
+                : null,
             $model instanceof Media => $model->event_id && $model->wasChanged(['hidden', 'storage_key']) && $this->published($model->event_id)
                 ? PurgeEdgeCache::forEvent($model->event_id)
                 : null,
@@ -52,6 +58,15 @@ class EdgeCachePurger implements ShouldHandleEventsAfterCommit
             // a photo or cover removed (by the host, or by events:expire-storage after the storage period)
             PurgeEdgeCache::forEvent($model->event_id);
         }
+    }
+
+    private function organization(Organization $org): void
+    {
+        Invitation::query()
+            ->whereNotNull('published_at')
+            ->whereIn('event_id', $org->events()->select('id'))
+            ->pluck('event_id')
+            ->each(fn (string $eventId) => PurgeEdgeCache::forEvent($eventId));
     }
 
     private function invitation(Invitation $invitation): void
