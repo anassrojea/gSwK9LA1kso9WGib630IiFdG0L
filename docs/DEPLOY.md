@@ -169,6 +169,8 @@ LEMON_SQUEEZY_API_KEY=...
 LEMON_SQUEEZY_STORE=12345
 LEMON_SQUEEZY_SIGNING_SECRET=...
 LEMON_SQUEEZY_VARIANT_ID=67890
+# Venue & Planner Pro subscriptions (docs/VENUE_PRO.md, section 8): STRIPE_PRICE_VENUE_*, LEMON_SQUEEZY_VENUE_PRODUCT_ID,
+# LEMON_SQUEEZY_VARIANT_VENUE_*, ORG_FREE_SEATS, ORG_GRACE_DAYS, ORG_RENEW_DAYS_BEFORE
 
 # Invoices and VAT (config/invoicing.php, docs/INVOICES.md). Empty VAT number: receipts without VAT.
 INVOICE_SELLER_NAME_AR=...                # legal name as on the commercial registration
@@ -269,7 +271,10 @@ every minute). Scheduled today (`routes/console.php`): `horizon:snapshot` every 
 every fifteen minutes (transfer orders with no receipt 48 h after checkout become `expired`, and the customer is
 emailed), `account:purge-deleted` daily, and `events:expire-storage` daily at 04:23 (storage warnings 14 and 3 days
 ahead, media deletion after `events.storage_until`, archive after the grace period; run it with `--dry-run` first on a
-new server, see [INVOICES.md, section 3](INVOICES.md#3-storage-expiry)).
+new server, see [INVOICES.md, section 3](INVOICES.md#3-storage-expiry)). Venue & Planner Pro
+([VENUE_PRO.md](VENUE_PRO.md#bank-transfer)): `org:renewal-orders` hourly (transfer renewal orders 7 days ahead),
+`org:renewal-reminders` daily at 09:41 (7 and 1 day before), `org:expire-subscriptions` hourly (past_due, then expired
+after the grace period). All three are idempotent.
 
 ## 7. Database backups
 
@@ -472,6 +477,15 @@ approval asks for the bank reference, which can approve one order only, and ever
    `custom_price`). Its variant id → `LEMON_SQUEEZY_VARIANT_ID`. The store currency must be USD (`LEMON_SQUEEZY_CURRENCY`).
 3. Webhooks → URL `https://daawa.app/webhooks/lemon-squeezy`, events `order_created` and `order_refunded`, a signing
    secret of your choice → `LEMON_SQUEEZY_SIGNING_SECRET`. The order code travels in `checkout_data.custom.order_code`.
+
+**Venue & Planner Pro subscriptions** ([VENUE_PRO.md](VENUE_PRO.md)). Stripe: add `customer.subscription.created`,
+`customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` and `invoice.payment_failed` to the
+same webhook endpoint; create a recurring price per tier, interval and currency and put its id in
+`STRIPE_PRICE_{PLAN}_{CURRENCY}`; configure the Billing Portal (Settings → Billing → Customer portal) with those
+products so owners can change card, plan or cancel. Lemon Squeezy: a subscription product with one variant per
+plan row (`LEMON_SQUEEZY_VENUE_PRODUCT_ID`, `LEMON_SQUEEZY_VARIANT_VENUE_*`) and the `subscription_*` webhook events
+on the same URL. Bank transfer needs nothing more: renewal orders appear in `/admin` → Orders and on the
+organization's page, approved like any transfer.
 
 **Prices.** `PlanSeeder` writes USD prices from the plans and **placeholder** SAR and SYP prices, shown as
 "Placeholder" in `/admin` → Prices until an admin saves them. Set the real ones there before launch (SYP is typed in

@@ -6,6 +6,8 @@
     use App\Services\Entitlements;
     use App\Http\Controllers\Marketing\SiteController;
 
+    // one venue band (venue_pro); the other Venue Pro tiers and yearly rows are on /org/{org}/billing (phase 8A)
+    $plans = collect($plans)->filter(fn ($p) => $p['interval'] === null || $p['id'] === 'venue_pro')->values()->all();
     $event = collect($plans)->whereNull('interval')->values();
     $venue = collect($plans)->firstWhere('interval', 'month');
     $features = Entitlements::FEATURES;

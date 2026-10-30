@@ -98,6 +98,7 @@ Zod schema and the TypeScript hall generator agree with their PHP counterparts o
 | `app/Filament/` | Admin (Arabic by default, English from the user menu; strings in `lang/*/admin.php`): Today, orders and transfers, prices, discount codes, customers and their events (read-only), templates, themes, openings, plans, add-ons, audit log |
 | `app/Services/Catalog/` | `CatalogSync` (templates/ JSON → database, used by `CatalogSeeder` and the admin's import) and `CatalogValidator` (admin edits checked against the config schema) |
 | `app/Services/Payments/Discounts.php` | Discount code rules (twin: `resources/js/lib/discount.ts`) |
+| `app/Services/Org/`, `routes/org.php`, `resources/js/Pages/org/` | Venue & Planner Pro (phase 8A): organizations, team and invitations, client events, the venue calendar, subscriptions (Stripe, Lemon Squeezy, bank transfer), signature-event quota, white label. See [docs/VENUE_PRO.md](docs/VENUE_PRO.md) |
 
 ### Public site, legal pages, monitoring (phase 6A)
 
