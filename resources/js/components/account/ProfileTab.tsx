@@ -3,6 +3,7 @@ import { Mail } from 'lucide-react';
 import { useState, type ComponentProps, type FormEvent } from 'react';
 
 import { Section } from '@/components/account/Section';
+import { VerifyEmailNotice } from '@/components/account/VerifyEmailNotice';
 import { FieldError } from '@/components/FieldError';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -80,6 +81,7 @@ export function ProfileTab({ profile, options, hasPassword }: Props) {
                     <Input id="profile-email" type="email" dir="ltr" autoComplete="email" required value={form.data.email}
                         onChange={(e) => form.setData('email', e.target.value)} aria-invalid={!!form.errors.email} />
                     <FieldError message={form.errors.email} />
+                    {!profile.email_verified && profile.email && !emailChanged && <VerifyEmailNotice action="profile" />}
                 </div>
 
                 {emailChanged && hasPassword && (

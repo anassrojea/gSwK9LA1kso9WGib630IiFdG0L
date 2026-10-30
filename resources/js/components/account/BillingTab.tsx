@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Check, ChevronLeft, Gem, Plus, Receipt } from 'lucide-react';
+import { Check, ChevronLeft, FileDown, Gem, Plus, Receipt } from 'lucide-react';
 
 import { Section } from '@/components/account/Section';
 import { OrderPanel, OrderStatusBadge } from '@/components/checkout/OrderPanel';
@@ -107,8 +107,8 @@ export function BillingTab({ billing }: { billing: BillingData }) {
                 ) : (
                     <ul className="grid gap-2">
                         {billing.orders.map((order) => (
-                            <li key={order.code}>
-                                <Link href={order.url} className="hover:bg-muted/60 flex items-center gap-3 rounded-lg border p-3 transition-colors" data-billing-order={order.code}>
+                            <li key={order.code} className="flex items-stretch gap-2">
+                                <Link href={order.url} className="hover:bg-muted/60 flex min-w-0 flex-1 items-center gap-3 rounded-lg border p-3 transition-colors" data-billing-order={order.code}>
                                     <Receipt className="text-muted-foreground size-5 shrink-0" />
                                     <div className="grid min-w-0 flex-1 gap-0.5">
                                         <span className="flex flex-wrap items-center gap-2">
@@ -130,6 +130,19 @@ export function BillingTab({ billing }: { billing: BillingData }) {
                                     <span className="shrink-0 text-sm font-semibold">{order.total_formatted}</span>
                                     <ChevronLeft className="text-muted-foreground size-4 shrink-0 ltr:rotate-180" />
                                 </Link>
+                                {order.invoices?.map((invoice) => (
+                                    <a
+                                        key={invoice.number}
+                                        href={invoice.url}
+                                        title={`${invoice.title} ${invoice.number}`}
+                                        aria-label={`${t('invoices.download')} ${invoice.title} ${invoice.number}`}
+                                        className="hover:bg-muted/60 text-primary flex w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-lg border text-[10px] font-medium transition-colors"
+                                        data-billing-invoice={invoice.number}
+                                    >
+                                        <FileDown className="size-4" />
+                                        PDF
+                                    </a>
+                                ))}
                             </li>
                         ))}
                     </ul>

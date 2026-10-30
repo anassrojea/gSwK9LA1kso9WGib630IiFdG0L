@@ -7,6 +7,7 @@ use App\Services\Account\LoginCodes;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
-class User extends Authenticatable implements FilamentUser, HasLocalePreference
+/**
+ * MustVerifyEmail: a password sign-up gets a verification link and must use it
+ * before paying or publishing (App\Services\Account\EmailVerification) and before
+ * reaching /admin (the panel's ->emailVerification()). Google and email-code
+ * accounts are verified when they sign in; changing the email with a password
+ * makes it unverified again and sends a new link (UpdateUserProfileInformation).
+ */
+class User extends Authenticatable implements FilamentUser, HasLocalePreference, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use Billable, HasFactory, HasUuids, Notifiable;
@@ -121,5 +129,10 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
     }
 }

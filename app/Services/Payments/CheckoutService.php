@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Plan;
 use App\Models\User;
 use App\Services\Entitlements;
+use App\Services\Invoicing\Vat;
 use App\Services\PublishGate;
 use App\Services\Wizard\PlanAdvisor;
 use Illuminate\Support\Collection;
@@ -68,16 +69,21 @@ class CheckoutService
                 AuditLog::record('order.superseded', $old, [], $user);
             }
 
+            // never negative: Discounts::amount caps the discount at the lines it applies to
+            $net = max(0, array_sum(array_column($lines, 'amount')) - $discount);
+            // VAT-exclusive prices (config/invoicing.php): VAT is added on top here; inclusive prices: 0
+            $vat = Vat::checkoutSurcharge($net, $charge, $country ?? $user->country);
+
             $order = Order::query()->create([
                 'user_id' => $user->getKey(),
                 'event_id' => $event->getKey(),
                 'org_id' => $event->org_id,
                 'items' => $lines,
-                // never negative: Discounts::amount caps the discount at the lines it applies to
-                'total_cents' => max(0, array_sum(array_column($lines, 'amount')) - $discount),
+                'total_cents' => $net + $vat,
                 'discount_code_id' => $code?->getKey(),
                 'discount_code' => $code?->code,
                 'discount_cents' => $discount,
+                'vat_cents' => $vat,
                 'currency' => $charge,
                 'requested_currency' => $charge === $currency ? null : $currency,
                 'method' => $gateway->method(),
@@ -215,6 +221,13 @@ class CheckoutService
                         'prices' => $this->prices->all($a),
                     ];
                 })->values()->all(),
+            // VAT added on top of the prices shown (VAT-exclusive prices only): the panel adds the same line
+            'vat' => Vat::pricesIncludeVat() || ! Vat::registered() ? null : [
+                'rate_bp' => Vat::rateBp(),
+                'currencies' => array_values((array) config('invoicing.vat.currencies', [])),
+                'countries' => array_values((array) config('invoicing.vat.countries', [])),
+                'label' => trans('invoices.vat_rate', ['rate' => Vat::formatRate(Vat::rateBp(), app()->getLocale())]),
+            ],
             'gateways' => collect($this->gateways->enabled())
                 ->map(fn (PaymentGateway $g) => ['id' => $g->id(), 'method' => $g->method(), 'currencies' => $g->currencies()])
                 ->values()->all(),

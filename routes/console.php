@@ -15,6 +15,9 @@ Schedule::command('orders:expire')->everyFifteenMinutes()->withoutOverlapping();
 // Account deletions run once their grace period is over (plan section 20, config/account.php)
 Schedule::command('account:purge-deleted')->dailyAt('03:17')->withoutOverlapping();
 
+// Storage period (plan section 11, config/retention.php): warnings 14 and 3 days ahead, media purge, archive
+Schedule::command('events:expire-storage')->dailyAt('04:23')->withoutOverlapping();
+
 Artisan::command('daawa:make-admin {email} {--name=}', function (string $email) {
     $user = User::query()->firstOrNew(['email' => $email]);
     $password = null;

@@ -61,6 +61,15 @@ class PublishGate
         return $this->entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS);
     }
 
+    /**
+     * The personal WhatsApp preview image ("دعوة خاصة لعائلة …") is Premium (plan section 5),
+     * like personal links: Free events share the generic card (App\Services\OgImage\OgImage).
+     */
+    public function canShowPersonalPreview(Event $event): bool
+    {
+        return $this->entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS);
+    }
+
     public function canRemind(Event $event): bool
     {
         return $this->entitlements->hasFeature($event, Entitlements::REMINDERS);

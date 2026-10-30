@@ -96,7 +96,7 @@ class AccountController extends Controller
                 ];
             });
 
-        $orders = Order::query()->where('user_id', $user->getKey())->with('event:id,title,status')->latest()->limit(20)->get();
+        $orders = Order::query()->where('user_id', $user->getKey())->with(['event:id,title,status', 'invoices'])->latest()->limit(20)->get();
         $pending = Order::query()
             ->where('user_id', $user->getKey())
             ->where('method', 'transfer')

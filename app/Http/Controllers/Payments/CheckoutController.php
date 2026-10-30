@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Payments;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Order;
+use App\Services\Account\EmailVerification;
 use App\Services\Payments\CheckoutFailed;
 use App\Services\Payments\CheckoutService;
 use App\Services\Payments\Currencies;
@@ -30,6 +31,9 @@ class CheckoutController extends Controller
 {
     public function store(Request $request, CheckoutService $checkout, PaymentGateways $gateways, OrderFulfillment $fulfillment): Response
     {
+        // paying needs a verified email (drafts don't): the page shows the resend prompt
+        EmailVerification::ensure($request, 'checkout');
+
         $data = $request->validate([
             'event_id' => ['required', 'uuid'],
             'plan' => ['nullable', 'string', 'max:40'],

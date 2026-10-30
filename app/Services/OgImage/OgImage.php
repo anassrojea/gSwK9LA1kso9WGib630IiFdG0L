@@ -6,6 +6,7 @@ use App\Models\Household;
 use App\Models\Invitation;
 use App\Services\InvitationConfig\InvitationConfig;
 use App\Services\InvitationConfig\ThemeStyles;
+use App\Services\PublishGate;
 use App\View\InviteDate;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
@@ -14,8 +15,9 @@ use Illuminate\Support\Str;
 /**
  * The link preview image WhatsApp shows when a guest link is shared (plan
  * sections 14.1 and 15.1): 1200 × 630, "دعوة خاصة لعائلة خالد العلي" with the
- * names, the date and the theme's colors and fonts. Personal per household;
- * one generic image for the open link.
+ * names, the date and the theme's colors and fonts. Personal per household on
+ * events with personal links (Premium); one generic image for the open link and
+ * for every guest of a Free event (subject()).
  *
  * Images are cached on the media disk at og/{event_id}/{household_id|open}-{hash}.png.
  * The hash covers everything drawn (the household's name, the invitation's
@@ -31,10 +33,34 @@ class OgImage
     /** Bump when the card's design changes, to re-render every image. */
     public const VERSION = 1;
 
+    /** @var array<string, bool> event id => personal cards allowed (one check per event per instance) */
+    private array $personal = [];
+
     public function __construct(
         private Chromium $chromium,
         private FontEmbedder $fonts,
+        private PublishGate $gate,
     ) {}
+
+    /**
+     * The household the card is drawn for: null (the generic card, as on the open link)
+     * unless the event has personal previews (Premium, PublishGate::canShowPersonalPreview).
+     * Every method below goes through this, so a Free event's personal link gets the
+     * generic image under the same og.png URL.
+     */
+    public function subject(Invitation $invitation, ?Household $household): ?Household
+    {
+        if ($household === null) {
+            return null;
+        }
+
+        $event = $invitation->event ?? $household->event;
+        if (! $event) {
+            return null;
+        }
+
+        return ($this->personal[$event->getKey()] ??= $this->gate->canShowPersonalPreview($event)) ? $household : null;
+    }
 
     public function available(): bool
     {
@@ -43,6 +69,8 @@ class OgImage
 
     public function hash(Invitation $invitation, array $config, ?Household $household = null): string
     {
+        $household = $this->subject($invitation, $household);
+
         return substr(sha1(json_encode([
             self::VERSION,
             $household?->display_name,
@@ -54,6 +82,8 @@ class OgImage
 
     public function path(Invitation $invitation, ?Household $household, string $hash): string
     {
+        $household = $this->subject($invitation, $household);
+
         return 'og/'.$invitation->event_id.'/'.($household?->getKey() ?? 'open').'-'.$hash.'.png';
     }
 
@@ -76,6 +106,7 @@ class OgImage
      */
     public function ensure(Invitation $invitation, ?Household $household = null, ?int $timeout = null): string
     {
+        $household = $this->subject($invitation, $household);
         $config = $invitation->renderConfig();
         $path = $this->path($invitation, $household, $this->hash($invitation, $config, $household));
         $disk = $this->disk();
@@ -103,6 +134,7 @@ class OgImage
      */
     public function html(Invitation $invitation, array $config, ?Household $household = null): string
     {
+        $household = $this->subject($invitation, $household);
         $locale = $config['locale'];
         $names = InvitationConfig::section($config, 'names');
         $dateSection = InvitationConfig::section($config, 'date');

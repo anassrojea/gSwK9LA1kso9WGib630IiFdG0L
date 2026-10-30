@@ -5,6 +5,7 @@ import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useNeedsVerification, VerifyEmailNotice } from '@/components/account/VerifyEmailNotice';
 import { TierBadge } from '@/components/wizard/TierBadge';
 import { discountFor, type DiscountLine, type DiscountRules } from '@/lib/discount';
 import { useT } from '@/lib/i18n';
@@ -59,9 +60,13 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
 
     const [country, setCountry] = useState(options.country);
     const [currency, setCurrency] = useState(options.currency);
-    const initialPlan = options.plans.find((p) => p.id === options.required_plan)?.id ?? (options.current_plan === 'free' ? (options.plans[0]?.id ?? null) : null);
+    // ?addon= on the upgrade page (e.g. the storage warning email's "Extend storage"): that add-on, no plan change
+    const preselect = options.preselect_addon && options.addons.some((a) => a.id === options.preselect_addon) ? options.preselect_addon : null;
+    const initialPlan = preselect
+        ? null
+        : (options.plans.find((p) => p.id === options.required_plan)?.id ?? (options.current_plan === 'free' ? (options.plans[0]?.id ?? null) : null));
     const [plan, setPlan] = useState<string | null>(initialPlan);
-    const [addons, setAddons] = useState<Record<string, number>>({});
+    const [addons, setAddons] = useState<Record<string, number>>(preselect ? { [preselect]: 1 } : {});
     const [gateway, setGateway] = useState<string | null>(options.gateways[0]?.id ?? null);
     const [busy, setBusy] = useState(false);
     const [codeOpen, setCodeOpen] = useState(false);
@@ -69,6 +74,8 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
     const [codeBusy, setCodeBusy] = useState(false);
     const [codeError, setCodeError] = useState<string | null>(null);
     const [rules, setRules] = useState<DiscountRules | null>(null);
+    // paying needs a verified email (App\Services\Account\EmailVerification): prompt instead of the pay button
+    const needsVerification = useNeedsVerification();
 
     const selectedPlan = options.plans.find((p) => p.id === plan) ?? null;
     const features = selectedPlan ? selectedPlan.features : options.current_features;
@@ -94,7 +101,12 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
         : [];
     const discount = rules && charged && subtotal !== null && !nothing ? discountFor(rules, lines, charged) : null;
     const discountAmount = discount && discount.error === null ? discount.amount : 0;
-    const sum = subtotal === null ? null : Math.max(0, subtotal - discountAmount);
+    const net = subtotal === null ? null : Math.max(0, subtotal - discountAmount);
+    // VAT-exclusive prices only (options.vat is null otherwise): the same rule as Vat::checkoutSurcharge on the server
+    const vatRule =
+        options.vat && charged && options.vat.currencies.includes(charged) && (options.vat.countries.length === 0 || options.vat.countries.includes(country)) ? options.vat : null;
+    const vatAmount = vatRule && net !== null ? Math.round((net * vatRule.rate_bp) / 10000) : 0;
+    const sum = net === null ? null : net + vatAmount;
     const free = sum === 0 && discountAmount > 0;
 
     const applyCode = async (e: FormEvent) => {
@@ -132,7 +144,7 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
     const setQuantity = (addon: CheckoutAddon, quantity: number) => setAddons((current) => ({ ...current, [addon.id]: Math.max(1, Math.min(addon.max_quantity, quantity)) }));
 
     const submit = () => {
-        if (!gateway || nothing) return;
+        if (!gateway || nothing || needsVerification) return;
         setBusy(true);
         router.post(
             options.endpoint,
@@ -214,7 +226,7 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
             )}
 
             {visibleAddons.length > 0 && (
-                <details className="group grid gap-2" open={from === 'dashboard'}>
+                <details id="addons" className="group grid gap-2" open={from === 'dashboard'}>
                     <summary className="flex min-h-11 cursor-pointer items-center justify-between text-sm font-semibold">
                         {t('checkout.addons_title')}
                         <Plus className="size-4 transition-transform group-open:rotate-45" />
@@ -354,6 +366,12 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
                         </div>
                     </>
                 )}
+                {vatAmount > 0 && charged && vatRule && (
+                    <div className="text-muted-foreground flex items-baseline justify-between gap-3 text-sm" data-vat-line>
+                        <span>{vatRule.label}</span>
+                        <span>{money(vatAmount, charged)}</span>
+                    </div>
+                )}
                 <div className="flex items-baseline justify-between gap-3">
                     <span className="font-semibold">{t('checkout.total')}</span>
                     <span className="text-primary text-2xl font-bold" data-total-amount>
@@ -378,7 +396,9 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
                 </p>
             )}
 
-            <Button className="h-14 text-lg" disabled={busy || nothing || !method || !charged || sum === null} onClick={submit} data-pay>
+            {(needsVerification || errors.verify_email) && <VerifyEmailNotice action="checkout" />}
+
+            <Button className="h-14 text-lg" disabled={busy || nothing || !method || !charged || sum === null || needsVerification} onClick={submit} data-pay>
                 {busy
                     ? t('checkout.paying')
                     : nothing

@@ -29,6 +29,9 @@ class Event extends Model
         return [
             'starts_at' => 'immutable_datetime',
             'storage_until' => 'date',
+            // phase 6B, App\Services\Storage\StorageExpiry: {"until": "Y-m-d", "sent": {"14": iso, "3": iso}}
+            'storage_warnings' => 'array',
+            'media_purged_at' => 'immutable_datetime',
             'lat' => 'float',
             'lng' => 'float',
             'guest_limit' => 'integer',

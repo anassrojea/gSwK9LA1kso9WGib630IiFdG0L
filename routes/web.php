@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\InvitationConfigController;
 use App\Http\Controllers\Dashboard\ReminderController;
 use App\Http\Controllers\Dashboard\UpgradeController;
 use App\Http\Controllers\Host\OpenLinkController;
+use App\Http\Controllers\Invoices\InvoiceController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Marketing\HomeController;
 use App\Http\Controllers\Payments\CheckoutController;
@@ -152,4 +153,12 @@ Route::middleware('auth')->group(function () {
             ->where('template', '[a-z0-9-]{1,64}')
             ->name('template');
     });
+});
+
+// Invoices, receipts and credit notes (phase 6B): the PDF for the customer (their own) and admins.
+Route::middleware('auth')->group(function () {
+    Route::get('/invoices/{invoice}.pdf', [InvoiceController::class, 'download'])
+        ->where('invoice', '[A-Z0-9]{1,12}-[0-9]{4}-[0-9]{1,10}')
+        ->middleware('throttle:30,1')
+        ->name('invoices.download');
 });

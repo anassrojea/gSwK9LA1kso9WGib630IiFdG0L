@@ -8,8 +8,8 @@ use RuntimeException;
 use Symfony\Component\Process\Process;
 
 /**
- * Screenshots an HTML document with headless Chromium's own CLI
- * (--screenshot), run through symfony/process. No Node, Puppeteer or
+ * Screenshots (or prints to PDF) an HTML document with headless Chromium's own CLI
+ * (--screenshot, --print-to-pdf), run through symfony/process. No Node, Puppeteer or
  * Browsershot needed: only a Chromium binary (OG_CHROME_PATH). Every network
  * request is blocked, so the HTML must be self-contained (fonts inlined as
  * data: URIs, see FontEmbedder).
@@ -53,6 +53,34 @@ class Chromium
      */
     public function screenshot(string $html, int $width, int $height, int $timeout): string
     {
+        return $this->run($html, 'shot.png', [
+            '--hide-scrollbars',
+            '--force-device-scale-factor=1',
+            "--window-size={$width},{$height}",
+        ], fn (string $out) => "--screenshot={$out}", "\x89PNG\r\n\x1a\n", $timeout);
+    }
+
+    /**
+     * Print $html to PDF (page size and margins from the document's own @page rule)
+     * and return the PDF bytes. Used for invoices (App\Services\Invoicing\InvoicePdf):
+     * a real browser shapes Arabic correctly, which PHP PDF libraries often don't.
+     *
+     * @throws RuntimeException when Chromium is missing, fails or times out
+     */
+    public function pdf(string $html, int $timeout): string
+    {
+        return $this->run($html, 'page.pdf', [
+            '--no-pdf-header-footer',
+            '--print-to-pdf-no-header',
+        ], fn (string $out) => "--print-to-pdf={$out}", '%PDF-', $timeout);
+    }
+
+    /**
+     * @param  list<string>  $args
+     * @param  callable(string): string  $output  the flag that writes to the given file
+     */
+    private function run(string $html, string $file, array $args, callable $output, string $magic, int $timeout): string
+    {
         $binary = $this->binary() ?? throw new RuntimeException('Chromium not found: set OG_CHROME_PATH.');
 
         $dir = rtrim(sys_get_temp_dir(), '/').'/daawa-og-'.Str::random(16);
@@ -60,7 +88,7 @@ class Chromium
 
         try {
             file_put_contents("{$dir}/page.html", $html);
-            $out = "{$dir}/shot.png";
+            $out = "{$dir}/{$file}";
 
             $process = new Process([
                 $binary,
@@ -74,15 +102,13 @@ class Chromium
                 '--no-first-run',
                 '--no-default-browser-check',
                 '--mute-audio',
-                '--hide-scrollbars',
-                '--force-device-scale-factor=1',
+                ...$args,
                 // nothing leaves the machine: fonts and images are inlined
                 '--no-proxy-server',
                 '--host-resolver-rules=MAP * ~NOTFOUND',
-                "--window-size={$width},{$height}",
                 // lets inlined fonts decode before the shot is taken
                 '--virtual-time-budget=5000',
-                "--screenshot={$out}",
+                $output($out),
                 'file://'."{$dir}/page.html",
             ],
                 $dir,
@@ -93,13 +119,13 @@ class Chromium
             $process->setTimeout($timeout);
             $process->run();
 
-            $png = is_file($out) ? file_get_contents($out) : false;
+            $bytes = is_file($out) ? file_get_contents($out) : false;
 
-            if (! $process->isSuccessful() || $png === false || ! str_starts_with($png, "\x89PNG\r\n\x1a\n")) {
-                throw new RuntimeException('Chromium screenshot failed (exit '.$process->getExitCode().'): '.Str::limit(trim($process->getErrorOutput()), 500));
+            if (! $process->isSuccessful() || $bytes === false || ! str_starts_with($bytes, $magic)) {
+                throw new RuntimeException('Chromium render failed (exit '.$process->getExitCode().'): '.Str::limit(trim($process->getErrorOutput()), 500));
             }
 
-            return $png;
+            return $bytes;
         } finally {
             File::deleteDirectory($dir);
         }

@@ -118,6 +118,8 @@ return [
         'login' => 'login',
         'two-factor' => 'two-factor',
         'passkeys' => 'passkeys',
+        // named limiter (FortifyServiceProvider): resending the link is throttled harder than opening it
+        'verification' => 'verification',
     ],
 
     /*
@@ -164,7 +166,9 @@ return [
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
-        // Features::emailVerification(),
+        // Password sign-ups prove their inbox before paying or publishing (App\Services\Account\EmailVerification).
+        // Google and email-code accounts are verified when they sign in.
+        Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         // Phone / WhatsApp OTP, email login codes, 2FA and passkeys come later (plan section 15.1).

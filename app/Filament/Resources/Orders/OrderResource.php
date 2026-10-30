@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Orders;
 use App\Filament\AdminNavigation;
 use App\Filament\Resources\Orders\Pages\ListOrders;
 use App\Filament\Resources\Orders\Pages\ViewOrder;
+use App\Filament\Resources\Orders\RelationManagers\InvoicesRelationManager;
 use App\Filament\Resources\Orders\RelationManagers\PaymentsRelationManager;
 use App\Filament\Resources\Orders\RelationManagers\TransferReceiptsRelationManager;
 use App\Filament\Resources\Orders\Schemas\OrderInfolist;
@@ -84,6 +85,7 @@ class OrderResource extends Resource
         return [
             TransferReceiptsRelationManager::class,
             PaymentsRelationManager::class,
+            InvoicesRelationManager::class,
         ];
     }
 
