@@ -44,6 +44,15 @@ return [
     'cloudflare' => [
         'zone_id' => env('CLOUDFLARE_ZONE_ID'),
         'api_token' => env('CLOUDFLARE_API_TOKEN'),
+        // seconds a purge waits so a burst of edits purges once (App\Jobs\PurgeEdgeCache)
+        'purge_delay' => (int) env('CLOUDFLARE_PURGE_DELAY', 10),
+    ],
+
+    // Product analytics (plan section 22). Server-side events (App\Services\Analytics\Analytics); the
+    // browser uses VITE_POSTHOG_KEY / VITE_POSTHOG_HOST. Both off when empty.
+    'posthog' => [
+        'key' => env('POSTHOG_KEY'),
+        'host' => env('POSTHOG_HOST', 'https://eu.i.posthog.com'),
     ],
 
 ];

@@ -3,12 +3,16 @@
 namespace App\Providers;
 
 use App\Models\Addon;
+use App\Models\Event as EventModel;
 use App\Models\Household;
 use App\Models\Invitation;
 use App\Models\OpenLink;
+use App\Models\Order;
 use App\Models\Plan;
 use App\Models\User;
+use App\Observers\EdgeCachePurger;
 use App\Observers\OgImageWarmer;
+use App\Observers\OrderAnalytics;
 use App\Services\Account\SessionRegistry;
 use App\Services\DraftAccess;
 use App\Services\Entitlements;
@@ -22,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
@@ -55,6 +60,17 @@ class AppServiceProvider extends ServiceProvider
         Household::observe(OgImageWarmer::class);
         Invitation::observe(OgImageWarmer::class);
         OpenLink::observe(OgImageWarmer::class);
+
+        // Cached guest pages are purged from Cloudflare when what they show changes (plan section 6.4).
+        foreach ([Invitation::class, Household::class, OpenLink::class, EventModel::class] as $model) {
+            $model::observe(EdgeCachePurger::class);
+        }
+
+        // "order_paid" for the analytics funnel (plan section 22); a no-op without POSTHOG_KEY
+        Order::observe(OrderAnalytics::class);
+
+        // Laravel Pulse at /pulse: admins only, like Horizon
+        Gate::define('viewPulse', fn (?User $user = null) => $user?->isAdmin() ?? false);
 
         // Drafts started without an account follow the visitor into their new or existing account.
         Event::listen([Login::class, Registered::class], function (Login|Registered $event) {

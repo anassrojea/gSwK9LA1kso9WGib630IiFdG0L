@@ -46,7 +46,7 @@ class InvitationConfigController extends Controller
             EventSync::apply($event, $invitation->config)->save();
         });
 
-        // TODO(edge cache): purge /i/* for this event through the Cloudflare API (plan section 6.4)
+        // A published invitation's cached /i/* pages are purged by App\Observers\EdgeCachePurger (plan section 6.4).
 
         return response()->json([
             'config_version' => $invitation->config_version,

@@ -3,6 +3,7 @@
 use App\Http\Middleware\EnsureDraftAccess;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InviteResponseHeaders;
+use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackSession;
 use Illuminate\Foundation\Application;
@@ -11,6 +12,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
+use Sentry\Laravel\Integration;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -33,6 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
             TrackSession::class,
+            SecurityHeaders::class,
         ]);
 
         $middleware->alias([
@@ -42,11 +45,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('invite', [
             SubstituteBindings::class,
             InviteResponseHeaders::class,
+            SecurityHeaders::class.':invite',
         ]);
 
         // Cloudflare sits in front in production (plan section 15.2)
         $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Sentry (config/sentry.php): reported exceptions, including failed queued jobs; no-op without a DSN
+        Integration::handles($exceptions);
     })->create();
