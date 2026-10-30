@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Wizard;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Household;
+use App\Services\Dashboard\PhoneNumber;
 use App\Services\Digits;
 use App\Services\Entitlements;
 use App\Services\Wizard\GuestListParser;
@@ -24,13 +25,17 @@ class GuestController extends Controller
     public function __construct(private Entitlements $entitlements) {}
 
     /**
-     * POST /events/{event}/guests/import {text}
+     * POST /events/{event}/guests/import {text} — or {guests: [{name, seats, phone?}]},
+     * the rows the host reviewed after "Clean with AI" (AiController::clean).
      */
     public function import(Request $request, Event $event): RedirectResponse
     {
-        $request->validate(['text' => ['required', 'string', 'max:50000']]);
-
-        $guests = GuestListParser::parse($request->string('text')->toString());
+        if ($request->has('guests')) {
+            $guests = $this->reviewedRows($request);
+        } else {
+            $request->validate(['text' => ['required', 'string', 'max:50000']]);
+            $guests = GuestListParser::parse($request->string('text')->toString());
+        }
 
         if ($guests === []) {
             throw ValidationException::withMessages(['text' => trans('app.wizard.guests.nothing_found')]);
@@ -43,11 +48,40 @@ class GuestController extends Controller
 
         DB::transaction(function () use ($event, $guests) {
             foreach ($guests as $guest) {
-                $event->households()->create(['display_name' => $guest['name'], 'seats_allowed' => $guest['seats']]);
+                $event->households()->create(['display_name' => $guest['name'], 'seats_allowed' => $guest['seats'], 'phone' => $guest['phone'] ?? null]);
             }
         });
 
         return back()->with('status', trans_choice('app.wizard.guests.imported', count($guests), ['count' => Digits::localize(count($guests))]));
+    }
+
+    /**
+     * Reviewed rows are validated like any input: never trusted because a model wrote them.
+     *
+     * @return list<array{name: string, seats: int, phone: ?string}>
+     */
+    private function reviewedRows(Request $request): array
+    {
+        $request->validate([
+            'guests' => ['required', 'array', 'min:1', 'max:'.self::MAX_LINES],
+            'guests.*.name' => ['required', 'string', 'max:'.GuestListParser::MAX_NAME],
+            'guests.*.seats' => ['required', 'integer', 'min:1', 'max:'.GuestListParser::MAX_SEATS],
+            'guests.*.phone' => ['nullable', 'string', 'max:32', function ($attribute, $value, $fail) {
+                if (! PhoneNumber::valid($value)) {
+                    $fail(trans('app.dashboard.csv.errors.phone'));
+                }
+            }],
+        ]);
+
+        return collect($request->input('guests'))
+            ->map(fn (array $g) => [
+                'name' => trim(preg_replace('/\s+/u', ' ', (string) $g['name'])),
+                'seats' => (int) $g['seats'],
+                'phone' => PhoneNumber::normalize($g['phone'] ?? null),
+            ])
+            ->filter(fn (array $g) => $g['name'] !== '')
+            ->values()
+            ->all();
     }
 
     /**

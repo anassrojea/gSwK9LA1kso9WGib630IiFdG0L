@@ -52,6 +52,7 @@ class PlanSeeder extends Seeder
             'wallet' => ['Wallet pass for every guest', 500],
             'video_guestbook' => ['Video guestbook', 1200],
             'thank_you' => ['Thank-you card + highlight gallery', 700],
+            'ai_poem' => ['AI poem', 500],
         ];
 
         foreach ($addons as $id => [$name, $price]) {
@@ -81,6 +82,7 @@ class PlanSeeder extends Seeder
             'wallet' => [1900, 60000],
             'video_guestbook' => [4500, 145000],
             'thank_you' => [2500, 85000],
+            'ai_poem' => [1900, 60000],
         ],
     ];
 

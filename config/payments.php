@@ -104,6 +104,8 @@ return [
         'wallet' => ['feature' => 'wallet', 'days' => null],
         'video_guestbook' => ['feature' => 'video_guestbook', 'days' => null],
         'thank_you' => ['feature' => 'thank_you', 'days' => null],
+        // AI-written poem (plan section 14.3, App\Http\Controllers\Wizard\AiController::poem)
+        'ai_poem' => ['feature' => 'ai_poem', 'days' => null],
     ],
 
     // most of one stackable add-on in one order

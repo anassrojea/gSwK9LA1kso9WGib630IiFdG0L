@@ -2,6 +2,7 @@ import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, us
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { AlertCircle, ArrowLeft, ArrowRight, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Eye, EyeOff, GripVertical, Image as ImageIcon, Languages, Music, Plus, Trash2 } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { hasErrorsUnder } from '@/lib/wizard/validate';
 import { NEEDS_UPLOAD, missingTypes, newSection, sectionSummary } from '@/lib/wizard/sections';
 import { resolveMedia, type Uploaded } from '@/lib/wizard/upload';
+import type { SharedProps } from '@/types';
 import type { MediaMap, WizardProps } from '@/types/wizard';
 
 interface Props extends WizardProps {
@@ -44,6 +46,7 @@ function SortableRow({ id, children }: { id: string; children: (handle: React.HT
  */
 export default function Details(props: Props) {
     const { t, n, sep, dir, locale } = useT();
+    const { auth } = usePage<SharedProps>().props;
     const autosave = useAutosave(props.urls.config, props.config);
     const { config, update } = autosave;
     const [media, setMedia] = useState<MediaMap>(props.media);
@@ -55,7 +58,7 @@ export default function Details(props: Props) {
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
 
     const addMedia = (file: Uploaded) => setMedia((m) => ({ ...m, [file.id]: { url: file.url, kind: file.kind } }));
-    const ctx: EditorContext = { errorAt: autosave.errorAt, media, addMedia, uploadUrl: props.urls.media, occasion: config.occasion };
+    const ctx: EditorContext = { errorAt: autosave.errorAt, media, addMedia, uploadUrl: props.urls.media, occasion: config.occasion, eventId: props.event.id, signedIn: !!auth.user, locale: config.locale };
 
     const show = (target: Open) => {
         setOpen(target);

@@ -1,11 +1,14 @@
 import { CalendarDays, MapPin, Plus, Trash2 } from 'lucide-react';
 import { useId, type ReactNode } from 'react';
 
+import { AiPoemPanel } from '@/components/ai/AiPoemPanel';
+import { AiStoryButton } from '@/components/ai/AiStoryDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { NativeSelect } from '@/components/ui/native-select';
 import { Field, ListEditor, SwitchField, TextField, patch } from '@/components/wizard/fields';
 import { UploadButton } from '@/components/wizard/UploadButton';
+import { poemSection } from '@/lib/ai';
 import type { InvitationConfig, InvitationSection } from '@/lib/config-schema';
 import { useT } from '@/lib/i18n';
 import { OFFSETS, hijriDate, joinIso, splitIso } from '@/lib/wizard/dates';
@@ -19,6 +22,10 @@ export interface EditorContext {
     addMedia: (file: Uploaded) => void;
     uploadUrl: string;
     occasion: InvitationConfig['occasion'];
+    /** AI writing (phase 7B): the event, whether a host is signed in, the invitation's language */
+    eventId?: string;
+    signedIn?: boolean;
+    locale?: 'ar' | 'en';
 }
 
 type Of<T extends InvitationSection['type']> = Extract<InvitationSection, { type: T }>;
@@ -44,10 +51,11 @@ function Headings({ section, onChange, at, withTitle = true }: { section: { labe
     );
 }
 
-function IntroLine({ section, onChange, at }: EditorProps<'intro_line'>) {
+function IntroLine({ section, onChange, at, ctx }: EditorProps<'intro_line'>) {
     const { t } = useT();
     return (
         <>
+            {ctx.eventId && <AiPoemPanel eventId={ctx.eventId} locale={ctx.locale ?? 'ar'} signedIn={!!ctx.signedIn} onInsert={(poem) => onChange(poemSection(section, poem))} />}
             <TextField label={t('wizard.fields.intro_text')} multiline value={section.text} maxLength={2000} onChange={(v) => onChange({ ...section, text: v })} error={at('text')} />
             <Field label={t('wizard.fields.intro_style')}>
                 <NativeSelect value={section.style ?? 'line'} onChange={(e) => onChange({ ...section, style: e.target.value as 'line' | 'verse' })}>
@@ -202,10 +210,19 @@ function Place({ section, onChange, at }: EditorProps<'place'>) {
     );
 }
 
-function Story({ section, onChange, at }: EditorProps<'story'>) {
+function Story({ section, onChange, at, ctx }: EditorProps<'story'>) {
     const { t, n } = useT();
     return (
         <>
+            {ctx.eventId && (
+                <AiStoryButton
+                    eventId={ctx.eventId}
+                    chapters={section.chapters}
+                    locale={ctx.locale ?? 'ar'}
+                    signedIn={!!ctx.signedIn}
+                    onAccept={(chapters) => onChange({ ...section, chapters: chapters as typeof section.chapters })}
+                />
+            )}
             <Field label={t('wizard.fields.story_style')}>
                 <NativeSelect value={section.style ?? 'timeline'} onChange={(e) => onChange({ ...section, style: e.target.value as typeof section.style })}>
                     {(['timeline', 'stem', 'letter', 'messages'] as const).map((s) => (

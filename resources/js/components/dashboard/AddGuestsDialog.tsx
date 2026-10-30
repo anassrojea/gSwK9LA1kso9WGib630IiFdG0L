@@ -4,6 +4,7 @@ import { AlertTriangle, Download, FileUp, Loader2, UserPlus, XCircle } from 'luc
 import { useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
+import { AiCleanGuests } from '@/components/ai/AiCleanGuests';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -101,6 +102,7 @@ function PasteForm({ url, onDone }: { url: string; onDone: () => void }) {
             <Button type="submit" className="h-12 text-base" disabled={form.processing || parsed.length === 0}>
                 <UserPlus /> {parsed.length ? t('wizard.guests.add_families', { families: tc('wizard.guests.families', parsed.length) }) : t('wizard.guests.add_list')}
             </Button>
+            <AiCleanGuests text={form.data.text} cleanUrl={url.replace(/\/import$/, '/clean')} importUrl={url} signedIn onDone={() => { form.reset(); onDone(); }} />
         </form>
     );
 }

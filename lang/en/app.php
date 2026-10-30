@@ -821,6 +821,7 @@ return [
             'wallet' => ['name' => 'Wallet pass for every guest', 'text' => 'Apple and Google Wallet passes.'],
             'video_guestbook' => ['name' => 'Video guestbook', 'text' => 'Guests leave short video wishes.'],
             'thank_you' => ['name' => 'Thank-you card + highlight gallery', 'text' => 'Send thanks after the event.'],
+            'ai_poem' => ['name' => 'AI poem', 'text' => 'A short poem with your names, written for your invitation.'],
         ],
         'quantity' => 'Packs',
         'owned' => 'Already yours',
