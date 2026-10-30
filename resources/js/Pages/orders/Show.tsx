@@ -3,6 +3,7 @@ import { ArrowLeft, ListOrdered } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
+import { InvoiceLinks } from '@/components/checkout/InvoiceLinks';
 import { OrderPanel } from '@/components/checkout/OrderPanel';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner';
@@ -46,6 +47,7 @@ export default function OrderShow({ order, checkout }: { order: OrderView; check
                     </p>
                 )}
                 <OrderPanel order={order} outcome={checkout} />
+                <InvoiceLinks invoices={order.invoices ?? []} />
             </div>
         </AppLayout>
     );

@@ -28,7 +28,11 @@ class UpgradeController extends Controller
         return Inertia::render('dashboard/Upgrade', [
             'event' => ['id' => $event->id, 'title' => $event->title, 'status' => $event->status],
             'plan' => $gate->currentPlan($event),
-            'checkout' => $checkout->options($event, $request->user()),
+            'checkout' => [
+                ...$checkout->options($event, $request->user()),
+                // ?addon=photo_cloud_90d: the storage warning email's "Extend storage" (phase 6B)
+                'preselect_addon' => is_string($addon = $request->query('addon')) && array_key_exists($addon, (array) config('payments.addons')) ? $addon : null,
+            ],
             'order' => $pending ? $presenter->present($pending) : null,
             'urls' => ['dashboard' => route('dashboard.events.show', $event, false), 'orders' => route('dashboard.orders.index', absolute: false)],
         ]);

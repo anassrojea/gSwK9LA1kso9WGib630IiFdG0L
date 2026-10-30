@@ -3,6 +3,7 @@ import { CalendarDays, Check, Copy, Gem, LayoutDashboard, LogIn, MapPin, Send, S
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+import { useNeedsVerification, VerifyEmailNotice } from '@/components/account/VerifyEmailNotice';
 import { GoogleButton } from '@/components/auth/GoogleButton';
 import { CheckoutPanel } from '@/components/checkout/CheckoutPanel';
 import { OrderPanel } from '@/components/checkout/OrderPanel';
@@ -91,6 +92,7 @@ export default function Review(props: Props) {
     const price = usePrice();
     const planName = (plan: PlanSummary) => (['free', 'premium', 'signature'].includes(plan.id) ? t(`wizard.tiers.${plan.id}`) : plan.name);
     const [publishing, setPublishing] = useState(false);
+    const needsVerification = useNeedsVerification();
     const [openLinkOn, setOpenLinkOn] = useState(!!props.openLink?.enabled);
     const canPublish = props.households.length > 0 || openLinkOn;
     const { config, event, gate, order } = props;
@@ -237,7 +239,8 @@ export default function Review(props: Props) {
                                 {props.errors.publish}
                             </p>
                         )}
-                        <Button className="h-14 text-lg" onClick={publish} disabled={publishing || !canPublish} data-publish>
+                        {(needsVerification || props.errors?.verify_email) && <VerifyEmailNotice action="publish" />}
+                        <Button className="h-14 text-lg" onClick={publish} disabled={publishing || !canPublish || needsVerification} data-publish>
                             <Send /> {t('wizard.review.publish')}
                         </Button>
                         {!canPublish && <p className="text-muted-foreground text-center text-sm">{t('wizard.review.need_guests_or_link')}</p>}

@@ -130,7 +130,7 @@ class DataExport
             ])->values()->all(),
             'orders' => Order::query()
                 ->where('user_id', $user->getKey())
-                ->with(['payments', 'transferReceipts'])
+                ->with(['payments', 'transferReceipts', 'invoices'])
                 ->latest()
                 ->get()
                 ->map(fn (Order $o) => [
@@ -159,6 +159,16 @@ class DataExport
                         'note' => $r->note,
                         'decision' => $r->decision,
                         'decided_at' => $r->decided_at?->toIso8601String(),
+                    ])->values()->all(),
+                    // invoices, receipts and credit notes (phase 6B); the PDFs download from the order page
+                    'invoices' => $o->invoices->map(fn ($i) => [
+                        'number' => $i->number,
+                        'kind' => $i->kind,
+                        'type' => $i->type,
+                        'issued_at' => $i->issued_at->toIso8601String(),
+                        'total_minor' => $i->total_cents,
+                        'vat_minor' => $i->vat_cents,
+                        'currency' => $i->currency,
                     ])->values()->all(),
                 ])->values()->all(),
         ];

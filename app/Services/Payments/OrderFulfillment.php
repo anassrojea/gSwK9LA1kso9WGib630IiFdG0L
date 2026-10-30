@@ -14,6 +14,8 @@ use App\Models\User;
 use App\Notifications\OrderApproved;
 use App\Notifications\OrderExpired;
 use App\Notifications\OrderRejected;
+use App\Services\Invoicing\Invoicer;
+use App\Services\Storage\StoragePeriod;
 use App\Services\Wizard\PlanAdvisor;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -33,7 +35,9 @@ use Illuminate\Validation\ValidationException;
  *
  * paid / approved grant the order's entitlements to its event: the plan
  * (events.plan_id), add-ons (entitlements rows, with `until` when time-limited)
- * and extra guest packs (events.guest_limit). Each change is audit-logged.
+ * and extra guest packs (events.guest_limit), set the event's storage period
+ * (StoragePeriod) and issue the invoice or receipt (Invoicer); a refund issues
+ * its credit note. Each change is audit-logged.
  */
 class OrderFulfillment
 {
@@ -264,6 +268,7 @@ class OrderFulfillment
 
             AuditLog::record('order.refunded', $order, array_filter(['reason' => $reason]), $actor);
             $this->releaseDiscount($order, $actor);
+            app(Invoicer::class)->creditNote($order, $reason);
 
             return true;
         });
@@ -350,6 +355,9 @@ class OrderFulfillment
         AuditLog::record("order.{$status}", $order, $data + ['total' => $order->total_cents, 'currency' => $order->currency], $actor);
         $this->redeemDiscount($order, $actor);
 
+        // the invoice (or receipt) is numbered in this transaction: no gaps if anything rolls back
+        app(Invoicer::class)->issue($order);
+
         DB::afterCommit(fn () => $order->user?->notify(new OrderApproved($order)));
     }
 
@@ -378,6 +386,8 @@ class OrderFulfillment
         }
 
         $this->syncGuestLimit($event);
+        // the plan's storage period, from the event's date (photo cloud may already have set a later one)
+        app(StoragePeriod::class)->apply($event);
         $event->save();
     }
 

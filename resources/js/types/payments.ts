@@ -15,6 +15,10 @@ export interface CheckoutOptions {
     current_features: string[];
     addons: CheckoutAddon[];
     gateways: CheckoutGateway[];
+    /** an add-on to pick up front (upgrade page ?addon=, e.g. photo cloud from the storage warning email) */
+    preselect_addon?: string | null;
+    /** VAT added on top (VAT-exclusive prices only); null when prices include VAT */
+    vat?: { rate_bp: number; currencies: string[]; countries: string[]; label: string } | null;
 }
 
 export interface CheckoutPlan {
@@ -64,6 +68,21 @@ export interface OrderSummary {
     expires_at: string | null;
     paid_at: string | null;
     event: { id: string; title: string } | null;
+    url: string;
+    /** VAT added on top at checkout (VAT-exclusive prices only) */
+    vat?: { amount: number; amount_formatted: string } | null;
+    /** the invoice or receipt once paid, and the credit note after a refund (phase 6B) */
+    invoices?: InvoiceLink[];
+}
+
+export interface InvoiceLink {
+    number: string;
+    kind: 'invoice' | 'credit_note';
+    /** "Simplified Tax Invoice", "Receipt", "Credit Note"… in the page's language */
+    title: string;
+    issued_at: string;
+    total_formatted: string;
+    /** GET: the PDF */
     url: string;
 }
 

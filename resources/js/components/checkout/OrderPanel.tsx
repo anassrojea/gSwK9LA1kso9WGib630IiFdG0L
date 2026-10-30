@@ -232,6 +232,12 @@ export function OrderPanel({ order, outcome, from = 'dashboard', compact }: { or
                             <dd className="font-medium">−{order.discount.amount_formatted}</dd>
                         </div>
                     )}
+                    {order.vat && (
+                        <div className="flex justify-between gap-3" data-order-vat>
+                            <dt>{t('invoices.vat')}</dt>
+                            <dd className="font-medium">{order.vat.amount_formatted}</dd>
+                        </div>
+                    )}
                     <div className="text-muted-foreground flex justify-between gap-3 text-xs">
                         <dt>{t('payments.created')}</dt>
                         <dd>{date(order.created_at)}</dd>

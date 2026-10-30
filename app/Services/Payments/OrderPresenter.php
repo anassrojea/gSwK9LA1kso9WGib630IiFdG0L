@@ -2,6 +2,7 @@
 
 namespace App\Services\Payments;
 
+use App\Models\Invoice;
 use App\Models\Order;
 use App\Services\Payments\Gateways\TransferGateway;
 
@@ -18,7 +19,7 @@ class OrderPresenter
     public function present(Order $order, ?string $locale = null, bool $details = true): array
     {
         $locale ??= app()->getLocale();
-        $order->loadMissing('event:id,title,status');
+        $order->loadMissing(['event:id,title,status', 'invoices']);
 
         $data = [
             'code' => $order->code,
@@ -41,6 +42,20 @@ class OrderPresenter
             'paid_at' => $order->paid_at?->toIso8601String(),
             'event' => $order->event ? ['id' => $order->event->id, 'title' => $order->event->title] : null,
             'url' => route('dashboard.orders.show', $order, false),
+            // VAT added on top at checkout (VAT-exclusive prices only)
+            'vat' => (int) $order->vat_cents > 0 ? [
+                'amount' => (int) $order->vat_cents,
+                'amount_formatted' => Currencies::format((int) $order->vat_cents, $order->currency, $locale),
+            ] : null,
+            // the invoice or receipt, and the credit note after a refund (phase 6B)
+            'invoices' => $order->invoices->map(fn (Invoice $invoice) => [
+                'number' => $invoice->number,
+                'kind' => $invoice->kind,
+                'title' => trans('invoices.titles.'.$invoice->titleKey(), [], $locale),
+                'issued_at' => $invoice->issued_at->toIso8601String(),
+                'total_formatted' => Currencies::format($invoice->total_cents, $invoice->currency, $locale),
+                'url' => route('invoices.download', $invoice, false),
+            ])->values()->all(),
         ];
 
         if (! $details) {

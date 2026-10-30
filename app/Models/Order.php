@@ -15,7 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *   [{type: plan|addon, id, name, quantity, unit_amount, amount}]
  * total_cents: the sum less discount_cents, in minor units of `currency` (App\Services\Payments\Currencies;
  * SYP has no subunit). discount_code / discount_cents: the code used at checkout and what
- * it took off, snapshotted like the lines (App\Services\Payments\Discounts). `currency` is what the gateway charges; `requested_currency`
+ * it took off, snapshotted like the lines (App\Services\Payments\Discounts). vat_cents: VAT added on top at
+ * checkout when prices are VAT-exclusive (config/invoicing.php; total_cents includes it, else 0). `currency` is what the gateway charges; `requested_currency`
  * is the host's choice when a card method had to fall back to USD.
  * State changes go through App\Services\Payments\OrderFulfillment.
  */
@@ -37,7 +38,7 @@ class Order extends Model
     protected $fillable = [
         'code', 'user_id', 'event_id', 'org_id', 'items', 'total_cents', 'currency', 'requested_currency', 'method', 'gateway',
         'gateway_ref', 'status', 'expires_at', 'paid_at', 'rejection_reason', 'refunded_at',
-        'discount_code_id', 'discount_code', 'discount_cents',
+        'discount_code_id', 'discount_code', 'discount_cents', 'vat_cents',
     ];
 
     protected $attributes = ['status' => 'awaiting_payment', 'gateway' => 'transfer'];
@@ -48,6 +49,7 @@ class Order extends Model
             'items' => 'array',
             'total_cents' => 'integer',
             'discount_cents' => 'integer',
+            'vat_cents' => 'integer',
             'expires_at' => 'immutable_datetime',
             'paid_at' => 'immutable_datetime',
             'refunded_at' => 'immutable_datetime',
@@ -99,11 +101,19 @@ class Order extends Model
     }
 
     /**
-     * The lines before the discount.
+     * The lines before the discount (and before VAT added on top with VAT-exclusive prices).
      */
     public function subtotal(): int
     {
-        return $this->total_cents + (int) $this->discount_cents;
+        return $this->total_cents + (int) $this->discount_cents - (int) $this->vat_cents;
+    }
+
+    /**
+     * The invoice (or receipt) and, after a refund, its credit note (App\Services\Invoicing\Invoicer).
+     */
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class)->orderBy('issued_at');
     }
 
     public function payments(): HasMany
