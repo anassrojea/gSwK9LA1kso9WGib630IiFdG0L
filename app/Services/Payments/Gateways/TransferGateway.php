@@ -4,6 +4,7 @@ namespace App\Services\Payments\Gateways;
 
 use App\Models\Order;
 use App\Services\Digits;
+use App\Services\Marketplace\MarketplaceOrders;
 use App\Services\Payments\CheckoutResult;
 use App\Services\Payments\Currencies;
 use App\Services\Payments\PaymentGateway;
@@ -125,7 +126,7 @@ class TransferGateway implements PaymentGateway
         return collect($order->items ?? [])
             ->map(function (array $item) use ($locale) {
                 $key = $item['type'] === 'plan' ? "app.wizard.tiers.{$item['id']}" : "app.checkout.addons.{$item['id']}.name";
-                $name = trans($key, [], $locale);
+                $name = app(MarketplaceOrders::class)->name($item, $locale) ?? trans($key, [], $locale);
                 $name = $name === $key ? ($item['name'] ?? $item['id']) : $name;
 
                 return ($item['quantity'] ?? 1) > 1 ? $name.' × '.Digits::localize($item['quantity'], $locale) : $name;

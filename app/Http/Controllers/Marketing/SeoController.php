@@ -16,6 +16,8 @@ class SeoController extends Controller
         '/i/', '/p/', '/e/', '/r/', '/dashboard', '/create', '/admin', '/account', '/orders', '/checkout',
         '/events/', '/households/', '/login', '/register', '/forgot-password', '/reset-password', '/locale/',
         '/auth/', '/pulse', '/horizon', '/webhooks/', '/broadcasting/', '/livewire', '/admin-preview/',
+        // phase 8C: the designer and vendor portals, purchases and the contact-tap counter
+        '/designer/', '/vendor-portal', '/buy/', '/go/',
     ];
 
     /**
@@ -55,6 +57,23 @@ class SeoController extends Controller
                     'legal' => '0.3',
                     default => '0.5',
                 }."</priority>\n  </url>\n";
+            }
+        }
+
+        // more public pages from other parts of the app (tag "sitemap.entries", a urls() method;
+        // e.g. App\Services\Marketplace\MarketplaceSitemap): {locs: {ar, en}, alternates, changefreq, priority, lastmod?}
+        foreach (app()->tagged('sitemap.entries') as $source) {
+            foreach ($source->urls() as $url) {
+                foreach ($url['locs'] as $loc) {
+                    $xml .= "  <url>\n    <loc>".e($loc)."</loc>\n";
+                    foreach ($url['alternates'] as $lang => $href) {
+                        $xml .= '    <xhtml:link rel="alternate" hreflang="'.$lang.'" href="'.e($href).'"/>'."\n";
+                    }
+                    if (! empty($url['lastmod'])) {
+                        $xml .= '    <lastmod>'.e($url['lastmod'])."</lastmod>\n";
+                    }
+                    $xml .= '    <changefreq>'.e($url['changefreq'])."</changefreq>\n    <priority>".e($url['priority'])."</priority>\n  </url>\n";
+                }
             }
         }
 

@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Opening;
 use App\Models\Order;
 use App\Models\Theme;
+use App\Services\Marketplace\TemplateAccess;
 use App\Services\Wizard\PlanAdvisor;
 
 /**
@@ -13,6 +14,8 @@ use App\Services\Wizard\PlanAdvisor;
  * add-ons) cover everything PlanAdvisor says the invitation uses:
  *
  *   opening / theme   their tier is within the plan (or a template_unlock add-on for a Premium design)
+ *   template          a paid marketplace template: its entitlement template:{id}, or Signature when
+ *                     the designer included it (Marketplace\TemplateAccess); it also covers its own opening and theme
  *   cover_video       Entitlements::COVER_VIDEO
  *   personal_links    Entitlements::PERSONAL_LINKS (households invited by name)
  *   guests            the seats fit the event's guest limit (plan + extra guest packs)
@@ -85,9 +88,15 @@ class PublishGate
 
     private function covers(Event $event, string $reason, array $config, string $plan): bool
     {
+        $marketplace = app(TemplateAccess::class);
+
         return match ($reason) {
-            'opening' => $this->designCovered($event, Opening::query()->whereKey($config['opening']['id'] ?? null)->value('tier') ?? 'free', $plan),
-            'theme' => $this->designCovered($event, Theme::query()->whereKey($config['theme']['id'] ?? null)->value('tier') ?? 'free', $plan),
+            // a bought marketplace template (template:{id}) covers its own opening and theme, whatever their tier
+            'opening' => $this->designCovered($event, Opening::query()->whereKey($config['opening']['id'] ?? null)->value('tier') ?? 'free', $plan)
+                || $marketplace->coversDesign($event, $config, 'opening'),
+            'theme' => $this->designCovered($event, Theme::query()->whereKey($config['theme']['id'] ?? null)->value('tier') ?? 'free', $plan)
+                || $marketplace->coversDesign($event, $config, 'theme'),
+            'template' => ($template = $marketplace->inUse($event, $config)) === null || $marketplace->covers($event, $template, $plan),
             'cover_video' => $this->entitlements->hasFeature($event, Entitlements::COVER_VIDEO),
             'personal_links' => $this->entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS),
             'guests' => ($limit = $this->entitlements->limit($event, 'guests')) === null

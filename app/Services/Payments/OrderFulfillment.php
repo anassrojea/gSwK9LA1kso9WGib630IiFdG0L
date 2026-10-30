@@ -15,6 +15,7 @@ use App\Notifications\OrderApproved;
 use App\Notifications\OrderExpired;
 use App\Notifications\OrderRejected;
 use App\Services\Invoicing\Invoicer;
+use App\Services\Marketplace\MarketplaceOrders;
 use App\Services\Storage\StoragePeriod;
 use App\Services\Wizard\PlanAdvisor;
 use Carbon\CarbonImmutable;
@@ -269,6 +270,7 @@ class OrderFulfillment
             AuditLog::record('order.refunded', $order, array_filter(['reason' => $reason]), $actor);
             $this->releaseDiscount($order, $actor);
             app(Invoicer::class)->creditNote($order, $reason);
+            app(MarketplaceOrders::class)->refund($order);
 
             return true;
         });
@@ -352,6 +354,7 @@ class OrderFulfillment
         $order->update(['status' => $status, 'paid_at' => $paidAt]);
 
         $this->grant($order, $paidAt);
+        app(MarketplaceOrders::class)->fulfill($order, $paidAt);
         AuditLog::record("order.{$status}", $order, $data + ['total' => $order->total_cents, 'currency' => $order->currency], $actor);
         $this->redeemDiscount($order, $actor);
 
