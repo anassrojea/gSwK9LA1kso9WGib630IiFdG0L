@@ -35,5 +35,11 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <!-- phase 7B: never call Claude, Apple or Google from tests; tests bind fakes and test keys -->
+        <env name="AI_FAKE" value="false"/>
+        <env name="ANTHROPIC_API_KEY" value=""/>
+        <env name="APPLE_PASS_CERT_PATH" value=""/>
+        <env name="GOOGLE_WALLET_ISSUER_ID" value=""/>
+        <env name="GOOGLE_WALLET_SERVICE_ACCOUNT_JSON" value=""/>
     </php>
 </phpunit>

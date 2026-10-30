@@ -3,6 +3,7 @@
 use App\Providers\AppServiceProvider;
 use App\Providers\Filament\AdminPanelProvider;
 use App\Providers\FortifyServiceProvider;
+use App\Providers\GuestExtrasServiceProvider;
 use App\Providers\HorizonServiceProvider;
 
 return [
@@ -10,4 +11,5 @@ return [
     AdminPanelProvider::class,
     FortifyServiceProvider::class,
     HorizonServiceProvider::class,
+    GuestExtrasServiceProvider::class,
 ];

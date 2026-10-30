@@ -56,7 +56,8 @@ class HandleInertiaRequests extends Middleware
             'dir' => SetLocale::direction($locale),
             'locales' => SetLocale::supported(),
             // flat dictionary for the React pages (react-i18next can take over once the wizard lands)
-            'translations' => fn () => trans('app', [], $locale),
+            // + the album and AI dictionaries (phase 7B), read as t('album.host.…') / t('ai.…')
+            'translations' => fn () => trans('app', [], $locale) + ['album' => trans('album', [], $locale), 'ai' => trans('ai', [], $locale)],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
                 'warning' => fn () => $request->session()->get('warning'),

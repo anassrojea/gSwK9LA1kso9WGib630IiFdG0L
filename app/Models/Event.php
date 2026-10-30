@@ -19,7 +19,7 @@ class Event extends Model
 
     protected $fillable = [
         'owner_id', 'org_id', 'anon_session_id', 'occasion', 'title', 'starts_at', 'timezone', 'venue_name',
-        'address', 'lat', 'lng', 'hall_layout_id', 'status', 'plan_id', 'guest_limit', 'storage_until', 'messages',
+        'address', 'lat', 'lng', 'hall_layout_id', 'status', 'plan_id', 'guest_limit', 'storage_until', 'messages', 'album',
     ];
 
     protected $attributes = ['status' => 'draft'];
@@ -33,6 +33,7 @@ class Event extends Model
             'lng' => 'float',
             'guest_limit' => 'integer',
             'messages' => 'array',
+            'album' => 'array',
         ];
     }
 
@@ -104,6 +105,16 @@ class Event extends Model
     public function openLink(): HasOne
     {
         return $this->hasOne(OpenLink::class);
+    }
+
+    public function guestbook(): HasMany
+    {
+        return $this->hasMany(GuestbookEntry::class);
+    }
+
+    public function aiGenerations(): HasMany
+    {
+        return $this->hasMany(AiGeneration::class);
     }
 
     public function isArchived(): bool

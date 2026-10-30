@@ -11,7 +11,11 @@ class WalletPass extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['household_id', 'platform', 'serial', 'pass_url'];
+    public const PLATFORMS = ['apple', 'google'];
+
+    protected $fillable = ['household_id', 'platform', 'serial', 'pass_url', 'authentication_token', 'content_hash'];
+
+    protected $hidden = ['authentication_token'];
 
     public function household(): BelongsTo
     {

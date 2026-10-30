@@ -11,15 +11,29 @@ class AiGeneration extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['event_id', 'kind', 'input', 'output', 'model', 'cost_cents'];
+    public const KINDS = ['story', 'poem', 'clean'];
+
+    protected $fillable = ['event_id', 'user_id', 'kind', 'input', 'output', 'model', 'cost_cents', 'status', 'error', 'result'];
+
+    protected $attributes = ['status' => 'queued'];
 
     protected function casts(): array
     {
-        return ['input' => 'array', 'cost_cents' => 'integer'];
+        return ['input' => 'array', 'result' => 'array', 'cost_cents' => 'integer'];
     }
 
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function finished(): bool
+    {
+        return in_array($this->status, ['done', 'failed'], true);
     }
 }

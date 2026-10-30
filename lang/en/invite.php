@@ -100,6 +100,14 @@ return [
         'text' => 'Caught a beautiful moment? Upload it here to keep it in the album.',
         'button' => 'Upload photos',
         'soon' => 'The album opens after the event',
+        'opens_at_party' => 'Uploads open when the party starts',
+        'view' => 'View the album',
+    ],
+    // wallet buttons on the RSVP ticket (phase 7B)
+    'wallet' => [
+        'apple' => 'Add to Apple Wallet',
+        'google' => 'Save to Google Wallet',
+        'web' => 'Show my pass',
     ],
     // one link for everyone (plan section 8)
     'open_link' => [
