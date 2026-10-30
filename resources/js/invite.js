@@ -4,6 +4,7 @@
  * runs the countdown and fills the per-guest parts from GET /i/{token}/state.
  */
 import { mountOpening } from './invite/driver.js';
+import { renderDay } from './invite/day.js';
 import { NS, petalPath, seeded } from './openings/shared.js';
 import { toLocalDigits } from './lib/digits';
 import { openLinkView, replyStorageKey, stateQuery } from './lib/open-link';
@@ -145,6 +146,7 @@ function setAttendingFields(attending) {
 
 function applyState(next) {
     state = next;
+    renderDay(next, digits);
     if (next.household.name) document.querySelectorAll('[data-guest-name]').forEach((el) => (el.textContent = next.household.name));
     if (replyKey) {
         replyToken = next.reply_token || null;
@@ -197,7 +199,6 @@ function applyState(next) {
         rsvp.querySelector('[data-confirmed-people]').textContent =
             (strings.confirmedPeople || ':people').replace(':people', strings.people?.[reply.people_count] ?? digits(reply.people_count));
         show(rsvp.querySelector('[data-table-wrap]'), !!next.table);
-        if (next.table) rsvp.querySelector('[data-table]').textContent = digits(next.table.replace(/^T/, ''));
     }
 }
 

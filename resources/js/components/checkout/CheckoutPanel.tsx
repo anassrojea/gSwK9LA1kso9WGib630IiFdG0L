@@ -61,7 +61,7 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
     const [country, setCountry] = useState(options.country);
     const [currency, setCurrency] = useState(options.currency);
     // ?addon= on the upgrade page (e.g. the storage warning email's "Extend storage"): that add-on, no plan change
-    const preselect = options.preselect_addon && options.addons.some((a) => a.id === options.preselect_addon) ? options.preselect_addon : null;
+    const preselect = options.preselect_addon && options.addons.some((a) => a.id === options.preselect_addon && !a.owned) ? options.preselect_addon : null;
     const initialPlan = preselect
         ? null
         : (options.plans.find((p) => p.id === options.required_plan)?.id ?? (options.current_plan === 'free' ? (options.plans[0]?.id ?? null) : null));

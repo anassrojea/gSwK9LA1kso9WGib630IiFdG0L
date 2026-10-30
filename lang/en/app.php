@@ -224,6 +224,7 @@ return [
             'people' => ':count of :expected expected people',
             'door_app' => 'Door app',
             'photo_wall' => 'Live photo wall',
+            'seating_chart' => 'Seating chart',
         ],
         'realtime' => [
             'live' => 'Live',

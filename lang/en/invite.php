@@ -120,4 +120,22 @@ return [
     'make_yours' => 'Design yours',
     'not_found_title' => 'Invitation not found',
     'not_found_text' => 'Check the link you received, or ask the hosts for a new one.',
+
+    // Event day (phase 7A): the "today" panel at the top of the invitation
+    'live' => [
+        'badge' => 'Today',
+        'title' => 'Today is the day',
+        'text' => 'Everything you need tonight, in one place.',
+        'directions' => 'Directions to the venue',
+        'stream' => 'Watch the live stream',
+        'wall' => 'Live photo wall',
+        'qr' => 'Show this code at the door',
+        'qr_alt' => 'Your entry code',
+    ],
+    'table' => [
+        'label' => 'Table :n',
+        'yours' => 'Your table',
+        'map' => 'Where your table is in the hall',
+        'stage' => 'Kosha',
+    ],
 ];

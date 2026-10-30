@@ -1,7 +1,14 @@
 import { usePage } from '@inertiajs/react';
+import { createContext, useContext } from 'react';
 
 import { toLocalDigits } from '@/lib/digits';
-import type { SharedProps } from '@/types';
+import type { SharedProps, Translations } from '@/types';
+
+/**
+ * Extra dictionaries for a part of a page whose strings are not in the shared
+ * lang/{locale}/app.php (e.g. the dashboard's event-day panel loads seating.* and door.*).
+ */
+export const ExtraTranslations = createContext<Translations | null>(null);
 
 /**
  * Minimal translator over lang/{locale}/app.php (shared by HandleInertiaRequests).
@@ -9,9 +16,10 @@ import type { SharedProps } from '@/types';
  */
 export function useT() {
     const { translations, locale, dir } = usePage<SharedProps>().props;
+    const extra = useContext(ExtraTranslations);
 
-    const lookup = (key: string): unknown =>
-        key.split('.').reduce<unknown>((node, part) => (node as Record<string, unknown> | undefined)?.[part], translations);
+    const find = (dict: unknown, key: string): unknown => key.split('.').reduce<unknown>((node, part) => (node as Record<string, unknown> | undefined)?.[part], dict);
+    const lookup = (key: string): unknown => find(translations, key) ?? (extra ? find(extra, key) : undefined);
 
     const fill = (text: string, replace: Record<string, string | number>) => {
         for (const [name, v] of Object.entries(replace)) {

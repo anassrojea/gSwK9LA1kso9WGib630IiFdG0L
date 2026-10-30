@@ -7,12 +7,18 @@ use App\Http\Controllers\Auth\EmailCodeController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EventDashboardController;
+use App\Http\Controllers\Dashboard\EventDayController;
 use App\Http\Controllers\Dashboard\GuestCsvController;
 use App\Http\Controllers\Dashboard\HallController;
+use App\Http\Controllers\Dashboard\HallLayoutController;
 use App\Http\Controllers\Dashboard\HouseholdController as DashboardHouseholdController;
 use App\Http\Controllers\Dashboard\InvitationConfigController;
 use App\Http\Controllers\Dashboard\ReminderController;
+use App\Http\Controllers\Dashboard\SeatingController;
+use App\Http\Controllers\Dashboard\SeatingPdfController;
 use App\Http\Controllers\Dashboard\UpgradeController;
+use App\Http\Controllers\Door\DoorController;
+use App\Http\Controllers\Door\DoorPassController;
 use App\Http\Controllers\Host\OpenLinkController;
 use App\Http\Controllers\Invoices\InvoiceController;
 use App\Http\Controllers\LocaleController;
@@ -161,4 +167,47 @@ Route::middleware('auth')->group(function () {
         ->where('invoice', '[A-Z0-9]{1,12}-[0-9]{4}-[0-9]{1,10}')
         ->middleware('throttle:30,1')
         ->name('invoices.download');
+});
+
+// Event-day tools (phase 7A): seating planner, printables, venue halls, the
+// door app and its PIN links. Each action is authorized in its controller.
+Route::pattern('hall', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+Route::pattern('pass', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard/events/{event}/seating', [SeatingController::class, 'show'])->name('dashboard.events.seating');
+    Route::put('/events/{event}/hall', [SeatingController::class, 'hall'])->middleware('throttle:60,1')->name('events.hall.update');
+    Route::put('/events/{event}/seats', [SeatingController::class, 'seats'])->middleware('throttle:autosave')->name('events.seats.update');
+    Route::post('/events/{event}/seating/auto', [SeatingController::class, 'auto'])->middleware('throttle:30,1')->name('events.seating.auto');
+    Route::patch('/events/{event}/seating/section', [SeatingController::class, 'section'])->middleware('throttle:autosave')->name('events.seating.section');
+
+    Route::middleware('throttle:10,1')->group(function () {
+        Route::get('/events/{event}/seating.pdf', [SeatingPdfController::class, 'chart'])->name('events.seating.pdf');
+        Route::get('/events/{event}/table-cards.pdf', [SeatingPdfController::class, 'cards'])->name('events.table-cards.pdf');
+        Route::get('/events/{event}/qr-codes.pdf', [SeatingPdfController::class, 'qrCodes'])->name('events.qr-codes.pdf');
+    });
+
+    Route::get('/dashboard/events/{event}/day', [EventDayController::class, 'show'])->name('dashboard.events.day');
+    Route::put('/dashboard/events/{event}/live-stream', [EventDayController::class, 'liveStream'])->middleware('throttle:30,1')->name('dashboard.events.live-stream');
+    Route::post('/dashboard/events/{event}/door-passes', [EventDayController::class, 'storePass'])->middleware('throttle:20,1')->name('dashboard.events.door-passes.store');
+    Route::delete('/dashboard/events/{event}/door-passes/{pass}', [EventDayController::class, 'revokePass'])->name('dashboard.events.door-passes.destroy');
+
+    Route::get('/dashboard/halls', [HallLayoutController::class, 'index'])->name('dashboard.halls.index');
+    Route::get('/dashboard/halls/create', [HallLayoutController::class, 'create'])->name('dashboard.halls.create');
+    Route::post('/dashboard/halls', [HallLayoutController::class, 'store'])->middleware('throttle:30,1')->name('dashboard.halls.store');
+    Route::get('/dashboard/halls/{hall}', [HallLayoutController::class, 'edit'])->name('dashboard.halls.edit');
+    Route::put('/dashboard/halls/{hall}', [HallLayoutController::class, 'update'])->middleware('throttle:60,1')->name('dashboard.halls.update');
+    Route::delete('/dashboard/halls/{hall}', [HallLayoutController::class, 'destroy'])->name('dashboard.halls.destroy');
+});
+
+// Door app (plan sections 9 and 14.8): signed-in staff (EventPolicy::checkIn) or a door PIN link.
+Route::prefix('door/{event}')->name('door.')->group(function () {
+    Route::get('/', [DoorController::class, 'show'])->name('show');
+    Route::get('/guests', [DoorController::class, 'guests'])->middleware('throttle:60,1')->name('guests');
+    Route::get('/stats', [DoorController::class, 'stats'])->middleware('throttle:120,1')->name('stats');
+    Route::post('/checkin', [DoorController::class, 'checkin'])->middleware('throttle:300,1')->name('checkin');
+    Route::post('/sync', [DoorController::class, 'sync'])->middleware('throttle:30,1')->name('sync');
+
+    Route::get('/pass/{pass}', [DoorPassController::class, 'show'])->middleware(['signed', 'throttle:30,1'])->name('pass');
+    Route::post('/pass/{pass}', [DoorPassController::class, 'unlock'])->middleware(['signed', 'throttle:20,1'])->name('pass.unlock');
 });

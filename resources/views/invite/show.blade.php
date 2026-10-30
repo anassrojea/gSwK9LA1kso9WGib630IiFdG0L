@@ -67,6 +67,7 @@
     @endif
 
     <main>
+        @include('invite.partials.live-day')
         @foreach ($sections as $i => $s)
             @includeIf('invite.sections.'.$s['type'], [
                 's' => $s,

@@ -11,7 +11,7 @@ class Checkin extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['event_id', 'household_id', 'scanned_by', 'people_in', 'scanned_at'];
+    protected $fillable = ['event_id', 'household_id', 'scanned_by', 'door_pass_id', 'scan_id', 'people_in', 'scanned_at'];
 
     protected function casts(): array
     {
@@ -31,5 +31,10 @@ class Checkin extends Model
     public function scanner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'scanned_by');
+    }
+
+    public function doorPass(): BelongsTo
+    {
+        return $this->belongsTo(DoorPass::class);
     }
 }

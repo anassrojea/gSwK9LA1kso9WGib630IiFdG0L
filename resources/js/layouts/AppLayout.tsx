@@ -28,7 +28,7 @@ function DeletionBanner({ date }: { date: string }) {
     );
 }
 
-export default function AppLayout({ children }: { children: ReactNode }) {
+export default function AppLayout({ children, wide = false }: { children: ReactNode; wide?: boolean }) {
     const { t } = useT();
     const { auth } = usePage<SharedProps>().props;
 
@@ -54,7 +54,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                 </div>
             </header>
             {auth.user?.deletion_scheduled_for && <DeletionBanner date={auth.user.deletion_scheduled_for} />}
-            <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
+            <main className={wide ? 'mx-auto max-w-7xl px-4 py-6' : 'mx-auto max-w-5xl px-4 py-8'}>{children}</main>
         </div>
     );
 }
