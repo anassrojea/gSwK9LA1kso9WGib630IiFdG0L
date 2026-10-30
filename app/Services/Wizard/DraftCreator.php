@@ -3,10 +3,13 @@
 namespace App\Services\Wizard;
 
 use App\Models\Event;
+use App\Models\HallLayout;
 use App\Models\Invitation;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\VenueProfile;
 use App\Services\DraftAccess;
+use App\Services\Venues\VenueDirectory;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -20,14 +23,24 @@ class DraftCreator
 
     public function __construct(private DraftAccess $access) {}
 
-    public function create(string $occasion, ?User $user, ?Template $template = null): Event
+    /**
+     * @param  HallLayout|null  $venueHall  a public hall of a listed venue (phase 8B): linked to
+     *                                      the event, and the invitation's place becomes the venue
+     */
+    public function create(string $occasion, ?User $user, ?Template $template = null, ?HallLayout $venueHall = null): Event
     {
         $template ??= static::defaultTemplate($occasion);
         $config = static::configFor($occasion, $template);
+        if ($venueHall?->relationLoaded('venueProfile') && $venueHall->getRelation('venueProfile')) {
+            $config = static::withVenue($config, $venueHall->getRelation('venueProfile'));
+        }
 
-        return DB::transaction(function () use ($occasion, $user, $template, $config) {
+        return DB::transaction(function () use ($occasion, $user, $template, $config, $venueHall) {
             $event = new Event(['occasion' => $occasion, 'status' => 'draft']);
             EventSync::apply($event, $config);
+            if ($venueHall) {
+                $event->hall_layout_id = $venueHall->getKey();
+            }
 
             if ($user) {
                 $event->owner_id = $user->getKey();
@@ -46,6 +59,35 @@ class DraftCreator
 
             return $event;
         });
+    }
+
+    /**
+     * The place section points at the venue: its name, district and city, map link and coordinates.
+     */
+    public static function withVenue(array $config, VenueProfile $venue): array
+    {
+        $locale = $config['locale'] ?? 'ar';
+        foreach ($config['sections'] ?? [] as $i => $section) {
+            if (($section['type'] ?? null) !== 'place') {
+                continue;
+            }
+            $place = ['type' => 'place'] + array_intersect_key($section, array_flip(['hidden', 'label']));
+            $place['name'] = mb_substr($venue->displayName($locale) ?: $section['name'], 0, 120);
+            $address = trim(implode($locale === 'ar' ? '، ' : ', ', array_filter([$venue->area, trans("venues.cities.{$venue->city}", [], $locale)])));
+            if ($address !== '') {
+                $place['address'] = mb_substr($address, 0, 300);
+            }
+            if ($venue->lat !== null && $venue->lng !== null) {
+                $place['lat'] = $venue->lat;
+                $place['lng'] = $venue->lng;
+            }
+            if ($map = VenueDirectory::mapUrl($venue)) {
+                $place['mapUrl'] = mb_substr($map, 0, 500);
+            }
+            $config['sections'][$i] = $place;
+        }
+
+        return $config;
     }
 
     /**

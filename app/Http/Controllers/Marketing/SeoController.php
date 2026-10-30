@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Marketing;
 
 use App\Http\Controllers\Controller;
+use App\Services\Venues\VenueDirectory;
 use App\Support\SiteUrl;
 use Illuminate\Http\Response;
 
@@ -15,7 +16,7 @@ class SeoController extends Controller
     public const DISALLOW = [
         '/i/', '/p/', '/e/', '/r/', '/dashboard', '/create', '/admin', '/account', '/orders', '/checkout',
         '/events/', '/households/', '/login', '/register', '/forgot-password', '/reset-password', '/locale/',
-        '/auth/', '/pulse', '/horizon', '/webhooks/', '/broadcasting/', '/livewire', '/admin-preview/',
+        '/auth/', '/pulse', '/horizon', '/webhooks/', '/broadcasting/', '/livewire', '/admin-preview/', '/v/',
     ];
 
     /**
@@ -33,6 +34,9 @@ class SeoController extends Controller
             [['home', null], ['pricing', null], ['about', null]],
             array_map(fn ($slug) => ['occasion', $slug], array_keys(config('marketing.occasions'))),
             array_map(fn ($page) => ['legal', $page], SiteUrl::LEGAL),
+            // the venue directory and every public venue page (phase 8B)
+            [['venues', null]],
+            app(VenueDirectory::class)->query()->orderBy('slug')->limit(5000)->pluck('slug')->map(fn ($slug) => ['venue', $slug])->all(),
         );
     }
 
@@ -52,6 +56,7 @@ class SeoController extends Controller
                 $xml .= '    <priority>'.match ($page) {
                     'home' => '1.0',
                     'pricing', 'occasion' => '0.8',
+                    'venues', 'venue' => '0.6',
                     'legal' => '0.3',
                     default => '0.5',
                 }."</priority>\n  </url>\n";
