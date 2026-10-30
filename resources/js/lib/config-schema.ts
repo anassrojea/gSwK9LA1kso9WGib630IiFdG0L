@@ -1,19 +1,29 @@
 /**
  * Invitation config (plan section 6.2), Zod edition for instant feedback in
  * the React editor. The authoritative check runs on the server against
- * app/Services/InvitationConfig/schemas/v1.json: keep both in sync, and
- * never change a released version; add v2 alongside it instead.
+ * app/Services/InvitationConfig/schemas/v{1,2}.json: keep both in sync, and
+ * never change a released version. v1 is frozen; v2 (phase 8D) adds
+ * occasions, the optional `kind` and the thank_you_gallery section.
+ * validateConfig picks the schema by the document's own version.
  */
 import { z } from 'zod';
 
-export const CONFIG_VERSION = 1 as const;
+/** What the editor writes. */
+export const CONFIG_VERSION = 2 as const;
+export const SUPPORTED_VERSIONS = [1, 2] as const;
 
-export const OCCASIONS = ['wedding', 'engagement', 'henna', 'birthday', 'graduation', 'baby_welcome', 'iftar', 'other'] as const;
+export const OCCASIONS_V1 = ['wedding', 'engagement', 'henna', 'birthday', 'graduation', 'baby_welcome', 'iftar', 'other'] as const;
+export const OCCASIONS = [
+    'wedding', 'engagement', 'henna', 'birthday', 'graduation', 'baby_welcome', 'iftar',
+    'katb_kitab', 'eid', 'housewarming', 'hajj_return', 'welcome_home', 'corporate', 'save_the_date', 'thank_you', 'other',
+] as const;
+export const KINDS = ['invitation', 'save_the_date', 'thank_you'] as const;
 export const OPENINGS = ['envelope', 'rose', 'ringbox', 'doors', 'gift', 'diploma'] as const;
-export const SECTION_TYPES = [
+export const SECTION_TYPES_V1 = [
     'intro_line', 'hosts', 'names', 'date', 'story', 'program', 'place', 'dress_code', 'gallery', 'favorites', 'wishes',
     'send_rose', 'rsvp', 'album_teaser', 'closing',
 ] as const;
+export const SECTION_TYPES = [...SECTION_TYPES_V1, 'thank_you_gallery'] as const;
 
 const color = z.string().regex(/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, 'Use a hex color like #A8325A');
 const slug = z.string().max(64).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -143,7 +153,19 @@ export const albumTeaserSection = section('album_teaser', {
 
 export const closingSection = section('closing', { label, title, text: z.string().min(1).max(300) });
 
-export const sectionSchema = z.union([
+/** v2: after the event, a message, album photos (media:<uuid>) and the hosts' signature. */
+export const thankYouGallerySection = section('thank_you_gallery', {
+    label,
+    title,
+    message: longText,
+    photos: z
+        .array(z.strictObject({ src: mediaRef, caption: z.string().max(80).optional(), alt: z.string().max(120).optional() }))
+        .max(24)
+        .optional(),
+    signature: z.string().max(120).optional(),
+});
+
+const v1Sections = [
     introLineSection,
     hostsSection,
     namesSection,
@@ -159,11 +181,12 @@ export const sectionSchema = z.union([
     rsvpSection,
     albumTeaserSection,
     closingSection,
-]);
+] as const;
 
-export const invitationConfigSchema = z.strictObject({
-    version: z.literal(CONFIG_VERSION),
-    occasion: z.enum(OCCASIONS),
+export const sectionSchemaV1 = z.union(v1Sections);
+export const sectionSchema = z.union([...v1Sections, thankYouGallerySection]);
+
+const common = {
     locale: z.enum(['ar', 'en']),
     opening: z.strictObject({
         id: z.enum(OPENINGS),
@@ -196,19 +219,54 @@ export const invitationConfigSchema = z.strictObject({
             music: z.strictObject({ src: mediaRef, title: z.string().max(80).optional() }).optional(),
         })
         .optional(),
+};
+
+/** v1, frozen. */
+export const invitationConfigSchemaV1 = z.strictObject({
+    version: z.literal(1),
+    occasion: z.enum(OCCASIONS_V1),
+    ...common,
+    sections: z.array(sectionSchemaV1).min(1).max(30),
+});
+
+/** v2: v1 plus the new occasions, the optional kind and thank_you_gallery. */
+export const invitationConfigSchemaV2 = z.strictObject({
+    version: z.literal(2),
+    occasion: z.enum(OCCASIONS),
+    kind: z.enum(KINDS).optional(),
+    ...common,
     sections: z.array(sectionSchema).min(1).max(30),
 });
 
-export type InvitationConfig = z.infer<typeof invitationConfigSchema>;
+/** The current version (what the editor saves). */
+export const invitationConfigSchema = invitationConfigSchemaV2;
+
+type V2 = z.infer<typeof invitationConfigSchemaV2>;
+/** A config of any supported version: v1 documents are a subset of v2 apart from the version number. */
+export type InvitationConfig = Omit<V2, 'version'> & { version: (typeof SUPPORTED_VERSIONS)[number] };
 export type InvitationSection = z.infer<typeof sectionSchema>;
 export type SectionType = (typeof SECTION_TYPES)[number];
+export type ConfigKind = (typeof KINDS)[number];
+
+/** The twin of InvitationConfig::upgrade(): v1 → v2 only changes the version. */
+export function upgradeConfig(config: InvitationConfig): InvitationConfig {
+    return config.version === 1 ? { ...config, version: CONFIG_VERSION } : config;
+}
+
+export function configKind(config: Pick<InvitationConfig, 'kind'>): ConfigKind {
+    return config.kind ?? 'invitation';
+}
 
 /**
  * Validate a config and return errors keyed by JSON pointer, the same shape
  * the server returns (e.g. "/sections/3/start").
  */
 export function validateConfig(input: unknown): { success: true; data: InvitationConfig } | { success: false; errors: Record<string, string[]> } {
-    const result = invitationConfigSchema.safeParse(input);
+    const version = (input as { version?: unknown } | null)?.version;
+    if (version !== 1 && version !== 2) {
+        return { success: false, errors: { '/version': [`Unsupported config version; expected one of ${SUPPORTED_VERSIONS.join(', ')}.`] } };
+    }
+    const result = (version === 1 ? invitationConfigSchemaV1 : invitationConfigSchemaV2).safeParse(input);
 
     if (result.success) {
         return { success: true, data: result.data };

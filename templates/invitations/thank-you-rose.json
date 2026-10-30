@@ -1,0 +1,74 @@
+{
+  "id": "thank-you-rose",
+  "occasion": "thank_you",
+  "name_ar": "شكراً لكم",
+  "name_en": "Thank you",
+  "tier": "premium",
+  "opening_id": "rose",
+  "theme_id": "blush-garden",
+  "sort": 190,
+  "default_config": {
+    "version": 2,
+    "occasion": "thank_you",
+    "kind": "thank_you",
+    "locale": "ar",
+    "opening": {
+      "id": "rose",
+      "options": {
+        "petalColor": "#F4A6BB",
+        "kicker": "من القلب",
+        "headline": "شكراً لأنكم كنتم معنا"
+      }
+    },
+    "theme": {
+      "id": "blush-garden",
+      "colors": {
+        "bg": "#FFF6F8",
+        "ink": "#3B2330",
+        "accent": "#A8325A",
+        "soft": "#8E6B78",
+        "gold": "#C9A35C",
+        "goldLight": "#F9D3DD",
+        "surface": "#FCE6EC",
+        "backdrop": "#F3D9E0",
+        "label": "#E8839F"
+      },
+      "fonts": {
+        "display": "Katibeh",
+        "body": "Amiri",
+        "label": "Almarai"
+      },
+      "radius": 20
+    },
+    "effects": {
+      "fallingPetals": true,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "names",
+        "first": "ريم",
+        "second": "عمر"
+      },
+      {
+        "type": "date",
+        "label": "ذكرى ليلتنا",
+        "start": "2026-12-17T20:30:00+03:00",
+        "showHijri": true,
+        "countdown": false
+      },
+      {
+        "type": "thank_you_gallery",
+        "title": "شكراً من القلب",
+        "message": "كان حضوركم أجمل ما في ليلتنا. شكراً لكل دعوة صادقة، ولكل ابتسامة، ولكل صورة شاركتمونا إياها.",
+        "photos": [],
+        "signature": "ريم وعمر"
+      },
+      {
+        "type": "closing",
+        "text": "دمتم بخير، ودامت أفراحكم"
+      }
+    ]
+  }
+}

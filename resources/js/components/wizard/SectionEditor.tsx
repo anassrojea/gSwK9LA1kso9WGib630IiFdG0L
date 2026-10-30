@@ -479,6 +479,18 @@ function Closing({ section, onChange, at }: EditorProps<'closing'>) {
     );
 }
 
+/** The thank-you card's gallery: its photos are picked from the album on the keepsakes page. */
+function ThankYouGallery({ section, onChange, at }: EditorProps<'thank_you_gallery'>) {
+    const { t } = useT();
+    return (
+        <>
+            <TextField label={t('wizard.fields.title')} value={section.title} maxLength={80} onChange={(v) => onChange(patch(section, { title: v }))} error={at('title')} />
+            <TextField label={t('keepsakes.thank_you.message')} multiline value={section.message} maxLength={2000} onChange={(v) => onChange({ ...section, message: v })} error={at('message')} />
+            <TextField label={t('keepsakes.thank_you.signature')} value={section.signature} maxLength={120} onChange={(v) => onChange(patch(section, { signature: v }))} error={at('signature')} />
+        </>
+    );
+}
+
 function SendRose({ section, onChange, at }: EditorProps<'send_rose'>) {
     const { t } = useT();
     return (
@@ -511,6 +523,7 @@ export function SectionEditor({ section, index, onChange, ctx }: { section: Invi
         rsvp: () => <Rsvp section={section as Of<'rsvp'>} {...props} />,
         album_teaser: () => <AlbumTeaser section={section as Of<'album_teaser'>} {...props} />,
         closing: () => <Closing section={section as Of<'closing'>} {...props} />,
+        thank_you_gallery: () => <ThankYouGallery section={section as Of<'thank_you_gallery'>} {...props} />,
     };
 
     return (

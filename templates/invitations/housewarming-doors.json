@@ -1,0 +1,105 @@
+{
+  "id": "housewarming-doors",
+  "occasion": "housewarming",
+  "name_ar": "بيت جديد",
+  "name_en": "New home",
+  "tier": "premium",
+  "opening_id": "doors",
+  "theme_id": "henna-green",
+  "sort": 130,
+  "default_config": {
+    "version": 2,
+    "occasion": "housewarming",
+    "locale": "ar",
+    "opening": {
+      "id": "doors",
+      "options": {
+        "kicker": "بيتنا الجديد",
+        "headline": "تفضّلوا… أهلاً بكم في بيتنا"
+      }
+    },
+    "theme": {
+      "id": "henna-green",
+      "colors": {
+        "bg": "#FBF3E6",
+        "ink": "#2E2117",
+        "accent": "#2D5440",
+        "soft": "#7A6552",
+        "gold": "#D4A64A",
+        "goldLight": "#E9B949",
+        "surface": "#F2E2C6",
+        "backdrop": "#0F1F17",
+        "label": "#B5482A"
+      },
+      "fonts": {
+        "display": "Rakkas",
+        "body": "Scheherazade New",
+        "label": "Kufam"
+      },
+      "radius": 10
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "بيتٌ جديد، وأبوابه مفتوحة لأحبّتنا"
+      },
+      {
+        "type": "hosts",
+        "label": "أهلاً وسهلاً",
+        "lines": [
+          "يسعد عائلة الشامي"
+        ],
+        "outro": "بدعوتكم لزيارة بيتها الجديد"
+      },
+      {
+        "type": "names",
+        "first": "عائلة الشامي",
+        "note": "ليكتمل البيت ببركة حضوركم"
+      },
+      {
+        "type": "date",
+        "label": "الموعد",
+        "start": "2026-12-18T19:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "place",
+        "name": "بيتنا الجديد",
+        "address": "حي الياسمين، العمارة ١٢"
+      },
+      {
+        "type": "favorites",
+        "title": "ما ينتظركم",
+        "items": [
+          {
+            "icon": "☕",
+            "text": "القهوة العربية"
+          },
+          {
+            "icon": "🍰",
+            "text": "حلويات البيت"
+          },
+          {
+            "icon": "🌿",
+            "text": "جلسة الحديقة"
+          }
+        ]
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستشاركوننا؟",
+        "askMessage": true
+      },
+      {
+        "type": "closing",
+        "text": "البيت بيتكم"
+      }
+    ]
+  }
+}

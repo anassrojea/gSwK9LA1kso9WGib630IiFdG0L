@@ -1,0 +1,101 @@
+{
+  "id": "hajj-return-doors",
+  "occasion": "hajj_return",
+  "name_ar": "حمد الله على السلامة",
+  "name_en": "Welcome back from Hajj",
+  "tier": "premium",
+  "opening_id": "doors",
+  "theme_id": "royal-ink",
+  "sort": 140,
+  "default_config": {
+    "version": 2,
+    "occasion": "hajj_return",
+    "locale": "ar",
+    "opening": {
+      "id": "doors",
+      "options": {
+        "kicker": "حجٌّ مبرور",
+        "headline": "حمد الله على السلامة"
+      }
+    },
+    "theme": {
+      "id": "royal-ink",
+      "colors": {
+        "bg": "#F7F3EA",
+        "ink": "#1B1E27",
+        "accent": "#2F5DA8",
+        "soft": "#6C6658",
+        "gold": "#CDA349",
+        "goldLight": "#EAD49C",
+        "surface": "#F4EBD8",
+        "backdrop": "#15171E",
+        "label": "#2F5DA8"
+      },
+      "fonts": {
+        "display": "Mirza",
+        "body": "Noto Naskh Arabic",
+        "label": "Cairo"
+      },
+      "radius": 6
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "حجّاً مبروراً، وسعياً مشكوراً، وذنباً مغفوراً"
+      },
+      {
+        "type": "hosts",
+        "label": "حمد الله على السلامة",
+        "lines": [
+          "يتشرف أبناء الحاج أبو خالد"
+        ],
+        "outro": "بدعوتكم للتهنئة بسلامة عودته من الحج"
+      },
+      {
+        "type": "names",
+        "first": "الحاج أبو خالد",
+        "note": "تقبّل الله منّا ومنكم"
+      },
+      {
+        "type": "date",
+        "label": "الاستقبال",
+        "start": "2027-05-28T19:30:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "program",
+        "label": "البرنامج",
+        "items": [
+          {
+            "time": "19:30",
+            "label": "الاستقبال والتهاني"
+          },
+          {
+            "time": "20:30",
+            "label": "العشاء"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "دار العائلة",
+        "address": "حي العزيزية، مكة المكرمة"
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستشاركوننا؟",
+        "askMessage": true
+      },
+      {
+        "type": "closing",
+        "text": "بحضوركم تكتمل فرحتنا"
+      }
+    ]
+  }
+}

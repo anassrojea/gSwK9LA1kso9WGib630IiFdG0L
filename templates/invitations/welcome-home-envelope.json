@@ -1,0 +1,97 @@
+{
+  "id": "welcome-home-envelope",
+  "occasion": "welcome_home",
+  "name_ar": "عودة الغالي",
+  "name_en": "Welcome home",
+  "tier": "premium",
+  "opening_id": "envelope",
+  "theme_id": "wine-gold",
+  "sort": 150,
+  "default_config": {
+    "version": 2,
+    "occasion": "welcome_home",
+    "locale": "ar",
+    "opening": {
+      "id": "envelope",
+      "options": {
+        "sealText": "أهلاً",
+        "kicker": "رجع الغالي",
+        "headline": "نوّرت الدار من جديد"
+      }
+    },
+    "theme": {
+      "id": "wine-gold",
+      "colors": {
+        "bg": "#FBF6F2",
+        "ink": "#3A1420",
+        "accent": "#5A1A2C",
+        "soft": "#86636C",
+        "gold": "#C8A45D",
+        "goldLight": "#E8D29C",
+        "surface": "#F3E4E2",
+        "backdrop": "#2A0B14",
+        "label": "#C8A45D"
+      },
+      "fonts": {
+        "display": "Aref Ruqaa",
+        "body": "Amiri",
+        "label": "Reem Kufi"
+      },
+      "radius": 4
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "بعد طول غياب… رجع الغالي إلى أهله"
+      },
+      {
+        "type": "hosts",
+        "label": "بكل الفرح",
+        "lines": [
+          "تتشرف عائلة النجار"
+        ],
+        "outro": "بدعوتكم للاحتفال بعودة ابنها سالماً"
+      },
+      {
+        "type": "names",
+        "first": "خالد"
+      },
+      {
+        "type": "date",
+        "label": "الموعد",
+        "start": "2026-12-12T20:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "place",
+        "name": "استراحة الورود",
+        "address": "طريق المطار"
+      },
+      {
+        "type": "wishes",
+        "title": "كلمات للغالي",
+        "items": [
+          {
+            "text": "الحمد لله على السلامة، نوّرت الدنيا",
+            "name": "أمك"
+          }
+        ]
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستشاركوننا؟",
+        "askMessage": true
+      },
+      {
+        "type": "closing",
+        "text": "الحمد لله على السلامة"
+      }
+    ]
+  }
+}

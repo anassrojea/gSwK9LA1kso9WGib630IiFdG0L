@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Services\DraftAccess;
+use App\Services\InvitationConfig\InvitationConfig;
 use App\Services\InvitationConfig\InvitationConfigValidator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -14,6 +15,18 @@ class UpdateInvitationConfigRequest extends FormRequest
     {
         // owners and org staff (EventPolicy), or the browser that created a guest draft
         return app(DraftAccess::class)->allows($this->user(), $this->route('event'));
+    }
+
+    /**
+     * The wizard writes the current schema version: an older document (a v1
+     * draft opened in an older tab) is upgraded before it is checked and saved.
+     */
+    protected function prepareForValidation(): void
+    {
+        $config = $this->input('config');
+        if (is_array($config) && is_int($config['version'] ?? null) && $config['version'] < InvitationConfigValidator::CURRENT_VERSION) {
+            $this->merge(['config' => InvitationConfig::upgrade($config)]);
+        }
     }
 
     public function rules(): array

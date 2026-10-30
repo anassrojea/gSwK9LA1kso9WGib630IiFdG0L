@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { InvitationConfig } from '@/lib/config-schema';
+import { upgradeConfig, type InvitationConfig } from '@/lib/config-schema';
 import { useT } from '@/lib/i18n';
 import { serverErrors, validateForEditor, type ConfigErrors } from '@/lib/wizard/validate';
 
@@ -18,8 +18,10 @@ type Extra = Record<string, unknown>;
  * then the whole config is PATCHed. Saves run one at a time; when offline or
  * on a server hiccup the latest version is retried.
  */
-export function useAutosave(url: string, initial: InvitationConfig) {
+export function useAutosave(url: string, loaded: InvitationConfig) {
     const { t } = useT();
+    // the editor always writes the current schema version (an old v1 draft is saved back as v2)
+    const [initial] = useState(() => upgradeConfig(loaded));
     const [config, setConfig] = useState<InvitationConfig>(initial);
     const [state, setState] = useState<SaveState>('idle');
     const [errors, setErrors] = useState<ConfigErrors>({});

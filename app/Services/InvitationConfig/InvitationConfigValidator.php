@@ -10,13 +10,16 @@ use Opis\JsonSchema\Validator;
  * Server-side validation of invitation configs against the JSON Schema of
  * their version (schemas/v{n}.json). The React editor runs the matching Zod
  * schema (resources/js/lib/config-schema.ts) for instant feedback; this is
- * the authoritative check used whenever a config is saved.
+ * the authoritative check used whenever a config is saved. Each config is
+ * checked against its own version: old v1 documents stay valid as v1.
  */
 class InvitationConfigValidator
 {
-    public const CURRENT_VERSION = 1;
+    /** What the wizard writes (v2, phase 8D: new occasions, kind, thank_you_gallery). */
+    public const CURRENT_VERSION = 2;
 
-    public const SUPPORTED_VERSIONS = [1];
+    /** Every version still accepted and rendered: a v1 config is checked against v1.json, never upgraded on read. */
+    public const SUPPORTED_VERSIONS = [1, 2];
 
     /** Paths that are JSON objects and must not be encoded as [] when empty. */
     private const OBJECT_PATHS = [['opening', 'options'], ['effects'], ['theme', 'colors'], ['theme', 'fonts']];

@@ -15,7 +15,17 @@ class Event extends Model
 
     public const STATUSES = ['draft', 'active', 'ended', 'archived'];
 
-    public const OCCASIONS = ['wedding', 'engagement', 'henna', 'birthday', 'graduation', 'baby_welcome', 'iftar', 'other'];
+    /** Every occasion of config schema v2 (v1 has the first seven and "other"). */
+    public const OCCASIONS = [
+        'wedding', 'engagement', 'henna', 'birthday', 'graduation', 'baby_welcome', 'iftar',
+        'katb_kitab', 'eid', 'housewarming', 'hajj_return', 'welcome_home', 'corporate', 'save_the_date', 'thank_you', 'other',
+    ];
+
+    /** The wizard's occasion tiles: a thank-you card is made from an event after it (phase 8D), never from scratch. */
+    public const WIZARD_OCCASIONS = [
+        'wedding', 'engagement', 'katb_kitab', 'henna', 'birthday', 'graduation', 'baby_welcome', 'iftar',
+        'eid', 'housewarming', 'hajj_return', 'welcome_home', 'corporate', 'save_the_date', 'other',
+    ];
 
     protected $fillable = [
         'owner_id', 'org_id', 'anon_session_id', 'occasion', 'title', 'starts_at', 'timezone', 'venue_name',

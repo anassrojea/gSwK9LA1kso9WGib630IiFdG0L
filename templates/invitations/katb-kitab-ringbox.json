@@ -1,0 +1,109 @@
+{
+  "id": "katb-kitab-ringbox",
+  "occasion": "katb_kitab",
+  "name_ar": "كتب الكتاب",
+  "name_en": "Katb al-kitab",
+  "tier": "premium",
+  "opening_id": "ringbox",
+  "theme_id": "navy-blush",
+  "sort": 110,
+  "default_config": {
+    "version": 2,
+    "occasion": "katb_kitab",
+    "locale": "ar",
+    "opening": {
+      "id": "ringbox",
+      "options": {
+        "kicker": "على سنّة الله ورسوله",
+        "headline": "يسعدنا أن تشهدوا عقد قراننا"
+      }
+    },
+    "theme": {
+      "id": "navy-blush",
+      "colors": {
+        "bg": "#F7EAE7",
+        "ink": "#2B2233",
+        "accent": "#1E2A44",
+        "soft": "#7D6A72",
+        "gold": "#C9A877",
+        "goldLight": "#EBD9B4",
+        "surface": "#EFD6D6",
+        "backdrop": "#111827",
+        "label": "#C77D86"
+      },
+      "fonts": {
+        "display": "El Messiri",
+        "body": "Tajawal",
+        "label": "Tajawal"
+      },
+      "radius": 14
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "style": "verse",
+        "text": "﴿ وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾",
+        "caption": "سورة الروم ٢١"
+      },
+      {
+        "type": "hosts",
+        "label": "بكل الحب والسرور",
+        "lines": [
+          "يتشرف السيد سامي الخطيب وحرمه",
+          "والسيد مازن العمر وحرمه"
+        ],
+        "outro": "بدعوتكم لحضور عقد قران نجليهما"
+      },
+      {
+        "type": "names",
+        "first": "جود",
+        "second": "كريم",
+        "note": "بحضور الأهل والأحبّة، وعلى بركة الله"
+      },
+      {
+        "type": "date",
+        "label": "موعد العقد",
+        "start": "2026-12-24T18:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "program",
+        "label": "البرنامج",
+        "items": [
+          {
+            "time": "18:00",
+            "label": "استقبال الضيوف"
+          },
+          {
+            "time": "18:30",
+            "label": "عقد القران"
+          },
+          {
+            "time": "19:30",
+            "label": "الضيافة والتهاني"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "منزل عائلة الخطيب",
+        "address": "حي الروضة، الشارع الثالث"
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستشاركوننا؟",
+        "askMessage": true
+      },
+      {
+        "type": "closing",
+        "text": "دعواتكم لنا بالتوفيق والسعادة"
+      }
+    ]
+  }
+}

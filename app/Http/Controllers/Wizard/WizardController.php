@@ -14,6 +14,7 @@ use App\Models\Template;
 use App\Models\Theme;
 use App\Services\Account\EmailVerification;
 use App\Services\Entitlements;
+use App\Services\InvitationConfig\InvitationConfig;
 use App\Services\OpenLinks;
 use App\Services\Payments\CheckoutService;
 use App\Services\Payments\Currencies;
@@ -48,7 +49,7 @@ class WizardController extends Controller
         return Inertia::render('create/Occasion', [
             'event' => null,
             'config' => null,
-            'occasions' => Event::OCCASIONS,
+            'occasions' => Event::WIZARD_OCCASIONS,
             'steps' => self::STEPS,
         ]);
     }
@@ -59,7 +60,7 @@ class WizardController extends Controller
     public function store(Request $request, DraftCreator $drafts): RedirectResponse
     {
         $data = $request->validate([
-            'occasion' => ['required', Rule::in(Event::OCCASIONS)],
+            'occasion' => ['required', Rule::in(Event::WIZARD_OCCASIONS)],
             'template_id' => ['nullable', 'string', Rule::exists('templates', 'id')->where('active', true)],
         ]);
 
@@ -80,7 +81,8 @@ class WizardController extends Controller
         $invitation = $event->invitation;
         abort_unless($invitation, 404);
 
-        $config = $invitation->config;
+        // the editor works on the current schema version; saving writes it back as v2
+        $config = InvitationConfig::upgrade($invitation->config);
 
         $props = [
             'event' => [
@@ -103,7 +105,7 @@ class WizardController extends Controller
         ];
 
         $props += match ($step) {
-            'occasion' => ['occasions' => Event::OCCASIONS],
+            'occasion' => ['occasions' => Event::WIZARD_OCCASIONS],
             'design' => $this->catalog(),
             'details' => ['media' => $this->media($event)],
             'guests' => $this->guests($event, $entitlements),
@@ -164,7 +166,7 @@ class WizardController extends Controller
         $themeTiers = Theme::query()->pluck('tier', 'id');
 
         return [
-            'templates' => Template::query()->where('active', true)->orderBy('sort')->orderBy('id')->get()
+            'templates' => Template::query()->where('active', true)->where('occasion', '!=', 'thank_you')->orderBy('sort')->orderBy('id')->get()
                 ->map(fn (Template $t) => [
                     'id' => $t->id,
                     'occasion' => $t->occasion,

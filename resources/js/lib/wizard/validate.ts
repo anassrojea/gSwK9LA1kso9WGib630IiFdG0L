@@ -16,6 +16,7 @@ import {
     rsvpSection,
     sendRoseSection,
     storySection,
+    thankYouGallerySection,
     wishesSection,
     type SectionType,
 } from '@/lib/config-schema';
@@ -41,6 +42,7 @@ const SECTION_SCHEMAS: Record<SectionType, z.ZodType> = {
     rsvp: rsvpSection,
     album_teaser: albumTeaserSection,
     closing: closingSection,
+    thank_you_gallery: thankYouGallerySection,
 };
 
 function message(issue: z.core.$ZodIssue, t: Translate): string {

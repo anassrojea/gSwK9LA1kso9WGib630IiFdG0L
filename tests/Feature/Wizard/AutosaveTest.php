@@ -26,7 +26,7 @@ it('autosaves a guest\'s own draft and syncs the event fields', function () {
 
     $this->patchJson("/events/{$event->id}/config", ['config' => $config])
         ->assertOk()
-        ->assertJson(['config_version' => 1, 'title' => 'زفاف هند وسامي']);
+        ->assertJson(['config_version' => 2, 'title' => 'زفاف هند وسامي']);
 
     $event->refresh();
     expect($event->title)->toBe('زفاف هند وسامي')

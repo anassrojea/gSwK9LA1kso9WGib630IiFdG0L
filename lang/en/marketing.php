@@ -152,6 +152,42 @@ return [
                 'intro' => 'Doors and lanterns in Ramadan night colours, the iftar time with the Hijri date, and a headcount to prepare the table.',
                 'points' => ['Hijri date', 'Iftar time', 'Headcount for the table'],
             ],
+            'katb_kitab' => [
+                'name' => 'Katb al-kitab',
+                'title' => 'Katb al-kitab invitations',
+                'intro' => 'A ring box that opens on a verse, the couple\'s names and the contract date with the Hijri date, and a personal link for every family.',
+                'points' => ['A Quranic verse', 'Hijri date', 'A link per family'],
+            ],
+            'eid' => [
+                'name' => 'Eid gathering',
+                'title' => 'Eid gathering invitations',
+                'intro' => 'Eid lunch at the grandparents\' or an evening with friends: an envelope sealed "Eid", the day\'s programme and a headcount. Starts free.',
+                'points' => ['Free design', 'The day\'s programme', 'Headcount'],
+            ],
+            'housewarming' => [
+                'name' => 'Housewarming',
+                'title' => 'Housewarming invitations',
+                'intro' => 'Doors that open onto your new home, with the address, a map and what awaits your guests.',
+                'points' => ['Opening doors', 'Address and map', 'What we will serve'],
+            ],
+            'hajj_return' => [
+                'name' => 'Hajj & Umrah return',
+                'title' => 'Welcome back from Hajj invitations',
+                'intro' => 'Welcome a pilgrim home: a beautiful prayer, the reception time with the Hijri date, and the place on a map.',
+                'points' => ['Hajj prayer', 'Hijri date', 'Reception time'],
+            ],
+            'welcome_home' => [
+                'name' => 'Welcome home',
+                'title' => 'Welcome home invitations',
+                'intro' => 'Someone dear is back from abroad? Invite family and friends to celebrate, with loving words on the invitation.',
+                'points' => ['Loving words', 'Map', 'RSVP'],
+            ],
+            'corporate' => [
+                'name' => 'Corporate events',
+                'title' => 'Corporate invitations: iftar, launches, conferences',
+                'intro' => 'The annual company iftar, a product launch or a conference: a clear agenda, the dress code and an RSVP per employee or guest, in Arabic or English.',
+                'points' => ['Arabic and English', 'Agenda and dress code', 'An RSVP per guest'],
+            ],
         ],
     ],
 

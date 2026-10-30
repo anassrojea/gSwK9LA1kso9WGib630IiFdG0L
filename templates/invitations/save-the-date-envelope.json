@@ -1,0 +1,76 @@
+{
+  "id": "save-the-date-envelope",
+  "occasion": "save_the_date",
+  "name_ar": "احفظوا الموعد",
+  "name_en": "Save the date",
+  "tier": "premium",
+  "opening_id": "envelope",
+  "theme_id": "blush-garden",
+  "sort": 180,
+  "default_config": {
+    "version": 2,
+    "occasion": "save_the_date",
+    "kind": "save_the_date",
+    "locale": "ar",
+    "opening": {
+      "id": "envelope",
+      "options": {
+        "sealText": "ر ع",
+        "kicker": "احفظوا الموعد",
+        "headline": "لدينا موعدٌ معكم"
+      }
+    },
+    "theme": {
+      "id": "blush-garden",
+      "colors": {
+        "bg": "#FFF6F8",
+        "ink": "#3B2330",
+        "accent": "#A8325A",
+        "soft": "#8E6B78",
+        "gold": "#C9A35C",
+        "goldLight": "#F9D3DD",
+        "surface": "#FCE6EC",
+        "backdrop": "#F3D9E0",
+        "label": "#E8839F"
+      },
+      "fonts": {
+        "display": "Katibeh",
+        "body": "Amiri",
+        "label": "Almarai"
+      },
+      "radius": 20
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "احفظوا هذا التاريخ… فلدينا فرحٌ نريدكم فيه"
+      },
+      {
+        "type": "names",
+        "first": "ريم",
+        "second": "عمر"
+      },
+      {
+        "type": "date",
+        "label": "احفظوا الموعد",
+        "start": "2027-04-15T20:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "place",
+        "name": "الرياض"
+      },
+      {
+        "type": "closing",
+        "title": "الدعوة تصلكم لاحقاً",
+        "text": "الدعوة الرسمية بالتفاصيل كلها تصلكم قريباً بإذن الله"
+      }
+    ]
+  }
+}

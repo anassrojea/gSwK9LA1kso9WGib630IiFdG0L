@@ -65,6 +65,9 @@ class HandleInertiaRequests extends Middleware
                 'invoices' => trans('invoices', [], $locale),
                 'album' => trans('album', [], $locale),
                 'ai' => trans('ai', [], $locale),
+                // phase 8D: bundles, referrals, anniversary (journey.*) and thank-you, video, photo book (keepsakes.*)
+                'journey' => trans('journey', [], $locale),
+                'keepsakes' => trans('keepsakes', [], $locale),
             ],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
