@@ -7,6 +7,7 @@ use App\Models\HallLayout;
 use App\Models\Organization;
 use App\Models\OrgMember;
 use App\Services\HallGenerator;
+use App\Services\Org\OrgPlans;
 use App\Services\Seating\HallLayoutData;
 use App\Services\Seating\HallLayouts;
 use Illuminate\Http\RedirectResponse;
@@ -88,6 +89,11 @@ class HallLayoutController extends Controller
         if (! empty($data['org_id'])) {
             $org = Organization::query()->findOrFail($data['org_id']);
             Gate::authorize('createEvents', $org);
+            // the plan's saved hall layouts (phase 8A, OrgPlans: hall_layouts, null = unlimited)
+            $max = app(OrgPlans::class)->limits($org)['hall_layouts'];
+            if ($max !== null && $org->hallLayouts()->count() >= $max) {
+                throw ValidationException::withMessages(['name' => trans('org.halls.limit', ['limit' => $max])]);
+            }
         }
 
         $hall = HallLayout::query()->create([

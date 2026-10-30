@@ -83,11 +83,15 @@
     </main>
 
     <footer class="foot">
-        @if ($showBadge)
-            <span>{{ __('invite.footer') }}</span>
+        @if (! empty($orgBrand))
+            @include('invite.partials.org-brand', ['brand' => $orgBrand])
+        @else
+            @if ($showBadge)
+                <span>{{ __('invite.footer') }}</span>
+            @endif
+            {{-- "صمّم دعوتك" (plan section 14.7): an anonymous click count, then the landing page with UTM parameters --}}
+            <a href="{{ \App\Support\SiteUrl::designYours() }}?e={{ $invitation->slug }}" rel="noopener">{{ __('invite.make_yours') }}</a>
         @endif
-        {{-- "صمّم دعوتك" (plan section 14.7): an anonymous click count, then the landing page with UTM parameters --}}
-        <a href="{{ \App\Support\SiteUrl::designYours() }}?e={{ $invitation->slug }}" rel="noopener">{{ __('invite.make_yours') }}</a>
     </footer>
 
     @php($music = ($config['effects']['music'] ?? false) ? ($config['media']['music'] ?? null) : null)

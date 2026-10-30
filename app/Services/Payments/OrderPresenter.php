@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use App\Models\Invoice;
 use App\Models\Order;
+use App\Services\Org\OrgPlans;
 use App\Services\Payments\Gateways\TransferGateway;
 
 /**
@@ -88,7 +89,8 @@ class OrderPresenter
                     ? ($order->event?->status === 'draft' || ! $order->isFulfilled()
                         ? route('create.step', [$order->event_id, 'review'], false)
                         : route('dashboard.events.show', $order->event_id, false))
-                    : route('dashboard', absolute: false),
+                    // an organization's subscription order (phase 8A) goes back to its billing page
+                    : ($order->org_id ? route('org.billing', $order->org_id, false) : route('dashboard', absolute: false)),
             ],
         ];
     }
@@ -98,6 +100,10 @@ class OrderPresenter
      */
     public function itemName(array $item, string $locale): string
     {
+        if ($item['type'] === 'subscription') {
+            return OrgPlans::lineName((string) $item['id'], $locale);
+        }
+
         $key = $item['type'] === 'plan' ? "app.wizard.tiers.{$item['id']}" : "app.checkout.addons.{$item['id']}.name";
         $name = trans($key, [], $locale);
 

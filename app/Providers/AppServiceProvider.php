@@ -9,6 +9,7 @@ use App\Models\Invitation;
 use App\Models\Media;
 use App\Models\OpenLink;
 use App\Models\Order;
+use App\Models\Organization;
 use App\Models\Plan;
 use App\Models\User;
 use App\Observers\EdgeCachePurger;
@@ -63,7 +64,7 @@ class AppServiceProvider extends ServiceProvider
         OpenLink::observe(OgImageWarmer::class);
 
         // Cached guest pages are purged from Cloudflare when what they show changes (plan section 6.4).
-        foreach ([Invitation::class, Household::class, OpenLink::class, EventModel::class, Media::class] as $model) {
+        foreach ([Invitation::class, Household::class, OpenLink::class, EventModel::class, Media::class, Organization::class] as $model) {
             $model::observe(EdgeCachePurger::class);
         }
 

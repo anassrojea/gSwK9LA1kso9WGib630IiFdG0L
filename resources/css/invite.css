@@ -377,3 +377,6 @@ section.blk.alt,.sec-story{background:var(--c-surface)}
   .op-rose .rose.sway,.op-doors .lantern,.op-gift .gift.wiggle{animation:none}
   .stars{display:none}
 }
+/* white label footer (phase 8A): resources/views/invite/partials/org-brand.blade.php */
+.org-brand{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 13px var(--f-label);color:var(--c-ink,inherit)}
+.org-brand img{width:28px;height:28px;border-radius:6px;object-fit:contain}

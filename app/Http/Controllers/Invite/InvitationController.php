@@ -13,6 +13,7 @@ use App\Services\InvitationConfig\ThemeStyles;
 use App\Services\Invite\GuestDayState;
 use App\Services\OgImage\OgImage;
 use App\Services\OpenTracker;
+use App\Services\Org\WhiteLabel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -68,6 +69,8 @@ class InvitationController extends Controller
             'themeVars' => ThemeStyles::cssVariables($config['theme']),
             'fontsUrl' => ThemeStyles::fontsUrl($config['theme']),
             'showBadge' => ! $entitlements->hasFeature($event, Entitlements::NO_BADGE),
+            // white label (phase 8A): the organization's logo and name instead of the Daawa badge
+            'orgBrand' => app(WhiteLabel::class)->forEvent($event),
             'mediaUrl' => new MediaUrl($event),
             'boot' => [
                 'locale' => $config['locale'],
