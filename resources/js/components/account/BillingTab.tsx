@@ -1,11 +1,13 @@
 import { Link } from '@inertiajs/react';
-import { Check, ChevronLeft, FileDown, Gem, Plus, Receipt } from 'lucide-react';
+import { Check, ChevronLeft, FileDown, Gem, Gift, Plus, Receipt } from 'lucide-react';
 
 import { Section } from '@/components/account/Section';
+import { ReferralLink } from '@/components/journey/ReferralLink';
 import { OrderPanel, OrderStatusBadge } from '@/components/checkout/OrderPanel';
 import { Button } from '@/components/ui/button';
 import { TierBadge } from '@/components/wizard/TierBadge';
 import { useT } from '@/lib/i18n';
+import { formatMoney } from '@/lib/money';
 import type { BillingData, BillingEvent } from '@/types/account';
 
 function EventPlan({ event }: { event: BillingEvent }) {
@@ -151,6 +153,28 @@ export function BillingTab({ billing }: { billing: BillingData }) {
                     <Link href={billing.orders_url}>{t('account.billing.orders_all')}</Link>
                 </Button>
             </Section>
+
+            {billing.journey && (
+                // phase 8D: invite friends (referral link and credit); bundles and stats on the journey page
+                <Section
+                    name="invite-friends"
+                    title={t('journey.referrals.panel_title')}
+                    description={t('journey.referrals.panel_text', {
+                        amount: Object.entries(billing.journey.credit).length
+                            ? Object.entries(billing.journey.credit)
+                                  .map(([c, v]) => formatMoney(v, c, locale))
+                                  .join(sep)
+                            : t('journey.referrals.no_credit'),
+                    })}
+                >
+                    <ReferralLink link={billing.journey.link} />
+                    <Button asChild variant="outline" className="h-10 w-full sm:w-fit">
+                        <Link href={billing.journey.url} data-journey-link>
+                            <Gift /> {t('journey.referrals.panel_cta')}
+                        </Link>
+                    </Button>
+                </Section>
+            )}
         </div>
     );
 }

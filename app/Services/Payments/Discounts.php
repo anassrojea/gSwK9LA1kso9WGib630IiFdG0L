@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Services\Digits;
 use App\Services\Marketplace\MarketplaceOrders;
+use App\Services\Payments\Items\OrderItemHandlers;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -110,8 +111,11 @@ class Discounts
         return match ($type) {
             'plan' => $code->applies_to_plans && ($code->plan_ids === null || $code->plan_ids === [] || in_array($id, $code->plan_ids, true)),
             'addon' => $code->applies_to_addons && ($code->addon_ids === null || $code->addon_ids === [] || in_array($id, $code->addon_ids, true)),
-            // phase 8C marketplace items decide for themselves (template purchases: codes for every add-on)
-            default => app(MarketplaceOrders::class)->discountable($code, $type, $id),
+            // phase 8C marketplace items decide for themselves (template purchases: codes for every add-on);
+            // phase 8D products sold like add-ons (thank_you, highlight_video, …) are covered as add-ons.
+            // Each answers false for types it doesn't own.
+            default => app(MarketplaceOrders::class)->discountable($code, $type, $id)
+                || (app(OrderItemHandlers::class)->discountable($type) && $this->covers($code, 'addon', $id)),
         };
     }
 

@@ -9,6 +9,7 @@ use App\Services\Account\UpgradeHints;
 use App\Services\Dashboard\GuestBoard;
 use App\Services\Dashboard\GuestCsv;
 use App\Services\Dashboard\WhatsApp;
+use App\Services\Journey\SaveTheDate;
 use App\Services\Marketplace\VendorCards;
 use App\Services\OpenLinks;
 use App\Services\PublishGate;
@@ -81,6 +82,13 @@ class EventDashboardController extends Controller
             'plan' => $this->gate->currentPlan($event),
             // the "what upgrading unlocks" banner: Free events, or published ones the plan no longer covers
             'upgradeHint' => $canUpdate ? $this->upgradeHint($event) : null,
+            // phase 8D: a save-the-date can grow into the full invitation; after the event, the keepsakes page
+            'saveTheDate' => $canUpdate && SaveTheDate::isEvent($event) ? [
+                'upgrade_url' => route('events.save-the-date.upgrade', $event, false),
+                'occasions' => array_values(array_diff(Event::WIZARD_OCCASIONS, ['save_the_date'])),
+                'invitation_url' => ($next = Event::query()->where('source_event_id', $event->getKey())->value('id')) ? route('create.step', [$next, 'design'], false) : null,
+            ] : null,
+            'keepsakesUrl' => route('dashboard.events.keepsakes', $event, false),
             'pendingOrder' => $canUpdate ? Order::query()->where('event_id', $event->getKey())->pending()->latest()->first(['code', 'status'])?->only('code', 'status') : null,
             'urls' => [
                 'edit' => route('create.step', [$event, 'details'], false),

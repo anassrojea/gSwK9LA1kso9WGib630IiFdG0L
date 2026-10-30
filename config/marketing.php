@@ -33,6 +33,13 @@ return [
         'graduation' => 'graduation',
         'baby-welcome' => 'baby_welcome',
         'iftar' => 'iftar',
+        // phase 8D: occasions with their own templates
+        'katb-kitab' => 'katb_kitab',
+        'eid' => 'eid',
+        'housewarming' => 'housewarming',
+        'hajj-return' => 'hajj_return',
+        'welcome-home' => 'welcome_home',
+        'corporate' => 'corporate',
     ],
 
     // opening id => demo token whose first screen is the poster (scripts/opening-posters.mjs)

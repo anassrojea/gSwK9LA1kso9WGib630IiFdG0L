@@ -1,4 +1,5 @@
 import type { OrderSummary, OrderView } from '@/types/payments';
+import type { BillingJourney } from '@/types/journey';
 
 export type AccountTab = 'profile' | 'security' | 'billing' | 'privacy';
 
@@ -58,6 +59,8 @@ export interface BillingData {
     orders: OrderSummary[];
     pending: OrderView[];
     orders_url: string;
+    /** phase 8D: the Invite friends panel (null when referrals are off) */
+    journey?: BillingJourney | null;
 }
 
 export interface PrivacyData {

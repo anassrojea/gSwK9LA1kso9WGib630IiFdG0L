@@ -1,11 +1,11 @@
 import type { InvitationConfig, InvitationSection, SectionType } from '@/lib/config-schema';
-import { SECTION_TYPES } from '@/lib/config-schema';
+import { SECTION_TYPES_V1 } from '@/lib/config-schema';
 
 import { defaultStart } from './dates';
 
 type Translate = (key: string, replace?: Record<string, string | number>) => string;
 
-export const COUPLE_OCCASIONS: InvitationConfig['occasion'][] = ['wedding', 'engagement', 'henna'];
+export const COUPLE_OCCASIONS: InvitationConfig['occasion'][] = ['wedding', 'engagement', 'henna', 'katb_kitab'];
 
 /** Sections that need an upload first (gallery photos are required). */
 export const NEEDS_UPLOAD: SectionType[] = ['gallery'];
@@ -56,12 +56,19 @@ export function newSection(type: SectionType, t: Translate, occasion: Invitation
             return { type, text: d('album') };
         case 'closing':
             return { type, text: d('closing') };
+        case 'thank_you_gallery':
+            return { type, message: t('keepsakes.thank_you.default_message'), photos: [] };
     }
 }
 
+/**
+ * Sections the wizard offers to add. The thank-you gallery belongs to the
+ * thank-you card (dashboard → keepsakes); a save-the-date has no RSVP.
+ */
 export function missingTypes(config: InvitationConfig): SectionType[] {
     const present = new Set(config.sections.map((s) => s.type));
-    return SECTION_TYPES.filter((type) => !present.has(type));
+    const excluded: SectionType[] = config.kind === 'save_the_date' ? ['rsvp', 'send_rose'] : [];
+    return SECTION_TYPES_V1.filter((type) => !present.has(type) && !excluded.includes(type));
 }
 
 /** A short summary for the section list ("ريم و عمر", "٤ فصول"…). */

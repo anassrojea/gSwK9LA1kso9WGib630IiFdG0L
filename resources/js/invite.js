@@ -149,6 +149,13 @@ function applyState(next) {
     state = next;
     renderDay(next, digits);
     if (next.household.name) document.querySelectorAll('[data-guest-name]').forEach((el) => (el.textContent = next.household.name));
+    // thank-you card (phase 8D): "شكراً لعائلة …" for a personal link only
+    if (next.household.name && !replyKey) {
+        document.querySelectorAll('[data-thanks-to]').forEach((el) => {
+            el.textContent = (el.dataset.template || ':name').replace(':name', next.household.name);
+            el.hidden = false;
+        });
+    }
     if (replyKey) {
         replyToken = next.reply_token || null;
         storage(replyToken);
@@ -204,7 +211,7 @@ function applyState(next) {
 }
 
 if (boot.urls?.state) {
-    request(boot.urls.state + stateQuery(true, replyToken)).then(applyState).catch(() => {});
+    request(boot.urls.state + stateQuery(boot.countOpen !== false, replyToken)).then(applyState).catch(() => {});
 }
 
 if (form) {

@@ -9,6 +9,7 @@ use App\Models\Template;
 use App\Models\User;
 use App\Models\VenueProfile;
 use App\Services\DraftAccess;
+use App\Services\InvitationConfig\InvitationConfig;
 use App\Services\Venues\VenueDirectory;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 class DraftCreator
 {
     /** Occasions about two people: the names section keeps a second name and the story. */
-    public const COUPLE_OCCASIONS = ['wedding', 'engagement', 'henna'];
+    public const COUPLE_OCCASIONS = ['wedding', 'engagement', 'henna', 'katb_kitab'];
 
     public function __construct(private DraftAccess $access) {}
 
@@ -106,7 +107,8 @@ class DraftCreator
      */
     public static function configFor(string $occasion, ?Template $template): array
     {
-        $config = $template?->default_config ?? static::fallbackConfig();
+        // drafts are written in the current schema version, whatever the template's
+        $config = InvitationConfig::upgrade($template?->default_config ?? static::fallbackConfig());
 
         if (($config['occasion'] ?? null) === $occasion) {
             return $config;
@@ -115,6 +117,15 @@ class DraftCreator
         $locale = $config['locale'] ?? 'ar';
         $couple = in_array($occasion, self::COUPLE_OCCASIONS, true);
         $config['occasion'] = $occasion;
+
+        // a save-the-date (v2 kind) never carries an RSVP; a regular invitation drops another kind's marker
+        if ($occasion === 'save_the_date') {
+            $config['kind'] = 'save_the_date';
+            $config['sections'] = array_values(array_filter($config['sections'], fn (array $s) => ! in_array($s['type'], ['rsvp', 'send_rose', 'thank_you_gallery'], true)));
+        } else {
+            unset($config['kind']);
+            $config['sections'] = array_values(array_filter($config['sections'], fn (array $s) => $s['type'] !== 'thank_you_gallery'));
+        }
 
         foreach ($config['sections'] as $i => $section) {
             $section = match ($section['type']) {

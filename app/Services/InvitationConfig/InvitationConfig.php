@@ -9,6 +9,9 @@ namespace App\Services\InvitationConfig;
  */
 class InvitationConfig
 {
+    /** v2 "kind" values; absent means invitation. */
+    public const KINDS = ['invitation', 'save_the_date', 'thank_you'];
+
     /**
      * Upgrade a config to the current schema version. Add a step here each
      * time the schema version is bumped (v1 → v2 …), never edit old schemas.
@@ -19,13 +22,32 @@ class InvitationConfig
 
         while ($version < InvitationConfigValidator::CURRENT_VERSION) {
             $config = match ($version) {
-                // 1 => self::v1ToV2($config),
+                1 => self::v1ToV2($config),
                 default => $config,
             };
             $config['version'] = ++$version;
         }
 
         return $config;
+    }
+
+    /**
+     * v1 → v2 (phase 8D): v2 only adds things (occasions, the optional kind,
+     * the thank_you_gallery section), so a v1 document is already a valid v2
+     * document once its version says so. Nothing else changes; an absent kind
+     * means "invitation".
+     */
+    private static function v1ToV2(array $config): array
+    {
+        return $config;
+    }
+
+    /**
+     * What the document is (v2 "kind"): invitation, save_the_date or thank_you.
+     */
+    public static function kind(array $config): string
+    {
+        return in_array($config['kind'] ?? null, self::KINDS, true) ? $config['kind'] : 'invitation';
     }
 
     /**

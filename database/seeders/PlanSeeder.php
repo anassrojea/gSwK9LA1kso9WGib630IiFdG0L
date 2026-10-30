@@ -53,6 +53,11 @@ class PlanSeeder extends Seeder
             'video_guestbook' => ['Video guestbook', 1200],
             'thank_you' => ['Thank-you card + highlight gallery', 700],
             'ai_poem' => ['AI poem', 500],
+            // phase 8D (placeholder prices): save the date, highlight video, printed photo book (per copy)
+            'save_the_date' => ['Save the date', 500],
+            'highlight_video' => ['Highlight video', 1500],
+            'photo_book_20' => ['Printed photo book · 20 pages', 4900],
+            'photo_book_40' => ['Printed photo book · 40 pages', 7900],
         ];
 
         foreach ($addons as $id => [$name, $price]) {
@@ -83,6 +88,10 @@ class PlanSeeder extends Seeder
             'video_guestbook' => [4500, 145000],
             'thank_you' => [2500, 85000],
             'ai_poem' => [1900, 60000],
+            'save_the_date' => [1900, 60000],
+            'highlight_video' => [5500, 180000],
+            'photo_book_20' => [18500, 590000],
+            'photo_book_40' => [29900, 950000],
         ],
     ];
 

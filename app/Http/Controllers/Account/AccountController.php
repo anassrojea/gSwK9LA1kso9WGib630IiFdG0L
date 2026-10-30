@@ -12,6 +12,8 @@ use App\Services\Account\GoogleAuth;
 use App\Services\Account\LoginCodes;
 use App\Services\Account\SessionRegistry;
 use App\Services\Account\UpgradeHints;
+use App\Services\Journey\Credits;
+use App\Services\Journey\Referrals;
 use App\Services\Payments\Currencies;
 use App\Services\Payments\OrderPresenter;
 use Illuminate\Http\RedirectResponse;
@@ -111,6 +113,12 @@ class AccountController extends Controller
                 'orders' => $orders->map(fn (Order $o) => $presenter->present($o, details: false))->values(),
                 'pending' => $pending->map(fn (Order $o) => $presenter->present($o))->values(),
                 'orders_url' => route('dashboard.orders.index', absolute: false),
+                // phase 8D: the "Invite friends" panel (referral link and credit), linking to the journey page
+                'journey' => Referrals::enabled() ? [
+                    'link' => app(Referrals::class)->link($user),
+                    'credit' => (object) array_filter(app(Credits::class)->availableAll($user)),
+                    'url' => route('account.journey', absolute: false),
+                ] : null,
             ],
         ]);
     }

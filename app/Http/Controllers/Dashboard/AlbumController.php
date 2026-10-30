@@ -12,6 +12,7 @@ use App\Services\Album\Album;
 use App\Services\Album\QrSvg;
 use App\Services\Digits;
 use App\Services\Entitlements;
+use App\Services\Keepsakes\HighlightVideos;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -120,6 +121,9 @@ class AlbumController extends Controller
                 'upgrade' => route('dashboard.events.upgrade', $event, false),
             ],
             'plan' => $event->plan_id ?? Entitlements::FALLBACK_PLAN,
+            // phase 8D: the latest highlight video, previewed on the album page
+            'highlight' => app(HighlightVideos::class)->present(app(HighlightVideos::class)->latest($event)),
+            'keepsakesUrl' => route('dashboard.events.keepsakes', $event, false),
         ]);
     }
 

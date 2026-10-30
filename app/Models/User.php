@@ -48,6 +48,9 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
             'password' => 'hashed',
             'trial_ends_at' => 'datetime',
             'deletion_requested_at' => 'immutable_datetime',
+            // phase 8D (App\Services\Journey): referral footer opt-in, marketing email opt-out
+            'referral_footer' => 'boolean',
+            'marketing_opt_out' => 'boolean',
         ];
     }
 
@@ -153,5 +156,21 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     public function vendorListing(): HasOne
     {
         return $this->hasOne(VendorListing::class);
+    }
+
+    /** Phase 8D: credit ledger, bundle credits and the referrals this user made. */
+    public function accountCredits(): HasMany
+    {
+        return $this->hasMany(AccountCredit::class);
+    }
+
+    public function bundleCredits(): HasMany
+    {
+        return $this->hasMany(BundleCredit::class);
+    }
+
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(Referral::class, 'referrer_user_id');
     }
 }

@@ -70,6 +70,9 @@ class HandleInertiaRequests extends Middleware
                 // phase 8C: template marketplace and vendor listings, read as t('marketplace.…') / t('vendors.…')
                 'marketplace' => trans('marketplace', [], $locale),
                 'vendors' => trans('vendors', [], $locale),
+                // phase 8D: bundles, referrals, anniversary (journey.*) and thank-you, video, photo book (keepsakes.*)
+                'journey' => trans('journey', [], $locale),
+                'keepsakes' => trans('keepsakes', [], $locale),
             ],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Invite;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Keepsakes\ThankYouPageController;
 use App\Models\Event;
 use App\Models\Household;
 use App\Models\Invitation;
@@ -11,6 +12,7 @@ use App\Services\InvitationConfig\InvitationConfig;
 use App\Services\InvitationConfig\MediaUrl;
 use App\Services\InvitationConfig\ThemeStyles;
 use App\Services\Invite\GuestDayState;
+use App\Services\Keepsakes\ThankYouCards;
 use App\Services\OgImage\OgImage;
 use App\Services\OpenTracker;
 use App\Services\Org\WhiteLabel;
@@ -39,6 +41,11 @@ class InvitationController extends Controller
         $opens->record($household, $request->userAgent());
 
         $event = $household->event;
+
+        // after the event the same link shows the thank-you card, when the host made one (phase 8D)
+        if ($card = app(ThankYouCards::class)->replacesInvite($event)) {
+            return ThankYouPageController::render($event, $card, $token, $entitlements);
+        }
 
         return response()
             ->view('invite.show', static::viewData($event, $invitation, $config, $entitlements, [

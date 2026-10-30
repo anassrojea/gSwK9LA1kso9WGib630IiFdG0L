@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Services\Marketplace\MarketplaceOrders;
 use App\Services\Org\OrgPlans;
 use App\Services\Payments\Gateways\TransferGateway;
+use App\Services\Payments\Items\OrderItemHandlers;
 
 /**
  * An order as the customer sees it (Inertia props and GET /orders/{code}/status).
@@ -108,6 +109,12 @@ class OrderPresenter
         if (($handled = app(MarketplaceOrders::class)->name($item, $locale)) !== null) {
             return $handled;
         }
+
+        // line types with a handler (phase 8D) name themselves
+        if (! in_array($item['type'], ['plan', 'addon'], true) && ($name = app(OrderItemHandlers::class)->name($item, $locale))) {
+            return $name;
+        }
+
         $key = $item['type'] === 'plan' ? "app.wizard.tiers.{$item['id']}" : "app.checkout.addons.{$item['id']}.name";
         $name = trans($key, [], $locale);
 

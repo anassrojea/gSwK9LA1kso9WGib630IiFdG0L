@@ -1,3 +1,5 @@
+import type { JourneyCheckout } from '@/lib/journey';
+
 /** App\Services\Payments\CheckoutService::options */
 export interface CheckoutOptions {
     endpoint: string;
@@ -19,6 +21,8 @@ export interface CheckoutOptions {
     preselect_addon?: string | null;
     /** VAT added on top (VAT-exclusive prices only); null when prices include VAT */
     vat?: { rate_bp: number; currencies: string[]; countries: string[]; label: string } | null;
+    /** phase 8D: loyalty / referral reduction, bundle credits, account credit (App\Services\Journey\CheckoutExtras) */
+    journey?: JourneyCheckout;
 }
 
 export interface CheckoutPlan {
@@ -97,7 +101,8 @@ export interface TransferInstructions {
 }
 
 export interface OrderView extends OrderSummary {
-    items: { type: 'plan' | 'addon'; id: string; name: string; quantity: number; amount: number; amount_formatted: string }[];
+    /** plan, addon, and the phase 8D line types (save_the_date, photo_book, bundle, bundle_credit, loyalty, referral_credit…) */
+    items: { type: string; id: string; name: string; quantity: number; amount: number; amount_formatted: string }[];
     rejection_reason: string | null;
     receipt_sent_at: string | null;
     transfer: TransferInstructions | null;

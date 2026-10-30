@@ -8,6 +8,7 @@ use App\Services\Marketplace\MarketplaceOrders;
 use App\Services\Org\OrgPlans;
 use App\Services\Payments\CheckoutResult;
 use App\Services\Payments\Currencies;
+use App\Services\Payments\Items\OrderItemHandlers;
 use App\Services\Payments\PaymentGateway;
 
 /**
@@ -128,6 +129,10 @@ class TransferGateway implements PaymentGateway
             ->map(function (array $item) use ($locale) {
                 if ($item['type'] === 'subscription') {
                     return OrgPlans::lineName((string) $item['id'], $locale);
+                }
+                // line types with a handler (phase 8D) name themselves
+                if (! in_array($item['type'], ['plan', 'addon'], true) && ($own = app(OrderItemHandlers::class)->name($item, $locale))) {
+                    return $own;
                 }
                 $key = $item['type'] === 'plan' ? "app.wizard.tiers.{$item['id']}" : "app.checkout.addons.{$item['id']}.name";
                 $name = app(MarketplaceOrders::class)->name($item, $locale) ?? trans($key, [], $locale);

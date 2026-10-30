@@ -40,6 +40,10 @@ export interface DashboardProps {
     upgradeHint?: UpgradeHint | null;
     /** "Vendors near your venue" (phase 8C) */
     vendors?: VendorCards | null;
+    /** phase 8D: a save-the-date's way to its full invitation */
+    saveTheDate?: { upgrade_url: string; occasions: string[]; invitation_url: string | null } | null;
+    /** phase 8D: thank-you card, highlight video, photo book */
+    keepsakesUrl?: string;
 }
 
 export interface CsvPreviewRow {

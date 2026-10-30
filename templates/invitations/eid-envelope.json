@@ -1,0 +1,106 @@
+{
+  "id": "eid-envelope",
+  "occasion": "eid",
+  "name_ar": "لمّة العيد",
+  "name_en": "Eid gathering",
+  "tier": "free",
+  "opening_id": "envelope",
+  "theme_id": "olive-sand",
+  "sort": 120,
+  "default_config": {
+    "version": 2,
+    "occasion": "eid",
+    "locale": "ar",
+    "opening": {
+      "id": "envelope",
+      "options": {
+        "sealText": "عيد",
+        "kicker": "عيدكم مبارك",
+        "headline": "العيد أحلى بلمّتكم"
+      }
+    },
+    "theme": {
+      "id": "olive-sand",
+      "colors": {
+        "bg": "#FAF6EE",
+        "ink": "#2F3324",
+        "accent": "#5B6B3A",
+        "soft": "#7D7A66",
+        "gold": "#B8925A",
+        "goldLight": "#E5D3B0",
+        "surface": "#EFE8D8",
+        "backdrop": "#2B3120",
+        "label": "#9C7A44"
+      },
+      "fonts": {
+        "display": "El Messiri",
+        "body": "Noto Naskh Arabic",
+        "label": "Tajawal"
+      },
+      "radius": 12
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "كل عام وأنتم بخير، وعيدكم مبارك"
+      },
+      {
+        "type": "hosts",
+        "label": "عيدكم مبارك",
+        "lines": [
+          "تتشرف عائلة الحمصي"
+        ],
+        "outro": "بدعوتكم لمشاركتها فرحة العيد"
+      },
+      {
+        "type": "names",
+        "first": "عائلة الحمصي",
+        "note": "غداء العيد في بيت الجدّ"
+      },
+      {
+        "type": "date",
+        "label": "أول أيام العيد",
+        "start": "2027-03-10T13:00:00+03:00",
+        "showHijri": true,
+        "countdown": true
+      },
+      {
+        "type": "program",
+        "label": "برنامج اليوم",
+        "items": [
+          {
+            "time": "13:00",
+            "label": "الغداء"
+          },
+          {
+            "time": "15:00",
+            "label": "عيديّات الأطفال"
+          },
+          {
+            "time": "16:00",
+            "label": "القهوة والحلويات"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "بيت الجدّ أبو سمير",
+        "address": "حي المزة، دمشق"
+      },
+      {
+        "type": "rsvp",
+        "title": "هل ستشاركوننا؟",
+        "askMessage": true
+      },
+      {
+        "type": "closing",
+        "text": "ينعاد عليكم بالخير والبركة"
+      }
+    ]
+  }
+}

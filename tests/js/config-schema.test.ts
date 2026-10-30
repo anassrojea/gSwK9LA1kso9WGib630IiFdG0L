@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { test } from 'node:test';
 
-import { validateConfig } from '../../resources/js/lib/config-schema.ts';
+import { CONFIG_VERSION, KINDS, OCCASIONS, OCCASIONS_V1, SECTION_TYPES, upgradeConfig, validateConfig } from '../../resources/js/lib/config-schema.ts';
 import { generateHall } from '../../resources/js/lib/hall-generator.ts';
 
 const root = new URL('../../', import.meta.url);
@@ -64,4 +64,67 @@ test('hall generator (TS) returns the requested table and chair counts', () => {
     }
     const split = generateHall({ tables: 21, chairs: 8, layout: 'split' });
     assert.equal(split.tables.filter((t) => t.section === 'men').length, 11);
+});
+
+/* ---------- schema v2 (phase 8D), same fixtures as tests/Feature/Journey/ConfigV2Test.php ---------- */
+
+const exampleV2 = () => read('tests/Fixtures/config-example-v2.json');
+
+test('accepts the v2 example (new occasion, kind, thank_you_gallery)', () => {
+    assert.deepEqual(validateConfig(exampleV2()), { success: true, data: exampleV2() });
+});
+
+test('keeps v1 documents valid as v1, and upgrades them by changing only the version', () => {
+    const v1 = example();
+    assert.equal(validateConfig(v1).success, true);
+    const upgraded = upgradeConfig(v1);
+    assert.deepEqual(upgraded, { ...v1, version: 2 });
+    assert.equal(validateConfig(upgraded).success, true);
+    assert.deepEqual(upgradeConfig(exampleV2()), exampleV2());
+});
+
+const badV1: Record<string, [(c: any) => void, string]> = {
+    'a v2 occasion in a v1 document': [(c) => (c.occasion = 'katb_kitab'), '/occasion'],
+    'kind in a v1 document': [(c) => (c.kind = 'invitation'), '/'],
+    'a thank-you gallery in a v1 document': [(c) => c.sections.push({ type: 'thank_you_gallery', message: 'شكراً' }), '/sections/11'],
+};
+
+const badV2: Record<string, [(c: any) => void, string]> = {
+    'unknown kind': [(c) => (c.kind = 'flyer'), '/kind'],
+    'unknown occasion': [(c) => (c.occasion = 'party'), '/occasion'],
+    'thank-you gallery without a message': [(c) => delete c.sections[11].message, '/sections/11'],
+    'thank-you gallery with 25 photos': [(c) => (c.sections[11].photos = Array.from({ length: 25 }, () => ({ src: '/storage/a.jpg' }))), '/sections/11'],
+    'thank-you photo over http': [(c) => (c.sections[11].photos[0].src = 'http://evil.test/x.jpg'), '/sections/11'],
+    'thank-you signature too long': [(c) => (c.sections[11].signature = 'x'.repeat(121)), '/sections/11'],
+    'unknown top-level key': [(c) => (c.script = 'alert(1)'), '/'],
+};
+
+const versions = [
+    ['v1', badV1, example],
+    ['v2', badV2, exampleV2],
+] as const;
+
+for (const [label, cases, make] of versions) {
+    for (const [name, [mutate, pointer]] of Object.entries(cases)) {
+        test(`${label}: rejects ${name}`, () => {
+            const config = make();
+            mutate(config);
+            const result = validateConfig(config);
+            assert.equal(result.success, false);
+            assert.ok(
+                !result.success && Object.keys(result.errors).some((k) => k === pointer || k.startsWith(pointer === '/' ? '/' : `${pointer}/`)),
+                `expected an error at ${pointer}, got ${!result.success && Object.keys(result.errors)}`,
+            );
+        });
+    }
+}
+
+test('the occasion, kind and section lists match the JSON Schemas', () => {
+    const v1 = read('app/Services/InvitationConfig/schemas/v1.json');
+    const v2 = read('app/Services/InvitationConfig/schemas/v2.json');
+    assert.deepEqual([...OCCASIONS_V1], v1.properties.occasion.enum);
+    assert.deepEqual([...OCCASIONS], v2.properties.occasion.enum);
+    assert.deepEqual([...KINDS], v2.properties.kind.enum);
+    assert.deepEqual([...SECTION_TYPES], v2.properties.sections.items.properties.type.enum);
+    assert.equal(v2.properties.version.const, CONFIG_VERSION);
 });

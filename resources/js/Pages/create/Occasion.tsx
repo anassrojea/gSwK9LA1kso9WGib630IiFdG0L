@@ -1,5 +1,23 @@
 import { router } from '@inertiajs/react';
-import { Baby, Cake, Flower2, Gem, GraduationCap, Heart, Moon, PartyPopper, type LucideIcon } from 'lucide-react';
+import {
+    Baby,
+    BriefcaseBusiness,
+    Cake,
+    CalendarHeart,
+    DoorOpen,
+    Flower2,
+    Gem,
+    GraduationCap,
+    Heart,
+    HeartHandshake,
+    HouseHeart,
+    Moon,
+    MoonStar,
+    PartyPopper,
+    PlaneLanding,
+    ScrollText,
+    type LucideIcon,
+} from 'lucide-react';
 import { useState } from 'react';
 
 import WizardLayout from '@/components/wizard/WizardLayout';
@@ -19,6 +37,14 @@ export const OCCASION_ICONS: Record<Occasion, LucideIcon> = {
     graduation: GraduationCap,
     baby_welcome: Baby,
     iftar: Moon,
+    katb_kitab: ScrollText,
+    eid: MoonStar,
+    housewarming: HouseHeart,
+    hajj_return: PlaneLanding,
+    welcome_home: DoorOpen,
+    corporate: BriefcaseBusiness,
+    save_the_date: CalendarHeart,
+    thank_you: HeartHandshake,
     other: PartyPopper,
 };
 

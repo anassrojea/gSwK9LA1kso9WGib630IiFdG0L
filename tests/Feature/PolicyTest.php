@@ -32,7 +32,7 @@ it('lets the owner update their event', function () {
     Invitation::factory()->for($event)->create();
 
     $this->actingAs($event->owner);
-    patchConfig($event)->assertOk()->assertJson(['config_version' => 1]);
+    patchConfig($event)->assertOk()->assertJson(['config_version' => 2]);
 
     expect($event->invitation->fresh()->config['opening']['id'])->toBe('envelope');
 });

@@ -17,6 +17,7 @@ use App\Notifications\OrderRejected;
 use App\Services\Invoicing\Invoicer;
 use App\Services\Marketplace\MarketplaceOrders;
 use App\Services\Org\OrgSubscriptions;
+use App\Services\Payments\Items\OrderItemHandlers;
 use App\Services\Storage\StoragePeriod;
 use App\Services\Wizard\PlanAdvisor;
 use Carbon\CarbonImmutable;
@@ -268,6 +269,7 @@ class OrderFulfillment
                 $event->save();
             }
 
+            app(OrderItemHandlers::class)->refund($order);
             AuditLog::record('order.refunded', $order, array_filter(['reason' => $reason]), $actor);
             $this->releaseDiscount($order, $actor);
             app(Invoicer::class)->creditNote($order, $reason);
@@ -358,6 +360,7 @@ class OrderFulfillment
         // Venue & Planner Pro (phase 8A): subscription lines start or extend the organization's period
         app(OrgSubscriptions::class)->fulfill($order);
         app(MarketplaceOrders::class)->fulfill($order, $paidAt);
+        app(OrderItemHandlers::class)->fulfill($order, $paidAt);
         AuditLog::record("order.{$status}", $order, $data + ['total' => $order->total_cents, 'currency' => $order->currency], $actor);
         $this->redeemDiscount($order, $actor);
 

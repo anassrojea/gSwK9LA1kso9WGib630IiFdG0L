@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Opening;
 use App\Models\Order;
 use App\Models\Theme;
+use App\Services\Journey\SaveTheDate;
 use App\Services\Marketplace\TemplateAccess;
 use App\Services\Wizard\PlanAdvisor;
 
@@ -19,6 +20,7 @@ use App\Services\Wizard\PlanAdvisor;
  *   cover_video       Entitlements::COVER_VIDEO
  *   personal_links    Entitlements::PERSONAL_LINKS (households invited by name)
  *   guests            the seats fit the event's guest limit (plan + extra guest packs)
+ *   save_the_date     a save-the-date card (phase 8D): the save_the_date product, whatever the plan
  *
  * A Free invitation (free design, open link only, up to 50 guests) passes
  * without paying. Sending personal links, their WhatsApp buttons and
@@ -61,7 +63,15 @@ class PublishGate
 
     public function canSendPersonalLinks(Event $event): bool
     {
-        return $this->entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS);
+        return $this->entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS) || $this->paidSaveTheDate($event);
+    }
+
+    /**
+     * A save-the-date bought as its product (phase 8D) sends personal links and their preview without a plan.
+     */
+    private function paidSaveTheDate(Event $event): bool
+    {
+        return SaveTheDate::isEvent($event) && $this->entitlements->hasFeature($event, SaveTheDate::FEATURE);
     }
 
     /**
@@ -70,7 +80,7 @@ class PublishGate
      */
     public function canShowPersonalPreview(Event $event): bool
     {
-        return $this->entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS);
+        return $this->entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS) || $this->paidSaveTheDate($event);
     }
 
     public function canRemind(Event $event): bool
@@ -98,6 +108,7 @@ class PublishGate
                 || $marketplace->coversDesign($event, $config, 'theme'),
             'template' => ($template = $marketplace->inUse($event, $config)) === null || $marketplace->covers($event, $template, $plan),
             'cover_video' => $this->entitlements->hasFeature($event, Entitlements::COVER_VIDEO),
+            'save_the_date' => $this->entitlements->hasFeature($event, SaveTheDate::FEATURE),
             'personal_links' => $this->entitlements->hasFeature($event, Entitlements::PERSONAL_LINKS),
             'guests' => ($limit = $this->entitlements->limit($event, 'guests')) === null
                 || (int) $event->households()->sum('seats_allowed') <= $limit,

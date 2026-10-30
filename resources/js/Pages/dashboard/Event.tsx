@@ -1,5 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { ArrowLeft, Armchair, BellRing, CalendarDays, Download, Gem, Hourglass, Images, MapPin, MessageSquareText, Pencil, PartyPopper, QrCode, RefreshCw, Search, UserPlus, X } from 'lucide-react';
+import { Armchair, ArrowLeft, BellRing, CalendarDays, Download, Gem, HeartHandshake, Hourglass, Images, MapPin, MessageSquareText, PartyPopper, Pencil, QrCode, RefreshCw, Search, UserPlus, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 
@@ -12,6 +12,7 @@ import { Funnel, StatCards } from '@/components/dashboard/Overview';
 import { ReminderDialog } from '@/components/dashboard/ReminderDialog';
 import { UpgradeBanner } from '@/components/dashboard/UpgradeBanner';
 import { VendorsCard } from '@/components/marketplace/VendorsCard';
+import { SaveTheDatePanel } from '@/components/journey/SaveTheDatePanel';
 import { OpenLinkPanel } from '@/components/wizard/OpenLinkPanel';
 import { TierBadge } from '@/components/wizard/TierBadge';
 import { Button } from '@/components/ui/button';
@@ -293,6 +294,8 @@ export default function EventDashboard(props: DashboardProps) {
                     <UpgradeBanner eventId={event.id} hint={props.upgradeHint} upgradeUrl={urls.upgrade} />
                 )}
 
+                {props.saveTheDate && <SaveTheDatePanel data={props.saveTheDate} />}
+
                 <StatCards stats={stats} />
 
                 <div className="grid grid-cols-2 gap-2 lg:grid-cols-4" data-big-buttons>
@@ -329,6 +332,11 @@ export default function EventDashboard(props: DashboardProps) {
                     <BigButton name="album" icon={<Images />} href={`/dashboard/events/${event.id}/album`}>
                         {t('dashboard.big.album')}
                     </BigButton>
+                    {props.keepsakesUrl && (
+                        <BigButton name="keepsakes" icon={<HeartHandshake />} href={props.keepsakesUrl}>
+                            {t('keepsakes.nav')}
+                        </BigButton>
+                    )}
                     <BigButton name="export" icon={<Download />} href={exportUrl} note={filtered ? t('dashboard.table.showing', { shown: visible.length, total: guests.length }) : undefined}>
                         {t('dashboard.big.export')}
                     </BigButton>

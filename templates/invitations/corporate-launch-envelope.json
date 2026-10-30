@@ -1,0 +1,111 @@
+{
+  "id": "corporate-launch-envelope",
+  "occasion": "corporate",
+  "name_ar": "إطلاق منتج",
+  "name_en": "Product launch",
+  "tier": "signature",
+  "opening_id": "envelope",
+  "theme_id": "royal-ink",
+  "sort": 170,
+  "default_config": {
+    "version": 2,
+    "occasion": "corporate",
+    "locale": "en",
+    "opening": {
+      "id": "envelope",
+      "options": {
+        "sealText": "HZ",
+        "kicker": "You are invited",
+        "headline": "Be the first to see what is next"
+      }
+    },
+    "theme": {
+      "id": "royal-ink",
+      "colors": {
+        "bg": "#F7F3EA",
+        "ink": "#1B1E27",
+        "accent": "#2F5DA8",
+        "soft": "#6C6658",
+        "gold": "#CDA349",
+        "goldLight": "#EAD49C",
+        "surface": "#F4EBD8",
+        "backdrop": "#15171E",
+        "label": "#2F5DA8"
+      },
+      "fonts": {
+        "display": "Playfair Display",
+        "body": "Cormorant Garamond",
+        "label": "Montserrat"
+      },
+      "radius": 6
+    },
+    "effects": {
+      "fallingPetals": false,
+      "sparkles": true,
+      "music": false
+    },
+    "sections": [
+      {
+        "type": "intro_line",
+        "text": "A new chapter starts on stage. We would love you in the room."
+      },
+      {
+        "type": "hosts",
+        "label": "With pleasure",
+        "lines": [
+          "Horizon Technologies"
+        ],
+        "outro": "invites you to the launch of"
+      },
+      {
+        "type": "names",
+        "first": "Horizon One",
+        "note": "Our new platform for events across the region"
+      },
+      {
+        "type": "date",
+        "label": "When",
+        "start": "2027-01-20T19:00:00+03:00",
+        "showHijri": false,
+        "countdown": true
+      },
+      {
+        "type": "program",
+        "label": "Agenda",
+        "items": [
+          {
+            "time": "19:00",
+            "label": "Welcome and networking"
+          },
+          {
+            "time": "19:45",
+            "label": "Keynote and live demo"
+          },
+          {
+            "time": "20:30",
+            "label": "Dinner"
+          }
+        ]
+      },
+      {
+        "type": "place",
+        "name": "Riyadh Front, Hall B",
+        "address": "Airport Road, Riyadh"
+      },
+      {
+        "type": "dress_code",
+        "title": "Dress code",
+        "note": "Business attire"
+      },
+      {
+        "type": "rsvp",
+        "title": "Will you join us?",
+        "askMessage": true
+      },
+      {
+        "type": "closing",
+        "text": "We look forward to seeing you."
+      }
+    ]
+  }
+}

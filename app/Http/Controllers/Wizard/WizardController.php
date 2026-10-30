@@ -14,6 +14,8 @@ use App\Models\Template;
 use App\Models\Theme;
 use App\Services\Account\EmailVerification;
 use App\Services\Entitlements;
+use App\Services\InvitationConfig\InvitationConfig;
+use App\Services\Journey\SaveTheDate;
 use App\Services\Marketplace\MarketplaceCatalog;
 use App\Services\OpenLinks;
 use App\Services\Org\OrgQuota;
@@ -52,7 +54,7 @@ class WizardController extends Controller
         return Inertia::render('create/Occasion', [
             'event' => null,
             'config' => null,
-            'occasions' => Event::OCCASIONS,
+            'occasions' => Event::WIZARD_OCCASIONS,
             'steps' => self::STEPS,
         ]);
     }
@@ -66,7 +68,7 @@ class WizardController extends Controller
     public function store(Request $request, DraftCreator $drafts, VenueDirectory $venues): RedirectResponse
     {
         $data = $request->validate([
-            'occasion' => ['required', Rule::in(Event::OCCASIONS)],
+            'occasion' => ['required', Rule::in(Event::WIZARD_OCCASIONS)],
             'template_id' => ['nullable', 'string', Rule::exists('templates', 'id')->where('active', true)],
             'hall_layout_id' => ['nullable', 'uuid'],
         ]);
@@ -95,7 +97,8 @@ class WizardController extends Controller
         $invitation = $event->invitation;
         abort_unless($invitation, 404);
 
-        $config = $invitation->config;
+        // the editor works on the current schema version; saving writes it back as v2
+        $config = InvitationConfig::upgrade($invitation->config);
 
         $props = [
             'event' => [
@@ -118,7 +121,7 @@ class WizardController extends Controller
         ];
 
         $props += match ($step) {
-            'occasion' => ['occasions' => Event::OCCASIONS],
+            'occasion' => ['occasions' => Event::WIZARD_OCCASIONS],
             'design' => $this->catalog() + ['marketplace' => app(MarketplaceCatalog::class)->forWizard($event, $request->user())],
             'details' => ['media' => $this->media($event)],
             'guests' => $this->guests($event, $entitlements),
@@ -189,8 +192,8 @@ class WizardController extends Controller
         $themeTiers = Theme::query()->pluck('tier', 'id');
 
         return [
-            // the house catalog; marketplace templates come separately (MarketplaceCatalog::forWizard)
-            'templates' => Template::query()->where('active', true)->whereNull('designer_id')->orderBy('sort')->orderBy('id')->get()
+            // the house catalog (marketplace templates come separately, MarketplaceCatalog::forWizard); thank-you cards are made after the event
+            'templates' => Template::query()->where('active', true)->whereNull('designer_id')->where('occasion', '!=', 'thank_you')->orderBy('sort')->orderBy('id')->get()
                 ->map(fn (Template $t) => [
                     'id' => $t->id,
                     'occasion' => $t->occasion,
@@ -268,7 +271,11 @@ class WizardController extends Controller
             // what the plan must cover before publishing (PublishGate) and the checkout to get there
             'gate' => ['allowed' => $check['allowed'], 'missing' => $check['missing'], 'current' => $check['current'], 'required' => $check['required']],
             'canSendPersonal' => $canSend,
-            'checkout' => $request->user() && ! $check['allowed'] ? app(CheckoutService::class)->options($event, $request->user()) : null,
+            // a save-the-date (phase 8D) is bought as its own product, not with a plan
+            'checkout' => $request->user() && ! $check['allowed']
+                ? app(CheckoutService::class)->options($event, $request->user(), SaveTheDate::is($config) ? [SaveTheDate::FEATURE] : null)
+                : null,
+            'saveTheDate' => SaveTheDate::is($config),
             'order' => $order ? $presenter->present($order) : null,
             'checkoutOutcome' => $request->query('checkout'),
             // the advised plans' prices in the host's (or the event's country's) currency, before any sign-up

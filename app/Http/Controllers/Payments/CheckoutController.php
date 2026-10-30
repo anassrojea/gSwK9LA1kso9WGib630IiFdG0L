@@ -45,6 +45,9 @@ class CheckoutController extends Controller
             'country' => ['nullable', 'string', 'max:5'],
             'discount_code' => ['nullable', 'string', 'max:40'],
             'from' => ['nullable', Rule::in(['wizard', 'dashboard'])],
+            // phase 8D: pay the plan with a bundle credit, spend account credit
+            'bundle_credit' => ['nullable', 'uuid'],
+            'use_credit' => ['nullable', 'boolean'],
         ]);
 
         $event = Event::query()->findOrFail($data['event_id']);
@@ -60,6 +63,7 @@ class CheckoutController extends Controller
             $data['gateway'],
             array_key_exists($country, config('payments.countries')) ? $country : null,
             $data['discount_code'] ?? null,
+            ['bundle_credit' => $data['bundle_credit'] ?? null, 'use_credit' => (bool) ($data['use_credit'] ?? false)],
         );
 
         $from = $data['from'] ?? 'dashboard';

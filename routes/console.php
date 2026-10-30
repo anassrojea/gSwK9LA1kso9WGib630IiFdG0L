@@ -22,6 +22,8 @@ Schedule::command('events:expire-storage')->dailyAt('04:23')->withoutOverlapping
 Schedule::command('org:renewal-orders')->hourlyAt(7)->withoutOverlapping();
 Schedule::command('org:renewal-reminders')->dailyAt('09:41')->withoutOverlapping();
 Schedule::command('org:expire-subscriptions')->hourlyAt(37)->withoutOverlapping();
+// Phase 8D: the yearly anniversary email to hosts (journey:anniversaries is idempotent)
+Schedule::command('journey:anniversaries')->dailyAt('10:17')->withoutOverlapping();
 
 Artisan::command('daawa:make-admin {email} {--name=}', function (string $email) {
     $user = User::query()->firstOrNew(['email' => $email]);

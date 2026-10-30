@@ -7,6 +7,7 @@ use App\Models\Opening;
 use App\Models\OpenLink;
 use App\Models\Plan;
 use App\Models\Theme;
+use App\Services\Journey\SaveTheDate;
 use App\Services\Marketplace\TemplateAccess;
 
 /**
@@ -14,7 +15,9 @@ use App\Services\Marketplace\TemplateAccess;
  * never a surprise (plan section 3), and checked again when publishing
  * (App\Services\PublishGate). Free (plan section 13.1): free openings and
  * themes, up to 50 guests, the open link only; personal links, a cover video
- * or Premium designs need Premium.
+ * or Premium designs need Premium. A save-the-date (config kind
+ * "save_the_date", phase 8D) is its own product: it needs the save_the_date
+ * add-on and no plan, and may not carry an RSVP.
  */
 class PlanAdvisor
 {
@@ -40,6 +43,10 @@ class PlanAdvisor
      */
     public function advise(Event $event, array $config): array
     {
+        if (SaveTheDate::is($config)) {
+            return ['plan' => null, 'tier' => 'free', 'reasons' => ['save_the_date', ...SaveTheDate::problems($config)]];
+        }
+
         $reasons = [];
         $tier = 'free';
         $raise = function (string $to, string $reason) use (&$tier, &$reasons) {

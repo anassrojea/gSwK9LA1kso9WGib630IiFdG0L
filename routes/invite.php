@@ -9,6 +9,7 @@ use App\Http\Controllers\Invite\RoseController;
 use App\Http\Controllers\Invite\RsvpController;
 use App\Http\Controllers\Invite\WallController;
 use App\Http\Controllers\Invite\WalletController;
+use App\Http\Controllers\Keepsakes\ThankYouPageController;
 use App\Http\Controllers\Wizard\PreviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -92,3 +93,9 @@ Route::get('/e/{slug}/wallet-strip.png', [WalletController::class, 'strip'])->mi
 */
 Route::get('/e/{slug}/find', [FindTableController::class, 'show'])->middleware('throttle:invite-page')->name('invite.find');
 Route::post('/e/{slug}/find', [FindTableController::class, 'lookup'])->middleware('throttle:find-table')->name('invite.find.lookup');
+
+/*
+| Phase 8D: the thank-you card at every household's link and the open link
+| (and /i/{token} itself after the event, when the host chose so).
+*/
+Route::get('/t/{token}', [ThankYouPageController::class, 'show'])->middleware('throttle:thank-you-page')->name('thank-you.show');
