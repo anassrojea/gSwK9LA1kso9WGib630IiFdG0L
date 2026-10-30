@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Invite\AlbumController;
+use App\Http\Controllers\Invite\FindTableController;
 use App\Http\Controllers\Invite\InvitationController;
 use App\Http\Controllers\Invite\OgImageController;
 use App\Http\Controllers\Invite\QrController;
@@ -84,3 +85,10 @@ Route::get('/i/{token}/wallet/{platform}', [WalletController::class, 'show'])
 Route::get('/i/{token}/pass', [WalletController::class, 'pass'])->middleware('throttle:wallet')->name('invite.pass');
 Route::get('/i/{token}/pass.webmanifest', [WalletController::class, 'manifest'])->middleware('throttle:wallet')->name('invite.pass.manifest');
 Route::get('/e/{slug}/wallet-strip.png', [WalletController::class, 'strip'])->middleware('throttle:invite-og')->name('invite.wallet.strip');
+
+/*
+| Phase 8B, "Smart Hall": find your table at the entrance (plan section 9 item 2).
+| Only on the event day, with the seating feature; never lists guests (FindTable).
+*/
+Route::get('/e/{slug}/find', [FindTableController::class, 'show'])->middleware('throttle:invite-page')->name('invite.find');
+Route::post('/e/{slug}/find', [FindTableController::class, 'lookup'])->middleware('throttle:find-table')->name('invite.find.lookup');
