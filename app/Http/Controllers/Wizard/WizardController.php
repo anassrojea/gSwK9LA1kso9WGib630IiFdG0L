@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\Plan;
 use App\Models\Template;
 use App\Models\Theme;
+use App\Services\Account\EmailVerification;
 use App\Services\Entitlements;
 use App\Services\OpenLinks;
 use App\Services\Payments\CheckoutService;
@@ -19,6 +20,7 @@ use App\Services\Payments\Currencies;
 use App\Services\Payments\OrderPresenter;
 use App\Services\Payments\PriceList;
 use App\Services\PublishGate;
+use App\Services\Storage\StoragePeriod;
 use App\Services\Wizard\DraftCreator;
 use App\Services\Wizard\PlanAdvisor;
 use Illuminate\Http\RedirectResponse;
@@ -118,10 +120,13 @@ class WizardController extends Controller
      * Free invitation publishes at once, anything else after its order is
      * paid (card) or approved (transfer).
      */
-    public function publish(Event $event, PublishGate $gate): RedirectResponse
+    public function publish(Event $event, PublishGate $gate, StoragePeriod $storage): RedirectResponse
     {
         $invitation = $event->invitation;
         abort_unless($invitation, 404);
+
+        // publishing needs a verified email (drafts don't): the review step shows the resend prompt
+        EmailVerification::ensure(request(), 'publish');
 
         // something to send: personal links, or the open link for everyone
         if (! $event->households()->exists() && ! $event->openLink()->where('enabled', true)->exists()) {
@@ -140,8 +145,10 @@ class WizardController extends Controller
 
         if ($event->status === 'draft') {
             $event->status = 'active';
-            $event->save();
         }
+        // photos and uploads are kept until the event's date + the plan's storage days (plan section 11)
+        $storage->apply($event);
+        $event->save();
 
         return redirect()->route('create.step', [$event, 'review'])->with('status', trans('app.wizard.review.published'));
     }

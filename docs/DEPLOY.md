@@ -155,6 +155,19 @@ LEMON_SQUEEZY_API_KEY=...
 LEMON_SQUEEZY_STORE=12345
 LEMON_SQUEEZY_SIGNING_SECRET=...
 LEMON_SQUEEZY_VARIANT_ID=67890
+
+# Invoices and VAT (config/invoicing.php, docs/INVOICES.md). Empty VAT number: receipts without VAT.
+INVOICE_SELLER_NAME_AR=...                # legal name as on the commercial registration
+INVOICE_SELLER_NAME_EN=...
+INVOICE_SELLER_ADDRESS_AR=...
+INVOICE_SELLER_ADDRESS_EN=...
+INVOICE_CR_NUMBER=
+INVOICE_VAT_NUMBER=                       # 15 digits once VAT-registered
+INVOICE_PRICES_INCLUDE_VAT=true
+INVOICE_VAT_CURRENCIES=SAR
+
+# Storage period (config/retention.php): days between deleting an event's media and archiving it
+STORAGE_ARCHIVE_GRACE_DAYS=30
 ```
 
 The `VITE_*` variables in `.env.example` are read at build time by `npm run build`, so they must be
@@ -235,7 +248,9 @@ Cloudflare passes WebSockets through on all plans (Network → WebSockets: on).
 Forge → Server → Scheduler: enable the Laravel scheduler for the site (`php8.4 /home/forge/daawa.app/current/artisan schedule:run`
 every minute). Scheduled today (`routes/console.php`): `horizon:snapshot` every five minutes, and `orders:expire`
 every fifteen minutes (transfer orders with no receipt 48 h after checkout become `expired`, and the customer is
-emailed). Reminders and storage cleanup (plan section 15.1) will be added there.
+emailed), `account:purge-deleted` daily, and `events:expire-storage` daily at 04:23 (storage warnings 14 and 3 days
+ahead, media deletion after `events.storage_until`, archive after the grace period; run it with `--dry-run` first on a
+new server, see [INVOICES.md, section 3](INVOICES.md#3-storage-expiry)).
 
 ## 7. Database backups
 
@@ -396,6 +411,11 @@ whole pounds, SAR and USD may have two decimals). Re-seeding never overwrites a 
    order (refused); reject one with a reason; check the emails in the log (`MAIL_MAILER=log`) or the mail provider.
 7. Leave an order without a receipt, run `php artisan orders:expire` after moving the clock (or wait 48 h): it expires.
 8. Check that `/webhooks/*` returns 403 (bad signature), not a Cloudflare challenge page: `curl -i -X POST https://staging.daawa.app/webhooks/stripe`.
+
+**Invoices.** Every paid or approved order gets a receipt, or a ZATCA phase-1 simplified tax invoice once
+`INVOICE_VAT_NUMBER` is set; refunds get a credit note. PDFs are printed by the same Chromium as the link previews.
+ZATCA phase 2 (e-invoicing integration) is **not** implemented. Details, rounding rules and what the owner must
+provide: [INVOICES.md](INVOICES.md).
 
 ## 11. Scaling later
 

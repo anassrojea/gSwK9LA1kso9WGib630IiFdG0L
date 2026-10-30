@@ -1074,4 +1074,48 @@ return [
     ],
 
     'publish_gate' => ['edit_needs_upgrade' => 'This change needs the :plan plan. Upgrade the event from its dashboard, then try again.'],
+
+    // Email verification (phase 6B, App\Services\Account\EmailVerification)
+    'verify' => [
+        'title' => 'Verify your email',
+        'description' => 'One last step before you pay or send invitations.',
+        'sent_to' => 'We sent a verification link to',
+        'why' => 'Open the link in that email to confirm it is yours. You can keep editing your drafts in the meantime.',
+        'resend' => 'Send the link again',
+        'resent' => 'A new link is on its way. Check your inbox and spam folder.',
+        'throttled' => 'You asked for several links already. Please wait a few minutes and try again.',
+        'failed' => 'The link could not be sent. Please try again.',
+        'change_email' => 'Wrong address? Change it',
+        'prompt' => [
+            'checkout' => 'Confirm your email to pay',
+            'publish' => 'Confirm your email to publish',
+            'profile' => 'This address is not verified yet',
+            'sent_to' => 'Open the link we sent to',
+        ],
+        'blocked' => [
+            'checkout' => 'Please confirm your email (:email) before paying. We sent you a link.',
+            'publish' => 'Please confirm your email (:email) before publishing. We sent you a link.',
+        ],
+        'mail' => [
+            'subject' => 'Confirm your email for Daawa',
+            'greeting' => 'Hello :name,',
+            'line' => 'Tap the button to confirm this is your email address. You need it to pay and to send your invitations.',
+            'action' => 'Confirm my email',
+            'ignore' => 'If you did not create a Daawa account, you can ignore this email.',
+            'salutation' => "Regards,\nDaawa",
+        ],
+    ],
+
+    // Storage period of an event's photos and uploads (phase 6B, events:expire-storage)
+    'storage' => [
+        'mail' => [
+            'subject' => 'The photos of “:event” will be deleted on :date',
+            'greeting' => 'Hello :name,',
+            'line' => 'The storage period of “:event” ends on :date. After that day we delete its photos, videos and uploads.',
+            'kept' => 'Your guests\' replies and the invitation text are kept.',
+            'action' => 'Extend storage',
+            'ignore' => 'Already extended it? You can ignore this email.',
+            'salutation' => "Regards,\nDaawa",
+        ],
+    ],
 ];

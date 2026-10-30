@@ -104,14 +104,16 @@ Personal links are Premium (plan section 5), enforced since phase 4 by `App\Serv
 4. After publishing, the review step lists personal links (and their WhatsApp buttons) only with `PERSONAL_LINKS`;
    the event dashboard hides the per-guest WhatsApp and copy actions (`can.send`) and refuses reminders
    (`POST /dashboard/events/{event}/reminders` → 403 without `Entitlements::REMINDERS`).
-5. Not gated yet: the personal preview image (plan section 5 lists "Personal WhatsApp preview" as Premium). In
-   `InvitationController::show`, pass `$og->hash($invitation, $config)` without the household for free events, so
-   they share the generic card.
+5. The personal preview image is Premium too (plan section 5, "Personal WhatsApp preview"; since phase 6B):
+   `OgImage::subject()` drops the household unless `PublishGate::canShowPersonalPreview` (the event has
+   `PERSONAL_LINKS`), so on a Free event every personal link's `og:image` and `og.png` is the generic card
+   ("يسعدنا حضوركم", `og/{event_id}/open-{hash}.png`), rendered once. `GenerateOgImage::warmEvent` queues one job
+   instead of one per guest. Upgrading changes the hash, so WhatsApp picks up the personal cards.
 
 ## 4. Link preview images (`og.png`)
 
-`GET /i/{token}/og.png` returns a 1200 × 630 PNG: the occasion, the couple's names, the date and, on personal links,
-"دعوة خاصة لعائلة خالد العلي" (`OgImage::recipient` attaches لـ to "عائلة/آل/ال…" names, otherwise "إلى …"; English:
+`GET /i/{token}/og.png` returns a 1200 × 630 PNG: the occasion, the couple's names, the date and, on personal links of
+events with personal links (Premium and up, see [3. Entitlements](#3-entitlements) item 5), "دعوة خاصة لعائلة خالد العلي" (`OgImage::recipient` attaches لـ to "عائلة/آل/ال…" names, otherwise "إلى …"; English:
 "A special invitation for …"), in the theme's colors and fonts. The open link gets the same card with "يسعدنا حضوركم".
 `invite/show.blade.php` points `og:image`, `og:image:width/height` and `twitter:card` at it (absolute, on `INVITE_URL`,
 with `?v={hash}`).

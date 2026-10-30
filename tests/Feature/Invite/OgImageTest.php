@@ -1,8 +1,11 @@
 <?php
 
 use App\Jobs\GenerateOgImage;
+use App\Models\Entitlement;
+use App\Models\Event;
 use App\Models\Household;
 use App\Models\OpenLink;
+use App\Services\Entitlements;
 use App\Services\OgImage\Chromium;
 use App\Services\OgImage\OgImage;
 use Database\Factories\InvitationFactory;
@@ -44,6 +47,14 @@ class FakeChromium extends Chromium
 beforeEach(function () {
     Storage::fake(config('filesystems.media_disk'));
 });
+
+/**
+ * Personal preview images are Premium (phase 6B): grant personal links to the event.
+ */
+function personalPreviews(Event $event): void
+{
+    Entitlement::query()->create(['event_id' => $event->id, 'feature' => Entitlements::PERSONAL_LINKS]);
+}
 
 function fakeChromium(): FakeChromium
 {
@@ -108,6 +119,7 @@ it('still counts real browsers', function () {
 it('renders a missing image on request, caches it and never counts it as an open', function () {
     $chromium = fakeChromium();
     [, $household] = invitedHousehold();
+    personalPreviews($household->event);
     $og = app(OgImage::class);
     $invitation = $household->event->invitation;
     $hash = $og->hash($invitation, $invitation->renderConfig(), $household);
@@ -133,6 +145,7 @@ it('renders a missing image on request, caches it and never counts it as an open
 it('re-renders after a rename and deletes the old image', function () {
     $chromium = fakeChromium();
     [, $household] = invitedHousehold();
+    personalPreviews($household->event);
     $disk = Storage::disk(config('filesystems.media_disk'));
 
     $this->get("/i/{$household->token}/og.png")->assertOk();
@@ -232,6 +245,7 @@ it('queues the image when a household is created or renamed on a published invit
 
 it('does not queue images for drafts or open-link replies', function () {
     [$event] = invitedHousehold();
+    personalPreviews($event);
     $event->invitation->update(['published_at' => null]);
     Queue::fake();
     config(['og.warm' => true]);
@@ -250,6 +264,7 @@ it('does not queue images for drafts or open-link replies', function () {
 
 it('queues every card, delayed, when a published invitation is edited', function () {
     [$event, $household] = invitedHousehold();
+    personalPreviews($event);
     OpenLink::query()->create(['event_id' => $event->id, 'cap' => 10, 'enabled' => true]);
     Queue::fake();
     config(['og.warm' => true]);
@@ -274,4 +289,60 @@ it('renders in the job, and skips unpublished invitations', function () {
     (new GenerateOgImage($event->id, $household->id))->handle(app(OgImage::class));
 
     expect($chromium->renders)->toBe(1);
+});
+
+// Phase 6B: the personal preview is Premium (plan section 5); Free events share the generic card.
+
+it('gives every guest of a Free event the generic card', function () {
+    $chromium = fakeChromium();
+    [$event, $household] = invitedHousehold();
+    $household->update(['display_name' => 'عائلة خالد العلي']);
+    $other = Household::factory()->for($event)->create(['display_name' => 'Khaled Ali']);
+    $og = app(OgImage::class);
+    $invitation = $event->invitation;
+
+    // the same hash for everyone, and the same as the open link's card
+    $hash = $og->hash($invitation, $invitation->renderConfig(), $household);
+    expect($og->hash($invitation, $invitation->renderConfig(), $other))->toBe($hash)
+        ->and($og->hash($invitation, $invitation->renderConfig()))->toBe($hash);
+
+    $this->get("/i/{$household->token}")->assertOk()->assertSee("/i/{$household->token}/og.png?v={$hash}", false);
+
+    $this->get("/i/{$household->token}/og.png?v={$hash}")->assertOk()->assertHeader('Content-Type', 'image/png');
+    $this->get("/i/{$other->token}/og.png?v={$hash}")->assertOk();
+
+    expect($chromium->renders)->toBe(1)
+        ->and($chromium->html[0])->not->toContain('خالد العلي')
+        ->and($chromium->html[0])->toContain(__('invite.og.open'))
+        ->and(Storage::disk(config('filesystems.media_disk'))->files("og/{$event->id}"))
+        ->toHaveCount(1)->each->toStartWith("og/{$event->id}/open-");
+});
+
+it('draws the guest name once the event has personal links', function () {
+    $chromium = fakeChromium();
+    [$event, $household] = invitedHousehold();
+    $household->update(['display_name' => 'عائلة خالد العلي']);
+    $og = app(OgImage::class);
+    $generic = $og->hash($event->invitation, $event->invitation->renderConfig(), $household);
+
+    personalPreviews($event);
+    $og = app(OgImage::class);
+    $personal = $og->hash($event->invitation, $event->invitation->renderConfig(), $household);
+
+    $this->get("/i/{$household->token}/og.png")->assertOk();
+
+    expect($personal)->not->toBe($generic)
+        ->and($chromium->html[0])->toContain('لعائلة خالد العلي')
+        ->and(Storage::disk(config('filesystems.media_disk'))->files("og/{$event->id}"))
+        ->each->toStartWith("og/{$event->id}/{$household->id}-");
+});
+
+it('queues one generic card for a Free event instead of one per guest', function () {
+    [$event] = invitedHousehold();
+    Household::factory()->for($event)->count(3)->create();
+    Queue::fake();
+
+    GenerateOgImage::warmEvent($event);
+
+    Queue::assertPushed(GenerateOgImage::class, 1);
 });

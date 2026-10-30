@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Household;
 use App\Models\OpenLink;
 use App\Services\OgImage\OgImage;
+use App\Services\PublishGate;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -73,6 +74,17 @@ class GenerateOgImage implements ShouldBeUniqueUntilProcessing, ShouldQueue
      */
     public static function warmEvent(Event $event, int $delaySeconds = 0): void
     {
+        // Free events share the generic card (OgImage::subject): one render is enough
+        if (! app(PublishGate::class)->canShowPersonalPreview($event)) {
+            if ($first = $event->households()->whereRaw('not (? = any(tags))', [OpenLink::TAG])->orderBy('id')->value('id')) {
+                static::dispatch($event->getKey(), $first)->delay($delaySeconds);
+            } elseif ($event->openLink()->where('enabled', true)->exists()) {
+                static::dispatch($event->getKey())->delay($delaySeconds);
+            }
+
+            return;
+        }
+
         $event->households()
             ->whereRaw('not (? = any(tags))', [OpenLink::TAG])
             ->select('id')
