@@ -65,6 +65,8 @@ class HandleInertiaRequests extends Middleware
                 'invoices' => trans('invoices', [], $locale),
                 'album' => trans('album', [], $locale),
                 'ai' => trans('ai', [], $locale),
+                // Venue & Planner Pro (phase 8A): t('org.…')
+                'org' => trans('org', [], $locale),
             ],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),

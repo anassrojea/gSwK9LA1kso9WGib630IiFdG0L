@@ -1151,4 +1151,10 @@ return [
         ],
         'admin_pulse' => 'صحّة الخادم (Pulse)',
     ],
+
+    // Venue & Planner Pro (phase 8A): the account menu link to /org (the area's own strings are in org.php)
+    'org_nav' => [
+        'organizations' => 'منشآتي',
+        'hint' => 'للقاعات والمنظّمين',
+    ],
 ];

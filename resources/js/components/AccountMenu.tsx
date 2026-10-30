@@ -1,5 +1,5 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { ChevronDown, Languages, LogOut, Receipt, ShieldCheck, UserRound } from 'lucide-react';
+import { Building2, ChevronDown, Languages, LogOut, Receipt, ShieldCheck, UserRound } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -53,6 +53,12 @@ export function AccountMenu() {
                 <DropdownMenuItem asChild>
                     <Link href="/dashboard/orders" data-nav-orders>
                         <Receipt /> {t('orders.title')}
+                    </Link>
+                </DropdownMenuItem>
+                {/* Venue & Planner Pro (phase 8A) */}
+                <DropdownMenuItem asChild>
+                    <Link href="/org" data-nav-org>
+                        <Building2 /> {t('org_nav.organizations')}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

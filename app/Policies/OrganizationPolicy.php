@@ -46,6 +46,24 @@ class OrganizationPolicy
         return in_array($user->roleIn($organization), [OrgMember::ROLE_OWNER, OrgMember::ROLE_STAFF], true);
     }
 
+    /**
+     * The subscription (plans, checkout, cancel, the Billing Portal) is the owner's: the owner pays (phase 8A).
+     */
+    public function manageBilling(User $user, Organization $organization): bool
+    {
+        return $user->roleIn($organization) === OrgMember::ROLE_OWNER;
+    }
+
+    /**
+     * Anyone but the owner can leave; the owner hands the organization over first.
+     */
+    public function leave(User $user, Organization $organization): bool
+    {
+        $role = $user->roleIn($organization);
+
+        return $role !== null && $role !== OrgMember::ROLE_OWNER;
+    }
+
     public function delete(User $user, Organization $organization): bool
     {
         return $user->roleIn($organization) === OrgMember::ROLE_OWNER;
