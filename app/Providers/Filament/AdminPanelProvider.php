@@ -39,6 +39,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            // admins must have verified their email (User implements MustVerifyEmail)
+            ->emailVerification()
             ->brandName('Daawa · دعوة')
             ->colors([
                 'primary' => Color::Rose,

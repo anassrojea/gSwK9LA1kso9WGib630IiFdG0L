@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Services\Account\AccountDeletion;
+use App\Services\Account\EmailVerification;
 use App\Services\Account\GoogleAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -46,6 +47,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => ($user = $request->user()) ? [
                     ...$user->only(['id', 'name', 'email', 'locale', 'role']),
+                    // false: paying and publishing show the "verify your email" prompt (EmailVerification)
+                    'email_verified' => ! EmailVerification::required($user),
                     // the grace banner (Account → Privacy) shows on every page while a deletion is pending
                     'deletion_scheduled_for' => AccountDeletion::scheduledFor($user)?->toIso8601String(),
                 ] : null,
@@ -56,7 +59,8 @@ class HandleInertiaRequests extends Middleware
             'dir' => SetLocale::direction($locale),
             'locales' => SetLocale::supported(),
             // flat dictionary for the React pages (react-i18next can take over once the wizard lands)
-            'translations' => fn () => trans('app', [], $locale),
+            // plus lang/{locale}/invoices.php under "invoices" (download links on orders and billing)
+            'translations' => fn () => trans('app', [], $locale) + ['invoices' => trans('invoices', [], $locale)],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
                 'warning' => fn () => $request->session()->get('warning'),

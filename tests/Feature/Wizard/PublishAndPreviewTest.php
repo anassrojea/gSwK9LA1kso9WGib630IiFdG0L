@@ -31,6 +31,10 @@ it('publishes once the guest has signed up and paid, then lists every personal l
 
     $this->post('/register', ['name' => 'Lina', 'email' => 'lina@example.test', 'password' => 'a-long-password-1', 'password_confirmation' => 'a-long-password-1']);
 
+    // a password sign-up verifies its email first (phase 6B), then follows the link
+    $this->post("/create/{$event->id}/publish")->assertSessionHasErrors('verify_email');
+    auth()->user()->markEmailAsVerified();
+
     // personal links and a Premium design: publishing waits for the payment (phase 4)
     $this->post("/create/{$event->id}/publish")->assertSessionHasErrors('publish');
     expect($event->invitation->fresh()->published_at)->toBeNull();
