@@ -9,6 +9,7 @@ use App\Services\Account\UpgradeHints;
 use App\Services\Dashboard\GuestBoard;
 use App\Services\Dashboard\GuestCsv;
 use App\Services\Dashboard\WhatsApp;
+use App\Services\Marketplace\VendorCards;
 use App\Services\OpenLinks;
 use App\Services\PublishGate;
 use App\Services\Wizard\GuestListParser;
@@ -94,6 +95,8 @@ class EventDashboardController extends Controller
             ],
             // the open link panel (phase 3B) talks to GET/PUT /events/{event}/open-link itself
             'openLink' => $canUpdate ? app(OpenLinks::class)->payload($event) : null,
+            // "Vendors near your venue" (phase 8C): by the event's city and occasion, contact through WhatsApp
+            'vendors' => $canUpdate ? app(VendorCards::class)->forEvent($event) : null,
             'limits' => [
                 'seats' => GuestListParser::MAX_SEATS,
                 'name' => GuestListParser::MAX_NAME,

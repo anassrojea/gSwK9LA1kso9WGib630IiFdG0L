@@ -559,7 +559,7 @@ return [
             'your_plan' => 'دعوتك تحتاج',
             'free' => 'مجاناً',
             'because' => 'بسبب:',
-            'reasons' => ['opening' => 'الافتتاحية', 'theme' => 'الألوان', 'cover_video' => 'فيديو الغلاف', 'guests' => 'عدد الضيوف', 'personal_links' => 'الروابط الشخصية للعائلات'],
+            'reasons' => ['opening' => 'الافتتاحية', 'theme' => 'الألوان', 'cover_video' => 'فيديو الغلاف', 'guests' => 'عدد الضيوف', 'personal_links' => 'الروابط الشخصية للعائلات', 'template' => 'تصميم المتجر'],
             'up_to' => 'حتى :guests ضيف',
             'payments_soon' => 'الدفع قادم قريباً، والنشر مجاني حتى ذلك الحين.',
             'account_title' => 'احفظ دعوتك',

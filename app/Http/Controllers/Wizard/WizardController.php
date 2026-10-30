@@ -14,6 +14,7 @@ use App\Models\Template;
 use App\Models\Theme;
 use App\Services\Account\EmailVerification;
 use App\Services\Entitlements;
+use App\Services\Marketplace\MarketplaceCatalog;
 use App\Services\OpenLinks;
 use App\Services\Payments\CheckoutService;
 use App\Services\Payments\Currencies;
@@ -104,7 +105,7 @@ class WizardController extends Controller
 
         $props += match ($step) {
             'occasion' => ['occasions' => Event::OCCASIONS],
-            'design' => $this->catalog(),
+            'design' => $this->catalog() + ['marketplace' => app(MarketplaceCatalog::class)->forWizard($event, $request->user())],
             'details' => ['media' => $this->media($event)],
             'guests' => $this->guests($event, $entitlements),
             'review' => $this->review($request, $event, $config, $plans, $entitlements),
@@ -159,12 +160,14 @@ class WizardController extends Controller
         $name = fn ($model) => $locale === 'ar' ? $model->name_ar : $model->name_en;
 
         $openings = Opening::query()->where('active', true)->orderBy('id')->get();
-        $themes = Theme::query()->where('active', true)->orderBy('id')->get();
+        // designers' themes are sold only inside their marketplace templates (phase 8C)
+        $themes = Theme::query()->where('active', true)->whereNull('designer_id')->orderBy('id')->get();
         $openingTiers = Opening::query()->pluck('tier', 'id');
         $themeTiers = Theme::query()->pluck('tier', 'id');
 
         return [
-            'templates' => Template::query()->where('active', true)->orderBy('sort')->orderBy('id')->get()
+            // the house catalog; marketplace templates come separately (MarketplaceCatalog::forWizard)
+            'templates' => Template::query()->where('active', true)->whereNull('designer_id')->orderBy('sort')->orderBy('id')->get()
                 ->map(fn (Template $t) => [
                     'id' => $t->id,
                     'occasion' => $t->occasion,
@@ -250,6 +253,8 @@ class WizardController extends Controller
             'localPrices' => Plan::query()->with('prices')->where('active', true)->whereNull('interval')->get()
                 ->mapWithKeys(fn (Plan $p) => [$p->id => app(PriceList::class)->amount($p, $currency)]),
             'publishUrl' => route('create.publish', $event, false),
+            // a paid marketplace template in use (phase 8C): bought on its own, from its buy page
+            'marketplaceTemplate' => app(MarketplaceCatalog::class)->forReview($event, $config),
             // only for the signed-in host: the endpoints sit behind auth + can:update,event
             'openLink' => $request->user() ? app(OpenLinks::class)->payload($event) : null,
         ];

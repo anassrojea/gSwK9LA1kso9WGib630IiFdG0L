@@ -7,6 +7,7 @@ import { useNeedsVerification, VerifyEmailNotice } from '@/components/account/Ve
 import { GoogleButton } from '@/components/auth/GoogleButton';
 import { CheckoutPanel } from '@/components/checkout/CheckoutPanel';
 import { OrderPanel } from '@/components/checkout/OrderPanel';
+import { MarketplaceBuyCard, type MarketplaceCard } from '@/components/marketplace/MarketplaceTemplates';
 import { Button } from '@/components/ui/button';
 import { OpenLinkPanel } from '@/components/wizard/OpenLinkPanel';
 import { TierBadge } from '@/components/wizard/TierBadge';
@@ -36,6 +37,8 @@ interface Props extends WizardProps {
     checkoutOutcome: string | null;
     priceCurrency: string;
     localPrices: Record<string, number | null>;
+    /** a paid marketplace template in use that the event doesn't own (phase 8C) */
+    marketplaceTemplate?: MarketplaceCard | null;
     errors?: Record<string, string>;
 }
 
@@ -196,6 +199,10 @@ export default function Review(props: Props) {
                             </p>
                         )}
                     </section>
+                )}
+
+                {!event.published && props.marketplaceTemplate && gate.missing.includes('template') && !props.marketplaceTemplate.owned && !props.marketplaceTemplate.included && (
+                    <MarketplaceBuyCard card={props.marketplaceTemplate} />
                 )}
 
                 {!event.published && !auth.user && (

@@ -11,6 +11,7 @@ import { MessagesDialog } from '@/components/dashboard/MessagesDialog';
 import { Funnel, StatCards } from '@/components/dashboard/Overview';
 import { ReminderDialog } from '@/components/dashboard/ReminderDialog';
 import { UpgradeBanner } from '@/components/dashboard/UpgradeBanner';
+import { VendorsCard } from '@/components/marketplace/VendorsCard';
 import { OpenLinkPanel } from '@/components/wizard/OpenLinkPanel';
 import { TierBadge } from '@/components/wizard/TierBadge';
 import { Button } from '@/components/ui/button';
@@ -336,6 +337,8 @@ export default function EventDashboard(props: DashboardProps) {
                 <EventDayPanel eventId={event.id} title={event.title} timezone={event.timezone} guests={guests} />
 
                 {props.openLink && <OpenLinkPanel initial={props.openLink} title={event.title} />}
+
+                {props.vendors && <VendorsCard eventId={event.id} vendors={props.vendors} />}
 
                 <Funnel stats={stats} onRemind={can.update && can.remind ? () => openReminders(stats.opened_not_replied > 0 ? 'opened' : 'both') : undefined} />
 

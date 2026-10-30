@@ -1,5 +1,5 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { ChevronDown, Languages, LogOut, Receipt, ShieldCheck, UserRound } from 'lucide-react';
+import { Brush, ChevronDown, Languages, LogOut, Receipt, ShieldCheck, Store, UserRound } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -53,6 +53,17 @@ export function AccountMenu() {
                 <DropdownMenuItem asChild>
                     <Link href="/dashboard/orders" data-nav-orders>
                         <Receipt /> {t('orders.title')}
+                    </Link>
+                </DropdownMenuItem>
+                {/* phase 8C: the designer portal and the vendor listing (each starts with an application) */}
+                <DropdownMenuItem asChild>
+                    <Link href="/designer" data-nav-designer>
+                        <Brush /> {t('marketplace.menu.designer')}
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/vendor-portal" data-nav-vendor>
+                        <Store /> {t('vendors.menu.portal')}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

@@ -245,3 +245,6 @@ Route::get('/album-exports/{event}/{file}', [AlbumController::class, 'download']
     ->where('file', 'album-[0-9]{8}-[0-9]{6}-[a-z0-9]{6}\.zip')
     ->middleware('signed')
     ->name('album.export.download');
+
+// Phase 8C: template marketplace and vendor listings (public pages, designer and vendor portals, purchases)
+Route::group([], base_path('routes/marketplace.php'));

@@ -6,6 +6,7 @@ return [
         'sales' => 'Sales',
         'customers' => 'Customers',
         'catalog' => 'Catalog',
+        'marketplace' => 'Marketplace',
         'system' => 'System',
     ],
 

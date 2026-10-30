@@ -545,7 +545,7 @@ return [
             'your_plan' => 'Your invitation needs',
             'free' => 'Free',
             'because' => 'Because of:',
-            'reasons' => ['opening' => 'the opening', 'theme' => 'the colors', 'cover_video' => 'the cover video', 'guests' => 'the number of guests', 'personal_links' => 'personal links for each family'],
+            'reasons' => ['opening' => 'the opening', 'theme' => 'the colors', 'cover_video' => 'the cover video', 'guests' => 'the number of guests', 'personal_links' => 'personal links for each family', 'template' => 'the marketplace design'],
             'up_to' => 'up to :guests guests',
             'payments_soon' => 'Payments are coming soon. Until then, publishing is free.',
             'account_title' => 'Save your invitation',

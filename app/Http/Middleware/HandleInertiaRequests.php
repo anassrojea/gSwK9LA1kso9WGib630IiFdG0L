@@ -65,6 +65,9 @@ class HandleInertiaRequests extends Middleware
                 'invoices' => trans('invoices', [], $locale),
                 'album' => trans('album', [], $locale),
                 'ai' => trans('ai', [], $locale),
+                // phase 8C: template marketplace and vendor listings, read as t('marketplace.…') / t('vendors.…')
+                'marketplace' => trans('marketplace', [], $locale),
+                'vendors' => trans('vendors', [], $locale),
             ],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
