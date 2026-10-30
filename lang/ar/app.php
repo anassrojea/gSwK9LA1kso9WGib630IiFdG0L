@@ -224,6 +224,7 @@ return [
             'people' => ':count من :expected شخصاً متوقعاً',
             'door_app' => 'تطبيق الاستقبال',
             'photo_wall' => 'جدار الصور المباشر',
+            'seating_chart' => 'مخطط الجلوس',
         ],
         'realtime' => [
             'live' => 'مباشر',

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react
 import { toast } from 'sonner';
 
 import { AddGuestsDialog } from '@/components/dashboard/AddGuestsDialog';
+import { EventDayPanel } from '@/components/dashboard/EventDayPanel';
 import { DeleteGuestDialog, EditGuestDialog } from '@/components/dashboard/GuestDialogs';
 import { GuestTable, type RowHandlers } from '@/components/dashboard/GuestTable';
 import { MessagesDialog } from '@/components/dashboard/MessagesDialog';
@@ -104,7 +105,7 @@ function BigButton({ icon, children, onClick, href, disabled, note, primary, nam
     );
 }
 
-function LiveDay({ stats }: { stats: Stats }) {
+function LiveDay({ stats, eventId, canCheckIn }: { stats: Stats; eventId: string; canCheckIn: boolean }) {
     const { t, n, sep } = useT();
     const expectedPeople = Math.max(stats.attending, stats.arrived_people);
     const expectedFamilies = stats.attending_families || stats.invited;
@@ -134,13 +135,21 @@ function LiveDay({ stats }: { stats: Stats }) {
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    <Button variant="outline" disabled className="h-11" title={t('dashboard.big.soon')}>
-                        <QrCode /> {t('dashboard.live.door_app')}
+                    {canCheckIn && (
+                        <Button asChild variant="outline" className="h-11">
+                            <a href={`/door/${eventId}`} data-live-link="door">
+                                <QrCode /> {t('dashboard.live.door_app')}
+                            </a>
+                        </Button>
+                    )}
+                    <Button asChild variant="outline" className="h-11">
+                        <a href={`/events/${eventId}/seating.pdf`} target="_blank" rel="noopener" data-live-link="seating">
+                            <Armchair /> {t('dashboard.live.seating_chart')}
+                        </a>
                     </Button>
                     <Button variant="outline" disabled className="h-11" title={t('dashboard.big.soon')}>
                         <Images /> {t('dashboard.live.photo_wall')}
                     </Button>
-                    <p className="text-muted-foreground w-full text-xs">{t('dashboard.big.soon')}</p>
                 </div>
             </div>
         </section>
@@ -254,7 +263,7 @@ export default function EventDashboard(props: DashboardProps) {
                     </div>
                 </header>
 
-                {stats.is_event_day && <LiveDay stats={stats} />}
+                {stats.is_event_day && <LiveDay stats={stats} eventId={event.id} canCheckIn={can.check_in} />}
 
                 {props.pendingOrder && (
                     <Link href={`${urls.orders}/${props.pendingOrder.code}`} className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950" data-pending-order>
@@ -311,9 +320,11 @@ export default function EventDashboard(props: DashboardProps) {
                             {t('checkout.upgrade')}
                         </BigButton>
                     )}
-                    <BigButton name="seat" icon={<Armchair />} disabled note={t('dashboard.big.soon')}>
-                        {t('dashboard.big.seat')}
-                    </BigButton>
+                    {can.update && (
+                        <BigButton name="seat" icon={<Armchair />} href={`/dashboard/events/${event.id}/seating`}>
+                            {t('dashboard.big.seat')}
+                        </BigButton>
+                    )}
                     <BigButton name="album" icon={<Images />} disabled note={t('dashboard.big.soon')}>
                         {t('dashboard.big.album')}
                     </BigButton>
@@ -321,6 +332,8 @@ export default function EventDashboard(props: DashboardProps) {
                         {t('dashboard.big.export')}
                     </BigButton>
                 </div>
+
+                <EventDayPanel eventId={event.id} title={event.title} timezone={event.timezone} guests={guests} />
 
                 {props.openLink && <OpenLinkPanel initial={props.openLink} title={event.title} />}
 
