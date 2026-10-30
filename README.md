@@ -99,6 +99,26 @@ Zod schema and the TypeScript hall generator agree with their PHP counterparts o
 | `app/Services/Catalog/` | `CatalogSync` (templates/ JSON → database, used by `CatalogSeeder` and the admin's import) and `CatalogValidator` (admin edits checked against the config schema) |
 | `app/Services/Payments/Discounts.php` | Discount code rules (twin: `resources/js/lib/discount.ts`) |
 
+### Public site, legal pages, monitoring (phase 6A)
+
+| Path | What |
+|---|---|
+| `routes/marketing.php`, `app/Http/Controllers/Marketing/` | Landing (`/`, `/en`), `/occasions/{wedding,engagement,henna,birthday,graduation,baby-welcome,iftar}`, `/pricing` (`?currency=SAR\|SYP\|USD`), `/about`, `/legal/{terms,privacy,refund,cookies}`, all also under `/en`; `/sitemap.xml`, `/robots.txt`, `/r/design-yours` |
+| `resources/views/marketing/`, `resources/css/marketing.css`, `resources/js/marketing.js` | Blade + Tailwind, no React; cookie banner; `lang/{ar,en}/marketing.php` |
+| `resources/content/legal/{ar,en}/*.md` | The legal texts, plain Markdown the owner can edit (`:placeholders` such as `:privacy_url` are filled in by `SiteController::renderLegal`) |
+| `app/Jobs/PurgeEdgeCache.php`, `app/Observers/EdgeCachePurger.php` | Cloudflare purge of `/i/*` on edits (docs/DEPLOY.md, section 8) |
+| `app/Services/Analytics/`, `resources/js/lib/analytics.ts`, `resources/js/lib/monitoring.ts` | PostHog (consent-gated, never on guest pages) and Sentry in the browser |
+| `config/sentry.php`, `app/Support/SentryScrubber.php` | Sentry with phones and emails scrubbed |
+| `/pulse` | Laravel Pulse (admins) |
+| `app/Http/Middleware/SecurityHeaders.php`, `config/security.php` | CSP (report-only first), HSTS, Permissions-Policy, X-Frame-Options |
+| `scripts/perf.mjs` (`npm run perf`), `docs/PERFORMANCE.md` | Performance budget on throttled 4G |
+| `scripts/site-images.mjs` | Regenerates the opening posters, OG cards and logo in `public/images/` |
+
+> **The legal texts are drafts.** Terms, privacy, refund and cookie texts in `resources/content/legal/` were
+> written as a starting point for Saudi Arabia and Syria (PDPL and local consumer rules in mind) and each file
+> starts with an HTML comment saying so. **Have a lawyer review them before launch**, then set
+> `LEGAL_UPDATED_AT` to the publication date.
+
 ### Catalog: files vs admin edits
 
 `templates/` is the source of the catalog and `CatalogSeeder` syncs it into the database, but the admin can
@@ -118,4 +138,4 @@ again. Tiers live in these tables, so a tier changed in the admin applies to `Pl
 
 Creation wizard, host/venue dashboards beyond the placeholder, payments (Cashier, bank-transfer approvals),
 wallet passes, seating editor, AI features, Google sign-in routes (only the Socialite config is in place),
-per-guest OG images, and Cloudflare cache purging on edit. See `docs/PROJECT_PLAN.md` section 23 for the roadmap.
+per-guest OG images. See `docs/PROJECT_PLAN.md` section 23 for the roadmap.

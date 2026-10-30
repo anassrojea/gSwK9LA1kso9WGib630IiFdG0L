@@ -4,6 +4,7 @@ use App\Jobs\PurgeEdgeCache;
 use App\Models\Event;
 use App\Models\Household;
 use App\Models\Invitation;
+use App\Models\Media;
 use App\Models\OpenLink;
 use App\Models\Plan;
 use App\Services\EdgeCache\CloudflarePurge;
@@ -98,6 +99,20 @@ it('purges a household renamed or deleted, the open link, and the event when its
     $plan = Plan::factory()->create(['id' => 'premium_test']);
     $event->update(['plan_id' => $plan->id]);
     Queue::assertPushed(PurgeEdgeCache::class, fn ($job) => $job->tokens === null && $job->eventId === $event->id);
+});
+
+it('purges when the event ends or is archived and when its media is deleted (storage expiry)', function () {
+    Queue::fake();
+    [$event] = invitedHousehold();
+
+    $event->update(['status' => 'archived']);
+    Queue::assertPushed(PurgeEdgeCache::class, fn ($job) => $job->eventId === $event->id && $job->tokens === null);
+
+    releasePurgeLock(new PurgeEdgeCache($event->id));
+    $media = Media::factory()->create(['event_id' => $event->id]);
+    Queue::assertPushed(PurgeEdgeCache::class, 1);
+    $media->delete();
+    Queue::assertPushed(PurgeEdgeCache::class, 2);
 });
 
 it('is unique per event until it runs, so a burst of edits purges once', function () {

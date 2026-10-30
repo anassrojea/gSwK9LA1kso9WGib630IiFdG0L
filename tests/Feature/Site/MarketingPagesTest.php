@@ -175,6 +175,13 @@ it('puts the "design yours" link and the privacy link on the guest invitation', 
         ->assertDontSee('posthog');
 });
 
+it('links WhatsApp on the about page from PAYMENTS_WHATSAPP_NUMBER', function () {
+    $this->get('/en/about')->assertDontSee('wa.me')->assertSee('Contact details are coming soon.');
+
+    config(['payments.whatsapp_number' => '+966 5000 1234']);
+    $this->get('/en/about')->assertSee('href="https://wa.me/96650001234?text=', false);
+});
+
 it('opens /pulse to admins only', function () {
     $this->get('/pulse')->assertForbidden();
     $this->actingAs(User::factory()->create())->get('/pulse')->assertForbidden();

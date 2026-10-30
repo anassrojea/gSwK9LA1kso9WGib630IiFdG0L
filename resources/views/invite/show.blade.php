@@ -39,6 +39,9 @@
     @endif
     <style>:root{ {!! $themeVars !!} }</style>
     @vite(['resources/css/invite.css', 'resources/js/invite.js'])
+    @if ($openingChunk = \App\Support\InviteAssets::openingChunk($openingId))
+        <link rel="modulepreload" href="{{ $openingChunk }}">
+    @endif
 </head>
 <body>
 <div class="app" data-opening="{{ $openingId }}" data-occasion="{{ $config['occasion'] }}">
