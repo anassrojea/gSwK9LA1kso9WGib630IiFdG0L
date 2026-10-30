@@ -2,13 +2,18 @@
 
 namespace App\Services;
 
+use App\Services\Seating\HallLayoutData;
 use InvalidArgumentException;
 
 /**
  * Generates a hall layout (plan section 7.1) from a table count, chairs per
  * table and a mixed or split (men / women) layout. Port of the generator on
  * the plan page (docs/samples/index.html); resources/js/lib/hall-generator.ts
- * is the same algorithm for the browser and must stay in sync.
+ * is the same algorithm for the browser and must stay in sync
+ * (tests/Fixtures/hall-geometry.json holds the expected output of both).
+ *
+ * shape "rect" lays out banquet tables instead of round ones: cells twice as
+ * wide as they are deep, a table 80% of the cell long, chairs on both sides.
  */
 class HallGenerator
 {
@@ -23,6 +28,9 @@ class HallGenerator
     public const MAX_TABLES = 200;
 
     public const MAX_CHAIRS = 24;
+
+    /** round tables, or long banquet tables (chairs on both sides) */
+    public const SHAPES = ['round', 'rect'];
 
     /**
      * @return array{id: string, name: string, size: array, stage: array, danceFloor: array, entrances: array, sections: array, tables: array}
@@ -44,8 +52,8 @@ class HallGenerator
         if (! in_array($layout, ['mixed', 'split'], true)) {
             throw new InvalidArgumentException('layout must be mixed or split');
         }
-        if ($shape !== 'round') {
-            throw new InvalidArgumentException('only round tables are supported for now');
+        if (! in_array($shape, self::SHAPES, true)) {
+            throw new InvalidArgumentException('shape must be round or rect');
         }
 
         $top = self::AREA_TOP;
@@ -94,6 +102,9 @@ class HallGenerator
         if ($n === 0) {
             return [];
         }
+        if ($shape === 'rect') {
+            return $this->placeBanquet($n, $area, $startIndex, $section, $chairs);
+        }
 
         $cols = max(1, (int) round(sqrt($n * $area['w'] / $area['h'])));
         $rows = (int) ceil($n / $cols);
@@ -116,13 +127,58 @@ class HallGenerator
                 'id' => 'T'.($startIndex + $i + 1),
                 'section' => $section,
                 'shape' => $shape,
-                'x' => round($area['x'] + $offset + $cw * $col + $cw / 2, 1),
-                'y' => round($area['y'] + $ch * $row + $ch / 2, 1),
+                'x' => HallLayoutData::round1($area['x'] + $offset + $cw * $col + $cw / 2),
+                'y' => HallLayoutData::round1($area['y'] + $ch * $row + $ch / 2),
                 'seats' => $chairs,
-                'r' => round($tableR, 1),
-                'chairR' => round($chairR, 1),
-                'ring' => round($ring, 1),
+                'r' => HallLayoutData::round1($tableR),
+                'chairR' => HallLayoutData::round1($chairR),
+                'ring' => HallLayoutData::round1($ring),
             ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * Banquet tables: cols = round(sqrt(n × w / 2h)), so cells are about twice
+     * as wide as deep; table length 80% of the cell, depth 30% of it (at least
+     * 14), chairs on both sides, chair radius from the spacing and the room left.
+     */
+    private function placeBanquet(int $n, array $area, int $startIndex, string $section, int $chairs): array
+    {
+        $cols = max(1, (int) round(sqrt($n * $area['w'] / ($area['h'] * 2))));
+        $rows = (int) ceil($n / $cols);
+        $cw = $area['w'] / $cols;
+        $ch = $area['h'] / $rows;
+
+        $perSide = (int) ceil($chairs / 2);
+        $w = $cw * 0.8;
+        $h = max(14, $ch * 0.3);
+        $chairR = max(3.2, min(9, $w / $perSide * 0.38, ($ch / 2 - $h / 2 - 4) / 2));
+
+        $out = [];
+        for ($i = 0; $i < $n; $i++) {
+            $row = intdiv($i, $cols);
+            $col = $i % $cols;
+            $inRow = min($cols, $n - $row * $cols);
+            $offset = ($cols - $inRow) * $cw / 2;
+
+            $table = [
+                'id' => 'T'.($startIndex + $i + 1),
+                'section' => $section,
+                'shape' => 'rect',
+                'x' => HallLayoutData::round1($area['x'] + $offset + $cw * $col + $cw / 2),
+                'y' => HallLayoutData::round1($area['y'] + $ch * $row + $ch / 2),
+                'seats' => $chairs,
+                'w' => HallLayoutData::round1($w),
+                'h' => HallLayoutData::round1($h),
+                'rotation' => 0,
+                'sides' => 'both',
+                'heads' => false,
+                'chairR' => HallLayoutData::round1($chairR),
+            ];
+            $table['chairs'] = HallLayoutData::chairPositions($table);
+            $out[] = $table;
         }
 
         return $out;

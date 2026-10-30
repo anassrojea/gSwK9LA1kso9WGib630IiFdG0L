@@ -92,4 +92,16 @@ class Organization extends Model
     {
         return $this->hasMany(Order::class, 'org_id');
     }
+
+    /** The venue's directory page (phase 8B). */
+    public function venueProfile(): HasOne
+    {
+        return $this->hasOne(VenueProfile::class, 'org_id');
+    }
+
+    /** The venue's own photos and logo (phase 8B). */
+    public function media(): HasMany
+    {
+        return $this->hasMany(OrgMedia::class, 'org_id');
+    }
 }

@@ -9,7 +9,7 @@ namespace App\Support;
  */
 class SiteUrl
 {
-    public const PAGES = ['home', 'pricing', 'about', 'occasion', 'legal'];
+    public const PAGES = ['home', 'pricing', 'about', 'occasion', 'legal', 'venues', 'venue'];
 
     public const LEGAL = ['terms', 'privacy', 'refund', 'cookies'];
 
@@ -21,6 +21,9 @@ class SiteUrl
             'about' => '/about',
             'occasion' => '/occasions/'.$param,
             'legal' => '/legal/'.$param,
+            // the venue directory (phase 8B)
+            'venues' => '/venues',
+            'venue' => '/venues/'.$param,
             default => throw new \InvalidArgumentException("Unknown site page {$page}"),
         };
 

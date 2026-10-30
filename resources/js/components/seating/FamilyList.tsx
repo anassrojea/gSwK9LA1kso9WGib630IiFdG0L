@@ -121,7 +121,7 @@ const FamilyItem = memo(function FamilyItem({ row, selected, onSelect, onSection
                         )}
                         {tables.length > 0 && (
                             <span className="text-foreground font-medium">
-                                {tables.length === 1 ? t('seating.list.at_table', { table: n(tableNumber(tables[0])) }) : t('seating.list.at_tables', { table: '', tables: tables.map((x) => n(tableNumber(x))).join('، ') })}
+                                {tables.length === 1 ? t('seating.list.at_table', { table: n(tableNumber(tables[0])) }) : t('seating.list.at_tables', { tables: tables.map((x) => n(tableNumber(x))).join('، ') })}
                             </span>
                         )}
                         {missing > 0 && seated > 0 && <span className="font-medium text-amber-700">{t('seating.list.missing', { count: missing })}</span>}

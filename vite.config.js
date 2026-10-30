@@ -22,6 +22,8 @@ export default defineConfig({
                 'resources/js/album.js',
                 'resources/css/wall.css',
                 'resources/js/wall.js',
+                // "find your table" at the entrance (phase 8B)
+                'resources/js/find-table.js',
             ],
             refresh: true,
         }),

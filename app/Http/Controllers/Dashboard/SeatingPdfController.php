@@ -104,6 +104,8 @@ class SeatingPdfController extends Controller
             'seats' => (int) $t['seats'],
             'people' => (int) collect($names[$t['id']] ?? [])->sum('count'),
             'families' => $names[$t['id']] ?? [],
+            'kids' => HallLayoutData::isKidsTable($t),
+            'label' => $t['label'] ?? null,
         ], $layout['tables']);
 
         return [$layout, $tables];

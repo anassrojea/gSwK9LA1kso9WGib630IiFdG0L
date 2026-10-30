@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { HallEditor, HallGenerator } from '@/components/seating/HallTools';
 import { Button } from '@/components/ui/button';
-import type { HallLayout } from '@/lib/hall-generator';
+import type { HallLayout } from '@/lib/hall-layout';
 import { useT } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import type { EventHall, HallSummary } from '@/types/seating';

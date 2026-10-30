@@ -7,6 +7,7 @@ use App\Providers\GuestExtrasServiceProvider;
 use App\Providers\HorizonServiceProvider;
 use App\Providers\MarketplaceServiceProvider;
 use App\Providers\OrgServiceProvider;
+use App\Providers\VenueServiceProvider;
 
 return [
     AppServiceProvider::class,
@@ -16,4 +17,5 @@ return [
     GuestExtrasServiceProvider::class,
     OrgServiceProvider::class,
     MarketplaceServiceProvider::class,
+    VenueServiceProvider::class,
 ];

@@ -7,9 +7,15 @@ namespace App\Services\Seating;
  * adjusts. Pure and deterministic: the same hall, families and seats always
  * give the same plan, so a preview is exactly what "Apply" saves.
  *
- *  1. Pools: on a split hall, men's families go to men's tables and women's
- *     families to women's tables; families without a section join the pool
- *     with the most room left. A mixed hall is one pool.
+ *  0. Kids tables (phase 8B, a table marked `kids`): the children of each
+ *     family (biggest family first) go to the kids tables while there is room,
+ *     a family's children together when they fit at one. Kids tables take no
+ *     adults; children who do not fit stay with their family.
+ *  1. Pools: VIP tables (the "vip" section, phase 8B) are kept for families
+ *     tagged VIP, who go there first while they fit. On a split hall, men's
+ *     families go to men's tables and women's families to women's tables;
+ *     families without a section join the pool with the most room left. A
+ *     mixed hall is one pool.
  *  2. Each pool gets an even target per table: ceil(people / tables).
  *  3. Families are placed biggest first (then most kids, then name). Each one
  *     goes to a table it fits at whole, preferring, in order: staying under
@@ -19,6 +25,7 @@ namespace App\Services\Seating;
  *  4. A family bigger than any free table is split over the tables with the
  *     most free chairs; whoever still has no chair is reported as unplaced.
  *
+ * A hall without kids tables or VIP tables is seated exactly as in phase 7A.
  * Seats fill in chair order (lowest free seat index first).
  */
 class AutoSeater
@@ -27,9 +34,12 @@ class AutoSeater
 
     public const MODE_FILL = 'fill';
 
+    /** The household tag that marks a VIP family (any case). */
+    public const VIP_TAG = 'vip';
+
     /**
      * @param  array  $layout  hall layout (plan section 7.1)
-     * @param  list<array{id: string, name: string, section: ?string, people: int, kids: int}>  $families
+     * @param  list<array{id: string, name: string, section: ?string, people: int, kids: int, tags?: list<string>}>  $families
      * @param  list<array{household_id: string, table_id: string, seat_index: int}>  $existing
      * @param  string  $mode  "all": start over; "fill": keep current seats, place families with none yet
      * @return array{assignments: list<array{household_id: string, table_id: string, seat_index: int}>, placed: int, unplaced: list<array{id: string, name: string, missing: int}>}
@@ -45,6 +55,7 @@ class AutoSeater
                 'index' => $index,
                 'taken' => [],
                 'kids' => 0,
+                'forKids' => HallLayoutData::isKidsTable($t),
             ];
         }
 
@@ -73,12 +84,31 @@ class AutoSeater
         $toPlace = array_values(array_filter($families, fn ($f) => $f['people'] > 0 && ! isset($seated[$f['id']])));
         usort($toPlace, [static::class, 'compareFamilies']);
 
-        $pools = $this->pools($tables, $toPlace);
-
         $new = [];
         $unplaced = [];
-        $placed = 0;
-        foreach ($pools as $pool) {
+        $placedIds = [];
+
+        // 0. children to the kids tables
+        $kidsTables = array_keys(array_filter($tables, fn ($t) => $t['forKids']));
+        if ($kidsTables !== []) {
+            foreach ($toPlace as &$family) {
+                $kids = min($family['kids'], $family['people']);
+                if ($kids <= 0) {
+                    continue;
+                }
+                $seatedKids = $this->placeKids($tables, $kidsTables, $family, $kids, $new);
+                if ($seatedKids > 0) {
+                    $placedIds[$family['id']] = true;
+                    $family['people'] -= $seatedKids;
+                    $family['kids'] -= $seatedKids;
+                }
+            }
+            unset($family);
+            $toPlace = array_values(array_filter($toPlace, fn ($f) => $f['people'] > 0));
+        }
+
+        $adultTables = array_filter($tables, fn ($t) => ! $t['forKids']);
+        foreach ($this->pools($adultTables, $toPlace) as $pool) {
             $ids = $pool['tables'];
             $occupied = array_sum(array_map(fn ($id) => count($tables[$id]['taken']), $ids));
             $demand = array_sum(array_map(fn ($f) => $f['people'], $pool['families']));
@@ -90,7 +120,7 @@ class AutoSeater
                     $unplaced[] = ['id' => $family['id'], 'name' => $family['name'], 'missing' => $left];
                 }
                 if ($left < $family['people']) {
-                    $placed++;
+                    $placedIds[$family['id']] = true;
                 }
             }
         }
@@ -99,7 +129,7 @@ class AutoSeater
         $order = array_flip(array_keys($tables));
         usort($assignments, fn ($a, $b) => [$order[$a['table_id']], $a['seat_index']] <=> [$order[$b['table_id']], $b['seat_index']]);
 
-        return ['assignments' => $assignments, 'placed' => $placed, 'unplaced' => $unplaced];
+        return ['assignments' => $assignments, 'placed' => count($placedIds), 'unplaced' => $unplaced];
     }
 
     /**
@@ -110,11 +140,56 @@ class AutoSeater
         return [$b['people'], $b['kids'], $a['name'], $a['id']] <=> [$a['people'], $a['kids'], $b['name'], $b['id']];
     }
 
+    public static function isVip(array $family): bool
+    {
+        foreach ($family['tags'] ?? [] as $tag) {
+            if (is_string($tag) && mb_strtolower(trim($tag)) === self::VIP_TAG) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @return list<array{tables: list<string>, families: list<array>}>
      */
     private function pools(array $tables, array $families): array
     {
+        $vipPool = null;
+        $vipIds = array_keys(array_filter($tables, fn ($t) => $t['section'] === 'vip'));
+        if ($vipIds !== []) {
+            $room = array_sum(array_map(fn ($id) => $tables[$id]['seats'] - count($tables[$id]['taken']), $vipIds));
+            $vipFamilies = [];
+            $rest = [];
+            foreach ($families as $family) {
+                if (static::isVip($family) && $family['people'] <= $room) {
+                    $vipFamilies[] = $family;
+                    $room -= $family['people'];
+                } else {
+                    $rest[] = $family;
+                }
+            }
+            $vipPool = ['tables' => $vipIds, 'families' => $vipFamilies];
+            $families = $rest;
+            $tables = array_diff_key($tables, array_flip($vipIds));
+        }
+
+        $pools = $this->sectionPools($tables, $families);
+
+        return $vipPool ? [$vipPool, ...$pools] : $pools;
+    }
+
+    /**
+     * @return list<array{tables: list<string>, families: list<array>}>
+     */
+    private function sectionPools(array $tables, array $families): array
+    {
+        if ($tables === []) {
+            // only VIP (or kids) tables: nobody else has a chair
+            return $families === [] ? [] : [['tables' => [], 'families' => $families]];
+        }
+
         $sections = [];
         foreach ($tables as $t) {
             $key = in_array($t['section'], ['men', 'women'], true) ? $t['section'] : 'other';
@@ -162,6 +237,43 @@ class AutoSeater
         }
 
         return array_values(array_map(fn ($p) => ['tables' => $p['tables'], 'families' => $p['families']], $pools));
+    }
+
+    /**
+     * A family's children at the kids tables: together at the emptiest table
+     * that has room for all of them, else spread over the tables with most room.
+     *
+     * @param  list<string>  $ids
+     * @return int children seated
+     */
+    private function placeKids(array &$tables, array $ids, array $family, int $kids, array &$out): int
+    {
+        $best = null;
+        foreach ($ids as $id) {
+            $free = $tables[$id]['seats'] - count($tables[$id]['taken']);
+            if ($free >= $kids && ($best === null || [count($tables[$id]['taken']), $tables[$id]['index']] < [count($tables[$best]['taken']), $tables[$best]['index']])) {
+                $best = $id;
+            }
+        }
+        if ($best !== null) {
+            $this->take($tables[$best], $family, $kids, $out, $kids);
+
+            return $kids;
+        }
+
+        $order = $ids;
+        usort($order, fn ($a, $b) => [count($tables[$a]['taken']) - $tables[$a]['seats'], $tables[$a]['index']] <=> [count($tables[$b]['taken']) - $tables[$b]['seats'], $tables[$b]['index']]);
+        $seated = 0;
+        foreach ($order as $id) {
+            $free = $tables[$id]['seats'] - count($tables[$id]['taken']);
+            if ($free > 0 && $seated < $kids) {
+                $n = min($free, $kids - $seated);
+                $this->take($tables[$id], $family, $n, $out, $n);
+                $seated += $n;
+            }
+        }
+
+        return $seated;
     }
 
     /**
@@ -213,7 +325,7 @@ class AutoSeater
         return $left;
     }
 
-    private function take(array &$table, array $family, int $count, array &$out): void
+    private function take(array &$table, array $family, int $count, array &$out, ?int $kids = null): void
     {
         for ($seat = 0; $seat < $table['seats'] && $count > 0; $seat++) {
             if (! isset($table['taken'][$seat])) {
@@ -222,6 +334,6 @@ class AutoSeater
                 $count--;
             }
         }
-        $table['kids'] += $family['kids'];
+        $table['kids'] += $kids ?? $family['kids'];
     }
 }

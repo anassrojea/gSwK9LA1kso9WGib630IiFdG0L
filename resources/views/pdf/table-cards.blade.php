@@ -22,6 +22,9 @@
                 <div class="card">
                     <span class="label">طاولة · <span class="latin">Table</span></span>
                     <div class="num"><span>{{ $digits($t['number']) }}</span><span class="latin">{{ $t['number'] }}</span></div>
+                    @if (! empty($t['label']) || ! empty($t['kids']))
+                        <span class="label">{{ $t['label'] ?? '' }}@if (! empty($t['kids'])) {{ ! empty($t['label']) ? '·' : '' }} أطفال · <span class="latin">Kids</span>@endif</span>
+                    @endif
                     <ul class="names">
                         @foreach (array_slice($t['families'], 0, 10) as $f)
                             <li>{{ $f['name'] }} @if ($f['count'] > 1)<span>× {{ $f['count'] }}</span>@endif</li>

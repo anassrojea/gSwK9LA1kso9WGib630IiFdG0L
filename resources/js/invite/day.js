@@ -9,8 +9,17 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 
 /**
  * A small SVG of the hall: every table as a dot, the guest's one highlighted.
- * map = {w, h, stage: [x, y, w, h] | null, tables: [[number, x, y, r], …], mine}
+ * map = {w, h, stage: [x, y, w, h] | null, tables: [[number, x, y, r] | [number, x, y, r, w, h], …], mine}
+ * A table with a size (banquet table, sofa, row) is a w × h rectangle centred on x, y.
  */
+function shape(cls, t, grow) {
+    const [, x, y, r, w, h] = t;
+    if (w === undefined) return `<circle class="${cls}" cx="${x}" cy="${y}" r="${r + grow}"/>`;
+    const rw = w + grow * 2;
+    const rh = h + grow * 2;
+    return `<rect class="${cls}" x="${x - rw / 2}" y="${y - rh / 2}" width="${rw}" height="${rh}" rx="${Math.min(8, rh / 3)}"/>`;
+}
+
 export function hallMap(map, digits = String) {
     const { w, h, stage, tables = [], mine } = map;
     const labels = tables.length <= 40;
@@ -23,12 +32,12 @@ export function hallMap(map, digits = String) {
             me = t;
             continue;
         }
-        svg += `<circle class="m-t" cx="${x}" cy="${y}" r="${r}"/>`;
+        svg += shape('m-t', t, 0);
         if (labels) svg += `<text class="m-n" x="${x}" y="${y}" font-size="${Math.round(r * 0.75)}">${esc(digits(n))}</text>`;
     }
     if (me) {
         const [n, x, y, r] = me;
-        svg += `<circle class="m-ring" cx="${x}" cy="${y}" r="${r + 9}"/><circle class="m-mine" cx="${x}" cy="${y}" r="${r + 2}"/>`
+        svg += shape('m-ring', me, 9) + shape('m-mine', me, 2)
             + `<text class="m-mine-n" x="${x}" y="${y}" font-size="${Math.round(r * 1.05)}">${esc(digits(n))}</text>`;
     }
     return `${svg}</svg>`;

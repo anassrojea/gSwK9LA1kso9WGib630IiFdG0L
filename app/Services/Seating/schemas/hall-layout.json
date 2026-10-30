@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://daawa.app/schemas/hall-layout.json",
+  "title": "Daawa hall layout",
+  "description": "A hall layout as stored in hall_layouts.layout (plan section 7.1), after App\\Services\\Seating\\HallLayoutData::normalize(). Backward compatible: layouts with only round tables (phase 7A) are valid unchanged. Mirrored by resources/js/lib/hall-layout.ts (types); keep both in sync.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "size", "sections", "tables", "entrances"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "size": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["w", "h"],
+      "properties": {
+        "w": { "type": "number", "minimum": 100, "maximum": 2000 },
+        "h": { "type": "number", "minimum": 100, "maximum": 2000 }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "area"],
+        "properties": {
+          "id": { "enum": ["mixed", "men", "women", "vip"] },
+          "label": { "type": "string", "maxLength": 40 },
+          "area": { "$ref": "#/$defs/rect" }
+        }
+      }
+    },
+    "tables": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": { "$ref": "#/$defs/table" }
+    },
+    "stage": {
+      "allOf": [{ "$ref": "#/$defs/rect" }],
+      "properties": { "label": { "type": "string", "maxLength": 40 } },
+      "required": ["label"]
+    },
+    "danceFloor": { "$ref": "#/$defs/rect" },
+    "entrances": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["x", "y", "w"],
+        "properties": {
+          "x": { "type": "number", "minimum": 0 },
+          "y": { "type": "number", "minimum": 0 },
+          "w": { "type": "number", "minimum": 10 },
+          "rotation": { "const": 90 }
+        }
+      }
+    },
+    "obstacles": {
+      "type": "array",
+      "maxItems": 60,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "x", "y", "w", "h"],
+        "properties": {
+          "id": { "$ref": "#/$defs/elementId" },
+          "kind": { "enum": ["column", "buffet", "obstacle"] },
+          "x": { "type": "number", "minimum": 0 },
+          "y": { "type": "number", "minimum": 0 },
+          "w": { "type": "number", "minimum": 1 },
+          "h": { "type": "number", "minimum": 1 },
+          "label": { "type": "string", "maxLength": 40 }
+        }
+      }
+    },
+    "labels": {
+      "type": "array",
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "text", "x", "y", "size"],
+        "properties": {
+          "id": { "$ref": "#/$defs/elementId" },
+          "text": { "type": "string", "minLength": 1, "maxLength": 60 },
+          "x": { "type": "number", "minimum": 0 },
+          "y": { "type": "number", "minimum": 0 },
+          "size": { "type": "number", "minimum": 8, "maximum": 48 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "elementId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,16}$" },
+    "rect": {
+      "type": "object",
+      "required": ["x", "y", "w", "h"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0 },
+        "y": { "type": "number", "minimum": 0 },
+        "w": { "type": "number", "minimum": 1 },
+        "h": { "type": "number", "minimum": 1 },
+        "label": true
+      },
+      "additionalProperties": false
+    },
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": { "x": { "type": "number" }, "y": { "type": "number" } }
+    },
+    "table": {
+      "type": "object",
+      "required": ["id", "section", "shape", "x", "y", "seats", "chairR"],
+      "properties": {
+        "id": { "$ref": "#/$defs/elementId" },
+        "section": { "enum": ["mixed", "men", "women", "vip"] },
+        "shape": { "enum": ["round", "rect", "sofa", "row"] },
+        "x": { "type": "number", "minimum": 0 },
+        "y": { "type": "number", "minimum": 0 },
+        "seats": { "type": "integer", "minimum": 1, "maximum": 40 },
+        "chairR": { "type": "number", "minimum": 2, "maximum": 30 },
+        "kids": { "const": true },
+        "label": { "type": "string", "minLength": 1, "maxLength": 24 }
+      },
+      "if": { "properties": { "shape": { "const": "round" } } },
+      "then": {
+        "required": ["r", "ring"],
+        "properties": {
+          "seats": { "maximum": 24 },
+          "r": { "type": "number", "minimum": 4, "maximum": 200 },
+          "ring": { "type": "number", "minimum": 6, "maximum": 200 },
+          "id": true, "section": true, "shape": true, "x": true, "y": true, "chairR": true, "kids": true, "label": true
+        },
+        "additionalProperties": false
+      },
+      "else": {
+        "required": ["w", "h", "rotation", "chairs"],
+        "properties": {
+          "w": { "type": "number", "minimum": 10 },
+          "h": { "type": "number", "minimum": 4 },
+          "rotation": { "enum": [0, 90] },
+          "sides": { "enum": ["both", "one"] },
+          "heads": { "type": "boolean" },
+          "chairs": { "type": "array", "items": { "$ref": "#/$defs/point" } },
+          "id": true, "section": true, "shape": true, "x": true, "y": true, "seats": true, "chairR": true, "kids": true, "label": true
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

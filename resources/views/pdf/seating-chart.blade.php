@@ -15,6 +15,13 @@
 .h-top{fill:#fbf8f6;stroke:#b9a9ae;stroke-width:1.2}
 .is-used .h-top{fill:color-mix(in srgb,var(--c-gold) 18%,#fff);stroke:var(--c-gold)}
 .h-num{font-weight:700;fill:var(--c-ink);font-family:"DejaVu Sans",sans-serif}
+.h-vip{stroke:var(--c-gold)}
+.h-sofa-back{fill:color-mix(in srgb,var(--c-accent) 14%,#fff);stroke:#b9a9ae;stroke-width:1}
+.is-kids .h-top{fill:#eef7ee;stroke:#7fb487}
+.h-obstacle{fill:#f1eeef;stroke:#c9bcc1;stroke-width:1}
+.h-buffet{fill:color-mix(in srgb,var(--c-gold) 12%,#fff)}
+.h-obstacle-label{font-size:10px;fill:var(--c-soft);font-family:var(--f-label),"DejaVu Sans",sans-serif}
+.h-label{fill:var(--c-soft);font-family:var(--f-label),"DejaVu Sans",sans-serif}
 .legend{display:flex;gap:8mm;margin-top:3mm;font-size:9pt}
 .legend i{display:inline-block;width:3mm;height:3mm;border-radius:50%;margin-inline-end:1.5mm;vertical-align:middle;border:1px solid #c9bcc1}
 .legend i.on{background:var(--c-accent);border-color:var(--c-accent)}
@@ -33,7 +40,7 @@
 @section('body')
     @php
         $digits = fn ($n) => \App\Services\Digits::localize($n, 'ar');
-        $sections = ['men' => 'رجال · Men', 'women' => 'نساء · Women'];
+        $sections = ['men' => 'رجال · Men', 'women' => 'نساء · Women', 'vip' => 'كبار الضيوف · VIP'];
         $seatedPeople = collect($tables)->sum('people');
         $chairs = collect($tables)->sum('seats');
     @endphp
@@ -66,6 +73,7 @@
                     <h3>
                         <span>طاولة {{ $digits($t['number']) }} · <span class="latin">Table {{ $t['number'] }}</span>
                             @isset($sections[$t['section']])<span class="tag">({{ $sections[$t['section']] }})</span>@endisset
+                            @if (! empty($t['kids']))<span class="tag">(أطفال · Kids)</span>@endif
                         </span>
                         <small class="latin">{{ $t['people'] }}/{{ $t['seats'] }}</small>
                     </h3>

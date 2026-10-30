@@ -1,5 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Building2, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Building2, Copy, Pencil, Plus, Store, Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -8,20 +8,22 @@ import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout';
 import { toastFlash } from '@/lib/dashboard/flash';
-import type { HallLayout } from '@/lib/hall-generator';
+import type { HallLayout } from '@/lib/hall-layout';
 import { useT } from '@/lib/i18n';
 import type { HallSummary } from '@/types/seating';
 
 interface Props {
     halls: (HallSummary & { events: number; can_edit: boolean; layout: HallLayout; updated_at: string | null })[];
+    templates: (HallSummary & { key: string; layout: HallLayout })[];
     organizations: { id: string; name: string }[];
+    venue_url: string | null;
     errors?: { hall?: string };
 }
 
 /**
  * GET /dashboard/halls: the venue's hall layouts (plan section 4.2), reused by every event in the hall.
  */
-export default function HallsIndex({ halls, errors }: Props) {
+export default function HallsIndex({ halls, templates = [], organizations, venue_url, errors }: Props) {
     const { t, tc, sep } = useT();
 
     useEffect(() => {
@@ -40,11 +42,20 @@ export default function HallsIndex({ halls, errors }: Props) {
                         </h1>
                         <p className="text-muted-foreground text-sm">{t('seating.halls.subtitle')}</p>
                     </div>
-                    <Button asChild className="h-11">
-                        <Link href="/dashboard/halls/create">
-                            <Plus /> {t('seating.halls.new')}
-                        </Link>
-                    </Button>
+                    <div className="flex flex-wrap gap-2">
+                        {venue_url && (
+                            <Button asChild variant="outline" className="h-11">
+                                <Link href={venue_url} data-venue-link>
+                                    <Store /> {t('halls.venue_link')}
+                                </Link>
+                            </Button>
+                        )}
+                        <Button asChild className="h-11">
+                            <Link href="/dashboard/halls/create">
+                                <Plus /> {t('seating.halls.new')}
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
 
                 {halls.length === 0 ? (
@@ -77,6 +88,9 @@ export default function HallsIndex({ halls, errors }: Props) {
                                                     <Pencil /> {t('seating.halls.edit')}
                                                 </Link>
                                             </Button>
+                                            <Button size="sm" variant="ghost" onClick={() => router.post(`/dashboard/halls/${h.id}/duplicate`)} aria-label={t('halls.templates.duplicate')} title={t('halls.templates.duplicate')}>
+                                                <Copy />
+                                            </Button>
                                             <Button
                                                 size="sm"
                                                 variant="ghost"
@@ -93,6 +107,44 @@ export default function HallsIndex({ halls, errors }: Props) {
                             </li>
                         ))}
                     </ul>
+                )}
+
+                {templates.length > 0 && (
+                    <section className="grid gap-3" aria-labelledby="templates-title" data-hall-templates>
+                        <div className="grid gap-0.5">
+                            <h2 id="templates-title" className="text-lg font-bold">
+                                {t('halls.templates.title')}
+                            </h2>
+                            <p className="text-muted-foreground text-sm">{t('halls.templates.subtitle')}</p>
+                        </div>
+                        <ul className="grid gap-4 sm:grid-cols-3">
+                            {templates.map((h) => (
+                                <li key={h.id} className="grid content-between gap-3 rounded-xl border bg-white p-3" data-template={h.key}>
+                                    <div className="bg-muted/30 rounded-lg border p-1">
+                                        <HallSvg layout={h.layout} mode="view" />
+                                    </div>
+                                    <div className="grid gap-1">
+                                        <h3 className="font-semibold">
+                                            <bdi>{h.name}</bdi>
+                                        </h3>
+                                        <span className="text-muted-foreground text-xs">
+                                            {tc('seating.hall.tables', h.tables)}
+                                            {sep}
+                                            {t('seating.hall.seats', { count: h.seats })}
+                                        </span>
+                                    </div>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => router.post(`/dashboard/halls/${h.id}/duplicate`, { org_id: organizations[0]?.id ?? null })}
+                                        data-use-template={h.key}
+                                    >
+                                        <Copy /> {t('halls.templates.use')}
+                                    </Button>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
                 )}
             </div>
         </AppLayout>

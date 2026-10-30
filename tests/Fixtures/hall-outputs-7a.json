@@ -1,0 +1,3912 @@
+{
+    "families": [
+        {
+            "id": "f00",
+            "name": "Family A0",
+            "section": null,
+            "people": 1,
+            "kids": 1
+        },
+        {
+            "id": "f01",
+            "name": "Family B1",
+            "section": "men",
+            "people": 2,
+            "kids": 0
+        },
+        {
+            "id": "f02",
+            "name": "Family C2",
+            "section": "women",
+            "people": 3,
+            "kids": 0
+        },
+        {
+            "id": "f03",
+            "name": "Family D3",
+            "section": null,
+            "people": 4,
+            "kids": 0
+        },
+        {
+            "id": "f04",
+            "name": "Family E4",
+            "section": "men",
+            "people": 5,
+            "kids": 1
+        },
+        {
+            "id": "f05",
+            "name": "Family F5",
+            "section": null,
+            "people": 6,
+            "kids": 0
+        },
+        {
+            "id": "f06",
+            "name": "Family G6",
+            "section": "men",
+            "people": 1,
+            "kids": 0
+        },
+        {
+            "id": "f07",
+            "name": "Family H7",
+            "section": "women",
+            "people": 2,
+            "kids": 0
+        },
+        {
+            "id": "f08",
+            "name": "Family I8",
+            "section": null,
+            "people": 3,
+            "kids": 1
+        },
+        {
+            "id": "f09",
+            "name": "Family J9",
+            "section": "men",
+            "people": 4,
+            "kids": 0
+        },
+        {
+            "id": "f10",
+            "name": "Family K10",
+            "section": null,
+            "people": 5,
+            "kids": 0
+        },
+        {
+            "id": "f11",
+            "name": "Family L11",
+            "section": "men",
+            "people": 6,
+            "kids": 0
+        },
+        {
+            "id": "f12",
+            "name": "Family M12",
+            "section": "women",
+            "people": 1,
+            "kids": 1
+        },
+        {
+            "id": "f13",
+            "name": "Family N13",
+            "section": null,
+            "people": 2,
+            "kids": 0
+        },
+        {
+            "id": "f14",
+            "name": "Family O14",
+            "section": "men",
+            "people": 3,
+            "kids": 0
+        },
+        {
+            "id": "f15",
+            "name": "Family P15",
+            "section": null,
+            "people": 4,
+            "kids": 0
+        },
+        {
+            "id": "f16",
+            "name": "Family Q16",
+            "section": "men",
+            "people": 5,
+            "kids": 1
+        },
+        {
+            "id": "f17",
+            "name": "Family R17",
+            "section": "women",
+            "people": 6,
+            "kids": 0
+        },
+        {
+            "id": "f18",
+            "name": "Family S18",
+            "section": null,
+            "people": 1,
+            "kids": 0
+        },
+        {
+            "id": "f19",
+            "name": "Family T19",
+            "section": "men",
+            "people": 2,
+            "kids": 0
+        },
+        {
+            "id": "f20",
+            "name": "Family U20",
+            "section": null,
+            "people": 3,
+            "kids": 1
+        },
+        {
+            "id": "f21",
+            "name": "Family V21",
+            "section": "men",
+            "people": 4,
+            "kids": 0
+        },
+        {
+            "id": "f22",
+            "name": "Family W22",
+            "section": "women",
+            "people": 5,
+            "kids": 0
+        },
+        {
+            "id": "f23",
+            "name": "Family X23",
+            "section": null,
+            "people": 6,
+            "kids": 0
+        },
+        {
+            "id": "f24",
+            "name": "Family Y24",
+            "section": "men",
+            "people": 1,
+            "kids": 1
+        },
+        {
+            "id": "f25",
+            "name": "Family Z25",
+            "section": null,
+            "people": 2,
+            "kids": 0
+        },
+        {
+            "id": "f26",
+            "name": "Family A26",
+            "section": "men",
+            "people": 3,
+            "kids": 0
+        },
+        {
+            "id": "f27",
+            "name": "Family B27",
+            "section": "women",
+            "people": 4,
+            "kids": 0
+        },
+        {
+            "id": "f28",
+            "name": "Family C28",
+            "section": null,
+            "people": 5,
+            "kids": 1
+        },
+        {
+            "id": "f29",
+            "name": "Family D29",
+            "section": "men",
+            "people": 6,
+            "kids": 0
+        },
+        {
+            "id": "f30",
+            "name": "Family E30",
+            "section": null,
+            "people": 1,
+            "kids": 0
+        },
+        {
+            "id": "f31",
+            "name": "Family F31",
+            "section": "men",
+            "people": 2,
+            "kids": 0
+        },
+        {
+            "id": "f32",
+            "name": "Family G32",
+            "section": "women",
+            "people": 3,
+            "kids": 1
+        },
+        {
+            "id": "f33",
+            "name": "Family H33",
+            "section": null,
+            "people": 4,
+            "kids": 0
+        },
+        {
+            "id": "f34",
+            "name": "Family I34",
+            "section": "men",
+            "people": 5,
+            "kids": 0
+        },
+        {
+            "id": "f35",
+            "name": "Family J35",
+            "section": null,
+            "people": 6,
+            "kids": 0
+        },
+        {
+            "id": "f36",
+            "name": "Family K36",
+            "section": "men",
+            "people": 1,
+            "kids": 1
+        },
+        {
+            "id": "f37",
+            "name": "Family L37",
+            "section": "women",
+            "people": 2,
+            "kids": 0
+        },
+        {
+            "id": "f38",
+            "name": "Family M38",
+            "section": null,
+            "people": 3,
+            "kids": 0
+        },
+        {
+            "id": "f39",
+            "name": "Family N39",
+            "section": "men",
+            "people": 4,
+            "kids": 0
+        },
+        {
+            "id": "f40",
+            "name": "Family O40",
+            "section": null,
+            "people": 5,
+            "kids": 1
+        },
+        {
+            "id": "f41",
+            "name": "Family P41",
+            "section": "men",
+            "people": 6,
+            "kids": 0
+        },
+        {
+            "id": "f42",
+            "name": "Family Q42",
+            "section": "women",
+            "people": 1,
+            "kids": 0
+        },
+        {
+            "id": "f43",
+            "name": "Family R43",
+            "section": null,
+            "people": 2,
+            "kids": 0
+        },
+        {
+            "id": "f44",
+            "name": "Family S44",
+            "section": "men",
+            "people": 3,
+            "kids": 1
+        }
+    ],
+    "plans": {
+        "20 x 8 split": {
+            "assignments": [
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f43",
+                    "table_id": "T1",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f43",
+                    "table_id": "T1",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f19",
+                    "table_id": "T2",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f19",
+                    "table_id": "T2",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f00",
+                    "table_id": "T3",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f36",
+                    "table_id": "T3",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T4",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T4",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T4",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T5",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T5",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T5",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f31",
+                    "table_id": "T6",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f31",
+                    "table_id": "T6",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f06",
+                    "table_id": "T6",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T7",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T7",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T7",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T7",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T7",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T7",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T7",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f18",
+                    "table_id": "T7",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T8",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T8",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T8",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T8",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T8",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T8",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T8",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T9",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T9",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T9",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T9",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T9",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T9",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T9",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T10",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T10",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T10",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T10",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f01",
+                    "table_id": "T10",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f01",
+                    "table_id": "T10",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f24",
+                    "table_id": "T10",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T11",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T11",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T11",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T11",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T11",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T11",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f13",
+                    "table_id": "T11",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f13",
+                    "table_id": "T11",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T12",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T12",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T12",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T12",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T12",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T12",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f25",
+                    "table_id": "T12",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f25",
+                    "table_id": "T12",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T13",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T13",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T13",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T13",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T13",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T13",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f12",
+                    "table_id": "T13",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T14",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T14",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T14",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T14",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T14",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T14",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f30",
+                    "table_id": "T14",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f42",
+                    "table_id": "T14",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T15",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T15",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T15",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T15",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T15",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T15",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T15",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T15",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T16",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T16",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T16",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T16",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T16",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T16",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T16",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T16",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T17",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T17",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T17",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T17",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T17",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f07",
+                    "table_id": "T17",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f07",
+                    "table_id": "T17",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T18",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T18",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T18",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T18",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T18",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f37",
+                    "table_id": "T18",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f37",
+                    "table_id": "T18",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T19",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T19",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T19",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T19",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T19",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T19",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T19",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T19",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T20",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T20",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T20",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T20",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T20",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T20",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T20",
+                    "seat_index": 6
+                }
+            ],
+            "placed": 45,
+            "unplaced": []
+        },
+        "21 x 10 mixed": {
+            "assignments": [
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f19",
+                    "table_id": "T1",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f19",
+                    "table_id": "T1",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f25",
+                    "table_id": "T2",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f25",
+                    "table_id": "T2",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f00",
+                    "table_id": "T3",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f36",
+                    "table_id": "T3",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T4",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T4",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T4",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T4",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T4",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T4",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f12",
+                    "table_id": "T4",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f24",
+                    "table_id": "T4",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T5",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T5",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T5",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T5",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T5",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T5",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f30",
+                    "table_id": "T5",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T6",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T6",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T6",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T6",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T6",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T6",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f06",
+                    "table_id": "T6",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T7",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T7",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T7",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T7",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T7",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T7",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f42",
+                    "table_id": "T7",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T8",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T8",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T8",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T8",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T8",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T8",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T8",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T8",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T9",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T9",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T9",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T9",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T9",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T9",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T9",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T9",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T10",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T10",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T10",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T10",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T10",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T10",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T10",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T10",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T11",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T11",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T11",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T11",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T11",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T11",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T11",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T11",
+                    "seat_index": 7
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T12",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T12",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T12",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T12",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T12",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f37",
+                    "table_id": "T12",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f37",
+                    "table_id": "T12",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T13",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T13",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T13",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T13",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T13",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f13",
+                    "table_id": "T13",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f13",
+                    "table_id": "T13",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T14",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T14",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T14",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T14",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T14",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f43",
+                    "table_id": "T14",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f43",
+                    "table_id": "T14",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T15",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T15",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T15",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T15",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T15",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T15",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T15",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T16",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T16",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T16",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T16",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T16",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T16",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T16",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T17",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T17",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T17",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T17",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T17",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T17",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T17",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T18",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T18",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T18",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T18",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T18",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T18",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T18",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T19",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T19",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T19",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T19",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f01",
+                    "table_id": "T19",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f01",
+                    "table_id": "T19",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f18",
+                    "table_id": "T19",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T20",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T20",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T20",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T20",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f31",
+                    "table_id": "T20",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f31",
+                    "table_id": "T20",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T21",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T21",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T21",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T21",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f07",
+                    "table_id": "T21",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f07",
+                    "table_id": "T21",
+                    "seat_index": 5
+                }
+            ],
+            "placed": 45,
+            "unplaced": []
+        },
+        "3 x 6 mixed": {
+            "assignments": [
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T2",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T3",
+                    "seat_index": 5
+                }
+            ],
+            "placed": 3,
+            "unplaced": [
+                {
+                    "id": "f11",
+                    "name": "Family L11",
+                    "missing": 6
+                },
+                {
+                    "id": "f41",
+                    "name": "Family P41",
+                    "missing": 6
+                },
+                {
+                    "id": "f17",
+                    "name": "Family R17",
+                    "missing": 6
+                },
+                {
+                    "id": "f23",
+                    "name": "Family X23",
+                    "missing": 6
+                },
+                {
+                    "id": "f28",
+                    "name": "Family C28",
+                    "missing": 5
+                },
+                {
+                    "id": "f04",
+                    "name": "Family E4",
+                    "missing": 5
+                },
+                {
+                    "id": "f40",
+                    "name": "Family O40",
+                    "missing": 5
+                },
+                {
+                    "id": "f16",
+                    "name": "Family Q16",
+                    "missing": 5
+                },
+                {
+                    "id": "f34",
+                    "name": "Family I34",
+                    "missing": 5
+                },
+                {
+                    "id": "f10",
+                    "name": "Family K10",
+                    "missing": 5
+                },
+                {
+                    "id": "f22",
+                    "name": "Family W22",
+                    "missing": 5
+                },
+                {
+                    "id": "f27",
+                    "name": "Family B27",
+                    "missing": 4
+                },
+                {
+                    "id": "f03",
+                    "name": "Family D3",
+                    "missing": 4
+                },
+                {
+                    "id": "f33",
+                    "name": "Family H33",
+                    "missing": 4
+                },
+                {
+                    "id": "f09",
+                    "name": "Family J9",
+                    "missing": 4
+                },
+                {
+                    "id": "f39",
+                    "name": "Family N39",
+                    "missing": 4
+                },
+                {
+                    "id": "f15",
+                    "name": "Family P15",
+                    "missing": 4
+                },
+                {
+                    "id": "f21",
+                    "name": "Family V21",
+                    "missing": 4
+                },
+                {
+                    "id": "f32",
+                    "name": "Family G32",
+                    "missing": 3
+                },
+                {
+                    "id": "f08",
+                    "name": "Family I8",
+                    "missing": 3
+                },
+                {
+                    "id": "f44",
+                    "name": "Family S44",
+                    "missing": 3
+                },
+                {
+                    "id": "f20",
+                    "name": "Family U20",
+                    "missing": 3
+                },
+                {
+                    "id": "f26",
+                    "name": "Family A26",
+                    "missing": 3
+                },
+                {
+                    "id": "f02",
+                    "name": "Family C2",
+                    "missing": 3
+                },
+                {
+                    "id": "f38",
+                    "name": "Family M38",
+                    "missing": 3
+                },
+                {
+                    "id": "f14",
+                    "name": "Family O14",
+                    "missing": 3
+                },
+                {
+                    "id": "f01",
+                    "name": "Family B1",
+                    "missing": 2
+                },
+                {
+                    "id": "f31",
+                    "name": "Family F31",
+                    "missing": 2
+                },
+                {
+                    "id": "f07",
+                    "name": "Family H7",
+                    "missing": 2
+                },
+                {
+                    "id": "f37",
+                    "name": "Family L37",
+                    "missing": 2
+                },
+                {
+                    "id": "f13",
+                    "name": "Family N13",
+                    "missing": 2
+                },
+                {
+                    "id": "f43",
+                    "name": "Family R43",
+                    "missing": 2
+                },
+                {
+                    "id": "f19",
+                    "name": "Family T19",
+                    "missing": 2
+                },
+                {
+                    "id": "f25",
+                    "name": "Family Z25",
+                    "missing": 2
+                },
+                {
+                    "id": "f00",
+                    "name": "Family A0",
+                    "missing": 1
+                },
+                {
+                    "id": "f36",
+                    "name": "Family K36",
+                    "missing": 1
+                },
+                {
+                    "id": "f12",
+                    "name": "Family M12",
+                    "missing": 1
+                },
+                {
+                    "id": "f24",
+                    "name": "Family Y24",
+                    "missing": 1
+                },
+                {
+                    "id": "f30",
+                    "name": "Family E30",
+                    "missing": 1
+                },
+                {
+                    "id": "f06",
+                    "name": "Family G6",
+                    "missing": 1
+                },
+                {
+                    "id": "f42",
+                    "name": "Family Q42",
+                    "missing": 1
+                },
+                {
+                    "id": "f18",
+                    "name": "Family S18",
+                    "missing": 1
+                }
+            ]
+        },
+        "60 x 12 split": {
+            "assignments": [
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f11",
+                    "table_id": "T2",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f41",
+                    "table_id": "T3",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f04",
+                    "table_id": "T4",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f16",
+                    "table_id": "T5",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f34",
+                    "table_id": "T6",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T7",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T7",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T7",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f33",
+                    "table_id": "T7",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T8",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T8",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T8",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f09",
+                    "table_id": "T8",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T9",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T9",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T9",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f39",
+                    "table_id": "T9",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T10",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T10",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T10",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f21",
+                    "table_id": "T10",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T11",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T11",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f08",
+                    "table_id": "T11",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T12",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T12",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f44",
+                    "table_id": "T12",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T13",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T13",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f26",
+                    "table_id": "T13",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T14",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T14",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f38",
+                    "table_id": "T14",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T15",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T15",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f14",
+                    "table_id": "T15",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f01",
+                    "table_id": "T16",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f01",
+                    "table_id": "T16",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f31",
+                    "table_id": "T17",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f31",
+                    "table_id": "T17",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f43",
+                    "table_id": "T18",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f43",
+                    "table_id": "T18",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f19",
+                    "table_id": "T19",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f19",
+                    "table_id": "T19",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f00",
+                    "table_id": "T20",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f36",
+                    "table_id": "T20",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f24",
+                    "table_id": "T20",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f06",
+                    "table_id": "T21",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f18",
+                    "table_id": "T22",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T31",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T31",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T31",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T31",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T31",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T31",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T32",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T32",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T32",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T32",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T32",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f35",
+                    "table_id": "T32",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T33",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T33",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T33",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T33",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T33",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f17",
+                    "table_id": "T33",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T34",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T34",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T34",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T34",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T34",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f23",
+                    "table_id": "T34",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T35",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T35",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T35",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T35",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f28",
+                    "table_id": "T35",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T36",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T36",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T36",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T36",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f40",
+                    "table_id": "T36",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T37",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T37",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T37",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T37",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f10",
+                    "table_id": "T37",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T38",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T38",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T38",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T38",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f22",
+                    "table_id": "T38",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T39",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T39",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T39",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f27",
+                    "table_id": "T39",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T40",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T40",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T40",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f03",
+                    "table_id": "T40",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T41",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T41",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T41",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f15",
+                    "table_id": "T41",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T42",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T42",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f32",
+                    "table_id": "T42",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T43",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T43",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f20",
+                    "table_id": "T43",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T44",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T44",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f02",
+                    "table_id": "T44",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f07",
+                    "table_id": "T45",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f07",
+                    "table_id": "T45",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f37",
+                    "table_id": "T46",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f37",
+                    "table_id": "T46",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f13",
+                    "table_id": "T47",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f13",
+                    "table_id": "T47",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f25",
+                    "table_id": "T48",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f25",
+                    "table_id": "T48",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f12",
+                    "table_id": "T49",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f30",
+                    "table_id": "T50",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f42",
+                    "table_id": "T51",
+                    "seat_index": 0
+                }
+            ],
+            "placed": 45,
+            "unplaced": []
+        },
+        "plan section 7.1": {
+            "assignments": [
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 0
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 1
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 2
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 3
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 4
+                },
+                {
+                    "household_id": "f29",
+                    "table_id": "T1",
+                    "seat_index": 5
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T1",
+                    "seat_index": 6
+                },
+                {
+                    "household_id": "f05",
+                    "table_id": "T1",
+                    "seat_index": 7
+                }
+            ],
+            "placed": 2,
+            "unplaced": [
+                {
+                    "id": "f05",
+                    "name": "Family F5",
+                    "missing": 4
+                },
+                {
+                    "id": "f35",
+                    "name": "Family J35",
+                    "missing": 6
+                },
+                {
+                    "id": "f11",
+                    "name": "Family L11",
+                    "missing": 6
+                },
+                {
+                    "id": "f41",
+                    "name": "Family P41",
+                    "missing": 6
+                },
+                {
+                    "id": "f17",
+                    "name": "Family R17",
+                    "missing": 6
+                },
+                {
+                    "id": "f23",
+                    "name": "Family X23",
+                    "missing": 6
+                },
+                {
+                    "id": "f28",
+                    "name": "Family C28",
+                    "missing": 5
+                },
+                {
+                    "id": "f04",
+                    "name": "Family E4",
+                    "missing": 5
+                },
+                {
+                    "id": "f40",
+                    "name": "Family O40",
+                    "missing": 5
+                },
+                {
+                    "id": "f16",
+                    "name": "Family Q16",
+                    "missing": 5
+                },
+                {
+                    "id": "f34",
+                    "name": "Family I34",
+                    "missing": 5
+                },
+                {
+                    "id": "f10",
+                    "name": "Family K10",
+                    "missing": 5
+                },
+                {
+                    "id": "f22",
+                    "name": "Family W22",
+                    "missing": 5
+                },
+                {
+                    "id": "f27",
+                    "name": "Family B27",
+                    "missing": 4
+                },
+                {
+                    "id": "f03",
+                    "name": "Family D3",
+                    "missing": 4
+                },
+                {
+                    "id": "f33",
+                    "name": "Family H33",
+                    "missing": 4
+                },
+                {
+                    "id": "f09",
+                    "name": "Family J9",
+                    "missing": 4
+                },
+                {
+                    "id": "f39",
+                    "name": "Family N39",
+                    "missing": 4
+                },
+                {
+                    "id": "f15",
+                    "name": "Family P15",
+                    "missing": 4
+                },
+                {
+                    "id": "f21",
+                    "name": "Family V21",
+                    "missing": 4
+                },
+                {
+                    "id": "f32",
+                    "name": "Family G32",
+                    "missing": 3
+                },
+                {
+                    "id": "f08",
+                    "name": "Family I8",
+                    "missing": 3
+                },
+                {
+                    "id": "f44",
+                    "name": "Family S44",
+                    "missing": 3
+                },
+                {
+                    "id": "f20",
+                    "name": "Family U20",
+                    "missing": 3
+                },
+                {
+                    "id": "f26",
+                    "name": "Family A26",
+                    "missing": 3
+                },
+                {
+                    "id": "f02",
+                    "name": "Family C2",
+                    "missing": 3
+                },
+                {
+                    "id": "f38",
+                    "name": "Family M38",
+                    "missing": 3
+                },
+                {
+                    "id": "f14",
+                    "name": "Family O14",
+                    "missing": 3
+                },
+                {
+                    "id": "f01",
+                    "name": "Family B1",
+                    "missing": 2
+                },
+                {
+                    "id": "f31",
+                    "name": "Family F31",
+                    "missing": 2
+                },
+                {
+                    "id": "f07",
+                    "name": "Family H7",
+                    "missing": 2
+                },
+                {
+                    "id": "f37",
+                    "name": "Family L37",
+                    "missing": 2
+                },
+                {
+                    "id": "f13",
+                    "name": "Family N13",
+                    "missing": 2
+                },
+                {
+                    "id": "f43",
+                    "name": "Family R43",
+                    "missing": 2
+                },
+                {
+                    "id": "f19",
+                    "name": "Family T19",
+                    "missing": 2
+                },
+                {
+                    "id": "f25",
+                    "name": "Family Z25",
+                    "missing": 2
+                },
+                {
+                    "id": "f00",
+                    "name": "Family A0",
+                    "missing": 1
+                },
+                {
+                    "id": "f36",
+                    "name": "Family K36",
+                    "missing": 1
+                },
+                {
+                    "id": "f12",
+                    "name": "Family M12",
+                    "missing": 1
+                },
+                {
+                    "id": "f24",
+                    "name": "Family Y24",
+                    "missing": 1
+                },
+                {
+                    "id": "f30",
+                    "name": "Family E30",
+                    "missing": 1
+                },
+                {
+                    "id": "f06",
+                    "name": "Family G6",
+                    "missing": 1
+                },
+                {
+                    "id": "f42",
+                    "name": "Family Q42",
+                    "missing": 1
+                },
+                {
+                    "id": "f18",
+                    "name": "Family S18",
+                    "missing": 1
+                }
+            ]
+        }
+    },
+    "maps": {
+        "20 x 8 split": {
+            "w": 800,
+            "h": 580,
+            "stage": [
+                270,
+                24,
+                260,
+                62
+            ],
+            "tables": [
+                [
+                    "1",
+                    91,
+                    234,
+                    38
+                ],
+                [
+                    "2",
+                    204,
+                    234,
+                    38
+                ],
+                [
+                    "3",
+                    324,
+                    234,
+                    38
+                ],
+                [
+                    "4",
+                    84,
+                    321,
+                    38
+                ],
+                [
+                    "5",
+                    204,
+                    321,
+                    38
+                ],
+                [
+                    "6",
+                    324,
+                    321,
+                    38
+                ],
+                [
+                    "7",
+                    84,
+                    409,
+                    38
+                ],
+                [
+                    "8",
+                    204,
+                    409,
+                    38
+                ],
+                [
+                    "9",
+                    324,
+                    409,
+                    38
+                ],
+                [
+                    "10",
+                    204,
+                    496,
+                    38
+                ],
+                [
+                    "11",
+                    476,
+                    234,
+                    38
+                ],
+                [
+                    "12",
+                    596,
+                    234,
+                    38
+                ],
+                [
+                    "13",
+                    716,
+                    234,
+                    38
+                ],
+                [
+                    "14",
+                    476,
+                    321,
+                    38
+                ],
+                [
+                    "15",
+                    596,
+                    321,
+                    38
+                ],
+                [
+                    "16",
+                    716,
+                    321,
+                    38
+                ],
+                [
+                    "17",
+                    476,
+                    409,
+                    38
+                ],
+                [
+                    "18",
+                    596,
+                    409,
+                    38
+                ],
+                [
+                    "19",
+                    716,
+                    409,
+                    38
+                ],
+                [
+                    "20",
+                    596,
+                    496,
+                    38
+                ]
+            ],
+            "mine": "1"
+        },
+        "21 x 10 mixed": {
+            "w": 800,
+            "h": 580,
+            "stage": [
+                270,
+                24,
+                260,
+                62
+            ],
+            "tables": [
+                [
+                    "1",
+                    85,
+                    248,
+                    48
+                ],
+                [
+                    "2",
+                    185,
+                    248,
+                    48
+                ],
+                [
+                    "3",
+                    293,
+                    248,
+                    48
+                ],
+                [
+                    "4",
+                    400,
+                    248,
+                    48
+                ],
+                [
+                    "5",
+                    507,
+                    248,
+                    48
+                ],
+                [
+                    "6",
+                    615,
+                    248,
+                    48
+                ],
+                [
+                    "7",
+                    722,
+                    248,
+                    48
+                ],
+                [
+                    "8",
+                    78,
+                    365,
+                    48
+                ],
+                [
+                    "9",
+                    185,
+                    365,
+                    48
+                ],
+                [
+                    "10",
+                    293,
+                    365,
+                    48
+                ],
+                [
+                    "11",
+                    400,
+                    365,
+                    48
+                ],
+                [
+                    "12",
+                    507,
+                    365,
+                    48
+                ],
+                [
+                    "13",
+                    615,
+                    365,
+                    48
+                ],
+                [
+                    "14",
+                    722,
+                    365,
+                    48
+                ],
+                [
+                    "15",
+                    78,
+                    482,
+                    48
+                ],
+                [
+                    "16",
+                    185,
+                    482,
+                    48
+                ],
+                [
+                    "17",
+                    293,
+                    482,
+                    48
+                ],
+                [
+                    "18",
+                    400,
+                    482,
+                    48
+                ],
+                [
+                    "19",
+                    507,
+                    482,
+                    48
+                ],
+                [
+                    "20",
+                    615,
+                    482,
+                    48
+                ],
+                [
+                    "21",
+                    722,
+                    482,
+                    48
+                ]
+            ],
+            "mine": "1"
+        },
+        "3 x 6 mixed": {
+            "w": 800,
+            "h": 580,
+            "stage": [
+                270,
+                24,
+                260,
+                62
+            ],
+            "tables": [
+                [
+                    "1",
+                    157,
+                    365,
+                    119
+                ],
+                [
+                    "2",
+                    400,
+                    365,
+                    119
+                ],
+                [
+                    "3",
+                    651,
+                    365,
+                    119
+                ]
+            ],
+            "mine": "1"
+        },
+        "60 x 12 split": {
+            "w": 800,
+            "h": 580,
+            "stage": [
+                270,
+                24,
+                260,
+                62
+            ],
+            "tables": [
+                [
+                    "1",
+                    61,
+                    225,
+                    25
+                ],
+                [
+                    "2",
+                    114,
+                    225,
+                    25
+                ],
+                [
+                    "3",
+                    174,
+                    225,
+                    25
+                ],
+                [
+                    "4",
+                    234,
+                    225,
+                    25
+                ],
+                [
+                    "5",
+                    294,
+                    225,
+                    25
+                ],
+                [
+                    "6",
+                    354,
+                    225,
+                    25
+                ],
+                [
+                    "7",
+                    54,
+                    295,
+                    25
+                ],
+                [
+                    "8",
+                    114,
+                    295,
+                    25
+                ],
+                [
+                    "9",
+                    174,
+                    295,
+                    25
+                ],
+                [
+                    "10",
+                    234,
+                    295,
+                    25
+                ],
+                [
+                    "11",
+                    294,
+                    295,
+                    25
+                ],
+                [
+                    "12",
+                    354,
+                    295,
+                    25
+                ],
+                [
+                    "13",
+                    54,
+                    365,
+                    25
+                ],
+                [
+                    "14",
+                    114,
+                    365,
+                    25
+                ],
+                [
+                    "15",
+                    174,
+                    365,
+                    25
+                ],
+                [
+                    "16",
+                    234,
+                    365,
+                    25
+                ],
+                [
+                    "17",
+                    294,
+                    365,
+                    25
+                ],
+                [
+                    "18",
+                    354,
+                    365,
+                    25
+                ],
+                [
+                    "19",
+                    54,
+                    435,
+                    25
+                ],
+                [
+                    "20",
+                    114,
+                    435,
+                    25
+                ],
+                [
+                    "21",
+                    174,
+                    435,
+                    25
+                ],
+                [
+                    "22",
+                    234,
+                    435,
+                    25
+                ],
+                [
+                    "23",
+                    294,
+                    435,
+                    25
+                ],
+                [
+                    "24",
+                    354,
+                    435,
+                    25
+                ],
+                [
+                    "25",
+                    54,
+                    505,
+                    25
+                ],
+                [
+                    "26",
+                    114,
+                    505,
+                    25
+                ],
+                [
+                    "27",
+                    174,
+                    505,
+                    25
+                ],
+                [
+                    "28",
+                    234,
+                    505,
+                    25
+                ],
+                [
+                    "29",
+                    294,
+                    505,
+                    25
+                ],
+                [
+                    "30",
+                    354,
+                    505,
+                    25
+                ],
+                [
+                    "31",
+                    446,
+                    225,
+                    25
+                ],
+                [
+                    "32",
+                    506,
+                    225,
+                    25
+                ],
+                [
+                    "33",
+                    566,
+                    225,
+                    25
+                ],
+                [
+                    "34",
+                    626,
+                    225,
+                    25
+                ],
+                [
+                    "35",
+                    686,
+                    225,
+                    25
+                ],
+                [
+                    "36",
+                    746,
+                    225,
+                    25
+                ],
+                [
+                    "37",
+                    446,
+                    295,
+                    25
+                ],
+                [
+                    "38",
+                    506,
+                    295,
+                    25
+                ],
+                [
+                    "39",
+                    566,
+                    295,
+                    25
+                ],
+                [
+                    "40",
+                    626,
+                    295,
+                    25
+                ],
+                [
+                    "41",
+                    686,
+                    295,
+                    25
+                ],
+                [
+                    "42",
+                    746,
+                    295,
+                    25
+                ],
+                [
+                    "43",
+                    446,
+                    365,
+                    25
+                ],
+                [
+                    "44",
+                    506,
+                    365,
+                    25
+                ],
+                [
+                    "45",
+                    566,
+                    365,
+                    25
+                ],
+                [
+                    "46",
+                    626,
+                    365,
+                    25
+                ],
+                [
+                    "47",
+                    686,
+                    365,
+                    25
+                ],
+                [
+                    "48",
+                    746,
+                    365,
+                    25
+                ],
+                [
+                    "49",
+                    446,
+                    435,
+                    25
+                ],
+                [
+                    "50",
+                    506,
+                    435,
+                    25
+                ],
+                [
+                    "51",
+                    566,
+                    435,
+                    25
+                ],
+                [
+                    "52",
+                    626,
+                    435,
+                    25
+                ],
+                [
+                    "53",
+                    686,
+                    435,
+                    25
+                ],
+                [
+                    "54",
+                    746,
+                    435,
+                    25
+                ],
+                [
+                    "55",
+                    446,
+                    505,
+                    25
+                ],
+                [
+                    "56",
+                    506,
+                    505,
+                    25
+                ],
+                [
+                    "57",
+                    566,
+                    505,
+                    25
+                ],
+                [
+                    "58",
+                    626,
+                    505,
+                    25
+                ],
+                [
+                    "59",
+                    686,
+                    505,
+                    25
+                ],
+                [
+                    "60",
+                    746,
+                    505,
+                    25
+                ]
+            ],
+            "mine": "1"
+        },
+        "plan section 7.1": {
+            "w": 800,
+            "h": 580,
+            "stage": [
+                270,
+                24,
+                260,
+                62
+            ],
+            "tables": [
+                [
+                    "1",
+                    84,
+                    248,
+                    34
+                ]
+            ],
+            "mine": "1"
+        }
+    },
+    "svg": {
+        "20 x 8 split": "314d98d065d3445cb347089f69ba543442c489a4",
+        "21 x 10 mixed": "11fd9bd350919f71bca053609dc4a205513089bc",
+        "3 x 6 mixed": "<svg class=\"hall\" viewBox=\"0 0 800 580\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" role=\"img\" aria-label=\"Hall 3\"><rect x=\"0.5\" y=\"0.5\" width=\"799\" height=\"579\" rx=\"10\" class=\"h-floor\"\/><rect x=\"270\" y=\"24\" width=\"260\" height=\"62\" rx=\"8\" class=\"h-stage\"\/><text x=\"400\" y=\"60\" text-anchor=\"middle\" class=\"h-stage-label\">الكوشة · Kosha<\/text><rect x=\"310\" y=\"100\" width=\"180\" height=\"70\" rx=\"6\" class=\"h-dance\"\/><rect x=\"360\" y=\"566\" width=\"80\" height=\"8\" rx=\"3\" class=\"h-entrance\"\/><g class=\"h-table is-used \"><circle cx=\"156.6\" cy=\"251.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"254.7\" cy=\"308.4\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"254.7\" cy=\"421.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"156.6\" cy=\"478.3\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"58.5\" cy=\"421.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"58.5\" cy=\"308.3\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"156.6\" cy=\"365\" r=\"98\" class=\"h-top\"\/><text x=\"156.6\" y=\"372\" text-anchor=\"middle\" class=\"h-num\" style=\"font-size: 22px\">1<\/text><\/g><g class=\"h-table is-used \"><circle cx=\"400\" cy=\"251.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"498.1\" cy=\"308.4\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"498.1\" cy=\"421.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"400\" cy=\"478.3\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"301.9\" cy=\"421.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"301.9\" cy=\"308.3\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"400\" cy=\"365\" r=\"98\" class=\"h-top\"\/><text x=\"400\" y=\"372\" text-anchor=\"middle\" class=\"h-num\" style=\"font-size: 22px\">2<\/text><\/g><g class=\"h-table is-used \"><circle cx=\"650.7\" cy=\"251.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"748.8\" cy=\"308.4\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"748.8\" cy=\"421.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"650.7\" cy=\"478.3\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"552.6\" cy=\"421.7\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"552.6\" cy=\"308.3\" r=\"9\" class=\"h-chair is-taken \"\/><circle cx=\"650.7\" cy=\"365\" r=\"98\" class=\"h-top\"\/><text x=\"650.7\" y=\"372\" text-anchor=\"middle\" class=\"h-num\" style=\"font-size: 22px\">3<\/text><\/g><\/svg>",
+        "60 x 12 split": "faa792738306ce80d82e5c5b5aedd64a5e72dab3",
+        "plan section 7.1": "1c397c2fbec3413f812291cfe7788fee62b8543e"
+    }
+}

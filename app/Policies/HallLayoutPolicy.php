@@ -21,6 +21,10 @@ class HallLayoutPolicy
 
     public function view(User $user, HallLayout $hall): bool
     {
+        // starter halls (phase 8B) are there to be copied by anyone
+        if ($hall->isTemplate()) {
+            return true;
+        }
         if ($hall->owner_id !== null && $hall->owner_id === $user->getKey()) {
             return true;
         }

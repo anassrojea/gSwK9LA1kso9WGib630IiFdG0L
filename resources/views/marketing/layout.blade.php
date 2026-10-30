@@ -117,6 +117,7 @@
                 @endforeach
                 <li><a href="{{ SiteUrl::path('pricing', $locale) }}">{{ __('marketing.nav.pricing') }}</a></li>
                 <li><a href="{{ SiteUrl::path('about', $locale) }}">{{ __('marketing.nav.about') }}</a></li>
+                <li><a href="{{ SiteUrl::path('venues', $locale) }}">{{ __('venues.nav') }}</a></li>
             </ul>
         </div>
         <div>

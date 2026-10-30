@@ -23,6 +23,7 @@ use App\Services\Payments\OrderPresenter;
 use App\Services\Payments\PriceList;
 use App\Services\PublishGate;
 use App\Services\Storage\StoragePeriod;
+use App\Services\Venues\VenueDirectory;
 use App\Services\Wizard\DraftCreator;
 use App\Services\Wizard\PlanAdvisor;
 use Illuminate\Http\RedirectResponse;
@@ -57,19 +58,30 @@ class WizardController extends Controller
     }
 
     /**
-     * POST /create {occasion, template_id?}: a draft for a guest or a user.
+     * POST /create {occasion, template_id?, hall_layout_id?}: a draft for a guest
+     * or a user. hall_layout_id (phase 8B): "Create your invitation at this
+     * venue" on a venue's directory page; the venue's public hall is linked
+     * to the draft and the invitation's place is the venue.
      */
-    public function store(Request $request, DraftCreator $drafts): RedirectResponse
+    public function store(Request $request, DraftCreator $drafts, VenueDirectory $venues): RedirectResponse
     {
         $data = $request->validate([
             'occasion' => ['required', Rule::in(Event::OCCASIONS)],
             'template_id' => ['nullable', 'string', Rule::exists('templates', 'id')->where('active', true)],
+            'hall_layout_id' => ['nullable', 'uuid'],
         ]);
+
+        $hall = null;
+        if (! empty($data['hall_layout_id'])) {
+            $hall = $venues->bookableHall($data['hall_layout_id'])
+                ?? throw ValidationException::withMessages(['hall_layout_id' => trans('venues.errors.hall')]);
+        }
 
         $event = $drafts->create(
             $data['occasion'],
             $request->user(),
             isset($data['template_id']) ? Template::query()->find($data['template_id']) : null,
+            $hall,
         );
 
         return redirect()->route('create.step', [$event, 'design']);

@@ -1,4 +1,4 @@
-import type { HallLayout } from '@/lib/hall-generator';
+import type { HallLayout } from '@/lib/hall-layout';
 import type { Assignment, Family, Warning } from '@/lib/seating/plan';
 
 export interface HallSummary {
@@ -40,6 +40,8 @@ export interface PlannerProps {
     warnings?: Warning[];
     meals?: Meals;
     limits?: { tables: number; chairs: number };
+    /** the venue changed the hall after the seats were last saved (phase 8B) */
+    hall_change?: { at: string; count: number } | null;
     urls: {
         dashboard: string;
         upgrade: string;
@@ -49,6 +51,7 @@ export interface PlannerProps {
         section?: string;
         chart_pdf?: string;
         cards_pdf?: string;
+        find_pdf?: string | null;
         halls?: string;
     };
 }

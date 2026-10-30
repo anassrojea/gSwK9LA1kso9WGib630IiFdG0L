@@ -1,7 +1,8 @@
 import { useDroppable } from '@dnd-kit/core';
 import { memo, useRef, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 
-import { chairPositions, type HallLayout, type HallTable } from '@/lib/hall-generator';
+import { HallFloor, HallLabels, TableHalo, TableShape } from '@/components/halls/shapes';
+import { type HallLayout, type HallTable } from '@/lib/hall-layout';
 import { useT } from '@/lib/i18n';
 import { seatKey, tableNumber, type Assignment } from '@/lib/seating/plan';
 import { cn } from '@/lib/utils';
@@ -38,7 +39,6 @@ export interface HallSvgProps {
  */
 export const HallSvg = memo(function HallSvg(props: HallSvgProps) {
     const { layout, mode } = props;
-    const { t } = useT();
     const svgRef = useRef<SVGSVGElement>(null);
     const drag = useRef<{ id: string; dx: number; dy: number; pointer: number } | null>(null);
 
@@ -84,8 +84,6 @@ export const HallSvg = memo(function HallSvg(props: HallSvgProps) {
         }
     };
 
-    const sectionLabel = (id: string, fallback: string) => (id === 'mixed' ? '' : t(`seating.section.${id}`) || fallback);
-
     return (
         <svg
             ref={svgRef}
@@ -97,33 +95,7 @@ export const HallSvg = memo(function HallSvg(props: HallSvgProps) {
             data-mode={mode}
         >
             <rect x={1} y={1} width={layout.size.w - 2} height={layout.size.h - 2} rx={14} className="fill-white stroke-zinc-300" strokeWidth={2} />
-            {layout.sections.map((s) =>
-                s.id === 'mixed' ? null : (
-                    <g key={s.id}>
-                        <rect x={s.area.x} y={s.area.y} width={s.area.w} height={s.area.h} rx={10} className={s.id === 'men' ? 'fill-sky-50/70 stroke-sky-200' : 'fill-rose-50/70 stroke-rose-200'} strokeDasharray="6 5" />
-                        <text x={s.area.x + s.area.w / 2} y={s.area.y - 8} textAnchor="middle" className="fill-zinc-500 text-[13px] font-semibold">
-                            {sectionLabel(s.id, s.label)}
-                        </text>
-                    </g>
-                ),
-            )}
-            {layout.stage && (
-                <g>
-                    <rect x={layout.stage.x} y={layout.stage.y} width={layout.stage.w} height={layout.stage.h} rx={10} className="fill-amber-100 stroke-amber-400" strokeWidth={1.5} />
-                    <text x={layout.stage.x + layout.stage.w / 2} y={layout.stage.y + layout.stage.h / 2 + 5} textAnchor="middle" className="fill-amber-900 text-[15px] font-bold">
-                        {t('seating.hall.stage')}
-                    </text>
-                </g>
-            )}
-            {layout.danceFloor && <rect x={layout.danceFloor.x} y={layout.danceFloor.y} width={layout.danceFloor.w} height={layout.danceFloor.h} rx={8} className="fill-none stroke-zinc-300" strokeDasharray="4 5" />}
-            {layout.entrances?.map((e, i) => (
-                <g key={i}>
-                    <rect x={e.x} y={e.y} width={e.w} height={10} rx={4} className="fill-amber-400" />
-                    <text x={e.x + e.w / 2} y={e.y - 5} textAnchor="middle" className="fill-zinc-500 text-[11px]">
-                        {t('seating.hall.entrance')}
-                    </text>
-                </g>
-            ))}
+            <HallFloor layout={layout} />
             {layout.tables.map((table) => {
                 const body = (
                     <TableBody
@@ -158,6 +130,7 @@ export const HallSvg = memo(function HallSvg(props: HallSvgProps) {
                     </PlainTable>
                 );
             })}
+            <HallLabels layout={layout} />
         </svg>
     );
 });
@@ -217,7 +190,7 @@ function DroppableTable({ table, seats, onKeyDown, onClick, children }: TableGro
             data-table={table.id}
             data-over={isOver || undefined}
         >
-            {isOver && <circle cx={table.x} cy={table.y} r={table.ring + table.chairR + 6} className="fill-primary/10 stroke-primary" strokeWidth={2} strokeDasharray="5 4" />}
+            {isOver && <TableHalo table={table} kind="over" />}
             {children}
         </g>
     );
@@ -244,60 +217,38 @@ function TableBody({
     hinted: boolean;
     onChairClick?: (table: string, seat: number) => void;
 }) {
-    const { n } = useT();
-    const chairs = chairPositions(table);
     let taken = 0;
     for (let i = 0; i < table.seats; i++) if (seats?.has(seatKey(table.id, i))) taken++;
     const full = taken >= table.seats;
-    const fontSize = Math.max(9, Math.min(24, table.r * 0.95));
 
     return (
-        <>
-            {(selected || hinted) && <circle cx={table.x} cy={table.y} r={table.ring + table.chairR + 4} className={selected ? 'fill-primary/5 stroke-primary' : 'fill-emerald-500/5 stroke-emerald-500'} strokeWidth={2} />}
-            {chairs.map((c, i) => {
+        <TableShape
+            table={table}
+            taken={taken}
+            tone={flagged ? 'flagged' : full ? 'full' : taken > 0 ? 'used' : 'empty'}
+            halo={selected ? 'selected' : hinted ? 'hinted' : null}
+            chair={(i) => {
                 const a = seats?.get(seatKey(table.id, i));
                 const fam = a ? families?.get(a.household_id) : undefined;
                 const isSelected = selectedSeat?.table === table.id && selectedSeat.seat === i;
-                return (
-                    <circle
-                        key={i}
-                        cx={c.x}
-                        cy={c.y}
-                        r={table.chairR}
-                        fill={fam?.color ?? '#ffffff'}
-                        stroke={isSelected ? '#111827' : fam ? fam.color : '#b4a7ac'}
-                        strokeWidth={isSelected ? 3 : 1.2}
-                        className={cn(mode === 'seat' && 'cursor-pointer hover:stroke-zinc-900')}
-                        onClick={
+                return {
+                    fill: fam?.color ?? '#ffffff',
+                    stroke: isSelected ? '#111827' : fam ? fam.color : '#b4a7ac',
+                    strokeWidth: isSelected ? 3 : 1.2,
+                    title: fam?.name,
+                    props: {
+                        className: cn(mode === 'seat' && 'cursor-pointer hover:stroke-zinc-900'),
+                        onClick:
                             mode === 'seat'
                                 ? (e) => {
                                       e.stopPropagation();
                                       onChairClick?.(table.id, i);
                                   }
-                                : undefined
-                        }
-                        data-chair={i}
-                        data-taken={a ? a.household_id : undefined}
-                    >
-                        {fam && <title>{fam.name}</title>}
-                    </circle>
-                );
-            })}
-            <circle
-                cx={table.x}
-                cy={table.y}
-                r={table.r}
-                className={cn('t-top', flagged ? 'fill-red-50 stroke-red-500' : full ? 'fill-amber-50 stroke-amber-500' : taken > 0 ? 'fill-rose-50 stroke-rose-300' : 'fill-zinc-50 stroke-zinc-300')}
-                strokeWidth={flagged ? 2.5 : 1.5}
-            />
-            <text x={table.x} y={table.y + fontSize * 0.1} textAnchor="middle" dominantBaseline="middle" className={cn('pointer-events-none font-bold', flagged ? 'fill-red-700' : 'fill-zinc-800')} style={{ fontSize }}>
-                {n(tableNumber(table.id))}
-            </text>
-            {table.r >= 16 && (
-                <text x={table.x} y={table.y + fontSize * 0.85} textAnchor="middle" dominantBaseline="middle" className="pointer-events-none fill-zinc-500" style={{ fontSize: Math.max(7, fontSize * 0.45) }}>
-                    {n(taken)}/{n(table.seats)}
-                </text>
-            )}
-        </>
+                                : undefined,
+                        'data-taken': a ? a.household_id : undefined,
+                    },
+                };
+            }}
+        />
     );
 }

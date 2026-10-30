@@ -9,6 +9,7 @@ use App\Models\Household;
 use App\Services\Entitlements;
 use App\Services\HallGenerator;
 use App\Services\Seating\AutoSeater;
+use App\Services\Seating\HallChanges;
 use App\Services\Seating\HallLayoutData;
 use App\Services\Seating\HallLayouts;
 use App\Services\Seating\MealCounts;
@@ -66,6 +67,7 @@ class SeatingController extends Controller
 
         return Inertia::render('seating/Planner', array_merge_recursive($base, [
             'locked' => false,
+            'hall_change' => HallChanges::notice($event),
             'hall' => $layout ? [
                 'id' => $event->hall_layout_id,
                 'name' => $event->hallLayout->name,
@@ -85,6 +87,7 @@ class SeatingController extends Controller
                 'section' => route('events.seating.section', $event, false),
                 'chart_pdf' => route('events.seating.pdf', $event, false),
                 'cards_pdf' => route('events.table-cards.pdf', $event, false),
+                'find_pdf' => route('events.find-table.pdf', $event, false),
                 'halls' => route('dashboard.halls.index', absolute: false),
             ],
         ]));
@@ -142,7 +145,7 @@ class SeatingController extends Controller
             'assignments' => ['present', 'array', 'max:'.max(1, $max)],
             'assignments.*.household_id' => ['required', 'uuid'],
             'assignments.*.table_id' => ['required', 'string', 'max:16'],
-            'assignments.*.seat_index' => ['required', 'integer', 'min:0', 'max:'.HallGenerator::MAX_CHAIRS],
+            'assignments.*.seat_index' => ['required', 'integer', 'min:0', 'max:'.HallLayoutData::MAX_SEATS],
         ]);
 
         $rows = array_map(fn (array $a) => [
@@ -208,7 +211,7 @@ class SeatingController extends Controller
      */
     public static function translations(): array
     {
-        return array_merge((array) trans('app'), ['seating' => trans('seating'), 'door' => trans('door')]);
+        return array_merge((array) trans('app'), ['seating' => trans('seating'), 'door' => trans('door'), 'halls' => trans('halls'), 'venues' => trans('venues')]);
     }
 
     private function ensureSeating(Event $event): void
