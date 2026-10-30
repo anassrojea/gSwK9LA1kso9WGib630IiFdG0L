@@ -18,6 +18,11 @@ Schedule::command('account:purge-deleted')->dailyAt('03:17')->withoutOverlapping
 // Storage period (plan section 11, config/retention.php): warnings 14 and 3 days ahead, media purge, archive
 Schedule::command('events:expire-storage')->dailyAt('04:23')->withoutOverlapping();
 
+// Venue & Planner Pro (phase 8A): transfer renewal orders 7 days ahead, reminders, past_due → expired after the grace period
+Schedule::command('org:renewal-orders')->hourlyAt(7)->withoutOverlapping();
+Schedule::command('org:renewal-reminders')->dailyAt('09:41')->withoutOverlapping();
+Schedule::command('org:expire-subscriptions')->hourlyAt(37)->withoutOverlapping();
+
 Artisan::command('daawa:make-admin {email} {--name=}', function (string $email) {
     $user = User::query()->firstOrNew(['email' => $email]);
     $password = null;

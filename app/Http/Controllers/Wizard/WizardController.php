@@ -15,6 +15,7 @@ use App\Models\Theme;
 use App\Services\Account\EmailVerification;
 use App\Services\Entitlements;
 use App\Services\OpenLinks;
+use App\Services\Org\OrgQuota;
 use App\Services\Payments\CheckoutService;
 use App\Services\Payments\Currencies;
 use App\Services\Payments\OrderPresenter;
@@ -28,6 +29,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -138,6 +140,15 @@ class WizardController extends Controller
             return back()->withErrors(['publish' => $check['pending_order']
                 ? trans('app.checkout.waiting_publish', ['code' => $check['pending_order']])
                 : trans('app.checkout.payment_needed')]);
+        }
+
+        // an organization's event uses one of its monthly signature events (phase 8A), or is refused at the limit
+        if ($event->org_id && ! $invitation->published_at) {
+            try {
+                app(OrgQuota::class)->consume($event);
+            } catch (ValidationException $e) {
+                return back()->withErrors($e->errors());
+            }
         }
 
         $invitation->published_at ??= now();

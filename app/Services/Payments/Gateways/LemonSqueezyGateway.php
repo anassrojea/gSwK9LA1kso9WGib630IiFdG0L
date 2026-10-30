@@ -3,6 +3,7 @@
 namespace App\Services\Payments\Gateways;
 
 use App\Models\Order;
+use App\Services\Org\OrgSubscriptions;
 use App\Services\Payments\CheckoutFailed;
 use App\Services\Payments\CheckoutResult;
 use App\Services\Payments\HandlesWebhooks;
@@ -128,6 +129,11 @@ class LemonSqueezyGateway implements HandlesWebhooks, PaymentGateway
         $code = $payload['meta']['custom_data']['order_code'] ?? null;
         $order = $code ? Order::query()->where('code', $code)->where('gateway', self::ID)->first() : null;
 
+        // Venue & Planner Pro subscriptions (phase 8A): App\Services\Org\OrgSubscriptions
+        if ($response = $this->handleSubscriptionEvent((string) $event, $payload)) {
+            return $response;
+        }
+
         if (! in_array($event, ['order_created', 'order_refunded'], true)) {
             return new JsonResponse(['message' => 'Ignored.']);
         }
@@ -158,5 +164,38 @@ class LemonSqueezyGateway implements HandlesWebhooks, PaymentGateway
         );
 
         return new JsonResponse(['message' => $payment ? "Recorded: {$payment->status}." : 'Duplicate: already recorded.']);
+    }
+
+    /**
+     * subscription_* events, and the first order of a subscription checkout
+     * (its money is recorded from subscription_payment_success instead).
+     *
+     * @param  array<string, mixed>  $payload
+     */
+    private function handleSubscriptionEvent(string $event, array $payload): ?JsonResponse
+    {
+        $subscriptions = app(OrgSubscriptions::class);
+
+        if (in_array($event, ['subscription_created', 'subscription_updated', 'subscription_cancelled', 'subscription_resumed', 'subscription_expired', 'subscription_paused', 'subscription_unpaused'], true)) {
+            $subscription = $subscriptions->syncLemonSqueezy($payload);
+
+            return new JsonResponse(['message' => $subscription ? "Org subscription: {$subscription->status}." : 'Ignored.']);
+        }
+
+        if ($event === 'subscription_payment_success') {
+            [$status, $message] = $subscriptions->lemonPaymentSuccess($payload);
+
+            return new JsonResponse(['message' => $message], $status);
+        }
+
+        if ($event === 'subscription_payment_failed') {
+            return new JsonResponse(['message' => $subscriptions->lemonPaymentFailed($payload)]);
+        }
+
+        if ($event === 'order_created' && isset($payload['meta']['custom_data']['org_id']) && ! isset($payload['meta']['custom_data']['order_code'])) {
+            return new JsonResponse(['message' => 'Ignored: subscription order, paid through subscription_payment_success.']);
+        }
+
+        return null;
     }
 }

@@ -20,7 +20,11 @@ class PlanAdvisor
     public const TIERS = ['free' => 0, 'premium' => 1, 'signature' => 2];
 
     /** Plans outside the per-event ladder, ranked by what they include. */
-    public const PLAN_TIERS = ['venue_pro' => 2];
+    public const PLAN_TIERS = [
+        'venue_pro' => 2, 'venue_pro_yearly' => 2,
+        // Venue & Planner Pro tiers (phase 8A, Database\Seeders\OrgPlanSeeder): Signature for the org's events
+        'venue_starter' => 2, 'venue_starter_yearly' => 2, 'venue_business' => 2, 'venue_business_yearly' => 2,
+    ];
 
     /**
      * Rank of a plan or design tier (no plan: free).
