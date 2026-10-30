@@ -68,6 +68,7 @@
                 <span>{{ __('invite.rsvp.your_table') }}</span>
                 <span class="tb" data-table></span>
             </div>
+            @include('invite.partials.wallet_buttons')
         </div>
         <button type="button" class="btn ghost" data-edit>{{ __('invite.rsvp.edit') }}</button>
     </div>
