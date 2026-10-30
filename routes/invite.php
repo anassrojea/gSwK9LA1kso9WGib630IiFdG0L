@@ -8,6 +8,7 @@ use App\Http\Controllers\Invite\RoseController;
 use App\Http\Controllers\Invite\RsvpController;
 use App\Http\Controllers\Invite\WallController;
 use App\Http\Controllers\Invite\WalletController;
+use App\Http\Controllers\Keepsakes\ThankYouPageController;
 use App\Http\Controllers\Wizard\PreviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -84,3 +85,9 @@ Route::get('/i/{token}/wallet/{platform}', [WalletController::class, 'show'])
 Route::get('/i/{token}/pass', [WalletController::class, 'pass'])->middleware('throttle:wallet')->name('invite.pass');
 Route::get('/i/{token}/pass.webmanifest', [WalletController::class, 'manifest'])->middleware('throttle:wallet')->name('invite.pass.manifest');
 Route::get('/e/{slug}/wallet-strip.png', [WalletController::class, 'strip'])->middleware('throttle:invite-og')->name('invite.wallet.strip');
+
+/*
+| Phase 8D: the thank-you card at every household's link and the open link
+| (and /i/{token} itself after the event, when the host chose so).
+*/
+Route::get('/t/{token}', [ThankYouPageController::class, 'show'])->middleware('throttle:thank-you-page')->name('thank-you.show');

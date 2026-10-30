@@ -16,7 +16,7 @@ function createDraft(string $occasion = 'wedding', array $extra = [])
 it('shows the occasion picker to visitors without an account', function () {
     $this->get('/create')
         ->assertOk()
-        ->assertInertia(fn ($page) => $page->component('create/Occasion')->where('event', null)->has('occasions', count(\App\Models\Event::WIZARD_OCCASIONS)));
+        ->assertInertia(fn ($page) => $page->component('create/Occasion')->where('event', null)->has('occasions', count(Event::WIZARD_OCCASIONS)));
 });
 
 it('creates an anonymous draft for a guest', function () {

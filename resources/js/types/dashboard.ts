@@ -37,6 +37,10 @@ export interface DashboardProps {
     openLink: OpenLinkSettings | null;
     /** Free or under-covered events: what upgrading unlocks (phase 5A) */
     upgradeHint?: UpgradeHint | null;
+    /** phase 8D: a save-the-date's way to its full invitation */
+    saveTheDate?: { upgrade_url: string; occasions: string[]; invitation_url: string | null } | null;
+    /** phase 8D: thank-you card, highlight video, photo book */
+    keepsakesUrl?: string;
 }
 
 export interface CsvPreviewRow {

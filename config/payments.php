@@ -103,9 +103,19 @@ return [
         'qr_checkin' => ['feature' => 'qr_checkin', 'days' => null],
         'wallet' => ['feature' => 'wallet', 'days' => null],
         'video_guestbook' => ['feature' => 'video_guestbook', 'days' => null],
-        'thank_you' => ['feature' => 'thank_you', 'days' => null],
+        'thank_you' => ['feature' => 'thank_you', 'days' => null, 'item' => 'thank_you'],
         // AI-written poem (plan section 14.3, App\Http\Controllers\Wizard\AiController::poem)
         'ai_poem' => ['feature' => 'ai_poem', 'days' => null],
+        /*
+        | Phase 8D products. item: the order line type, fulfilled by its handler
+        | (App\Services\Payments\Items, registered in JourneyServiceProvider) instead of
+        | the add-on code; hidden: sold from its own page, not listed in the general checkout.
+        */
+        'save_the_date' => ['feature' => 'save_the_date', 'days' => null, 'item' => 'save_the_date', 'hidden' => true],
+        'highlight_video' => ['feature' => 'highlight_video', 'days' => null, 'item' => 'highlight_video'],
+        // quantity = printed copies
+        'photo_book_20' => ['feature' => 'photo_book', 'days' => null, 'item' => 'photo_book', 'stackable' => true, 'hidden' => true],
+        'photo_book_40' => ['feature' => 'photo_book', 'days' => null, 'item' => 'photo_book', 'stackable' => true, 'hidden' => true],
     ],
 
     // most of one stackable add-on in one order

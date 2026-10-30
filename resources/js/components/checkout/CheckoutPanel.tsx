@@ -1,6 +1,6 @@
 import { router } from '@inertiajs/react';
 import axios from 'axios';
-import { Building2, Check, CreditCard, Info, Minus, Plus, ShieldCheck, Tag, X } from 'lucide-react';
+import { Building2, Check, CreditCard, Gift, Info, Minus, Plus, ShieldCheck, Tag, Wallet, X } from 'lucide-react';
 import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
 
 import { LegalLinks } from '@/components/LegalLinks';
@@ -10,6 +10,7 @@ import { useNeedsVerification, VerifyEmailNotice } from '@/components/account/Ve
 import { TierBadge } from '@/components/wizard/TierBadge';
 import { discountFor, type DiscountLine, type DiscountRules } from '@/lib/discount';
 import { useT } from '@/lib/i18n';
+import { applyJourney } from '@/lib/journey';
 import { chargeCurrency, formatMoney, total } from '@/lib/money';
 import { cn } from '@/lib/utils';
 import type { CheckoutAddon, CheckoutGateway, CheckoutOptions } from '@/types/payments';
@@ -77,6 +78,9 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
     const [rules, setRules] = useState<DiscountRules | null>(null);
     // paying needs a verified email (App\Services\Account\EmailVerification): prompt instead of the pay button
     const needsVerification = useNeedsVerification();
+    // phase 8D: pay the plan with a bundle credit, spend account credit
+    const [useBundle, setUseBundle] = useState(false);
+    const [useCredit, setUseCredit] = useState(false);
 
     const selectedPlan = options.plans.find((p) => p.id === plan) ?? null;
     const features = selectedPlan ? selectedPlan.features : options.current_features;
@@ -101,14 +105,30 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
           ]
         : [];
     const discount = rules && charged && subtotal !== null && !nothing ? discountFor(rules, lines, charged) : null;
-    const discountAmount = discount && discount.error === null ? discount.amount : 0;
-    const net = subtotal === null ? null : Math.max(0, subtotal - discountAmount);
+    const codeAmount = discount && discount.error === null ? discount.amount : 0;
+    // the family journey (lib/journey.ts, twin of CheckoutExtras): bundle credit, reduction vs the code, account credit
+    const journey = options.journey;
+    const bundleCredit = selectedPlan ? (journey?.bundle_credits.find((c) => c.plan === selectedPlan.id) ?? null) : null;
+    const creditAvailable = charged ? (journey?.credit[charged] ?? 0) : 0;
+    const extra =
+        subtotal === null
+            ? null
+            : applyJourney({
+                  planAmount: selectedPlan && charged ? (selectedPlan.prices[charged] ?? 0) : null,
+                  subtotal,
+                  codeDiscount: codeAmount,
+                  reductionPercent: journey?.reduction?.percent ?? null,
+                  useBundleCredit: useBundle && !!bundleCredit,
+                  credit: useCredit ? creditAvailable : 0,
+              });
+    const discountAmount = extra && !extra.codeApplies ? 0 : codeAmount;
+    const net = subtotal === null || !extra ? null : extra.net;
     // VAT-exclusive prices only (options.vat is null otherwise): the same rule as Vat::checkoutSurcharge on the server
     const vatRule =
         options.vat && charged && options.vat.currencies.includes(charged) && (options.vat.countries.length === 0 || options.vat.countries.includes(country)) ? options.vat : null;
     const vatAmount = vatRule && net !== null ? Math.round((net * vatRule.rate_bp) / 10000) : 0;
     const sum = net === null ? null : net + vatAmount;
-    const free = sum === 0 && discountAmount > 0;
+    const free = sum === 0 && (discountAmount > 0 || (!!extra && extra.bundleCredit + extra.reduction + extra.credit > 0));
 
     const applyCode = async (e: FormEvent) => {
         e.preventDefault();
@@ -157,6 +177,8 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
                 gateway,
                 country: country === 'other' ? null : country,
                 discount_code: rules && discount?.error === null ? rules.code : null,
+                bundle_credit: useBundle && bundleCredit ? bundleCredit.id : null,
+                use_credit: useCredit && creditAvailable > 0,
                 from,
             },
             { preserveScroll: true, onFinish: () => setBusy(false) },
@@ -354,7 +376,74 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
                 )}
             </div>
 
+            {(bundleCredit || journey?.reduction || creditAvailable > 0) && charged && !nothing && (
+                <div className="grid gap-2" data-journey>
+                    {bundleCredit && (
+                        <label className={cn('flex cursor-pointer items-start gap-3 rounded-xl border p-3', useBundle && 'border-primary bg-primary/5')} data-bundle-credit>
+                            <input type="checkbox" className="accent-primary mt-1 size-5 shrink-0" checked={useBundle} onChange={(e) => setUseBundle(e.target.checked)} />
+                            <span className="grid gap-0.5">
+                                <span className="flex items-center gap-1.5 text-sm font-semibold">
+                                    <Gift className="text-primary size-4" /> {t('journey.bundles.use')}
+                                </span>
+                                <span className="text-muted-foreground text-xs">
+                                    {t('journey.bundles.use_hint', {
+                                        plan: bundleCredit.plan_name,
+                                        date: new Intl.DateTimeFormat(locale === 'ar' ? 'ar-u-nu-arab' : 'en-GB', { dateStyle: 'medium' }).format(new Date(bundleCredit.expires_at)),
+                                    })}
+                                </span>
+                            </span>
+                        </label>
+                    )}
+                    {journey?.reduction && selectedPlan && !(useBundle && bundleCredit) && (
+                        <p className="flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900" data-reduction>
+                            <Tag className="mt-0.5 size-4 shrink-0" />
+                            <span className="grid gap-0.5">
+                                <span className="font-semibold">{journey.reduction.label}</span>
+                                <span className="text-xs">
+                                    {rules && codeAmount > 0
+                                        ? extra?.codeApplies
+                                            ? t('journey.reductions.code_wins', { label: journey.reduction.label })
+                                            : t('journey.reductions.auto_wins', { label: journey.reduction.label })
+                                        : t('journey.reductions.note')}
+                                </span>
+                            </span>
+                        </p>
+                    )}
+                    {creditAvailable > 0 && (
+                        <label className={cn('flex cursor-pointer items-center gap-3 rounded-xl border p-3', useCredit && 'border-primary bg-primary/5')} data-use-credit>
+                            <input type="checkbox" className="accent-primary size-5 shrink-0" checked={useCredit} onChange={(e) => setUseCredit(e.target.checked)} />
+                            <Wallet className="text-primary size-4 shrink-0" />
+                            <span className="text-sm font-semibold">{t('journey.referrals.use_credit', { amount: money(creditAvailable, charged) })}</span>
+                        </label>
+                    )}
+                </div>
+            )}
+
             <div className="bg-muted/60 grid gap-1 rounded-xl p-4" data-total>
+                {extra && charged && extra.bundleCredit + extra.reduction + extra.credit > 0 && discountAmount === 0 && subtotal !== null && (
+                    <div className="text-muted-foreground flex items-baseline justify-between gap-3 text-sm">
+                        <span>{t('checkout.discount.subtotal')}</span>
+                        <span>{money(subtotal, charged)}</span>
+                    </div>
+                )}
+                {extra && charged && extra.bundleCredit > 0 && bundleCredit && (
+                    <div className="flex items-baseline justify-between gap-3 text-sm font-medium text-emerald-700" data-bundle-line>
+                        <span>{t('journey.bundles.credit_line', { plan: bundleCredit.plan_name })}</span>
+                        <span>−{money(extra.bundleCredit, charged)}</span>
+                    </div>
+                )}
+                {extra && charged && extra.reduction > 0 && journey?.reduction && (
+                    <div className="flex items-baseline justify-between gap-3 text-sm font-medium text-emerald-700" data-reduction-line>
+                        <span>{journey.reduction.label}</span>
+                        <span>−{money(extra.reduction, charged)}</span>
+                    </div>
+                )}
+                {extra && charged && extra.credit > 0 && (
+                    <div className="flex items-baseline justify-between gap-3 text-sm font-medium text-emerald-700" data-credit-line>
+                        <span>{t('journey.referrals.credit_line')}</span>
+                        <span>−{money(extra.credit, charged)}</span>
+                    </div>
+                )}
                 {discountAmount > 0 && subtotal !== null && charged && (
                     <>
                         <div className="text-muted-foreground flex items-baseline justify-between gap-3 text-sm">

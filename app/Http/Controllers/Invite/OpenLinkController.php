@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Invite;
 
 use App\Events\RsvpSubmitted;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Keepsakes\ThankYouPageController;
 use App\Http\Middleware\SetLocale;
 use App\Models\Household;
 use App\Models\Invitation;
@@ -11,6 +12,7 @@ use App\Models\OpenLink;
 use App\Services\Digits;
 use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfig;
+use App\Services\Keepsakes\ThankYouCards;
 use App\Services\OgImage\OgImage;
 use App\Services\OpenTracker;
 use App\Services\Wizard\GuestListParser;
@@ -42,6 +44,11 @@ class OpenLinkController extends Controller
         [$link, $invitation, $config] = $this->resolve($token);
 
         $opens->recordOpenLink($link, $request->userAgent());
+
+        // after the event the open link shows the thank-you card too (phase 8D)
+        if ($card = app(ThankYouCards::class)->replacesInvite($link->event)) {
+            return ThankYouPageController::render($link->event, $card, null, $entitlements);
+        }
 
         return response()
             ->view('invite.show', InvitationController::viewData($link->event, $invitation, $config, $entitlements, [

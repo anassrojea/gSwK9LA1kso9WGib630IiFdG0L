@@ -15,6 +15,7 @@ use App\Models\Theme;
 use App\Services\Account\EmailVerification;
 use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfig;
+use App\Services\Journey\SaveTheDate;
 use App\Services\OpenLinks;
 use App\Services\Payments\CheckoutService;
 use App\Services\Payments\Currencies;
@@ -244,7 +245,11 @@ class WizardController extends Controller
             // what the plan must cover before publishing (PublishGate) and the checkout to get there
             'gate' => ['allowed' => $check['allowed'], 'missing' => $check['missing'], 'current' => $check['current'], 'required' => $check['required']],
             'canSendPersonal' => $canSend,
-            'checkout' => $request->user() && ! $check['allowed'] ? app(CheckoutService::class)->options($event, $request->user()) : null,
+            // a save-the-date (phase 8D) is bought as its own product, not with a plan
+            'checkout' => $request->user() && ! $check['allowed']
+                ? app(CheckoutService::class)->options($event, $request->user(), SaveTheDate::is($config) ? [SaveTheDate::FEATURE] : null)
+                : null,
+            'saveTheDate' => SaveTheDate::is($config),
             'order' => $order ? $presenter->present($order) : null,
             'checkoutOutcome' => $request->query('checkout'),
             // the advised plans' prices in the host's (or the event's country's) currency, before any sign-up

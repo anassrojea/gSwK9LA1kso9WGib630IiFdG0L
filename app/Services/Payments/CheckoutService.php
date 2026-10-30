@@ -10,6 +10,7 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Services\Entitlements;
 use App\Services\Invoicing\Vat;
+use App\Services\Journey\CheckoutExtras;
 use App\Services\PublishGate;
 use App\Services\Wizard\PlanAdvisor;
 use Illuminate\Support\Collection;
@@ -35,8 +36,9 @@ class CheckoutService
 
     /**
      * @param  list<array{id: string, quantity?: int}>  $addons
+     * @param  array{bundle_credit?: ?string, use_credit?: bool}  $extras  phase 8D: pay the plan with a bundle credit, spend account credit
      */
-    public function place(User $user, Event $event, ?string $planId, array $addons, string $currency, string $gatewayId, ?string $country = null, ?string $discountCode = null): Order
+    public function place(User $user, Event $event, ?string $planId, array $addons, string $currency, string $gatewayId, ?string $country = null, ?string $discountCode = null, array $extras = []): Order
     {
         $gateway = $this->gateways->find($gatewayId);
         if (! $gateway || ! $gateway->enabled()) {
@@ -56,6 +58,8 @@ class CheckoutService
         // a code is priced in the currency actually charged (after the USD fallback)
         $code = filled($discountCode) ? $this->discounts->usable($discountCode, $user) : null;
         $discount = $code ? $this->discounts->amount($code, $lines, $charge) : 0;
+        // family journey (phase 8D): bundle credit, loyalty / referral reduction vs the code, account credit
+        [$lines, $code, $discount] = app(CheckoutExtras::class)->apply($user, $event, $lines, $charge, $code, $discount, $extras);
 
         return DB::transaction(function () use ($user, $event, $gateway, $lines, $charge, $currency, $country, $code, $discount) {
             // one order at a time per event: a receipt already sent waits for the admin
@@ -157,7 +161,8 @@ class CheckoutService
                 throw ValidationException::withMessages(['addons' => trans('app.checkout.errors.addon_owned', ['name' => $this->name($addon)])]);
             }
 
-            $lines[] = $this->line('addon', $addon, $quantity, $currency);
+            // phase 8D products carry their own line type (config payments.addons.{id}.item), fulfilled by its handler
+            $lines[] = $this->line($definition['item'] ?? 'addon', $addon, $quantity, $currency);
         }
 
         if ($lines === []) {
@@ -169,10 +174,12 @@ class CheckoutService
 
     /**
      * What the checkout UI shows (wizard review step and dashboard upgrade page).
+     * $onlyAddons (phase 8D): a product's own page sells just those add-ons, with no plans.
      *
+     * @param  list<string>|null  $onlyAddons
      * @return array<string, mixed>
      */
-    public function options(Event $event, ?User $user): array
+    public function options(Event $event, ?User $user, ?array $onlyAddons = null): array
     {
         $current = $this->gate->currentPlan($event);
         $country = $user?->country ?? Currencies::countryForTimezone($event->timezone) ?? 'other';
@@ -193,7 +200,7 @@ class CheckoutService
             'fallback_currency' => Currencies::fallback(),
             'current_plan' => $current,
             'required_plan' => $this->gate->check($event)['required'],
-            'plans' => $this->sellablePlans()
+            'plans' => $onlyAddons !== null ? [] : $this->sellablePlans()
                 ->filter(fn (Plan $p) => PlanAdvisor::tier($p->id) > PlanAdvisor::tier($current))
                 ->map(fn (Plan $p) => [
                     'id' => $p->id,
@@ -205,6 +212,8 @@ class CheckoutService
             'current_features' => array_values(Plan::query()->find($current)?->limits['features'] ?? []),
             'addons' => Addon::query()->with('prices')->where('active', true)->orderBy('price_cents')->get()
                 ->filter(fn (Addon $a) => config("payments.addons.{$a->id}") !== null)
+                // products sold from their own page (hidden) are left out of the general checkout
+                ->filter(fn (Addon $a) => $onlyAddons !== null ? in_array($a->id, $onlyAddons, true) : ! (config("payments.addons.{$a->id}.hidden") ?? false))
                 ->map(function (Addon $a) use ($owned) {
                     $definition = config("payments.addons.{$a->id}");
 
@@ -228,6 +237,10 @@ class CheckoutService
                 'countries' => array_values((array) config('invoicing.vat.countries', [])),
                 'label' => trans('invoices.vat_rate', ['rate' => Vat::formatRate(Vat::rateBp(), app()->getLocale())]),
             ],
+            // a product's own page sells one thing: it starts ticked
+            'preselect_addon' => $onlyAddons !== null && count($onlyAddons) === 1 ? $onlyAddons[0] : null,
+            // phase 8D: loyalty / referral reduction, bundle credits and account credit (CheckoutExtras)
+            'journey' => app(CheckoutExtras::class)->options($event, $user),
             'gateways' => collect($this->gateways->enabled())
                 ->map(fn (PaymentGateway $g) => ['id' => $g->id(), 'method' => $g->method(), 'currencies' => $g->currencies()])
                 ->values()->all(),

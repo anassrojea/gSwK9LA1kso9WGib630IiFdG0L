@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Services\Digits;
 use App\Services\Payments\CheckoutResult;
 use App\Services\Payments\Currencies;
+use App\Services\Payments\Items\OrderItemHandlers;
 use App\Services\Payments\PaymentGateway;
 
 /**
@@ -124,6 +125,10 @@ class TransferGateway implements PaymentGateway
     {
         return collect($order->items ?? [])
             ->map(function (array $item) use ($locale) {
+                // line types with a handler (phase 8D) name themselves
+                if (! in_array($item['type'], ['plan', 'addon'], true) && ($own = app(OrderItemHandlers::class)->name($item, $locale))) {
+                    return $own;
+                }
                 $key = $item['type'] === 'plan' ? "app.wizard.tiers.{$item['id']}" : "app.checkout.addons.{$item['id']}.name";
                 $name = trans($key, [], $locale);
                 $name = $name === $key ? ($item['name'] ?? $item['id']) : $name;

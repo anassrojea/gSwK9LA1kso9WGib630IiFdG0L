@@ -211,7 +211,7 @@ function applyState(next) {
 }
 
 if (boot.urls?.state) {
-    request(boot.urls.state + stateQuery(true, replyToken)).then(applyState).catch(() => {});
+    request(boot.urls.state + stateQuery(boot.countOpen !== false, replyToken)).then(applyState).catch(() => {});
 }
 
 if (form) {

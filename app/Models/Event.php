@@ -136,6 +136,27 @@ class Event extends Model
         return $this->hasMany(AiGeneration::class);
     }
 
+    /** Phase 8D: the save-the-date this invitation grew from, its thank-you card and keepsakes. */
+    public function sourceEvent(): BelongsTo
+    {
+        return $this->belongsTo(Event::class, 'source_event_id');
+    }
+
+    public function thankYouCard(): HasOne
+    {
+        return $this->hasOne(ThankYouCard::class);
+    }
+
+    public function highlightVideos(): HasMany
+    {
+        return $this->hasMany(HighlightVideo::class);
+    }
+
+    public function photoBooks(): HasMany
+    {
+        return $this->hasMany(PhotoBook::class);
+    }
+
     public function isArchived(): bool
     {
         return $this->status === 'archived';

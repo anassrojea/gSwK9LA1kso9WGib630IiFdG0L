@@ -5,6 +5,7 @@ use App\Providers\Filament\AdminPanelProvider;
 use App\Providers\FortifyServiceProvider;
 use App\Providers\GuestExtrasServiceProvider;
 use App\Providers\HorizonServiceProvider;
+use App\Providers\JourneyServiceProvider;
 
 return [
     AppServiceProvider::class,
@@ -12,4 +13,5 @@ return [
     FortifyServiceProvider::class,
     HorizonServiceProvider::class,
     GuestExtrasServiceProvider::class,
+    JourneyServiceProvider::class,
 ];

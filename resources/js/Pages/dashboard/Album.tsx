@@ -56,6 +56,12 @@ interface Props {
     export: { status: 'running' | 'ready' | 'failed'; at: string | null; url: string | null; count: number | null } | null;
     links: { upload: string; upload_qr: string; wall: string | null } | null;
     urls: { settings: string; export: string; dashboard: string; upgrade: string };
+    /** phase 8D: the latest highlight video build (App\Services\Keepsakes\HighlightVideos::present) */
+    highlight?: {
+        status: 'queued' | 'rendering' | 'ready' | 'failed';
+        outputs: Record<string, { url: string | null; poster: string | null; download: string | null; duration: number }>;
+    } | null;
+    keepsakesUrl?: string;
 }
 
 type Filter = 'all' | 'pending' | 'hidden';
@@ -212,6 +218,39 @@ export default function Album(props: Props) {
                                 {props.open ? t('album.host.open_now') : t('album.host.closed_now')}
                             </span>
                         </div>
+
+                        {props.highlight && (
+                            <section className="bg-card grid gap-3 rounded-xl border p-4" data-album-highlight={props.highlight.status}>
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                    <h2 className="flex items-center gap-2 font-semibold">
+                                        <Video className="text-primary size-5" /> {t('keepsakes.video.album_title')}
+                                    </h2>
+                                    <span className="text-muted-foreground text-xs">{t(`keepsakes.video.status.${props.highlight.status}`)}</span>
+                                </div>
+                                {props.highlight.status === 'ready' && (
+                                    <div className="grid gap-3 sm:grid-cols-2">
+                                        {Object.entries(props.highlight.outputs).map(([format, o]) =>
+                                            o.url ? (
+                                                <video
+                                                    key={format}
+                                                    src={o.url}
+                                                    poster={o.poster ?? undefined}
+                                                    controls
+                                                    playsInline
+                                                    preload="metadata"
+                                                    className={cn('w-full rounded-lg bg-black', format === 'vertical' && 'mx-auto max-h-80 w-auto')}
+                                                />
+                                            ) : null,
+                                        )}
+                                    </div>
+                                )}
+                                {props.keepsakesUrl && (
+                                    <Link href={props.keepsakesUrl} className="text-primary w-fit text-sm font-semibold">
+                                        {t('keepsakes.video.album_open')}
+                                    </Link>
+                                )}
+                            </section>
+                        )}
 
                         <Tabs defaultValue="photos">
                             <TabsList>

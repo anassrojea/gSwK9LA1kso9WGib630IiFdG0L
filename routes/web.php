@@ -22,6 +22,14 @@ use App\Http\Controllers\Door\DoorController;
 use App\Http\Controllers\Door\DoorPassController;
 use App\Http\Controllers\Host\OpenLinkController;
 use App\Http\Controllers\Invoices\InvoiceController;
+use App\Http\Controllers\Journey\JourneyController;
+use App\Http\Controllers\Journey\ReferralController;
+use App\Http\Controllers\Journey\SaveTheDateController;
+use App\Http\Controllers\Journey\UnsubscribeController;
+use App\Http\Controllers\Keepsakes\HighlightVideoController;
+use App\Http\Controllers\Keepsakes\KeepsakesController;
+use App\Http\Controllers\Keepsakes\PhotoBookController;
+use App\Http\Controllers\Keepsakes\ThankYouController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Marketing\HomeController;
 use App\Http\Controllers\Payments\CheckoutController;
@@ -31,6 +39,9 @@ use App\Http\Controllers\Wizard\GuestController;
 use App\Http\Controllers\Wizard\MediaController;
 use App\Http\Controllers\Wizard\PreviewController;
 use App\Http\Controllers\Wizard\WizardController;
+use App\Services\Journey\Referrals;
+use App\Services\Keepsakes\HighlightVideos;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 // UUID keys: anything else is a 404 before it reaches PostgreSQL's uuid parser.
@@ -245,3 +256,47 @@ Route::get('/album-exports/{event}/{file}', [AlbumController::class, 'download']
     ->where('file', 'album-[0-9]{8}-[0-9]{6}-[a-z0-9]{6}\.zip')
     ->middleware('signed')
     ->name('album.export.download');
+
+/*
+| Phase 8D, after the event and the family journey (plan sections 13.2, 14.2, 14.5, 14.7):
+| referral links, bundles, save the date → full invitation, the thank-you card, the
+| highlight video, the printed photo book and the marketing unsubscribe link.
+*/
+Route::pattern('bundle', '[a-z0-9-]{1,64}');
+Route::pattern('video', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+Route::pattern('book', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+
+Route::get('/r/{code}', [ReferralController::class, 'visit'])
+    ->where('code', Referrals::CODE_PATTERN)
+    ->middleware('throttle:referral')
+    ->name('referral.visit');
+
+Route::match(['get', 'post'], '/unsubscribe/{user}', UnsubscribeController::class)
+    ->whereUuid('user')
+    ->middleware(['signed', 'throttle:20,1'])
+    ->withoutMiddleware([ValidateCsrfToken::class])
+    ->name('marketing.unsubscribe');
+
+Route::get('/highlight/{video}/{format}', [HighlightVideoController::class, 'file'])
+    ->whereIn('format', HighlightVideos::FORMATS)
+    ->middleware(['signed:relative', 'throttle:60,1'])
+    ->name('highlight.file');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/account/journey', [JourneyController::class, 'show'])->name('account.journey');
+    Route::put('/account/referral-footer', [JourneyController::class, 'footer'])->middleware('throttle:20,1')->name('account.referral-footer');
+    Route::post('/bundles/{bundle}/checkout', [JourneyController::class, 'buy'])->middleware('throttle:20,1')->name('bundles.checkout');
+
+    Route::post('/events/{event}/save-the-date/upgrade', [SaveTheDateController::class, 'upgrade'])->middleware('throttle:10,1')->name('events.save-the-date.upgrade');
+
+    Route::get('/dashboard/events/{event}/keepsakes', [KeepsakesController::class, 'show'])->name('dashboard.events.keepsakes');
+    Route::middleware('throttle:keepsakes')->group(function () {
+        Route::put('/events/{event}/thank-you', [ThankYouController::class, 'update'])->name('events.thank-you.update');
+        Route::post('/events/{event}/thank-you/publish', [ThankYouController::class, 'publish'])->name('events.thank-you.publish');
+        Route::post('/events/{event}/highlight-video', [HighlightVideoController::class, 'store'])->name('events.highlight-video.store');
+        Route::put('/events/{event}/photo-book', [PhotoBookController::class, 'update'])->name('events.photo-book.update');
+        Route::post('/events/{event}/photo-book/preview', [PhotoBookController::class, 'preview'])->name('events.photo-book.preview');
+        Route::post('/events/{event}/photo-book/order', [PhotoBookController::class, 'order'])->name('events.photo-book.order');
+    });
+    Route::get('/photo-books/{book}.pdf', [PhotoBookController::class, 'pdf'])->middleware('throttle:30,1')->name('photo-books.pdf');
+});

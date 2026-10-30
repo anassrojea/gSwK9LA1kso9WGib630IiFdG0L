@@ -5,6 +5,7 @@ namespace App\Services\Payments;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Services\Payments\Gateways\TransferGateway;
+use App\Services\Payments\Items\OrderItemHandlers;
 
 /**
  * An order as the customer sees it (Inertia props and GET /orders/{code}/status).
@@ -98,6 +99,11 @@ class OrderPresenter
      */
     public function itemName(array $item, string $locale): string
     {
+        // line types with a handler (phase 8D) name themselves
+        if (! in_array($item['type'], ['plan', 'addon'], true) && ($name = app(OrderItemHandlers::class)->name($item, $locale))) {
+            return $name;
+        }
+
         $key = $item['type'] === 'plan' ? "app.wizard.tiers.{$item['id']}" : "app.checkout.addons.{$item['id']}.name";
         $name = trans($key, [], $locale);
 
