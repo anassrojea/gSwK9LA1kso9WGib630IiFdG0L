@@ -18,7 +18,7 @@ class HallController extends Controller
             'tables' => ['required', 'integer', 'min:1', 'max:'.HallGenerator::MAX_TABLES],
             'chairs' => ['required', 'integer', 'min:1', 'max:'.HallGenerator::MAX_CHAIRS],
             'layout' => ['sometimes', 'in:mixed,split'],
-            'shape' => ['sometimes', 'in:round'],
+            'shape' => ['sometimes', 'in:round,rect'],
             'name' => ['sometimes', 'string', 'max:120'],
         ]);
 

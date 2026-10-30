@@ -1,0 +1,4005 @@
+{
+    "tables": {
+        "round 8": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "T1",
+                "shape": "round",
+                "seats": 8,
+                "r": 18,
+                "ring": 30
+            },
+            "chairs": [
+                {
+                    "x": 200,
+                    "y": 120
+                },
+                {
+                    "x": 221.2,
+                    "y": 128.8
+                },
+                {
+                    "x": 230,
+                    "y": 150
+                },
+                {
+                    "x": 221.2,
+                    "y": 171.2
+                },
+                {
+                    "x": 200,
+                    "y": 180
+                },
+                {
+                    "x": 178.8,
+                    "y": 171.2
+                },
+                {
+                    "x": 170,
+                    "y": 150
+                },
+                {
+                    "x": 178.8,
+                    "y": 128.8
+                }
+            ],
+            "extent": [
+                37,
+                37
+            ]
+        },
+        "round 1": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "T2",
+                "shape": "round",
+                "seats": 1,
+                "r": 10,
+                "ring": 20
+            },
+            "chairs": [
+                {
+                    "x": 200,
+                    "y": 130
+                }
+            ],
+            "extent": [
+                27,
+                27
+            ]
+        },
+        "banquet 10 both": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "T3",
+                "shape": "rect",
+                "seats": 10,
+                "w": 120,
+                "h": 30,
+                "rotation": 0,
+                "sides": "both",
+                "heads": false
+            },
+            "chairs": [
+                {
+                    "x": 152,
+                    "y": 126
+                },
+                {
+                    "x": 176,
+                    "y": 126
+                },
+                {
+                    "x": 200,
+                    "y": 126
+                },
+                {
+                    "x": 224,
+                    "y": 126
+                },
+                {
+                    "x": 248,
+                    "y": 126
+                },
+                {
+                    "x": 248,
+                    "y": 174
+                },
+                {
+                    "x": 224,
+                    "y": 174
+                },
+                {
+                    "x": 200,
+                    "y": 174
+                },
+                {
+                    "x": 176,
+                    "y": 174
+                },
+                {
+                    "x": 152,
+                    "y": 174
+                }
+            ],
+            "extent": [
+                60,
+                31
+            ]
+        },
+        "banquet 9 heads turned": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "T4",
+                "shape": "rect",
+                "seats": 9,
+                "w": 100,
+                "h": 26,
+                "rotation": 90,
+                "sides": "both",
+                "heads": true
+            },
+            "chairs": [
+                {
+                    "x": 222,
+                    "y": 112.5
+                },
+                {
+                    "x": 222,
+                    "y": 137.5
+                },
+                {
+                    "x": 222,
+                    "y": 162.5
+                },
+                {
+                    "x": 222,
+                    "y": 187.5
+                },
+                {
+                    "x": 200,
+                    "y": 209
+                },
+                {
+                    "x": 178,
+                    "y": 183.3
+                },
+                {
+                    "x": 178,
+                    "y": 150
+                },
+                {
+                    "x": 178,
+                    "y": 116.7
+                },
+                {
+                    "x": 200,
+                    "y": 91
+                }
+            ],
+            "extent": [
+                29,
+                66
+            ]
+        },
+        "banquet 6 one side": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "T5",
+                "shape": "rect",
+                "seats": 6,
+                "w": 110,
+                "h": 24,
+                "rotation": 0,
+                "sides": "one",
+                "heads": false
+            },
+            "chairs": [
+                {
+                    "x": 245.8,
+                    "y": 171
+                },
+                {
+                    "x": 227.5,
+                    "y": 171
+                },
+                {
+                    "x": 209.2,
+                    "y": 171
+                },
+                {
+                    "x": 190.8,
+                    "y": 171
+                },
+                {
+                    "x": 172.5,
+                    "y": 171
+                },
+                {
+                    "x": 154.2,
+                    "y": 171
+                }
+            ],
+            "extent": [
+                55,
+                28
+            ]
+        },
+        "banquet 7 one side heads turned": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "T6",
+                "shape": "rect",
+                "seats": 7,
+                "w": 90,
+                "h": 24,
+                "rotation": 90,
+                "sides": "one",
+                "heads": true
+            },
+            "chairs": [
+                {
+                    "x": 200,
+                    "y": 204
+                },
+                {
+                    "x": 179,
+                    "y": 186
+                },
+                {
+                    "x": 179,
+                    "y": 168
+                },
+                {
+                    "x": 179,
+                    "y": 150
+                },
+                {
+                    "x": 179,
+                    "y": 132
+                },
+                {
+                    "x": 179,
+                    "y": 114
+                },
+                {
+                    "x": 200,
+                    "y": 96
+                }
+            ],
+            "extent": [
+                28,
+                61
+            ]
+        },
+        "banquet 2 heads ignored": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "T7",
+                "shape": "rect",
+                "seats": 2,
+                "w": 40,
+                "h": 20,
+                "rotation": 0,
+                "sides": "both",
+                "heads": true
+            },
+            "chairs": [
+                {
+                    "x": 200,
+                    "y": 131
+                },
+                {
+                    "x": 200,
+                    "y": 169
+                }
+            ],
+            "extent": [
+                20,
+                26
+            ]
+        },
+        "sofa 3": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "S1",
+                "shape": "sofa",
+                "seats": 3,
+                "w": 70,
+                "h": 28,
+                "rotation": 0
+            },
+            "chairs": [
+                {
+                    "x": 176.7,
+                    "y": 153.4
+                },
+                {
+                    "x": 200,
+                    "y": 153.4
+                },
+                {
+                    "x": 223.3,
+                    "y": 153.4
+                }
+            ],
+            "extent": [
+                35,
+                14
+            ]
+        },
+        "sofa 4 turned": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "S2",
+                "shape": "sofa",
+                "seats": 4,
+                "w": 90,
+                "h": 30,
+                "rotation": 90
+            },
+            "chairs": [
+                {
+                    "x": 196.4,
+                    "y": 116.3
+                },
+                {
+                    "x": 196.4,
+                    "y": 138.8
+                },
+                {
+                    "x": 196.4,
+                    "y": 161.3
+                },
+                {
+                    "x": 196.4,
+                    "y": 183.8
+                }
+            ],
+            "extent": [
+                15,
+                45
+            ]
+        },
+        "vip row 12": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "V1",
+                "shape": "row",
+                "seats": 12,
+                "w": 216,
+                "h": 18,
+                "rotation": 0
+            },
+            "chairs": [
+                {
+                    "x": 101,
+                    "y": 150
+                },
+                {
+                    "x": 119,
+                    "y": 150
+                },
+                {
+                    "x": 137,
+                    "y": 150
+                },
+                {
+                    "x": 155,
+                    "y": 150
+                },
+                {
+                    "x": 173,
+                    "y": 150
+                },
+                {
+                    "x": 191,
+                    "y": 150
+                },
+                {
+                    "x": 209,
+                    "y": 150
+                },
+                {
+                    "x": 227,
+                    "y": 150
+                },
+                {
+                    "x": 245,
+                    "y": 150
+                },
+                {
+                    "x": 263,
+                    "y": 150
+                },
+                {
+                    "x": 281,
+                    "y": 150
+                },
+                {
+                    "x": 299,
+                    "y": 150
+                }
+            ],
+            "extent": [
+                108,
+                9
+            ]
+        },
+        "row 5 turned": {
+            "input": {
+                "section": "mixed",
+                "x": 200,
+                "y": 150,
+                "chairR": 7,
+                "id": "V2",
+                "shape": "row",
+                "seats": 5,
+                "w": 90,
+                "h": 18,
+                "rotation": 90
+            },
+            "chairs": [
+                {
+                    "x": 200,
+                    "y": 114
+                },
+                {
+                    "x": 200,
+                    "y": 132
+                },
+                {
+                    "x": 200,
+                    "y": 150
+                },
+                {
+                    "x": 200,
+                    "y": 168
+                },
+                {
+                    "x": 200,
+                    "y": 186
+                }
+            ],
+            "extent": [
+                9,
+                45
+            ]
+        }
+    },
+    "generator": {
+        "round split 20×8": {
+            "input": {
+                "tables": 20,
+                "chairs": 8,
+                "layout": "split",
+                "shape": "round"
+            },
+            "output": {
+                "id": "hall_fixture",
+                "name": "Main hall",
+                "size": {
+                    "w": 800,
+                    "h": 580
+                },
+                "stage": {
+                    "x": 270,
+                    "y": 24,
+                    "w": 260,
+                    "h": 62,
+                    "label": "Kosha"
+                },
+                "danceFloor": {
+                    "x": 310,
+                    "y": 100,
+                    "w": 180,
+                    "h": 70
+                },
+                "entrances": [
+                    {
+                        "x": 360,
+                        "y": 566,
+                        "w": 80
+                    }
+                ],
+                "sections": [
+                    {
+                        "id": "men",
+                        "label": "Men",
+                        "area": {
+                            "x": 24,
+                            "y": 190,
+                            "w": 360,
+                            "h": 350
+                        }
+                    },
+                    {
+                        "id": "women",
+                        "label": "Women",
+                        "area": {
+                            "x": 416,
+                            "y": 190,
+                            "w": 360,
+                            "h": 350
+                        }
+                    }
+                ],
+                "tables": [
+                    {
+                        "id": "T1",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 84,
+                        "y": 233.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T2",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 204,
+                        "y": 233.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T3",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 324,
+                        "y": 233.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T4",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 84,
+                        "y": 321.3,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T5",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 204,
+                        "y": 321.3,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T6",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 324,
+                        "y": 321.3,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T7",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 84,
+                        "y": 408.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T8",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 204,
+                        "y": 408.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T9",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 324,
+                        "y": 408.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T10",
+                        "section": "men",
+                        "shape": "round",
+                        "x": 204,
+                        "y": 496.3,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T11",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 476,
+                        "y": 233.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T12",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 596,
+                        "y": 233.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T13",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 716,
+                        "y": 233.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T14",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 476,
+                        "y": 321.3,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T15",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 596,
+                        "y": 321.3,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T16",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 716,
+                        "y": 321.3,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T17",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 476,
+                        "y": 408.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T18",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 596,
+                        "y": 408.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T19",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 716,
+                        "y": 408.8,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    },
+                    {
+                        "id": "T20",
+                        "section": "women",
+                        "shape": "round",
+                        "x": 596,
+                        "y": 496.3,
+                        "seats": 8,
+                        "r": 23,
+                        "chairR": 6.6,
+                        "ring": 34.2
+                    }
+                ]
+            }
+        },
+        "round mixed 33×10": {
+            "input": {
+                "tables": 33,
+                "chairs": 10,
+                "layout": "mixed",
+                "shape": "round"
+            },
+            "output": {
+                "id": "hall_fixture",
+                "name": "Main hall",
+                "size": {
+                    "w": 800,
+                    "h": 580
+                },
+                "stage": {
+                    "x": 270,
+                    "y": 24,
+                    "w": 260,
+                    "h": 62,
+                    "label": "Kosha"
+                },
+                "danceFloor": {
+                    "x": 310,
+                    "y": 100,
+                    "w": 180,
+                    "h": 70
+                },
+                "entrances": [
+                    {
+                        "x": 360,
+                        "y": 566,
+                        "w": 80
+                    }
+                ],
+                "sections": [
+                    {
+                        "id": "mixed",
+                        "label": "Guests",
+                        "area": {
+                            "x": 24,
+                            "y": 190,
+                            "w": 752,
+                            "h": 350
+                        }
+                    }
+                ],
+                "tables": [
+                    {
+                        "id": "T1",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 71,
+                        "y": 225,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T2",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 165,
+                        "y": 225,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T3",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 259,
+                        "y": 225,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T4",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 353,
+                        "y": 225,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T5",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 447,
+                        "y": 225,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T6",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 541,
+                        "y": 225,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T7",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 635,
+                        "y": 225,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T8",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 729,
+                        "y": 225,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T9",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 71,
+                        "y": 295,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T10",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 165,
+                        "y": 295,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T11",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 259,
+                        "y": 295,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T12",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 353,
+                        "y": 295,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T13",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 447,
+                        "y": 295,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T14",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 541,
+                        "y": 295,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T15",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 635,
+                        "y": 295,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T16",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 729,
+                        "y": 295,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T17",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 71,
+                        "y": 365,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T18",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 165,
+                        "y": 365,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T19",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 259,
+                        "y": 365,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T20",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 353,
+                        "y": 365,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T21",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 447,
+                        "y": 365,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T22",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 541,
+                        "y": 365,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T23",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 635,
+                        "y": 365,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T24",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 729,
+                        "y": 365,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T25",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 71,
+                        "y": 435,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T26",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 165,
+                        "y": 435,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T27",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 259,
+                        "y": 435,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T28",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 353,
+                        "y": 435,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T29",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 447,
+                        "y": 435,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T30",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 541,
+                        "y": 435,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T31",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 635,
+                        "y": 435,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T32",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 729,
+                        "y": 435,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    },
+                    {
+                        "id": "T33",
+                        "section": "mixed",
+                        "shape": "round",
+                        "x": 400,
+                        "y": 505,
+                        "seats": 10,
+                        "r": 17.8,
+                        "chairR": 5.3,
+                        "ring": 26.8
+                    }
+                ]
+            }
+        },
+        "banquet mixed 20×10": {
+            "input": {
+                "tables": 20,
+                "chairs": 10,
+                "layout": "mixed",
+                "shape": "rect"
+            },
+            "output": {
+                "id": "hall_fixture",
+                "name": "Main hall",
+                "size": {
+                    "w": 800,
+                    "h": 580
+                },
+                "stage": {
+                    "x": 270,
+                    "y": 24,
+                    "w": 260,
+                    "h": 62,
+                    "label": "Kosha"
+                },
+                "danceFloor": {
+                    "x": 310,
+                    "y": 100,
+                    "w": 180,
+                    "h": 70
+                },
+                "entrances": [
+                    {
+                        "x": 360,
+                        "y": 566,
+                        "w": 80
+                    }
+                ],
+                "sections": [
+                    {
+                        "id": "mixed",
+                        "label": "Guests",
+                        "area": {
+                            "x": 24,
+                            "y": 190,
+                            "w": 752,
+                            "h": 350
+                        }
+                    }
+                ],
+                "tables": [
+                    {
+                        "id": "T1",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 99.2,
+                        "y": 233.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 51.1,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 75.1,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 123.3,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 147.3,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 147.3,
+                                "y": 258
+                            },
+                            {
+                                "x": 123.3,
+                                "y": 258
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 258
+                            },
+                            {
+                                "x": 75.1,
+                                "y": 258
+                            },
+                            {
+                                "x": 51.1,
+                                "y": 258
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T2",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 249.6,
+                        "y": 233.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 201.5,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 225.5,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 249.6,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 273.7,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 297.7,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 297.7,
+                                "y": 258
+                            },
+                            {
+                                "x": 273.7,
+                                "y": 258
+                            },
+                            {
+                                "x": 249.6,
+                                "y": 258
+                            },
+                            {
+                                "x": 225.5,
+                                "y": 258
+                            },
+                            {
+                                "x": 201.5,
+                                "y": 258
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T3",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 400,
+                        "y": 233.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 351.9,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 375.9,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 400,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 424.1,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 448.1,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 448.1,
+                                "y": 258
+                            },
+                            {
+                                "x": 424.1,
+                                "y": 258
+                            },
+                            {
+                                "x": 400,
+                                "y": 258
+                            },
+                            {
+                                "x": 375.9,
+                                "y": 258
+                            },
+                            {
+                                "x": 351.9,
+                                "y": 258
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T4",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 550.4,
+                        "y": 233.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 502.3,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 526.3,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 550.4,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 574.5,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 598.5,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 598.5,
+                                "y": 258
+                            },
+                            {
+                                "x": 574.5,
+                                "y": 258
+                            },
+                            {
+                                "x": 550.4,
+                                "y": 258
+                            },
+                            {
+                                "x": 526.3,
+                                "y": 258
+                            },
+                            {
+                                "x": 502.3,
+                                "y": 258
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T5",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 700.8,
+                        "y": 233.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 652.7,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 676.7,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 724.9,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 748.9,
+                                "y": 209.7
+                            },
+                            {
+                                "x": 748.9,
+                                "y": 258
+                            },
+                            {
+                                "x": 724.9,
+                                "y": 258
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 258
+                            },
+                            {
+                                "x": 676.7,
+                                "y": 258
+                            },
+                            {
+                                "x": 652.7,
+                                "y": 258
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T6",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 99.2,
+                        "y": 321.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 51.1,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 75.1,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 123.3,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 147.3,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 147.3,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 123.3,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 75.1,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 51.1,
+                                "y": 345.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T7",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 249.6,
+                        "y": 321.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 201.5,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 225.5,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 249.6,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 273.7,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 297.7,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 297.7,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 273.7,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 249.6,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 225.5,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 201.5,
+                                "y": 345.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T8",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 400,
+                        "y": 321.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 351.9,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 375.9,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 400,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 424.1,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 448.1,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 448.1,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 424.1,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 400,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 375.9,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 351.9,
+                                "y": 345.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T9",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 550.4,
+                        "y": 321.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 502.3,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 526.3,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 550.4,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 574.5,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 598.5,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 598.5,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 574.5,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 550.4,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 526.3,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 502.3,
+                                "y": 345.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T10",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 700.8,
+                        "y": 321.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 652.7,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 676.7,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 724.9,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 748.9,
+                                "y": 297.2
+                            },
+                            {
+                                "x": 748.9,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 724.9,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 676.7,
+                                "y": 345.5
+                            },
+                            {
+                                "x": 652.7,
+                                "y": 345.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T11",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 99.2,
+                        "y": 408.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 51.1,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 75.1,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 123.3,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 147.3,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 147.3,
+                                "y": 433
+                            },
+                            {
+                                "x": 123.3,
+                                "y": 433
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 433
+                            },
+                            {
+                                "x": 75.1,
+                                "y": 433
+                            },
+                            {
+                                "x": 51.1,
+                                "y": 433
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T12",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 249.6,
+                        "y": 408.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 201.5,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 225.5,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 249.6,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 273.7,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 297.7,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 297.7,
+                                "y": 433
+                            },
+                            {
+                                "x": 273.7,
+                                "y": 433
+                            },
+                            {
+                                "x": 249.6,
+                                "y": 433
+                            },
+                            {
+                                "x": 225.5,
+                                "y": 433
+                            },
+                            {
+                                "x": 201.5,
+                                "y": 433
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T13",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 400,
+                        "y": 408.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 351.9,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 375.9,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 400,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 424.1,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 448.1,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 448.1,
+                                "y": 433
+                            },
+                            {
+                                "x": 424.1,
+                                "y": 433
+                            },
+                            {
+                                "x": 400,
+                                "y": 433
+                            },
+                            {
+                                "x": 375.9,
+                                "y": 433
+                            },
+                            {
+                                "x": 351.9,
+                                "y": 433
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T14",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 550.4,
+                        "y": 408.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 502.3,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 526.3,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 550.4,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 574.5,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 598.5,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 598.5,
+                                "y": 433
+                            },
+                            {
+                                "x": 574.5,
+                                "y": 433
+                            },
+                            {
+                                "x": 550.4,
+                                "y": 433
+                            },
+                            {
+                                "x": 526.3,
+                                "y": 433
+                            },
+                            {
+                                "x": 502.3,
+                                "y": 433
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T15",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 700.8,
+                        "y": 408.8,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 652.7,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 676.7,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 724.9,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 748.9,
+                                "y": 384.7
+                            },
+                            {
+                                "x": 748.9,
+                                "y": 433
+                            },
+                            {
+                                "x": 724.9,
+                                "y": 433
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 433
+                            },
+                            {
+                                "x": 676.7,
+                                "y": 433
+                            },
+                            {
+                                "x": 652.7,
+                                "y": 433
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T16",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 99.2,
+                        "y": 496.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 51.1,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 75.1,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 123.3,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 147.3,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 147.3,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 123.3,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 75.1,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 51.1,
+                                "y": 520.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T17",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 249.6,
+                        "y": 496.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 201.5,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 225.5,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 249.6,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 273.7,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 297.7,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 297.7,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 273.7,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 249.6,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 225.5,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 201.5,
+                                "y": 520.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T18",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 400,
+                        "y": 496.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 351.9,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 375.9,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 400,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 424.1,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 448.1,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 448.1,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 424.1,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 400,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 375.9,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 351.9,
+                                "y": 520.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T19",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 550.4,
+                        "y": 496.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 502.3,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 526.3,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 550.4,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 574.5,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 598.5,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 598.5,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 574.5,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 550.4,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 526.3,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 502.3,
+                                "y": 520.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T20",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 700.8,
+                        "y": 496.3,
+                        "seats": 10,
+                        "w": 120.3,
+                        "h": 26.3,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 652.7,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 676.7,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 724.9,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 748.9,
+                                "y": 472.2
+                            },
+                            {
+                                "x": 748.9,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 724.9,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 676.7,
+                                "y": 520.5
+                            },
+                            {
+                                "x": 652.7,
+                                "y": 520.5
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "banquet split 21×8": {
+            "input": {
+                "tables": 21,
+                "chairs": 8,
+                "layout": "split",
+                "shape": "rect"
+            },
+            "output": {
+                "id": "hall_fixture",
+                "name": "Main hall",
+                "size": {
+                    "w": 800,
+                    "h": 580
+                },
+                "stage": {
+                    "x": 270,
+                    "y": 24,
+                    "w": 260,
+                    "h": 62,
+                    "label": "Kosha"
+                },
+                "danceFloor": {
+                    "x": 310,
+                    "y": 100,
+                    "w": 180,
+                    "h": 70
+                },
+                "entrances": [
+                    {
+                        "x": 360,
+                        "y": 566,
+                        "w": 80
+                    }
+                ],
+                "sections": [
+                    {
+                        "id": "men",
+                        "label": "Men",
+                        "area": {
+                            "x": 24,
+                            "y": 190,
+                            "w": 360,
+                            "h": 350
+                        }
+                    },
+                    {
+                        "id": "women",
+                        "label": "Women",
+                        "area": {
+                            "x": 416,
+                            "y": 190,
+                            "w": 360,
+                            "h": 350
+                        }
+                    }
+                ],
+                "tables": [
+                    {
+                        "id": "T1",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 114,
+                        "y": 219.2,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 60,
+                                "y": 200.3
+                            },
+                            {
+                                "x": 96,
+                                "y": 200.3
+                            },
+                            {
+                                "x": 132,
+                                "y": 200.3
+                            },
+                            {
+                                "x": 168,
+                                "y": 200.3
+                            },
+                            {
+                                "x": 168,
+                                "y": 238.2
+                            },
+                            {
+                                "x": 132,
+                                "y": 238.2
+                            },
+                            {
+                                "x": 96,
+                                "y": 238.2
+                            },
+                            {
+                                "x": 60,
+                                "y": 238.2
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T2",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 294,
+                        "y": 219.2,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 240,
+                                "y": 200.3
+                            },
+                            {
+                                "x": 276,
+                                "y": 200.3
+                            },
+                            {
+                                "x": 312,
+                                "y": 200.3
+                            },
+                            {
+                                "x": 348,
+                                "y": 200.3
+                            },
+                            {
+                                "x": 348,
+                                "y": 238.2
+                            },
+                            {
+                                "x": 312,
+                                "y": 238.2
+                            },
+                            {
+                                "x": 276,
+                                "y": 238.2
+                            },
+                            {
+                                "x": 240,
+                                "y": 238.2
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T3",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 114,
+                        "y": 277.5,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 60,
+                                "y": 258.6
+                            },
+                            {
+                                "x": 96,
+                                "y": 258.6
+                            },
+                            {
+                                "x": 132,
+                                "y": 258.6
+                            },
+                            {
+                                "x": 168,
+                                "y": 258.6
+                            },
+                            {
+                                "x": 168,
+                                "y": 296.5
+                            },
+                            {
+                                "x": 132,
+                                "y": 296.5
+                            },
+                            {
+                                "x": 96,
+                                "y": 296.5
+                            },
+                            {
+                                "x": 60,
+                                "y": 296.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T4",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 294,
+                        "y": 277.5,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 240,
+                                "y": 258.6
+                            },
+                            {
+                                "x": 276,
+                                "y": 258.6
+                            },
+                            {
+                                "x": 312,
+                                "y": 258.6
+                            },
+                            {
+                                "x": 348,
+                                "y": 258.6
+                            },
+                            {
+                                "x": 348,
+                                "y": 296.5
+                            },
+                            {
+                                "x": 312,
+                                "y": 296.5
+                            },
+                            {
+                                "x": 276,
+                                "y": 296.5
+                            },
+                            {
+                                "x": 240,
+                                "y": 296.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T5",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 114,
+                        "y": 335.8,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 60,
+                                "y": 316.9
+                            },
+                            {
+                                "x": 96,
+                                "y": 316.9
+                            },
+                            {
+                                "x": 132,
+                                "y": 316.9
+                            },
+                            {
+                                "x": 168,
+                                "y": 316.9
+                            },
+                            {
+                                "x": 168,
+                                "y": 354.8
+                            },
+                            {
+                                "x": 132,
+                                "y": 354.8
+                            },
+                            {
+                                "x": 96,
+                                "y": 354.8
+                            },
+                            {
+                                "x": 60,
+                                "y": 354.8
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T6",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 294,
+                        "y": 335.8,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 240,
+                                "y": 316.9
+                            },
+                            {
+                                "x": 276,
+                                "y": 316.9
+                            },
+                            {
+                                "x": 312,
+                                "y": 316.9
+                            },
+                            {
+                                "x": 348,
+                                "y": 316.9
+                            },
+                            {
+                                "x": 348,
+                                "y": 354.8
+                            },
+                            {
+                                "x": 312,
+                                "y": 354.8
+                            },
+                            {
+                                "x": 276,
+                                "y": 354.8
+                            },
+                            {
+                                "x": 240,
+                                "y": 354.8
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T7",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 114,
+                        "y": 394.2,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 60,
+                                "y": 375.3
+                            },
+                            {
+                                "x": 96,
+                                "y": 375.3
+                            },
+                            {
+                                "x": 132,
+                                "y": 375.3
+                            },
+                            {
+                                "x": 168,
+                                "y": 375.3
+                            },
+                            {
+                                "x": 168,
+                                "y": 413.2
+                            },
+                            {
+                                "x": 132,
+                                "y": 413.2
+                            },
+                            {
+                                "x": 96,
+                                "y": 413.2
+                            },
+                            {
+                                "x": 60,
+                                "y": 413.2
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T8",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 294,
+                        "y": 394.2,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 240,
+                                "y": 375.3
+                            },
+                            {
+                                "x": 276,
+                                "y": 375.3
+                            },
+                            {
+                                "x": 312,
+                                "y": 375.3
+                            },
+                            {
+                                "x": 348,
+                                "y": 375.3
+                            },
+                            {
+                                "x": 348,
+                                "y": 413.2
+                            },
+                            {
+                                "x": 312,
+                                "y": 413.2
+                            },
+                            {
+                                "x": 276,
+                                "y": 413.2
+                            },
+                            {
+                                "x": 240,
+                                "y": 413.2
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T9",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 114,
+                        "y": 452.5,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 60,
+                                "y": 433.6
+                            },
+                            {
+                                "x": 96,
+                                "y": 433.6
+                            },
+                            {
+                                "x": 132,
+                                "y": 433.6
+                            },
+                            {
+                                "x": 168,
+                                "y": 433.6
+                            },
+                            {
+                                "x": 168,
+                                "y": 471.5
+                            },
+                            {
+                                "x": 132,
+                                "y": 471.5
+                            },
+                            {
+                                "x": 96,
+                                "y": 471.5
+                            },
+                            {
+                                "x": 60,
+                                "y": 471.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T10",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 294,
+                        "y": 452.5,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 240,
+                                "y": 433.6
+                            },
+                            {
+                                "x": 276,
+                                "y": 433.6
+                            },
+                            {
+                                "x": 312,
+                                "y": 433.6
+                            },
+                            {
+                                "x": 348,
+                                "y": 433.6
+                            },
+                            {
+                                "x": 348,
+                                "y": 471.5
+                            },
+                            {
+                                "x": 312,
+                                "y": 471.5
+                            },
+                            {
+                                "x": 276,
+                                "y": 471.5
+                            },
+                            {
+                                "x": 240,
+                                "y": 471.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T11",
+                        "section": "men",
+                        "shape": "rect",
+                        "x": 204,
+                        "y": 510.8,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 17.5,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 8.2,
+                        "chairs": [
+                            {
+                                "x": 150,
+                                "y": 491.9
+                            },
+                            {
+                                "x": 186,
+                                "y": 491.9
+                            },
+                            {
+                                "x": 222,
+                                "y": 491.9
+                            },
+                            {
+                                "x": 258,
+                                "y": 491.9
+                            },
+                            {
+                                "x": 258,
+                                "y": 529.8
+                            },
+                            {
+                                "x": 222,
+                                "y": 529.8
+                            },
+                            {
+                                "x": 186,
+                                "y": 529.8
+                            },
+                            {
+                                "x": 150,
+                                "y": 529.8
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T12",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 506,
+                        "y": 225,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 452,
+                                "y": 203.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 203.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 203.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 203.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 246.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 246.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 246.5
+                            },
+                            {
+                                "x": 452,
+                                "y": 246.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T13",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 686,
+                        "y": 225,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 632,
+                                "y": 203.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 203.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 203.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 203.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 246.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 246.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 246.5
+                            },
+                            {
+                                "x": 632,
+                                "y": 246.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T14",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 506,
+                        "y": 295,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 452,
+                                "y": 273.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 273.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 273.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 273.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 316.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 316.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 316.5
+                            },
+                            {
+                                "x": 452,
+                                "y": 316.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T15",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 686,
+                        "y": 295,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 632,
+                                "y": 273.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 273.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 273.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 273.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 316.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 316.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 316.5
+                            },
+                            {
+                                "x": 632,
+                                "y": 316.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T16",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 506,
+                        "y": 365,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 452,
+                                "y": 343.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 343.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 343.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 343.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 386.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 386.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 386.5
+                            },
+                            {
+                                "x": 452,
+                                "y": 386.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T17",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 686,
+                        "y": 365,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 632,
+                                "y": 343.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 343.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 343.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 343.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 386.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 386.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 386.5
+                            },
+                            {
+                                "x": 632,
+                                "y": 386.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T18",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 506,
+                        "y": 435,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 452,
+                                "y": 413.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 413.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 413.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 413.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 456.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 456.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 456.5
+                            },
+                            {
+                                "x": 452,
+                                "y": 456.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T19",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 686,
+                        "y": 435,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 632,
+                                "y": 413.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 413.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 413.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 413.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 456.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 456.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 456.5
+                            },
+                            {
+                                "x": 632,
+                                "y": 456.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T20",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 506,
+                        "y": 505,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 452,
+                                "y": 483.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 483.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 483.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 483.5
+                            },
+                            {
+                                "x": 560,
+                                "y": 526.5
+                            },
+                            {
+                                "x": 524,
+                                "y": 526.5
+                            },
+                            {
+                                "x": 488,
+                                "y": 526.5
+                            },
+                            {
+                                "x": 452,
+                                "y": 526.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T21",
+                        "section": "women",
+                        "shape": "rect",
+                        "x": 686,
+                        "y": 505,
+                        "seats": 8,
+                        "w": 144,
+                        "h": 21,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 632,
+                                "y": 483.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 483.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 483.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 483.5
+                            },
+                            {
+                                "x": 740,
+                                "y": 526.5
+                            },
+                            {
+                                "x": 704,
+                                "y": 526.5
+                            },
+                            {
+                                "x": 668,
+                                "y": 526.5
+                            },
+                            {
+                                "x": 632,
+                                "y": 526.5
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "banquet mixed 7×12": {
+            "input": {
+                "tables": 7,
+                "chairs": 12,
+                "layout": "mixed",
+                "shape": "rect"
+            },
+            "output": {
+                "id": "hall_fixture",
+                "name": "Main hall",
+                "size": {
+                    "w": 800,
+                    "h": 580
+                },
+                "stage": {
+                    "x": 270,
+                    "y": 24,
+                    "w": 260,
+                    "h": 62,
+                    "label": "Kosha"
+                },
+                "danceFloor": {
+                    "x": 310,
+                    "y": 100,
+                    "w": 180,
+                    "h": 70
+                },
+                "entrances": [
+                    {
+                        "x": 360,
+                        "y": 566,
+                        "w": 80
+                    }
+                ],
+                "sections": [
+                    {
+                        "id": "mixed",
+                        "label": "Guests",
+                        "area": {
+                            "x": 24,
+                            "y": 190,
+                            "w": 752,
+                            "h": 350
+                        }
+                    }
+                ],
+                "tables": [
+                    {
+                        "id": "T1",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 149.3,
+                        "y": 248.3,
+                        "seats": 12,
+                        "w": 200.5,
+                        "h": 35,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 65.8,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 132.6,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 166,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 199.4,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 232.8,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 232.8,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 199.4,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 166,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 132.6,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 65.8,
+                                "y": 276.8
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T2",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 400,
+                        "y": 248.3,
+                        "seats": 12,
+                        "w": 200.5,
+                        "h": 35,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 316.5,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 349.9,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 383.3,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 416.7,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 450.1,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 483.5,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 483.5,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 450.1,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 416.7,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 383.3,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 349.9,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 316.5,
+                                "y": 276.8
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T3",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 650.7,
+                        "y": 248.3,
+                        "seats": 12,
+                        "w": 200.5,
+                        "h": 35,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 567.2,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 600.6,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 634,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 667.4,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 734.2,
+                                "y": 219.8
+                            },
+                            {
+                                "x": 734.2,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 667.4,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 634,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 600.6,
+                                "y": 276.8
+                            },
+                            {
+                                "x": 567.2,
+                                "y": 276.8
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T4",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 149.3,
+                        "y": 365,
+                        "seats": 12,
+                        "w": 200.5,
+                        "h": 35,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 65.8,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 132.6,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 166,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 199.4,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 232.8,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 232.8,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 199.4,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 166,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 132.6,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 99.2,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 65.8,
+                                "y": 393.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T5",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 400,
+                        "y": 365,
+                        "seats": 12,
+                        "w": 200.5,
+                        "h": 35,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 316.5,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 349.9,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 383.3,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 416.7,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 450.1,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 483.5,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 483.5,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 450.1,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 416.7,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 383.3,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 349.9,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 316.5,
+                                "y": 393.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T6",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 650.7,
+                        "y": 365,
+                        "seats": 12,
+                        "w": 200.5,
+                        "h": 35,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 567.2,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 600.6,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 634,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 667.4,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 734.2,
+                                "y": 336.5
+                            },
+                            {
+                                "x": 734.2,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 700.8,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 667.4,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 634,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 600.6,
+                                "y": 393.5
+                            },
+                            {
+                                "x": 567.2,
+                                "y": 393.5
+                            }
+                        ]
+                    },
+                    {
+                        "id": "T7",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 400,
+                        "y": 481.7,
+                        "seats": 12,
+                        "w": 200.5,
+                        "h": 35,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 316.5,
+                                "y": 453.2
+                            },
+                            {
+                                "x": 349.9,
+                                "y": 453.2
+                            },
+                            {
+                                "x": 383.3,
+                                "y": 453.2
+                            },
+                            {
+                                "x": 416.7,
+                                "y": 453.2
+                            },
+                            {
+                                "x": 450.1,
+                                "y": 453.2
+                            },
+                            {
+                                "x": 483.5,
+                                "y": 453.2
+                            },
+                            {
+                                "x": 483.5,
+                                "y": 510.2
+                            },
+                            {
+                                "x": 450.1,
+                                "y": 510.2
+                            },
+                            {
+                                "x": 416.7,
+                                "y": 510.2
+                            },
+                            {
+                                "x": 383.3,
+                                "y": 510.2
+                            },
+                            {
+                                "x": 349.9,
+                                "y": 510.2
+                            },
+                            {
+                                "x": 316.5,
+                                "y": 510.2
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "banquet one 1×2": {
+            "input": {
+                "tables": 1,
+                "chairs": 2,
+                "layout": "mixed",
+                "shape": "rect"
+            },
+            "output": {
+                "id": "hall_fixture",
+                "name": "Main hall",
+                "size": {
+                    "w": 800,
+                    "h": 580
+                },
+                "stage": {
+                    "x": 270,
+                    "y": 24,
+                    "w": 260,
+                    "h": 62,
+                    "label": "Kosha"
+                },
+                "danceFloor": {
+                    "x": 310,
+                    "y": 100,
+                    "w": 180,
+                    "h": 70
+                },
+                "entrances": [
+                    {
+                        "x": 360,
+                        "y": 566,
+                        "w": 80
+                    }
+                ],
+                "sections": [
+                    {
+                        "id": "mixed",
+                        "label": "Guests",
+                        "area": {
+                            "x": 24,
+                            "y": 190,
+                            "w": 752,
+                            "h": 350
+                        }
+                    }
+                ],
+                "tables": [
+                    {
+                        "id": "T1",
+                        "section": "mixed",
+                        "shape": "rect",
+                        "x": 400,
+                        "y": 365,
+                        "seats": 2,
+                        "w": 601.6,
+                        "h": 105,
+                        "rotation": 0,
+                        "sides": "both",
+                        "heads": false,
+                        "chairR": 9,
+                        "chairs": [
+                            {
+                                "x": 400,
+                                "y": 301.5
+                            },
+                            {
+                                "x": 400,
+                                "y": 428.5
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,50 +1,17 @@
 /**
  * Hall layout generator (plan sections 7.1 and 7.2), ported from the plan
  * page (docs/samples/index.html). Same algorithm as app/Services/HallGenerator.php,
- * so the seating editor can preview instantly and the server stays the source of truth.
+ * so the seating editor can preview instantly and the server stays the source of truth
+ * (tests/Fixtures/hall-geometry.json holds the expected output of both).
+ *
+ * Types and table geometry live in ./hall-layout.ts (re-exported here).
  */
+import { chairPositions, round1, type HallLayout, type HallSection, type HallTable, type RectTable, type Rect, type RoundTable } from './hall-layout.ts';
+
+export * from './hall-layout.ts';
 
 export type HallLayoutMode = 'mixed' | 'split';
-export type TableShape = 'round';
-
-export interface Rect {
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-}
-
-export interface HallSection {
-    id: 'mixed' | 'men' | 'women';
-    label: string;
-    area: Rect;
-}
-
-export interface HallTable {
-    id: string;
-    section: HallSection['id'];
-    shape: TableShape;
-    x: number;
-    y: number;
-    seats: number;
-    /** table radius */
-    r: number;
-    /** chair radius */
-    chairR: number;
-    /** radius of the ring the chairs sit on */
-    ring: number;
-}
-
-export interface HallLayout {
-    id: string;
-    name: string;
-    size: { w: number; h: number };
-    stage: Rect & { label: string };
-    danceFloor: Rect;
-    entrances: { x: number; y: number; w: number }[];
-    sections: HallSection[];
-    tables: HallTable[];
-}
+export type GeneratorShape = 'round' | 'rect';
 
 export const HALL_WIDTH = 800;
 export const HALL_HEIGHT = 580;
@@ -53,13 +20,11 @@ const AREA_BOTTOM_MARGIN = 40;
 export const MAX_TABLES = 200;
 export const MAX_CHAIRS = 24;
 
-const round1 = (v: number) => Math.round(v * 10) / 10;
-
 export interface GenerateOptions {
     tables: number;
     chairs: number;
     layout?: HallLayoutMode;
-    shape?: TableShape;
+    shape?: GeneratorShape;
     name?: string;
     id?: string;
 }
@@ -67,6 +32,7 @@ export interface GenerateOptions {
 export function generateHall({ tables, chairs, layout = 'mixed', shape = 'round', name = 'Main hall', id }: GenerateOptions): HallLayout {
     if (!Number.isInteger(tables) || tables < 1 || tables > MAX_TABLES) throw new RangeError(`tables must be between 1 and ${MAX_TABLES}`);
     if (!Number.isInteger(chairs) || chairs < 1 || chairs > MAX_CHAIRS) throw new RangeError(`chairs must be between 1 and ${MAX_CHAIRS}`);
+    if (shape !== 'round' && shape !== 'rect') throw new RangeError('shape must be round or rect');
 
     const top = AREA_TOP;
     const height = HALL_HEIGHT - AREA_BOTTOM_MARGIN - top;
@@ -88,7 +54,8 @@ export function generateHall({ tables, chairs, layout = 'mixed', shape = 'round'
 
     const placed: HallTable[] = [];
     for (const section of sections) {
-        placed.push(...placeTables(counts[section.id], section.area, placed.length, section.id, chairs, shape));
+        const n = counts[section.id];
+        placed.push(...(shape === 'rect' ? placeBanquet(n, section.area, placed.length, section.id, chairs) : placeTables(n, section.area, placed.length, section.id, chairs)));
     }
 
     return {
@@ -108,7 +75,7 @@ export function generateHall({ tables, chairs, layout = 'mixed', shape = 'round'
  * Chair radius = 7.5% of the cell, ring = half the cell minus the chair radius,
  * table radius inside the ring.
  */
-function placeTables(n: number, area: Rect, startIndex: number, section: HallSection['id'], chairs: number, shape: TableShape): HallTable[] {
+function placeTables(n: number, area: Rect, startIndex: number, section: HallSection['id'], chairs: number): RoundTable[] {
     if (n === 0) return [];
 
     const cols = Math.max(1, Math.round(Math.sqrt((n * area.w) / area.h)));
@@ -130,7 +97,7 @@ function placeTables(n: number, area: Rect, startIndex: number, section: HallSec
         return {
             id: `T${startIndex + i + 1}`,
             section,
-            shape,
+            shape: 'round' as const,
             x: round1(area.x + offset + cw * col + cw / 2),
             y: round1(area.y + ch * row + ch / 2),
             seats: chairs,
@@ -141,10 +108,43 @@ function placeTables(n: number, area: Rect, startIndex: number, section: HallSec
     });
 }
 
-/** Chair centers around a round table, starting at 12 o'clock. */
-export function chairPositions(table: HallTable): { x: number; y: number }[] {
-    return Array.from({ length: table.seats }, (_, c) => {
-        const a = -Math.PI / 2 + (c * 2 * Math.PI) / table.seats;
-        return { x: round1(table.x + table.ring * Math.cos(a)), y: round1(table.y + table.ring * Math.sin(a)) };
+/**
+ * Banquet tables: cols = round(sqrt(n × w / 2h)), table length 80% of the cell,
+ * depth 30% of it (at least 14), chairs on both sides.
+ */
+function placeBanquet(n: number, area: Rect, startIndex: number, section: HallSection['id'], chairs: number): RectTable[] {
+    if (n === 0) return [];
+
+    const cols = Math.max(1, Math.round(Math.sqrt((n * area.w) / (area.h * 2))));
+    const rows = Math.ceil(n / cols);
+    const cw = area.w / cols;
+    const ch = area.h / rows;
+
+    const perSide = Math.ceil(chairs / 2);
+    const w = cw * 0.8;
+    const h = Math.max(14, ch * 0.3);
+    const chairR = Math.max(3.2, Math.min(9, (w / perSide) * 0.38, (ch / 2 - h / 2 - 4) / 2));
+
+    return Array.from({ length: n }, (_, i) => {
+        const row = Math.floor(i / cols);
+        const col = i % cols;
+        const inRow = Math.min(cols, n - row * cols);
+        const offset = ((cols - inRow) * cw) / 2;
+
+        const table: Omit<RectTable, 'chairs'> = {
+            id: `T${startIndex + i + 1}`,
+            section,
+            shape: 'rect',
+            x: round1(area.x + offset + cw * col + cw / 2),
+            y: round1(area.y + ch * row + ch / 2),
+            seats: chairs,
+            w: round1(w),
+            h: round1(h),
+            rotation: 0,
+            sides: 'both',
+            heads: false,
+            chairR: round1(chairR),
+        };
+        return { ...table, chairs: chairPositions(table) };
     });
 }
