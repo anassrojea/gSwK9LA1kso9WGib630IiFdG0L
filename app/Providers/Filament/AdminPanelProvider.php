@@ -66,6 +66,11 @@ class AdminPanelProvider extends PanelProvider
                     ->label(fn () => app()->getLocale() === 'ar' ? 'English' : 'العربية')
                     ->icon(Heroicon::OutlinedLanguage)
                     ->url(fn () => route('locale', app()->getLocale() === 'ar' ? 'en' : 'ar')),
+                // server health (Laravel Pulse, gate viewPulse)
+                Action::make('pulse')
+                    ->label(fn () => trans('app.site.admin_pulse'))
+                    ->icon(Heroicon::OutlinedSignal)
+                    ->url(fn () => url(config('pulse.path', 'pulse')), shouldOpenInNewTab: true),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

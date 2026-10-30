@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Building2, Check, CreditCard, Info, Minus, Plus, ShieldCheck, Tag, X } from 'lucide-react';
 import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
 
+import { LegalLinks } from '@/components/LegalLinks';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNeedsVerification, VerifyEmailNotice } from '@/components/account/VerifyEmailNotice';
@@ -387,7 +388,9 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
                 </p>
                 <p>{t('checkout.terms')}</p>
                 <p>{t('checkout.refund')}</p>
-                <p className="italic">{t('checkout.terms_note')}</p>
+                <p data-checkout-legal>
+                    <LegalLinks text={t('site.checkout_links')} links={{ terms: 'terms', refund: 'refund' }} />
+                </p>
             </div>
 
             {firstError && (

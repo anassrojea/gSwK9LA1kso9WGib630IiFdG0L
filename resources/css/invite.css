@@ -312,6 +312,7 @@ section.blk.alt,.sec-story{background:var(--c-surface)}
 .submit[disabled]{opacity:.7}
 .form-error{color:#ffd7d7;font:600 14px var(--f-label);background:rgb(0 0 0 / .2);border-radius:var(--radius);padding:8px 12px}
 .consent{font:400 12px/1.6 var(--f-label);color:var(--c-gold-light);opacity:.8}
+.consent a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .done{display:grid;gap:12px;justify-items:center;width:100%}
 .ticket{background:var(--c-bg);color:var(--c-ink);border-radius:calc(var(--radius) + 2px);padding:18px;width:100%;display:grid;gap:10px;justify-items:center}
 .ticket .label{color:var(--c-label)}

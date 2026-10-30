@@ -41,6 +41,9 @@ Route::pattern('order', 'DW-[0-9]{4,6}');
 Route::get('/', HomeController::class)->name('home');
 Route::get('/locale/{locale}', LocaleController::class)->name('locale');
 
+// Public site (phase 6A): /en, occasions, pricing, about, legal pages, sitemap.xml, robots.txt, /r/design-yours
+Route::group([], base_path('routes/marketing.php'));
+
 // Creation wizard (plan section 3): no account needed until "Review & send".
 // "draft" lets in the owner (EventPolicy) or the browser session that created a guest draft.
 Route::get('/create', [WizardController::class, 'create'])->name('create');

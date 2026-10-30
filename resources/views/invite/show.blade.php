@@ -39,6 +39,9 @@
     @endif
     <style>:root{ {!! $themeVars !!} }</style>
     @vite(['resources/css/invite.css', 'resources/js/invite.js'])
+    @if ($openingChunk = \App\Support\InviteAssets::openingChunk($openingId))
+        <link rel="modulepreload" href="{{ $openingChunk }}">
+    @endif
 </head>
 <body>
 <div class="app" data-opening="{{ $openingId }}" data-occasion="{{ $config['occasion'] }}">
@@ -83,7 +86,8 @@
         @if ($showBadge)
             <span>{{ __('invite.footer') }}</span>
         @endif
-        <a href="{{ url('/') }}" rel="noopener">{{ __('invite.make_yours') }}</a>
+        {{-- "صمّم دعوتك" (plan section 14.7): an anonymous click count, then the landing page with UTM parameters --}}
+        <a href="{{ \App\Support\SiteUrl::designYours() }}?e={{ $invitation->slug }}" rel="noopener">{{ __('invite.make_yours') }}</a>
     </footer>
 
     @php($music = ($config['effects']['music'] ?? false) ? ($config['media']['music'] ?? null) : null)

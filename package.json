@@ -6,7 +6,8 @@
         "build": "tsc --noEmit && vite build",
         "dev": "vite",
         "typecheck": "tsc --noEmit",
-        "test:js": "node --experimental-strip-types --test tests/js/*.test.ts"
+        "test:js": "node --experimental-strip-types --test tests/js/*.test.ts",
+        "perf": "node scripts/perf.mjs"
     },
     "dependencies": {
         "@dnd-kit/core": "^6.3.1",
@@ -19,6 +20,7 @@
         "@radix-ui/react-slot": "^1.5.0",
         "@radix-ui/react-switch": "^1.4.1",
         "@radix-ui/react-tabs": "^1.2.1",
+        "@sentry/browser": "^10.78.0",
         "@tanstack/react-table": "^8.21.3",
         "axios": "^1.21.0",
         "class-variance-authority": "^0.7.1",

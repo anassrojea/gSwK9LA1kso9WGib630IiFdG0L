@@ -6,7 +6,7 @@ Forge's UI changes from time to time; the menu names below describe what to set,
 Contents: [1. Server](#1-provision-the-server) · [2. Sites](#2-create-the-sites) · [3. Environment](#3-environment) ·
 [4. Deploy script](#4-deploy-script) · [5. Daemons](#5-daemons-horizon-and-reverb) · [6. Scheduler](#6-scheduler) ·
 [7. Backups](#7-database-backups) · [8. Cloudflare](#8-cloudflare) · [9. First deploy](#9-first-deploy-checklist) ·
-[10. Payments](#10-payments) · [11. Later](#11-scaling-later)
+[10. Payments](#10-payments) · [Monitoring](#monitoring) · [11. Later](#11-scaling-later)
 
 ---
 
@@ -133,7 +133,21 @@ AWS_BUCKET=daawa-media
 AWS_ENDPOINT=https://<account>.r2.cloudflarestorage.com
 
 CLOUDFLARE_ZONE_ID=...
-CLOUDFLARE_API_TOKEN=...   # token with Zone → Cache Purge only
+CLOUDFLARE_API_TOKEN=...   # token with Zone → Cache Purge only (section 8, "Purge on edit")
+
+# Monitoring and analytics (section "Monitoring"); VITE_* are read by npm run build
+SENTRY_LARAVEL_DSN=https://...@o0.ingest.de.sentry.io/0
+SENTRY_TRACES_SAMPLE_RATE=0.1
+VITE_SENTRY_DSN=https://...@o0.ingest.de.sentry.io/1
+VITE_POSTHOG_KEY=phc_...
+VITE_POSTHOG_HOST=https://eu.i.posthog.com
+POSTHOG_KEY=phc_...
+POSTHOG_HOST=https://eu.i.posthog.com
+PULSE_INGEST_DRIVER=redis
+
+# Public site
+MARKETING_SHOWCASE_TOKENS=tok1,tok2,tok3   # published showcase invitations linked from the landing page
+MARKETING_CONTACT_EMAIL=hello@daawa.app
 
 # Link preview images (config/og.php); defaults shown
 OG_CHROME_PATH=            # empty: /usr/bin/chromium, /usr/bin/google-chrome-stable, …
@@ -198,6 +212,7 @@ $ACTIVATE_RELEASE()
 # pick up the new code in long-running processes
 $FORGE_PHP artisan horizon:terminate
 $FORGE_PHP artisan reverb:restart
+$FORGE_PHP artisan pulse:restart
 ```
 
 Notes:
@@ -218,6 +233,10 @@ Forge → Server → Daemons (supervisor). Use the site's `current` directory so
 |---|---|---|---|
 | Horizon | `php8.4 artisan horizon` | `/home/forge/daawa.app/current` | forge |
 | Reverb | `php8.4 artisan reverb:start --host=127.0.0.1 --port=8080` | `/home/forge/daawa.app/current` | forge |
+| Pulse ingest | `php8.4 artisan pulse:work` | `/home/forge/daawa.app/current` | forge |
+| Pulse server stats | `php8.4 artisan pulse:check` | `/home/forge/daawa.app/current` | forge |
+
+The deploy script (section 4) runs `pulse:restart` so both Pulse daemons pick up new code.
 
 (Newer Forge versions can also enable Horizon and Reverb per site; either way, one process each.)
 
@@ -326,10 +345,62 @@ never cached, and the server de-duplicates opens per device for 10 minutes. Link
 (`WhatsApp/`, `facebookexternalhit`, `TelegramBot`, `Twitterbot`, `Slackbot`, `Discordbot`) are never counted
 (`App\Services\OpenTracker::CRAWLERS`). An event's open link counts its opens on the link itself (`open_links`).
 
-**Purge on edit** (plan section 6.4): when a host edits an invitation, its `/i/*` pages must be purged
-through the Cloudflare API with `CLOUDFLARE_ZONE_ID` and `CLOUDFLARE_API_TOKEN` (permission: Zone → Cache Purge).
-Not built yet: it lands with the wizard (`PurgeEdgeCache` job, see `InvitationConfigController`). Until then
-the 5-minute edge TTL bounds staleness.
+**Purge on edit** (plan section 6.4): `App\Observers\EdgeCachePurger` queues the `PurgeEdgeCache` job when
+a published invitation is edited, published or unpublished, a household is renamed or deleted, the open link
+is switched or changes, the event's plan or status changes (ended, archived by `events:expire-storage`), or an
+uploaded file is deleted. The job waits `CLOUDFLARE_PURGE_DELAY` seconds (10) and is unique per event until it
+runs, so a burst of autosaves purges once. It purges by URL, 30 per API call (Cloudflare's limit): `/i/{token}`
+and `/i/{token}/og.png` of every household and of the open link, and `/e/{slug}` when a page is served there,
+on both `APP_URL` and `INVITE_URL`. API errors are retried with backoff (10 s, 30 s, 90 s, 5 min).
+
+Set it up:
+
+1. Cloudflare dashboard → the `daawa.app` zone → Overview → copy the **Zone ID** into `CLOUDFLARE_ZONE_ID`.
+2. My Profile → API Tokens → Create Token → *Custom token*: permission **Zone → Cache Purge → Purge**,
+   zone resources **Include → Specific zone → daawa.app** (add `daawa.link` too if it is a separate zone; then
+   run one purge per zone, or keep both domains in one zone). No other permission. Copy it into `CLOUDFLARE_API_TOKEN`.
+3. Check: edit a published test invitation, then `php artisan horizon` shows `PurgeEdgeCache` done and the log
+   says `Edge cache purged.`; the next request for its link is a `cf-cache-status: MISS`.
+
+Without the two keys the job logs `Edge cache purge skipped` and does nothing; the 5-minute edge TTL then
+bounds staleness. Preview images are cached by query string (`og.png?v={hash}`), and a changed invitation or
+name links a new `v`, so they don't depend on the purge.
+
+### Caching headers for built assets
+
+`/build/assets/*` file names carry content hashes. Add to the site's Nginx config (Forge → Site → Edit Nginx
+configuration), inside the `server { listen 443 … }` block:
+
+```nginx
+location ^~ /build/ {
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    access_log off;
+    try_files $uri =404;
+}
+location ^~ /images/ {
+    expires 30d;
+    add_header Cache-Control "public, max-age=2592000";
+}
+```
+
+Cloudflare's cache rule 4 above then keeps them at the edge. Turn on Brotli (Speed → Optimization) for HTML, CSS and JS.
+
+### Public site and robots
+
+`/robots.txt` and `/sitemap.xml` are served by the app (`App\Http\Controllers\Marketing\SeoController`), not
+from `public/`. The sitemap lists the public site pages in Arabic and English with `hreflang` alternates, never
+guest links. Submit `https://daawa.app/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
+
+### Security headers
+
+`App\Http\Middleware\SecurityHeaders` (config `config/security.php`) sends on the public site, the dashboards and
+the guest pages: `X-Frame-Options: SAMEORIGIN`, `Permissions-Policy`, `nosniff`, a Referrer-Policy, and in
+production `Strict-Transport-Security` (max-age one year; set `HSTS_INCLUDE_SUBDOMAINS=true` only when every
+subdomain is on HTTPS). The Content Security Policy starts **report-only**: reports go to Sentry's security
+endpoint when `SENTRY_LARAVEL_DSN` is set (Sentry → Issues, type "CSP"). After a couple of weeks without
+reports from real pages, set `CSP_ENFORCE=true`. Media on another host than the media disk's URL goes in
+`CSP_MEDIA_HOSTS`.
 
 ### WAF and rate limiting (free plan)
 
@@ -361,8 +432,17 @@ the 5-minute edge TTL bounds staleness.
    Reverb connection.
 5. Create a test event with one household and open its `/i/{token}` link through Cloudflare twice: the second
    response should carry `cf-cache-status: HIT`, and the household's open count should still go up only once per device.
-6. Uptime monitoring: Forge server monitoring + an external check on `/up` and on one test invitation link.
-   Add Sentry (`sentry/sentry-laravel`) and Laravel Pulse when the first real customers arrive (plan section 22).
+6. Monitoring: see [Monitoring](#monitoring) below; check that `/pulse` opens for your admin account.
+
+## Monitoring
+
+| Tool | What | Setup |
+|---|---|---|
+| **Uptime** | Is the site up for guests? | An external checker (Better Stack, UptimeRobot, or Forge's own) every 1–5 min on **`https://daawa.app/up`** (Laravel's health route: boots the app, 200 or 500) and on **one published test invitation** `https://daawa.link/i/<token>` (the guest path through Cloudflare; expect 200 and the text of the invitation). Alert by email and WhatsApp/SMS. Make the test invitation once (its own account) and never delete it; its opens don't matter. |
+| **Sentry** | Exceptions, failed queued jobs, slow requests, CSP reports, browser errors on the dashboards | Create a Laravel project and a browser (React) project in Sentry (EU region if you can). `SENTRY_LARAVEL_DSN` (server) and `VITE_SENTRY_DSN` (browser, needs a rebuild), `SENTRY_TRACES_SAMPLE_RATE=0.1`. Phone numbers and emails are scrubbed before sending (`App\Support\SentryScrubber`, `resources/js/lib/scrub.ts`); default PII is off. Guest invitations never load the browser SDK. Test: `php artisan sentry:test`. |
+| **PostHog** | Funnel KPIs (plan section 22) | A PostHog project (EU cloud). `VITE_POSTHOG_KEY`/`VITE_POSTHOG_HOST` for the browser (rebuild), `POSTHOG_KEY`/`POSTHOG_HOST` for the server. Browser events only after the visitor accepts the cookie banner: `$pageview`, `draft_created`, `wizard_step`, `invitation_published`, `checkout_started`, `cta_create`; server events: `order_paid` (paid or approved orders) and `design_yours_clicked` (anonymous). The "صمّم دعوتك" clicks are also counted per event in `site_counters`, without PostHog. |
+| **Pulse** | Server health: slow requests, queries and jobs, exceptions, CPU/memory/disk | `/pulse`, admins only (also in the admin's user menu). The two daemons above; entries go through Redis and are kept 7 days (`PULSE_STORAGE_KEEP`). |
+| **Horizon** | Queues | `/horizon` (admins). |
 
 ## 10. Payments
 

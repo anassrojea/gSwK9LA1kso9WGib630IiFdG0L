@@ -1119,4 +1119,21 @@ return [
             'salutation' => "Regards,\nDaawa",
         ],
     ],
+
+    // Public site and legal pages (phase 6A): links shown on the React pages
+    'site' => [
+        'terms' => 'Terms of service',
+        'privacy' => 'Privacy policy',
+        'refund' => 'Refund policy',
+        'cookies' => 'Cookie notice',
+        'agree' => 'By creating an account you agree to the :terms and the :privacy.',
+        'checkout_links' => 'Read the :terms and the :refund before paying.',
+        'urls' => [
+            'terms' => '/en/legal/terms',
+            'privacy' => '/en/legal/privacy',
+            'refund' => '/en/legal/refund',
+            'cookies' => '/en/legal/cookies',
+        ],
+        'admin_pulse' => 'Server health (Pulse)',
+    ],
 ];

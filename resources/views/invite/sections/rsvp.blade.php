@@ -57,7 +57,7 @@
         @endif
         <p class="form-error" data-error role="alert" hidden></p>
         <button class="submit" type="submit">{{ __('invite.rsvp.submit') }}</button>
-        <small class="consent">{{ __('invite.rsvp.consent') }}</small>
+        <small class="consent">{{ __('invite.rsvp.consent') }} <a href="{{ \App\Support\SiteUrl::to('legal', $locale, 'privacy') }}" target="_blank" rel="noopener">{{ __('legal.pages.privacy.title', [], $locale) }}</a></small>
     </form>
 
     <div class="done" data-done hidden>
