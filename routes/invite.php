@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Invite\InvitationController;
 use App\Http\Controllers\Invite\OgImageController;
+use App\Http\Controllers\Invite\QrController;
 use App\Http\Controllers\Invite\RoseController;
 use App\Http\Controllers\Invite\RsvpController;
 use App\Http\Controllers\Wizard\PreviewController;
@@ -24,6 +25,11 @@ Route::get('/i/{token}', [InvitationController::class, 'show'])
 Route::get('/i/{token}/og.png', [OgImageController::class, 'show'])
     ->middleware('throttle:invite-og')
     ->name('invite.og');
+
+// The household's QR code = its personal link (plan section 9), never counted as an open
+Route::get('/i/{token}/qr.svg', [QrController::class, 'svg'])
+    ->middleware('throttle:invite-og')
+    ->name('invite.qr');
 
 Route::get('/i/{token}/state', [InvitationController::class, 'state'])
     ->middleware('throttle:invite-state')

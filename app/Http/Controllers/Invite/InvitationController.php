@@ -10,6 +10,7 @@ use App\Services\Entitlements;
 use App\Services\InvitationConfig\InvitationConfig;
 use App\Services\InvitationConfig\MediaUrl;
 use App\Services\InvitationConfig\ThemeStyles;
+use App\Services\Invite\GuestDayState;
 use App\Services\OgImage\OgImage;
 use App\Services\OpenTracker;
 use Illuminate\Http\JsonResponse;
@@ -125,6 +126,8 @@ class InvitationController extends Controller
             'rsvp_open' => RsvpController::isOpen($rsvpSection),
             'table' => $table,
             'roses' => InvitationConfig::section($config, 'send_rose') ? (int) ($event->rose?->count ?? 0) : null,
+            // event-day parts: table map, door QR, the "today" panel (phase 7A)
+            ...GuestDayState::payload($household, $invitation, $config, $entitlements),
         ];
     }
 }

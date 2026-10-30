@@ -20,6 +20,7 @@ class Event extends Model
     protected $fillable = [
         'owner_id', 'org_id', 'anon_session_id', 'occasion', 'title', 'starts_at', 'timezone', 'venue_name',
         'address', 'lat', 'lng', 'hall_layout_id', 'status', 'plan_id', 'guest_limit', 'storage_until', 'messages',
+        'live_stream_url',
     ];
 
     protected $attributes = ['status' => 'draft'];
@@ -74,6 +75,11 @@ class Event extends Model
     public function checkins(): HasMany
     {
         return $this->hasMany(Checkin::class);
+    }
+
+    public function doorPasses(): HasMany
+    {
+        return $this->hasMany(DoorPass::class);
     }
 
     public function media(): HasMany
