@@ -66,8 +66,13 @@
             <span data-confirmed-people></span>
             <div data-table-wrap hidden>
                 <span>{{ __('invite.rsvp.your_table') }}</span>
-                <span class="tb" data-table></span>
+                <span class="tb" data-table data-label="{{ __('invite.table.label', ['n' => ':n']) }}"></span>
+                <div class="hall-map" data-table-map role="img" aria-label="{{ __('invite.table.map') }}"></div>
             </div>
+            <figure class="door-qr" data-qr hidden>
+                <img alt="{{ __('invite.live.qr_alt') }}" width="176" height="176" loading="lazy" decoding="async">
+                <figcaption>{{ __('invite.live.qr') }}</figcaption>
+            </figure>
         </div>
         <button type="button" class="btn ghost" data-edit>{{ __('invite.rsvp.edit') }}</button>
     </div>
