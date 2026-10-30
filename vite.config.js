@@ -14,6 +14,11 @@ export default defineConfig({
                 // guest invitations (Blade + vanilla JS, no framework runtime)
                 'resources/css/invite.css',
                 'resources/js/invite.js',
+                // guest album and the hall's live photo wall (phase 7B)
+                'resources/css/album.css',
+                'resources/js/album.js',
+                'resources/css/wall.css',
+                'resources/js/wall.js',
             ],
             refresh: true,
         }),
