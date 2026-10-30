@@ -296,6 +296,7 @@
     .venue-card-body h2 { font-size: 1.15rem; color: var(--color-wine); }
     .venue-card-body p { font-size: .92rem; }
     .venue-cap { display: inline-flex; align-items: center; gap: .35rem; color: var(--color-ink); }
+    [dir='rtl'] .venue-card .card-link .icon, [dir='rtl'] .venue-side .card-link .icon { transform: scaleX(-1); }
     .venue-pages { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 2rem; }
 
     .venue-head { display: flex; align-items: center; gap: 1rem; }

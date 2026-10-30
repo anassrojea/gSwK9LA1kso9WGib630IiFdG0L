@@ -114,7 +114,7 @@
                         <h3>{{ $hall['name'] }}</h3>
                         <p class="muted">{{ __('venues.show.hall_capacity', ['tables' => $digits($hall['tables']), 'seats' => $digits($hall['seats'])]) }}</p>
                         <div class="venue-hall-plan" dir="ltr">
-                            @include('seating.hall-svg', ['layout' => $hall['layout']])
+                            @include('seating.hall-svg', ['layout' => $hall['layout'], 'digits' => $digits])
                         </div>
                         {!! $createForm($hall['id'], __('venues.show.create_hall'), 'venue_hall') !!}
                     </li>

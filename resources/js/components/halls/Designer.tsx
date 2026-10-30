@@ -88,6 +88,9 @@ type Drag =
 const HISTORY_LIMIT = 100;
 const SECTION_IDS: SectionId[] = ['men', 'women', 'mixed', 'vip'];
 
+/** Hall units per screen pixel for a view box shown with preserveAspectRatio "meet". */
+const unitsPerPx = (view: Rect, svg: SVGSVGElement) => Math.max(view.w / Math.max(1, svg.clientWidth), view.h / Math.max(1, svg.clientHeight));
+
 const isTyping = (target: EventTarget | null) => target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
 
 /**
@@ -261,7 +264,7 @@ export function HallDesigner({ initial, onChange, toolbarEnd }: { initial: HallL
             if (e.ctrlKey || e.metaKey) {
                 zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15, toHall(e.clientX, e.clientY));
             } else {
-                const scale = view.w / svg.clientWidth;
+                const scale = unitsPerPx(view, svg);
                 setView((v) => ({ ...v, x: v.x + e.deltaX * scale, y: v.y + e.deltaY * scale }));
             }
         };
@@ -372,7 +375,7 @@ export function HallDesigner({ initial, onChange, toolbarEnd }: { initial: HallL
         if (!d || d.pointer !== e.pointerId) return;
         if (d.mode === 'pan') {
             const svg = svgRef.current!;
-            const scale = d.view.w / svg.clientWidth;
+            const scale = unitsPerPx(d.view, svg);
             setView({ ...d.view, x: d.view.x - (e.clientX - d.client.x) * scale, y: d.view.y - (e.clientY - d.client.y) * scale });
             return;
         }
@@ -427,7 +430,7 @@ export function HallDesigner({ initial, onChange, toolbarEnd }: { initial: HallL
     const selectedKeys = new Set(selection.map(refKey));
     const single = selection.length === 1 ? selection[0] : null;
     const singleBox = single ? elementBox(layout, single) : null;
-    const scale = view.w / Math.max(1, svgRef.current?.clientWidth ?? 900);
+    const scale = svgRef.current ? unitsPerPx(view, svgRef.current) : view.w / 900;
     const handle = Math.max(6, 9 * scale);
 
     const describe = (r: Ref) =>
@@ -515,7 +518,7 @@ export function HallDesigner({ initial, onChange, toolbarEnd }: { initial: HallL
                         <svg
                             ref={svgRef}
                             viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
-                            className={cn('block aspect-[800/580] h-auto w-full touch-none select-none outline-none', panMode ? 'cursor-grab' : 'cursor-crosshair')}
+                            className={cn('block h-[min(66svh,620px)] min-h-80 w-full touch-none select-none outline-none', panMode ? 'cursor-grab' : 'cursor-crosshair')}
                             role="application"
                             aria-label={t('halls.designer.canvas')}
                             tabIndex={-1}

@@ -50,8 +50,8 @@ class HallTemplates
     {
         $layout = $this->generator->generate(12, 12, 'split', 'rect', 'Banquet hall', 'tpl_banquet');
         // the families' VIP row in front of the kosha
-        $layout['sections'][] = ['id' => 'vip', 'label' => 'VIP', 'area' => ['x' => 200, 'y' => 92, 'w' => 400, 'h' => 50]];
-        $layout['tables'][] = ['id' => 'T13', 'section' => 'vip', 'shape' => 'row', 'x' => 400, 'y' => 120, 'seats' => 16, 'w' => 336, 'h' => 18, 'rotation' => 0, 'chairR' => 8];
+        $layout['sections'][] = ['id' => 'vip', 'label' => 'VIP', 'area' => ['x' => 200, 'y' => 104, 'w' => 400, 'h' => 44]];
+        $layout['tables'][] = ['id' => 'T13', 'section' => 'vip', 'shape' => 'row', 'x' => 400, 'y' => 126, 'seats' => 16, 'w' => 336, 'h' => 18, 'rotation' => 0, 'chairR' => 8];
         unset($layout['danceFloor']);
         $layout['obstacles'] = [
             ['id' => 'O1', 'kind' => 'buffet', 'x' => 24, 'y' => 30, 'w' => 150, 'h' => 40],
@@ -71,7 +71,7 @@ class HallTemplates
         };
 
         // a VIP row facing the kosha
-        $next(['section' => 'vip', 'shape' => 'row', 'x' => 450, 'y' => 128, 'seats' => 12, 'w' => 252, 'h' => 18, 'rotation' => 0, 'chairR' => 8]);
+        $next(['section' => 'vip', 'shape' => 'row', 'x' => 450, 'y' => 131, 'seats' => 12, 'w' => 252, 'h' => 18, 'rotation' => 0, 'chairR' => 8]);
         // two rows of round tables
         foreach ([[250, 230], [450, 230], [650, 230], [250, 350], [450, 350], [650, 350]] as [$x, $y]) {
             $next(['section' => 'mixed', 'shape' => 'round', 'x' => $x, 'y' => $y, 'seats' => 8, 'r' => 24, 'chairR' => 8, 'ring' => 38]);
@@ -94,7 +94,7 @@ class HallTemplates
             'stage' => ['x' => 330, 'y' => 20, 'w' => 240, 'h' => 64, 'label' => 'Kosha'],
             'sections' => [
                 ['id' => 'mixed', 'label' => 'Guests', 'area' => ['x' => 16, 'y' => 170, 'w' => 868, 'h' => 440]],
-                ['id' => 'vip', 'label' => 'VIP', 'area' => ['x' => 300, 'y' => 98, 'w' => 300, 'h' => 56]],
+                ['id' => 'vip', 'label' => 'VIP', 'area' => ['x' => 300, 'y' => 106, 'w' => 300, 'h' => 50]],
             ],
             'entrances' => [['x' => 410, 'y' => 626, 'w' => 80], ['x' => 886, 'y' => 470, 'w' => 70, 'rotation' => 90]],
             'obstacles' => [

@@ -6,6 +6,8 @@
     $w = $layout['size']['w'] ?? 800;
     $h = $layout['size']['h'] ?? 580;
     $seated = $seated ?? [];
+    // $digits (optional): table numbers in the page's script, e.g. Arabic-Indic on the Arabic venue page
+    $num = fn (string $id) => isset($digits) ? $digits(HallLayoutData::tableNumber($id)) : HallLayoutData::tableNumber($id);
     $sectionNames = ['men' => 'رجال · Men', 'women' => 'نساء · Women', 'vip' => 'كبار الضيوف · VIP', 'mixed' => ''];
     $obstacleNames = ['buffet' => 'بوفيه · Buffet', 'column' => '', 'obstacle' => ''];
 @endphp
@@ -58,7 +60,7 @@
                 <circle cx="{{ round($t['x'] + $ring * cos($angle), 1) }}" cy="{{ round($t['y'] + $ring * sin($angle), 1) }}" r="{{ $chairR }}" class="h-chair @if (isset($taken[$c])) is-taken @endif"/>
             @endfor
             <circle cx="{{ $t['x'] }}" cy="{{ $t['y'] }}" r="{{ $t['r'] ?? 14 }}" class="h-top"/>
-            <text x="{{ $t['x'] }}" y="{{ $t['y'] + min(($t['r'] ?? 14) * 0.38, 7) }}" text-anchor="middle" class="h-num" style="font-size: {{ max(9, min(22, ($t['r'] ?? 14) * 0.95)) }}px">{{ HallLayoutData::tableNumber($t['id']) }}</text>
+            <text x="{{ $t['x'] }}" y="{{ $t['y'] + min(($t['r'] ?? 14) * 0.38, 7) }}" text-anchor="middle" class="h-num" style="font-size: {{ max(9, min(22, ($t['r'] ?? 14) * 0.95)) }}px">{{ $num($t['id']) }}</text>
         </g>
         @else
             @php
@@ -84,9 +86,12 @@
                 @endforeach
                 @if ($shape === 'row')
                     @php $first = $chairs[0] ?? ['x' => $t['x'], 'y' => $t['y']]; $turned = ($t['rotation'] ?? 0) === 90; @endphp
-                    <text x="{{ $turned ? $t['x'] : $first['x'] - $chairR - 9 }}" y="{{ $turned ? $first['y'] - $chairR - 5 : $t['y'] + 4 }}" text-anchor="middle" class="h-num" style="font-size: 11px">{{ HallLayoutData::tableNumber($t['id']) }}</text>
+                    <text x="{{ $turned ? $t['x'] : $first['x'] - $chairR - 9 }}" y="{{ $turned ? $first['y'] - $chairR - 5 : $t['y'] + 4 }}" text-anchor="middle" class="h-num" style="font-size: 11px">{{ $num($t['id']) }}</text>
+                @elseif ($shape === 'sofa')
+                    @php $sofaFont = max(7, min($bw, $bh) * 0.24); @endphp
+                    <text x="{{ $turned ? $t['x'] + $bw / 2 - $bw * 0.14 : $t['x'] }}" y="{{ ($turned ? $t['y'] : $t['y'] - $bh / 2 + $bh * 0.14) + $sofaFont * 0.36 }}" text-anchor="middle" class="h-num" style="font-size: {{ $sofaFont }}px">{{ $num($t['id']) }}</text>
                 @else
-                    <text x="{{ $t['x'] }}" y="{{ $t['y'] + $font * 0.36 }}" text-anchor="middle" class="h-num" style="font-size: {{ $font }}px">{{ HallLayoutData::tableNumber($t['id']) }}</text>
+                    <text x="{{ $t['x'] }}" y="{{ $t['y'] + $font * 0.36 }}" text-anchor="middle" class="h-num" style="font-size: {{ $font }}px">{{ $num($t['id']) }}</text>
                 @endif
             </g>
         @endif

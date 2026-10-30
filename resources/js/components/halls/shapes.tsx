@@ -195,6 +195,14 @@ export function TableShape({
                 {n(tableNumber(table.id))}
             </text>
         );
+    } else if (table.shape === 'sofa') {
+        // on the sofa's back, clear of the seats
+        const back = turned ? { x: table.x + bw / 2 - bw * 0.14, y: table.y } : { x: table.x, y: table.y - bh / 2 + bh * 0.14 };
+        number = (
+            <text x={back.x} y={back.y} textAnchor="middle" dominantBaseline="middle" className={cn('pointer-events-none font-bold', textColor)} style={{ fontSize: Math.max(7, Math.min(bw, bh) * 0.24) }}>
+                {n(tableNumber(table.id))}
+            </text>
+        );
     } else {
         number = (
             <text x={table.x} y={table.y + fontSize * 0.1} textAnchor="middle" dominantBaseline="middle" className={cn('pointer-events-none font-bold', textColor)} style={{ fontSize }}>
