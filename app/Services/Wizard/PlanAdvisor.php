@@ -7,6 +7,7 @@ use App\Models\Opening;
 use App\Models\OpenLink;
 use App\Models\Plan;
 use App\Models\Theme;
+use App\Services\Marketplace\TemplateAccess;
 
 /**
  * The plan an invitation needs, shown before the last step so the price is
@@ -50,8 +51,20 @@ class PlanAdvisor
             }
         };
 
-        $raise(Opening::query()->whereKey($config['opening']['id'])->value('tier') ?? 'free', 'opening');
-        $raise(Theme::query()->whereKey($config['theme']['id'])->value('tier') ?? 'free', 'theme');
+        // a paid marketplace template (phase 8C) is bought on its own, not through a plan tier,
+        // and that purchase covers its own opening and theme
+        $marketplace = app(TemplateAccess::class)->inUse($event, $config);
+        $bought = $marketplace?->isPaidMarketplace() ? $marketplace : null;
+
+        if (! $bought || ($config['opening']['id'] ?? null) !== $bought->opening_id) {
+            $raise(Opening::query()->whereKey($config['opening']['id'])->value('tier') ?? 'free', 'opening');
+        }
+        if (! $bought || ($config['theme']['id'] ?? null) !== $bought->theme_id) {
+            $raise(Theme::query()->whereKey($config['theme']['id'])->value('tier') ?? 'free', 'theme');
+        }
+        if ($bought) {
+            $reasons[] = 'template';
+        }
 
         if (($config['media']['cover']['type'] ?? null) === 'video') {
             $raise('premium', 'cover_video');

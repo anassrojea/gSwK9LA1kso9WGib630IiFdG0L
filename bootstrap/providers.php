@@ -5,6 +5,7 @@ use App\Providers\Filament\AdminPanelProvider;
 use App\Providers\FortifyServiceProvider;
 use App\Providers\GuestExtrasServiceProvider;
 use App\Providers\HorizonServiceProvider;
+use App\Providers\MarketplaceServiceProvider;
 use App\Providers\OrgServiceProvider;
 
 return [
@@ -14,4 +15,5 @@ return [
     HorizonServiceProvider::class,
     GuestExtrasServiceProvider::class,
     OrgServiceProvider::class,
+    MarketplaceServiceProvider::class,
 ];

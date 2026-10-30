@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use App\Models\Invoice;
 use App\Models\Order;
+use App\Services\Marketplace\MarketplaceOrders;
 use App\Services\Org\OrgPlans;
 use App\Services\Payments\Gateways\TransferGateway;
 
@@ -104,6 +105,9 @@ class OrderPresenter
             return OrgPlans::lineName((string) $item['id'], $locale);
         }
 
+        if (($handled = app(MarketplaceOrders::class)->name($item, $locale)) !== null) {
+            return $handled;
+        }
         $key = $item['type'] === 'plan' ? "app.wizard.tiers.{$item['id']}" : "app.checkout.addons.{$item['id']}.name";
         $name = trans($key, [], $locale);
 

@@ -3,6 +3,7 @@
 namespace App\Services\Account;
 
 use App\Models\AuditLog;
+use App\Models\DesignerLedgerEntry;
 use App\Models\Event;
 use App\Models\LoginCode;
 use App\Models\Order;
@@ -38,7 +39,9 @@ use IntlDateFormatter;
  *     one-time codes, sessions, the Lemon Squeezy customer row
  *
  * Deletion is blocked while a transfer receipt waits for an admin (the money
- * may have been sent), and for the last admin.
+ * may have been sent), for the last admin, and for designers with marketplace
+ * sales: their append-only ledger must be kept for accounting, so closing such
+ * an account goes through support.
  */
 class AccountDeletion
 {
@@ -76,6 +79,10 @@ class AccountDeletion
 
         if (Order::query()->where('user_id', $user->getKey())->where('status', 'receipt_received')->exists()) {
             $blockers[] = 'pending_transfer';
+        }
+
+        if (DesignerLedgerEntry::query()->where('designer_id', $user->getKey())->exists()) {
+            $blockers[] = 'designer_sales';
         }
 
         if ($user->isAdmin() && ! User::query()

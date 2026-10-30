@@ -38,6 +38,21 @@ class CheckoutService
      */
     public function place(User $user, Event $event, ?string $planId, array $addons, string $currency, string $gatewayId, ?string $country = null, ?string $discountCode = null): Order
     {
+        return $this->placeLines($user, $event, fn (string $charge) => $this->lines($event, $planId, $addons, $charge), $currency, $gatewayId, $country, $discountCode);
+    }
+
+    /**
+     * The same checkout for lines priced elsewhere (other phases' item types, e.g. 8C's
+     * template_purchase or vendor_feature, App\Services\Marketplace\MarketplaceCheckout): $linesFor gets
+     * the currency actually charged and returns the priced lines, or throws a
+     * ValidationException. $event may be null for orders that belong to no event
+     * (a vendor's featured spot); those replace the customer's other unpaid
+     * event-less orders for the same item.
+     *
+     * @param  callable(string): list<array<string, mixed>>  $linesFor
+     */
+    public function placeLines(User $user, ?Event $event, callable $linesFor, string $currency, string $gatewayId, ?string $country = null, ?string $discountCode = null): Order
+    {
         $gateway = $this->gateways->find($gatewayId);
         if (! $gateway || ! $gateway->enabled()) {
             throw ValidationException::withMessages(['gateway' => trans('app.checkout.errors.gateway')]);
@@ -51,7 +66,7 @@ class CheckoutService
             throw ValidationException::withMessages(['gateway' => trans('app.checkout.errors.gateway_currency')]);
         }
 
-        $lines = $this->lines($event, $planId, $addons, $charge);
+        $lines = $linesFor($charge);
 
         // a code is priced in the currency actually charged (after the USD fallback)
         $code = filled($discountCode) ? $this->discounts->usable($discountCode, $user) : null;
@@ -59,7 +74,10 @@ class CheckoutService
 
         return DB::transaction(function () use ($user, $event, $gateway, $lines, $charge, $currency, $country, $code, $discount) {
             // one order at a time per event: a receipt already sent waits for the admin
-            $pending = Order::query()->where('event_id', $event->getKey())->pending()->lockForUpdate()->get();
+            $pending = $event
+                ? Order::query()->where('event_id', $event->getKey())->pending()->lockForUpdate()->get()
+                : Order::query()->whereNull('event_id')->where('user_id', $user->getKey())->pending()->lockForUpdate()->get()
+                    ->filter(fn (Order $o) => ($o->items[0]['type'] ?? null) === ($lines[0]['type'] ?? null) && ($o->items[0]['id'] ?? null) === ($lines[0]['id'] ?? null));
             if ($pending->contains('status', 'receipt_received')) {
                 throw ValidationException::withMessages(['checkout' => trans('app.checkout.errors.waiting_approval')]);
             }
@@ -76,8 +94,8 @@ class CheckoutService
 
             $order = Order::query()->create([
                 'user_id' => $user->getKey(),
-                'event_id' => $event->getKey(),
-                'org_id' => $event->org_id,
+                'event_id' => $event?->getKey(),
+                'org_id' => $event?->org_id,
                 'items' => $lines,
                 'total_cents' => $net + $vat,
                 'discount_code_id' => $code?->getKey(),

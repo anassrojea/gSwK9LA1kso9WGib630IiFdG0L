@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
 
         // Demo accounts have a known password: keep them out of production unless asked for.
         if (! app()->isProduction() || env('SEED_DEMO', false)) {
-            $this->call([DemoSeeder::class, EventDayDemoSeeder::class, VenueProDemoSeeder::class]);
+            $this->call([DemoSeeder::class, EventDayDemoSeeder::class, VenueProDemoSeeder::class, MarketplaceDemoSeeder::class]);
         }
     }
 }

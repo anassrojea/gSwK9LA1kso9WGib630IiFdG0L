@@ -12,6 +12,8 @@ enum AdminNavigation implements HasLabel
     case Sales;
     case Customers;
     case Catalog;
+    // phase 8C: designers, the template review queue, payouts, vendor listings
+    case Marketplace;
     case System;
 
     public function getLabel(): string

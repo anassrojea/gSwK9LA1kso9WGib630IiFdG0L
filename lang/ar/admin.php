@@ -6,6 +6,7 @@ return [
         'sales' => 'المبيعات',
         'customers' => 'العملاء',
         'catalog' => 'الكتالوج',
+        'marketplace' => 'المتجر',
         'system' => 'النظام',
     ],
 

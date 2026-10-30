@@ -1,3 +1,4 @@
+import type { VendorCards } from '@/components/marketplace/VendorsCard';
 import type { UpgradeHint } from '@/types/account';
 import type { OpenLinkSettings } from '@/types/wizard';
 import type { GuestRow, Stats } from '@/lib/dashboard/guests';
@@ -37,6 +38,8 @@ export interface DashboardProps {
     openLink: OpenLinkSettings | null;
     /** Free or under-covered events: what upgrading unlocks (phase 5A) */
     upgradeHint?: UpgradeHint | null;
+    /** "Vendors near your venue" (phase 8C) */
+    vendors?: VendorCards | null;
 }
 
 export interface CsvPreviewRow {

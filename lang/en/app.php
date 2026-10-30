@@ -545,7 +545,7 @@ return [
             'your_plan' => 'Your invitation needs',
             'free' => 'Free',
             'because' => 'Because of:',
-            'reasons' => ['opening' => 'the opening', 'theme' => 'the colors', 'cover_video' => 'the cover video', 'guests' => 'the number of guests', 'personal_links' => 'personal links for each family'],
+            'reasons' => ['opening' => 'the opening', 'theme' => 'the colors', 'cover_video' => 'the cover video', 'guests' => 'the number of guests', 'personal_links' => 'personal links for each family', 'template' => 'the marketplace design'],
             'up_to' => 'up to :guests guests',
             'payments_soon' => 'Payments are coming soon. Until then, publishing is free.',
             'account_title' => 'Save your invitation',
@@ -774,6 +774,7 @@ return [
             'blocked' => [
                 'pending_transfer' => 'A transfer receipt is waiting for our check. Once the order is approved or rejected you can delete your account.',
                 'last_admin' => 'You are the only admin. Make someone else an admin before deleting your account.',
+                'designer_sales' => 'You have template sales on the marketplace. We keep sales records for accounting, so please contact us to close your designer account.',
             ],
             'mail' => [
                 'requested' => [

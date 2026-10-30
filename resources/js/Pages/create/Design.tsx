@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Check } from 'lucide-react';
 
+import { MarketplaceGrid, type MarketplaceCard } from '@/components/marketplace/MarketplaceTemplates';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TextField, patch } from '@/components/wizard/fields';
 import { TierBadge } from '@/components/wizard/TierBadge';
@@ -25,6 +26,8 @@ interface Props extends WizardProps {
     templates: TemplateCard[];
     openings: { id: InvitationConfig['opening']['id']; name: string; tier: Tier }[];
     themes: { id: string; name: string; tier: Tier; config: InvitationConfig['theme'] }[];
+    /** designers' templates on sale (phase 8C, MarketplaceCatalog::forWizard) */
+    marketplace?: MarketplaceCard[];
 }
 
 /** One Google Fonts request for the display and label fonts of every design shown. */
@@ -97,7 +100,7 @@ function Pick({ selected, onClick, children, label }: { selected: boolean; onCli
  * their own (plan 6.1). Sections and the host's text are never touched.
  */
 export default function Design(props: Props) {
-    const { t, sep, dir } = useT();
+    const { t, sep, dir, locale } = useT();
     const autosave = useAutosave(props.urls.config, props.config);
     const { config } = autosave;
     const names = config.sections.find((s) => s.type === 'names');
@@ -106,7 +109,11 @@ export default function Design(props: Props) {
     const forOccasion = props.templates.filter((tpl) => tpl.occasion === config.occasion);
     const others = props.templates.filter((tpl) => tpl.occasion !== config.occasion);
 
-    const applyTemplate = (tpl: TemplateCard) =>
+    const marketplace = props.marketplace ?? [];
+    // a marketplace design is the designer's own theme: it is selected when the config uses that theme
+    const currentMarketplace = marketplace.find((card) => card.theme?.id === config.theme.id)?.id ?? null;
+
+    const applyTemplate = (tpl: Pick<TemplateCard, 'id' | 'opening' | 'theme' | 'effects'>) =>
         autosave.update(
             (c) => ({
                 ...c,
@@ -148,13 +155,14 @@ export default function Design(props: Props) {
             beforeLeave={autosave.flush}
         >
             <Head>
-                <link rel="stylesheet" href={fontsHref([...props.themes.map((th) => th.config), ...props.templates.map((tpl) => tpl.theme), config.theme])} />
+                <link rel="stylesheet" href={fontsHref([...props.themes.map((th) => th.config), ...props.templates.map((tpl) => tpl.theme), ...marketplace.map((c) => c.theme), config.theme])} />
             </Head>
             <Tabs defaultValue="templates" dir={dir}>
                 <TabsList>
                     <TabsTrigger value="templates">{t('wizard.design.templates')}</TabsTrigger>
                     <TabsTrigger value="openings">{t('wizard.design.openings')}</TabsTrigger>
                     <TabsTrigger value="themes">{t('wizard.design.themes')}</TabsTrigger>
+                    {marketplace.length > 0 && <TabsTrigger value="marketplace">{t('marketplace.wizard.tab')}</TabsTrigger>}
                 </TabsList>
 
                 <TabsContent value="templates" className="grid gap-6">
@@ -167,6 +175,20 @@ export default function Design(props: Props) {
                     )}
                     <p className="text-muted-foreground text-xs">{t('wizard.design.keeps_content')}</p>
                 </TabsContent>
+
+                {marketplace.length > 0 && (
+                    <TabsContent value="marketplace" className="grid gap-4">
+                        <p className="text-muted-foreground text-sm">{t('marketplace.wizard.intro')}</p>
+                        <MarketplaceGrid
+                            cards={[...marketplace.filter((c) => c.occasion === config.occasion), ...marketplace.filter((c) => c.occasion !== config.occasion)]}
+                            selected={currentMarketplace}
+                            onPick={applyTemplate}
+                        />
+                        <a href={locale === 'ar' ? '/templates' : '/en/templates'} target="_blank" rel="noreferrer" className="text-primary text-sm font-semibold">
+                            {t('marketplace.wizard.browse')}
+                        </a>
+                    </TabsContent>
+                )}
 
                 <TabsContent value="openings" className="grid gap-6">
                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

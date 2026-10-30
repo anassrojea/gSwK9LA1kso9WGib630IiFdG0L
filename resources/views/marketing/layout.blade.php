@@ -6,6 +6,8 @@
     $switchUrl = $seo['alternates'][$other] ?? SiteUrl::to('home', $other);
     $nav = [
         ['href' => SiteUrl::path('home', $locale).'#occasions', 'label' => __('marketing.nav.occasions'), 'page' => 'occasion'],
+        ['href' => \App\Services\Marketplace\MarketplaceUrl::path('templates', $locale), 'label' => __('marketplace.site.nav'), 'page' => 'templates'],
+        ['href' => \App\Services\Marketplace\MarketplaceUrl::path('vendors', $locale), 'label' => __('vendors.public.nav'), 'page' => 'vendors'],
         ['href' => SiteUrl::path('pricing', $locale), 'label' => __('marketing.nav.pricing'), 'page' => 'pricing'],
         ['href' => SiteUrl::path('about', $locale), 'label' => __('marketing.nav.about'), 'page' => 'about'],
     ];

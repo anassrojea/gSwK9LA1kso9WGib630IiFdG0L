@@ -67,6 +67,9 @@ class HandleInertiaRequests extends Middleware
                 'ai' => trans('ai', [], $locale),
                 // Venue & Planner Pro (phase 8A): t('org.…')
                 'org' => trans('org', [], $locale),
+                // phase 8C: template marketplace and vendor listings, read as t('marketplace.…') / t('vendors.…')
+                'marketplace' => trans('marketplace', [], $locale),
+                'vendors' => trans('vendors', [], $locale),
             ],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),

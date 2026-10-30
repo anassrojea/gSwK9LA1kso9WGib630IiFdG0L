@@ -248,3 +248,6 @@ Route::get('/album-exports/{event}/{file}', [AlbumController::class, 'download']
 
 // Venue & Planner Pro (phase 8A): /org/*, team and client invitation links
 Route::group([], base_path('routes/org.php'));
+
+// Phase 8C: template marketplace and vendor listings (public pages, designer and vendor portals, purchases)
+Route::group([], base_path('routes/marketplace.php'));
