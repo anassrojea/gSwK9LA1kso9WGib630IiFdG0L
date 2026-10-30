@@ -61,7 +61,11 @@ export function CheckoutPanel({ options, from, errors = {} }: Props) {
     const [currency, setCurrency] = useState(options.currency);
     const initialPlan = options.plans.find((p) => p.id === options.required_plan)?.id ?? (options.current_plan === 'free' ? (options.plans[0]?.id ?? null) : null);
     const [plan, setPlan] = useState<string | null>(initialPlan);
-    const [addons, setAddons] = useState<Record<string, number>>({});
+    // ?addon=seating from an upsell (seating planner, door app) picks that add-on
+    const [addons, setAddons] = useState<Record<string, number>>(() => {
+        const wanted = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('addon');
+        return wanted && options.addons.some((a) => a.id === wanted && !a.owned) ? { [wanted]: 1 } : {};
+    });
     const [gateway, setGateway] = useState<string | null>(options.gateways[0]?.id ?? null);
     const [busy, setBusy] = useState(false);
     const [codeOpen, setCodeOpen] = useState(false);
