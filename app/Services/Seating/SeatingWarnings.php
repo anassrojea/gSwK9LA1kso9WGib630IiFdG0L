@@ -9,7 +9,7 @@ namespace App\Services\Seating;
  * PDFs and the tests.
  *
  *  over_capacity     a table holds more people than chairs (or a seat it no longer has)
- *  split             a family sits at more than one table
+ *  split             a family sits at more than one table (kids tables do not count)
  *  section_mismatch  a men's table holds a women's family, or the other way round
  *  unseated          a confirmed family has people without a chair
  *  stale             seats for a family that no longer comes, or more seats than people
@@ -73,7 +73,9 @@ class SeatingWarnings
 
                 continue;
             }
-            if (count($byTable) > 1) {
+            // children at a kids table do not split their family
+            $adultTables = array_filter(array_keys($byTable), fn ($id) => ! HallLayoutData::isKidsTable($tables[$id] ?? []));
+            if (count($adultTables) > 1) {
                 $warnings[] = ['type' => 'split', 'household' => (string) $householdId, 'name' => $family['name'], 'tables' => array_map('strval', array_keys($byTable))];
             }
         }

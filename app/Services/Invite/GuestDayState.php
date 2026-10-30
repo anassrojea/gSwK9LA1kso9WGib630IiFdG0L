@@ -77,9 +77,11 @@ class GuestDayState
 
     /**
      * A small hall map for the guest page: whole numbers only, one array per
-     * table [number, x, y, r]; the guest's table is "mine".
+     * table [number, x, y, r]; the guest's table is "mine". Banquet tables,
+     * sofas and rows (phase 8B) add their size: [number, x, y, r, w, h], drawn
+     * as a rectangle w × h centred on x, y (r sizes the number).
      *
-     * @return array{w: int, h: int, stage: ?array, tables: list<array{0: string, 1: int, 2: int, 3: int}>, mine: string}
+     * @return array{w: int, h: int, stage: ?array, tables: list<array<int, int|string>>, mine: string}
      */
     public static function map(array $layout, string $tableId): array
     {
@@ -89,14 +91,27 @@ class GuestDayState
             'w' => (int) round($layout['size']['w'] ?? 800),
             'h' => (int) round($layout['size']['h'] ?? 580),
             'stage' => $stage ? [(int) round($stage['x']), (int) round($stage['y']), (int) round($stage['w']), (int) round($stage['h'])] : null,
-            'tables' => array_map(fn (array $t) => [
-                HallLayoutData::tableNumber($t['id']),
-                (int) round($t['x']),
-                (int) round($t['y']),
-                (int) round(max($t['r'] ?? 10, ($t['ring'] ?? 0) + ($t['chairR'] ?? 0) * 0.6)),
-            ], $layout['tables'] ?? []),
+            'tables' => array_map(fn (array $t) => static::mapTable($t), $layout['tables'] ?? []),
             'mine' => HallLayoutData::tableNumber($tableId),
         ];
+    }
+
+    /**
+     * @return array<int, int|string>
+     */
+    private static function mapTable(array $t): array
+    {
+        $number = HallLayoutData::tableNumber($t['id']);
+        if (($t['shape'] ?? 'round') === 'round') {
+            return [$number, (int) round($t['x']), (int) round($t['y']), (int) round(max($t['r'] ?? 10, ($t['ring'] ?? 0) + ($t['chairR'] ?? 0) * 0.6))];
+        }
+
+        // the table with its chairs, so the guest sees how long it is
+        [$hw, $hh] = HallLayoutData::extent($t);
+        $w = max(8, (int) round($hw * 2));
+        $h = max(8, (int) round($hh * 2));
+
+        return [$number, (int) round($t['x']), (int) round($t['y']), max(6, (int) round(min($w, $h) / 2)), $w, $h];
     }
 
     public static function directions(?array $place, ?string $venue, ?string $address, ?float $lat, ?float $lng): ?string

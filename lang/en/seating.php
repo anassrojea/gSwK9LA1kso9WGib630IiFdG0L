@@ -46,6 +46,7 @@ return [
         'women' => 'Women',
         'none' => 'Not set',
         'mixed' => 'Guests',
+        'vip' => 'VIP',
     ],
 
     'hall' => [

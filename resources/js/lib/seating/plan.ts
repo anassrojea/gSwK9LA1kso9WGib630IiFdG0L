@@ -3,7 +3,7 @@
  * browser and in node:test. Warnings follow app/Services/Seating/SeatingWarnings.php;
  * the server checks every save again (PUT /events/{event}/seats).
  */
-import type { HallLayout, HallTable } from '../hall-generator';
+import { extent, withChairs, type HallLayout, type HallTable } from '../hall-layout.ts';
 
 export type Section = 'men' | 'women';
 
@@ -184,7 +184,9 @@ export function computeWarnings(layout: HallLayout | null, families: Family[], a
             warnings.push({ type: 'stale', household: householdId, name: family?.name ?? null, count });
             continue;
         }
-        if (byTable.size > 1) warnings.push({ type: 'split', household: householdId, name: family.name, tables: [...byTable.keys()] });
+        // children at a kids table do not split their family
+        const adultTables = [...byTable.keys()].filter((id) => tables.get(id)?.kids !== true);
+        if (adultTables.length > 1) warnings.push({ type: 'split', household: householdId, name: family.name, tables: [...byTable.keys()] });
     }
 
     for (const family of families) {
@@ -239,19 +241,18 @@ export function summary(families: Family[], assignments: Assignment[], layout: H
 
 /** Move a table by (dx, dy) in hall units, kept inside the hall. */
 export function nudgeTable(layout: HallLayout, tableId: string, dx: number, dy: number): HallLayout {
-    const pad = (t: HallTable) => t.ring + t.chairR;
     return {
         ...layout,
-        tables: layout.tables.map((t) =>
-            t.id === tableId
-                ? {
-                      ...t,
-                      x: Math.round(Math.min(layout.size.w - pad(t), Math.max(pad(t), t.x + dx)) * 10) / 10,
-                      y: Math.round(Math.min(layout.size.h - pad(t), Math.max(pad(t), t.y + dy)) * 10) / 10,
-                  }
-                : t,
-        ),
+        tables: layout.tables.map((t) => (t.id === tableId ? moveTable(t, layout.size, dx, dy) : t)),
     };
+}
+
+/** A table moved by (dx, dy), kept inside the hall; a long table's chairs move with it. */
+export function moveTable<T extends HallTable>(t: T, size: { w: number; h: number }, dx: number, dy: number): T {
+    const [px, py] = extent(t);
+    const x = Math.round(Math.min(size.w - px, Math.max(px, t.x + dx)) * 10) / 10;
+    const y = Math.round(Math.min(size.h - py, Math.max(py, t.y + dy)) * 10) / 10;
+    return withChairs({ ...t, x, y });
 }
 
 /** "Family name 1/3" per chair, people numbered in hall order (same as SeatingPlan::label on the server). */

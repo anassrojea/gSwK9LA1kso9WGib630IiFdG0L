@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\AlbumController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\EventDashboardController;
 use App\Http\Controllers\Dashboard\EventDayController;
+use App\Http\Controllers\Dashboard\FindTablePosterController;
 use App\Http\Controllers\Dashboard\GuestCsvController;
 use App\Http\Controllers\Dashboard\HallController;
 use App\Http\Controllers\Dashboard\HallLayoutController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Dashboard\ReminderController;
 use App\Http\Controllers\Dashboard\SeatingController;
 use App\Http\Controllers\Dashboard\SeatingPdfController;
 use App\Http\Controllers\Dashboard\UpgradeController;
+use App\Http\Controllers\Dashboard\VenueProfileController;
 use App\Http\Controllers\Door\DoorController;
 use App\Http\Controllers\Door\DoorPassController;
 use App\Http\Controllers\Host\OpenLinkController;
@@ -245,3 +247,21 @@ Route::get('/album-exports/{event}/{file}', [AlbumController::class, 'download']
     ->where('file', 'album-[0-9]{8}-[0-9]{6}-[a-z0-9]{6}\.zip')
     ->middleware('signed')
     ->name('album.export.download');
+
+// Phase 8B, venues: the hall designer's checks and starter halls, the venue's
+// directory profile and QR posters, and the per-event "find your table" poster.
+// Authorized in the controllers (HallLayoutPolicy, OrganizationPolicy::createEvents, EventPolicy).
+Route::middleware('auth')->group(function () {
+    Route::pattern('orgMedia', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+
+    Route::post('/dashboard/halls/{hall}/impact', [HallLayoutController::class, 'impact'])->middleware('throttle:60,1')->name('dashboard.halls.impact');
+    Route::post('/dashboard/halls/{hall}/duplicate', [HallLayoutController::class, 'duplicate'])->middleware('throttle:30,1')->name('dashboard.halls.duplicate');
+
+    Route::get('/dashboard/venue', [VenueProfileController::class, 'edit'])->name('dashboard.venue');
+    Route::put('/dashboard/venue', [VenueProfileController::class, 'update'])->middleware('throttle:30,1')->name('dashboard.venue.update');
+    Route::post('/dashboard/venue/media', [VenueProfileController::class, 'storeMedia'])->middleware('throttle:uploads')->name('dashboard.venue.media.store');
+    Route::delete('/dashboard/venue/media/{orgMedia}', [VenueProfileController::class, 'destroyMedia'])->middleware('throttle:60,1')->name('dashboard.venue.media.destroy');
+    Route::get('/dashboard/venue/poster.pdf', [VenueProfileController::class, 'poster'])->middleware('throttle:10,1')->name('dashboard.venue.poster');
+
+    Route::get('/events/{event}/find-table.pdf', FindTablePosterController::class)->middleware('throttle:10,1')->name('events.find-table.pdf');
+});

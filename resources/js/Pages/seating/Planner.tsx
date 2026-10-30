@@ -13,7 +13,7 @@ import {
     type KeyboardCoordinateGetter,
 } from '@dnd-kit/core';
 import { Head, Link } from '@inertiajs/react';
-import { Armchair, ArrowLeft, Check, CloudOff, FileDown, Loader2, Minus, Plus, Printer, RotateCcw, Sparkles, UserMinus, Users, Wand2, X } from 'lucide-react';
+import { Armchair, ArrowLeft, Check, CloudOff, FileDown, Loader2, Minus, Plus, Printer, QrCode, RotateCcw, Sparkles, TriangleAlert, UserMinus, Users, Wand2, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -27,7 +27,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Toaster } from '@/components/ui/sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/AppLayout';
-import type { HallLayout } from '@/lib/hall-generator';
+import type { HallLayout } from '@/lib/hall-layout';
 import { useT } from '@/lib/i18n';
 import { errorMessage, sendJson, statusOf } from '@/lib/seating/api';
 import {
@@ -144,7 +144,7 @@ function SaveBadge({ state, onRetry }: { state: SaveState; onRetry: () => void }
 }
 
 function SeatingPlanner(props: PlannerProps) {
-    const { t, tc, n, sep } = useT();
+    const { t, tc, n, sep, locale } = useT();
     const urls = props.urls;
 
     const [hall, setHall] = useState<EventHall | null>(props.hall ?? null);
@@ -161,6 +161,8 @@ function SeatingPlanner(props: PlannerProps) {
     const [dragging, setDragging] = useState<string | null>(null);
     const [zoom, setZoom] = useState(1);
     const [autoOpen, setAutoOpen] = useState(false);
+    // the venue changed the hall (phase 8B): shown until the host changes the seats
+    const [showChange, setShowChange] = useState(true);
 
     const layout: HallLayout | null = hall?.layout ?? null;
     const saved = useRef<Assignment[]>(props.assignments ?? []);
@@ -195,6 +197,7 @@ function SeatingPlanner(props: PlannerProps) {
     }, [selectedFamily, layout, shown]);
 
     const update = useCallback((next: Assignment[]) => {
+        setShowChange(false);
         dirty.current = true;
         version.current++;
         setAssignments(next);
@@ -401,11 +404,31 @@ function SeatingPlanner(props: PlannerProps) {
                                                 <FileDown /> {t('seating.pdf.cards')}
                                             </a>
                                         </Button>
+                                        {urls.find_pdf && (
+                                            <Button asChild variant="outline" className="h-9">
+                                                <a href={urls.find_pdf} target="_blank" rel="noopener" data-pdf="find">
+                                                    <QrCode /> {t('venues.find.poster_button')}
+                                                </a>
+                                            </Button>
+                                        )}
                                     </>
                                 )}
                             </div>
                         </div>
                     </header>
+
+                    {props.hall_change && showChange && (
+                        <p className="flex flex-wrap items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950" role="status" data-hall-changed>
+                            <TriangleAlert className="mt-0.5 size-4 shrink-0" />
+                            <span>
+                                <b>{t('halls.changed.title')}</b>
+                                {sep}
+                                {tc('halls.changed.text', props.hall_change.count, {
+                                    date: new Intl.DateTimeFormat(locale === 'ar' ? 'ar-u-nu-arab' : 'en-GB', { dateStyle: 'medium' }).format(new Date(props.hall_change.at)),
+                                })}
+                            </span>
+                        </p>
+                    )}
 
                     <Tabs value={tab} onValueChange={setTab}>
                         <TabsList className="max-w-sm">

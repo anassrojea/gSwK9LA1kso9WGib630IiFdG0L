@@ -5,7 +5,7 @@ import { HallSvg } from '@/components/seating/HallSvg';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { generateHall, MAX_CHAIRS, MAX_TABLES, type HallLayout, type HallLayoutMode } from '@/lib/hall-generator';
+import { generateHall, MAX_CHAIRS, MAX_TABLES, type GeneratorShape, type HallLayout, type HallLayoutMode } from '@/lib/hall-generator';
 import { useT } from '@/lib/i18n';
 import { nudgeTable } from '@/lib/seating/plan';
 import { cn } from '@/lib/utils';
@@ -33,13 +33,14 @@ export function HallGenerator({
     const [tables, setTables] = useState(20);
     const [chairs, setChairs] = useState(8);
     const [mode, setMode] = useState<HallLayoutMode>('mixed');
+    const [shape, setShape] = useState<GeneratorShape>('round');
     const [name, setName] = useState(initialName);
     const maxTables = limits?.tables ?? MAX_TABLES;
     const maxChairs = limits?.chairs ?? MAX_CHAIRS;
 
     const preview = useMemo(
-        () => generateHall({ tables: clamp(tables, 1, maxTables), chairs: clamp(chairs, 1, maxChairs), layout: mode, name: name || 'Main hall' }),
-        [tables, chairs, mode, name, maxTables, maxChairs],
+        () => generateHall({ tables: clamp(tables, 1, maxTables), chairs: clamp(chairs, 1, maxChairs), layout: mode, shape, name: name || 'Main hall' }),
+        [tables, chairs, mode, shape, name, maxTables, maxChairs],
     );
 
     return (
@@ -70,6 +71,24 @@ export function HallGenerator({
                                 className={cn('h-10 rounded-md text-sm font-medium', mode === m ? 'bg-background shadow-sm' : 'text-muted-foreground')}
                             >
                                 {t(`seating.hall.${m}`)}
+                            </button>
+                        ))}
+                    </div>
+                </fieldset>
+                <fieldset className="grid gap-1.5 sm:col-span-2">
+                    <legend className="mb-1.5 text-sm font-medium">{t('halls.inspector.shape')}</legend>
+                    <div className="bg-muted grid grid-cols-2 gap-1 rounded-lg p-1" role="radiogroup">
+                        {(['round', 'rect'] as const).map((s) => (
+                            <button
+                                key={s}
+                                type="button"
+                                role="radio"
+                                aria-checked={shape === s}
+                                onClick={() => setShape(s)}
+                                className={cn('h-10 rounded-md text-sm font-medium', shape === s ? 'bg-background shadow-sm' : 'text-muted-foreground')}
+                                data-generator-shape={s}
+                            >
+                                {t(`halls.elements.${s}`)}
                             </button>
                         ))}
                     </div>
